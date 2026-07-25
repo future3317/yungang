@@ -18,3 +18,8 @@ class GameRepository:
     def save(self, state: GameState):
         with sqlite3.connect(self.path) as db:
             db.execute("INSERT INTO games(session_id,state) VALUES(?,?) ON CONFLICT(session_id) DO UPDATE SET state=excluded.state", (state.session_id, state.model_dump_json()))
+
+    def next_id(self):
+        with sqlite3.connect(self.path) as db:
+            row = db.execute("SELECT COUNT(*) FROM games").fetchone()
+        return row[0] + 1

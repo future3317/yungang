@@ -50,7 +50,7 @@
     "reward": {
       "scroll_delta": 2,
       "restoration_delta": 1,
-      "domain": "trade"
+    "domain": "pattern"
     },
     "learning_objective": "将材作与贸易流向共同纳入修护计划。",
     "culture_explanation": "文化修护不只看实物，还包含材料调配、运输与记录体系协作。",

@@ -10,3 +10,9 @@ dist/
 # Local tooling directories
 .claude/
 .playwright-mcp/
+
+# Transient chat artifacts
+ChatGPT Image*.png
+
+# Generated temporary assets
+frontend/static/ui-assets/generated/
