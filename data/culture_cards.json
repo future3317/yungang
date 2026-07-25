@@ -1,0 +1,8 @@
+{
+  "cards": [
+    {"id":"survey","name":"行旅札记","description":"探索后获得 1 AP，并抽取一张文化牌。","effect":{"type":"gain_ap","amount":1}},
+    {"id":"craft","name":"匠人手稿","description":"下一次贡献额外获得 1 影响力。","effect":{"type":"next_contribute_bonus","amount":1}},
+    {"id":"alliance","name":"互市盟约","description":"本回合移动获得灵活性。","effect":{"type":"free_move"}},
+    {"id":"archive","name":"石窟档案","description":"恢复 1 点耐久，并获得 1 影响力。","effect":{"type":"restore_and_influence","durability":1,"influence":1}}
+  ]
+}

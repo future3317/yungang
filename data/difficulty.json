@@ -1,0 +1,5 @@
+﻿[
+  {"id": "easy", "max_rounds": 10, "restoration_resource": 8, "event_weight": 0.8, "node_damage_base": 1},
+  {"id": "normal", "max_rounds": 8, "restoration_resource": 6, "event_weight": 1.0, "node_damage_base": 1},
+  {"id": "hard", "max_rounds": 7, "restoration_resource": 5, "event_weight": 1.2, "node_damage_base": 2}
+]

@@ -1,0 +1,80 @@
+﻿[
+  {
+    "id": "yungang",
+    "name": "云冈石窟",
+    "type": "heritage",
+    "x": 50,
+    "y": 50,
+    "connections": ["huayan_temple", "shanhua_temple", "wall_pass", "trade_post", "pingcheng_ruins"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_yungang_core",
+    "site_tags": ["central", "core", "buddha"],
+    "summary": "以云冈石窟为核心的造像与装饰交流枢纽。"
+  },
+  {
+    "id": "huayan_temple",
+    "name": "华严寺",
+    "type": "heritage",
+    "x": 28,
+    "y": 20,
+    "connections": ["yungang", "wall_pass", "trade_post"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_architecture_huayan",
+    "site_tags": ["frontier", "religion", "lore"],
+    "summary": "寺观结构、礼制和修护实践的文化节点。"
+  },
+  {
+    "id": "shanhua_temple",
+    "name": "善化寺",
+    "type": "heritage",
+    "x": 72,
+    "y": 22,
+    "connections": ["yungang", "wall_pass", "trade_post"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_architecture_shanhua",
+    "site_tags": ["construction", "worship", "craft"],
+    "summary": "辽金木构建筑技艺与地域修护的交叉节点。"
+  },
+  {
+    "id": "wall_pass",
+    "name": "长城关隘",
+    "type": "heritage",
+    "x": 48,
+    "y": 84,
+    "connections": ["yungang", "huayan_temple", "shanhua_temple", "pingcheng_ruins"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_frontier",
+    "site_tags": ["frontier", "security", "exchange"],
+    "summary": "边境共守与跨文明协同防护示例点。"
+  },
+  {
+    "id": "trade_post",
+    "name": "互市驿站",
+    "type": "heritage",
+    "x": 86,
+    "y": 72,
+    "connections": ["yungang", "huayan_temple", "shanhua_temple", "pingcheng_ruins"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_trade",
+    "site_tags": ["trade", "exchange", "mobility"],
+    "summary": "物质与信息流交换的文化交汇点。"
+  },
+  {
+    "id": "pingcheng_ruins",
+    "name": "平城遗址",
+    "type": "heritage",
+    "x": 18,
+    "y": 70,
+    "connections": ["yungang", "wall_pass", "trade_post", "shanhua_temple"],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_statue",
+    "site_tags": ["capital", "archive", "route"],
+    "summary": "制度记忆、文献传播与造像流向的起点之一。"
+  }
+]

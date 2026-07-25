@@ -1,0 +1,7 @@
+{
+  "events": [
+    {"id":"sandstorm","name":"风沙遮路","description":"威胁上升 1。","effect":{"type":"threat","amount":1}},
+    {"id":"pilgrims","name":"四方来客","description":"所有玩家获得 1 影响力。","effect":{"type":"all_influence","amount":1}},
+    {"id":"quiet","name":"静夜守窟","description":"当前节点恢复 1 点耐久。","effect":{"type":"restore_site","amount":1}}
+  ]
+}

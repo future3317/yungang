@@ -1,0 +1,169 @@
+- generic [active] [ref=f2e1]:
+  - generic: ☁
+  - generic: ☁
+  - generic [ref=f2e2]:
+    - banner [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - heading "云冈飞天棋：文明互鉴之路 成城" [level=1] [ref=f2e5]:
+          - text: 云冈飞天棋：文明互鉴之路
+          - generic [ref=f2e6]: 成城
+        - paragraph [ref=f2e7]: 结合佛教造像与历史渊源的飞行棋盘类游戏设计 · 以大同文化遗产为路径，讲述文明交流互鉴与民族融合的中国故事。
+        - text: 大同 · 云冈 · 飞天 · 互鉴
+      - generic [ref=f2e8]:
+        - button "玩法说明" [ref=f2e9] [cursor=pointer]
+        - button "设计理念" [ref=f2e10] [cursor=pointer]
+        - button "新开一局" [ref=f2e11] [cursor=pointer]
+    - generic [ref=f2e12]:
+      - generic [ref=f2e14]:
+        - img
+        - generic [ref=f2e15]:
+          - generic [ref=f2e16]: 城
+          - heading "平城" [level=3] [ref=f2e17]
+        - generic [ref=f2e23]:
+          - generic [ref=f2e24]: 🐫
+          - heading "丝路" [level=3] [ref=f2e25]
+        - generic [ref=f2e31]:
+          - generic [ref=f2e32]: ♞
+          - heading "草原" [level=3] [ref=f2e33]
+        - generic [ref=f2e39]:
+          - generic [ref=f2e40]: 文
+          - heading "中原" [level=3] [ref=f2e41]
+        - img:
+          - generic:
+            - generic: 莲
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 云
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: 阁
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: ·
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 市
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: ·
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: 关
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 云
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: 阁
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: ·
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 纹
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: ·
+            - generic: 关
+            - generic: 云
+            - generic: ·
+        - generic:
+          - generic: 飞
+          - generic: 天
+          - generic: 云冈
+        - generic:
+          - generic "中心遗产节点，代表佛教造像艺术和中外文明交流互鉴。" [ref=f2e47]:
+            - generic [ref=f2e48]: 佛
+            - strong [ref=f2e49]: 云冈石窟
+          - generic "辽金古建节点，体现北方民族政权与中原建筑传统的交融。" [ref=f2e50]:
+            - generic [ref=f2e51]: 塔
+            - strong [ref=f2e52]: 华严寺
+          - generic "辽金木构遗存节点，体现建筑技术和宗教空间传承。" [ref=f2e53]:
+            - generic [ref=f2e54]: 寺
+            - strong [ref=f2e55]: 善化寺
+          - generic "边塞节点，代表共筑共守和边疆治理。" [ref=f2e56]:
+            - generic [ref=f2e57]: 关
+            - strong [ref=f2e58]: 长城关隘
+          - generic "交流节点，代表边塞贸易和民族交往交流交融。" [ref=f2e59]:
+            - generic [ref=f2e60]: 市
+            - strong [ref=f2e61]: 互市驿站
+          - generic "历史都城节点，代表北魏平城与制度文化融合。" [ref=f2e62]:
+            - generic [ref=f2e63]: 城
+            - strong [ref=f2e64]: 平城遗址
+        - generic [ref=f2e65]:
+          - generic [ref=f2e66]: 莲 造像
+          - generic [ref=f2e67]: 纹 纹样
+          - generic [ref=f2e68]: 阁 建筑
+          - generic [ref=f2e69]: 关 长城
+          - generic [ref=f2e70]: 市 互市
+          - generic [ref=f2e71]: 云 飞天
+      - complementary [ref=f2e72]:
+        - generic [ref=f2e73]:
+          - generic [ref=f2e74]:
+            - heading "行棋控制" [level=2] [ref=f2e75]
+            - generic [ref=f2e76]: 第 1 轮
+          - generic [ref=f2e77]:
+            - generic [ref=f2e78]: 一
+            - generic [ref=f2e79]:
+              - generic [ref=f2e80]: 正在初始化游戏……
+              - generic [ref=f2e81]:
+                - button "掷骰子" [ref=f2e82] [cursor=pointer]
+                - button "抽文化卡" [ref=f2e83] [cursor=pointer]
+        - generic [ref=f2e84]:
+          - generic [ref=f2e85]:
+            - heading "共同图卷" [level=2] [ref=f2e86]
+            - generic [ref=f2e87]: 0 / 10
+          - paragraph [ref=f2e89]: 通过交换、修护、互助与答题推进图卷进度。
+        - generic [ref=f2e91]:
+          - heading "文明使者" [level=2] [ref=f2e92]
+          - generic [ref=f2e93]: 集齐五类印记可完成图卷
+        - generic [ref=f2e94]:
+          - generic [ref=f2e95]:
+            - heading "手牌" [level=2] [ref=f2e96]
+            - generic [ref=f2e97]: 最多 3 张，每回合可打出 1 张
+          - paragraph [ref=f2e99]: 暂无手牌，点击“抽文化卡”获取。
+        - generic [ref=f2e100]:
+          - generic [ref=f2e101]:
+            - heading "文化卡牌" [level=2] [ref=f2e102]
+            - button "导出状态" [ref=f2e103] [cursor=pointer]
+          - generic [ref=f2e104]:
+            - generic [ref=f2e105]: 等待抽卡或打出手牌
+            - heading "文明互鉴图卷" [level=3] [ref=f2e106]
+            - paragraph [ref=f2e107]: 抽到的卡牌会进入手牌。在合适时机打出，触发造像、建筑、边塞、互市等文化效果。
+        - heading "行旅记录" [level=2] [ref=f2e110]
+  - generic [ref=f2e113]:
+    - heading "选择文明使者" [level=2] [ref=f2e114]
+    - paragraph [ref=f2e115]: 请选择 2 至 4 名角色，共同完成云冈文明互鉴图卷。
+    - generic [ref=f2e116]:
+      - generic [ref=f2e117] [cursor=pointer]:
+        - generic [ref=f2e118]: 匠
+        - heading "平城工匠" [level=3] [ref=f2e119]
+        - paragraph [ref=f2e120]: 代表北魏平城营建、石窟开凿与工匠技术传统。
+        - generic [ref=f2e121]: 落到造像格时，额外获得一次抽卡机会。
+      - generic [ref=f2e122] [cursor=pointer]:
+        - generic [ref=f2e123]: 舞
+        - heading "西域乐舞使者" [level=3] [ref=f2e124]
+        - paragraph [ref=f2e125]: 代表丝路乐舞、服饰、纹样与佛教艺术传播。
+        - generic [ref=f2e126]: 落到飞天格时，额外前进 1 格。
+      - generic [ref=f2e127] [cursor=pointer]:
+        - generic [ref=f2e128]: 骑
+        - heading "草原骑行使者" [level=3] [ref=f2e129]
+        - paragraph [ref=f2e130]: 代表草原文化、边塞交流与农牧交汇。
+        - generic [ref=f2e131]: 落到长城格时，额外获得边塞印记。
+      - generic [ref=f2e132] [cursor=pointer]:
+        - generic [ref=f2e133]: 文
+        - heading "中原文书记官" [level=3] [ref=f2e134]
+        - paragraph [ref=f2e135]: 代表中原文字、礼制、制度与木构建筑传统。
+        - generic [ref=f2e136]: 落到建筑格时，额外获得建筑印记。
+    - button "请选择至少 2 名角色" [disabled] [ref=f2e138]

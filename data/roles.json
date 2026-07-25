@@ -1,0 +1,67 @@
+﻿[
+  {
+    "id": "pingcheng_artisan",
+    "name": "平城工匠",
+    "origin": "平城",
+    "icon": "匠",
+    "color": "cinnabar",
+    "start_site_id": "pingcheng_ruins",
+    "ability": {
+      "name": "精修",
+      "description": "本回合在当前遗产点执行一次强化修护，额外移除 2 点损伤（按普通修护一次资源结算）。",
+      "action": "fine_repair",
+      "ap_cost": 1
+    },
+    "meaning": "北魏都城建设与石窟开凿的工艺记忆。",
+    "content_review_status": "verified"
+  },
+  {
+    "id": "western_dancer",
+    "name": "西域乐舞使者",
+    "origin": "丝路",
+    "icon": "舞",
+    "color": "teal",
+    "start_site_id": "huayan_temple",
+    "ability": {
+      "name": "和鸣",
+      "description": "本回合贡献卡时可把一张卡的起源标签视为另一种来源，以满足互鉴多样性。",
+      "action": "harmony_hint",
+      "ap_cost": 1
+    },
+    "meaning": "乐舞、服饰与文化传播在多文明共生中的角色。",
+    "content_review_status": "verified"
+  },
+  {
+    "id": "grassland_rider",
+    "name": "草原骑行使者",
+    "origin": "草原",
+    "icon": "骑",
+    "color": "green",
+    "start_site_id": "wall_pass",
+    "ability": {
+      "name": "疾行",
+      "description": "本回合第一次移动可跨越最多两段连接边，仍消耗 1 AP。",
+      "action": "sprint_move",
+      "ap_cost": 1,
+      "max_hops": 2
+    },
+    "meaning": "草原交通与边塞协作推动文化互鉴。",
+    "content_review_status": "verified"
+  },
+  {
+    "id": "central_scribe",
+    "name": "中原文书记官",
+    "origin": "中原",
+    "icon": "文",
+    "color": "blue",
+    "start_site_id": "trade_post",
+    "ability": {
+      "name": "博览",
+      "description": "查看文化市场与牌库顶部 3 张候选，选择 1 张加入手牌，其余按确定规则放回。",
+      "action": "view_select",
+      "ap_cost": 1
+    },
+    "meaning": "中原文字、制度与文献整理推动交流传承。",
+    "content_review_status": "verified"
+  }
+]

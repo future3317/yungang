@@ -1,0 +1,122 @@
+﻿[
+  {
+    "id": "task_statue",
+    "site_id": "pingcheng_ruins",
+    "name": "造像重构任务",
+    "required_domains": ["statue", "pattern"],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "比较不同来源的造像题材与纹饰转译。",
+    "culture_explanation": "通过将平城来源与丝路来源的文化记忆对照，完成同一造像主题的复原。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_architecture_huayan",
+    "site_id": "huayan_temple",
+    "name": "结构审议",
+    "required_domains": ["architecture"],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "识别木构与石构构件中的工艺差异。",
+    "culture_explanation": "比较寺观结构中的梁柱做法与区域修护策略，强调修复共识。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_architecture_shanhua",
+    "site_id": "shanhua_temple",
+    "name": "空间协同",
+    "required_domains": ["architecture", "trade"],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "将材作与贸易流向共同纳入修护计划。",
+    "culture_explanation": "文化修护不只看实物，还包含材料调配、运输与记录体系协作。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_frontier",
+    "site_id": "wall_pass",
+    "name": "边塞联动",
+    "required_domains": ["frontier", "trade"],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "frontier"
+    },
+    "learning_objective": "在不同文明标签下讨论共守与共行的权衡。",
+    "culture_explanation": "边塞不是断裂，而是以交流为前提的秩序修复过程。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_trade",
+    "site_id": "trade_post",
+    "name": "互市共治",
+    "required_domains": ["trade", "frontier"],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "用不同起源证据完成一次跨节点合作。",
+    "culture_explanation": "互市驿站强调证据共享与共同决策，而非单方收割。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_yungang_core",
+    "site_id": "yungang",
+    "name": "核心协同任务",
+    "required_domains": ["statue", "pattern", "architecture", "frontier", "trade"],
+    "required_origin_diversity": 3,
+    "required_card_count": 5,
+    "required_cards_per_player_min": 2,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 2,
+      "domain": "trade"
+    },
+    "learning_objective": "将五类文明元素组合成跨域解释。",
+    "culture_explanation": "云冈中心节点强调多文明元素同时参与才能形成完整叙事。",
+    "source_title": "待专家审核",
+    "source_url": "",
+    "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  }
+]

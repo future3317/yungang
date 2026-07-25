@@ -1,0 +1,194 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - heading "云冈飞天棋" [level=1] [ref=e6]: 云冈飞天棋
+        - paragraph [ref=e8]: 以大同文化遗产为路径，讲述文明交流互鉴与民族融合的中国故事
+      - generic [ref=e9]:
+        - button "玩法说明" [ref=e10] [cursor=pointer]
+        - button "设计理念" [ref=e11] [cursor=pointer]
+        - button "新开一局" [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - generic [ref=e15]:
+        - img
+        - heading "平城" [level=3] [ref=e18]
+        - heading "丝路" [level=3] [ref=e26]
+        - heading "草原" [level=3] [ref=e34]
+        - heading "中原" [level=3] [ref=e42]
+        - img:
+          - generic:
+            - generic: 莲
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 云
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: 阁
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: ·
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 市
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: ·
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: 关
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 云
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: 阁
+            - generic: 关
+            - generic: 云
+            - generic: ·
+            - generic: ·
+            - generic: 莲
+            - generic: ·
+            - generic: 阁
+            - generic: 纹
+            - generic: 纹
+            - generic: ·
+            - generic: 市
+            - generic: ·
+            - generic: 关
+            - generic: 云
+            - generic: ·
+        - generic:
+          - img "云冈佛像浮雕"
+        - generic:
+          - generic "中心遗产节点，代表佛教造像艺术和中外文明交流互鉴。" [ref=e48]:
+            - strong [ref=e50]: 云冈石窟
+          - generic "辽金古建节点，体现北方民族政权与中原建筑传统的交融。" [ref=e51]:
+            - strong [ref=e53]: 华严寺
+          - generic "辽金木构遗存节点，体现建筑技术和宗教空间传承。" [ref=e54]:
+            - strong [ref=e56]: 善化寺
+          - generic "边塞节点，代表共筑共守和边疆治理。" [ref=e57]:
+            - strong [ref=e59]: 长城关隘
+          - generic "交流节点，代表边塞贸易和民族交往交流交融。" [ref=e60]:
+            - strong [ref=e62]: 互市驿站
+          - generic "历史都城节点，代表北魏平城与制度文化融合。" [ref=e63]:
+            - strong [ref=e65]: 平城遗址
+        - generic:
+          - generic [ref=e363]: 匠
+          - generic [ref=e364]: 舞
+          - generic [ref=e365]: 骑
+          - generic [ref=e366]: 文
+        - generic [ref=e68]:
+          - generic [ref=e69]: 莲 造像
+          - generic [ref=e70]: 纹 纹样
+          - generic [ref=e71]: 阁 建筑
+          - generic [ref=e72]: 关 长城
+          - generic [ref=e73]: 市 互市
+          - generic [ref=e74]: 云 飞天
+      - complementary [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "行棋控制" [level=2] [ref=e78]
+            - generic [ref=e79]: 第 1 轮
+          - generic [ref=e80]:
+            - generic [ref=e81]: 六
+            - generic [ref=e82]:
+              - generic [ref=e83]:
+                - text: 当前：
+                - strong [ref=e367]: 西域乐舞使者
+                - text: 。落到飞天格时，额外前进 1 格。
+              - generic [ref=e85]:
+                - button "掷骰子" [ref=e86] [cursor=pointer]
+                - button "抽文化卡" [ref=e87] [cursor=pointer]
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - heading "共同图卷" [level=2] [ref=e90]
+            - generic [ref=e91]: 0 / 10
+          - paragraph [ref=e93]: 通过交换、修护、互助与答题推进图卷进度。
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - heading "文明使者" [level=2] [ref=e96]
+            - generic [ref=e97]: 集齐五类印记可完成图卷
+          - generic [ref=e98]:
+            - generic [ref=e368]:
+              - generic [ref=e369]: 匠
+              - generic [ref=e370]:
+                - strong [ref=e371]: 平城工匠
+                - generic [ref=e372]: 平城起点 · 第 7 格 · 手牌 0/3
+                - generic [ref=e373]:
+                  - generic "造像印记" [ref=e374]: 佛
+                  - generic "纹样印记" [ref=e375]: 花
+                  - generic "建筑印记" [ref=e376]: 阁
+                  - generic "边塞印记" [ref=e377]: 关
+                  - generic "互市印记" [ref=e378]: 市
+            - generic [ref=e379]:
+              - generic [ref=e380]: 舞
+              - generic [ref=e381]:
+                - strong [ref=e382]: 西域乐舞使者
+                - generic [ref=e383]: 丝路起点 · 第 15 格 · 手牌 0/3
+                - generic [ref=e384]:
+                  - generic "造像印记" [ref=e385]: 佛
+                  - generic "纹样印记" [ref=e386]: 花
+                  - generic "建筑印记" [ref=e387]: 阁
+                  - generic "边塞印记" [ref=e388]: 关
+                  - generic "互市印记" [ref=e389]: 市
+              - generic [ref=e390]: 当前
+            - generic [ref=e391]:
+              - generic [ref=e392]: 骑
+              - generic [ref=e393]:
+                - strong [ref=e394]: 草原骑行使者
+                - generic [ref=e395]: 草原起点 · 第 25 格 · 手牌 0/3
+                - generic [ref=e396]:
+                  - generic "造像印记" [ref=e397]: 佛
+                  - generic "纹样印记" [ref=e398]: 花
+                  - generic "建筑印记" [ref=e399]: 阁
+                  - generic "边塞印记" [ref=e400]: 关
+                  - generic "互市印记" [ref=e401]: 市
+            - generic [ref=e402]:
+              - generic [ref=e403]: 文
+              - generic [ref=e404]:
+                - strong [ref=e405]: 中原文书记官
+                - generic [ref=e406]: 中原起点 · 第 37 格 · 手牌 0/3
+                - generic [ref=e407]:
+                  - generic "造像印记" [ref=e408]: 佛
+                  - generic "纹样印记" [ref=e409]: 花
+                  - generic "建筑印记" [ref=e410]: 阁
+                  - generic "边塞印记" [ref=e411]: 关
+                  - generic "互市印记" [ref=e412]: 市
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - heading "手牌" [level=2] [ref=e124]
+            - generic [ref=e125]: 最多 3 张，每回合可打出 1 张
+          - paragraph [ref=e413]: 暂无手牌，点击“抽文化卡”获取。
+        - generic [ref=e131]:
+          - generic [ref=e132]:
+            - heading "文化卡牌" [level=2] [ref=e133]
+            - button "导出状态" [ref=e134] [cursor=pointer]
+          - generic [ref=e135]:
+            - generic [ref=e414]: 行旅卡
+            - heading "丝路驼铃" [level=3] [ref=e415]
+            - paragraph [ref=e416]:
+              - strong [ref=e417]: 效果：
+              - text: 前进 2 格。
+            - paragraph [ref=e418]:
+              - strong [ref=e419]: 文化说明：
+              - text: 驼队沿丝路而来，将西域乐舞、宗教与工艺带入平城。
+            - paragraph [ref=e420]:
+              - strong [ref=e421]: 资料来源：
+              - text: 机制卡，灵感来自丝绸之路与平城交通史。
+        - generic [ref=e144]:
+          - heading "行旅记录" [level=2] [ref=e146]
+          - generic [ref=e147]:
+            - generic [ref=e422]: 西域乐舞使者 根据卡牌效果前进 2 格。
+            - generic [ref=e423]: 西域乐舞使者 打出【丝路驼铃】。
+            - generic [ref=e424]: 西域乐舞使者 抽到【丝路驼铃】并加入手牌。
+            - generic [ref=e425]: 平城工匠 掷出 6，前进 6 格。
+            - generic [ref=e426]: 新一局开始：四方文明使者启程，汇聚云冈。
+  - generic [ref=e183]: 西域乐舞使者 根据卡牌效果前进 2 格。

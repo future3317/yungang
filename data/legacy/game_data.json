@@ -1,0 +1,801 @@
+{
+  "roles": [
+    {
+      "id": "pingcheng_artisan",
+      "name": "平城工匠",
+      "origin": "平城",
+      "icon": "匠",
+      "color": "cinnabar",
+      "start_index": 0,
+      "ability": "落到造像格时，额外获得一次抽卡机会。",
+      "meaning": "代表北魏平城营建、石窟开凿与工匠技术传统。"
+    },
+    {
+      "id": "western_dancer",
+      "name": "西域乐舞使者",
+      "origin": "丝路",
+      "icon": "舞",
+      "color": "teal",
+      "start_index": 12,
+      "ability": "落到飞天格时，额外前进 1 格。",
+      "meaning": "代表丝路乐舞、服饰、纹样与佛教艺术传播。"
+    },
+    {
+      "id": "grassland_rider",
+      "name": "草原骑行使者",
+      "origin": "草原",
+      "icon": "骑",
+      "color": "green",
+      "start_index": 24,
+      "ability": "落到长城格时，额外获得边塞印记。",
+      "meaning": "代表草原文化、边塞交流与农牧交汇。"
+    },
+    {
+      "id": "central_scribe",
+      "name": "中原文书记官",
+      "origin": "中原",
+      "icon": "文",
+      "color": "blue",
+      "start_index": 36,
+      "ability": "落到建筑格时，额外获得建筑印记。",
+      "meaning": "代表中原文字、礼制、制度与木构建筑传统。"
+    }
+  ],
+  "marks": [
+    {
+      "id": "sculpture",
+      "name": "造像印记",
+      "icon": "佛",
+      "meaning": "云冈石窟与佛教造像艺术"
+    },
+    {
+      "id": "pattern",
+      "name": "纹样印记",
+      "icon": "花",
+      "meaning": "飞天、莲花、忍冬纹、云纹等艺术交流"
+    },
+    {
+      "id": "architecture",
+      "name": "建筑印记",
+      "icon": "阁",
+      "meaning": "华严寺、善化寺与辽金木构建筑"
+    },
+    {
+      "id": "frontier",
+      "name": "边塞印记",
+      "icon": "关",
+      "meaning": "大同长城、关隘、共筑共守"
+    },
+    {
+      "id": "trade",
+      "name": "互市印记",
+      "icon": "市",
+      "meaning": "边塞互市、商旅往来、民族交往交流交融"
+    }
+  ],
+  "cards": [
+    {
+      "id": "tanyao_five_caves",
+      "type": "造像卡",
+      "title": "昙曜五窟",
+      "mark_id": "sculpture",
+      "move": 1,
+      "effect": "获得 1 枚造像印记，并前进 1 格。",
+      "lore": "云冈早期洞窟展现北魏皇家造像气象，是佛教艺术中国化的重要节点。",
+      "source_note": "云冈石窟研究院：《云冈石窟》；UNESCO World Heritage Centre, \"Yungang Grottoes\"."
+    },
+    {
+      "id": "apsaras_music_dance",
+      "type": "造像卡",
+      "title": "飞天乐舞",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记。若角色为西域乐舞使者，再前进 1 格。",
+      "lore": "飞天、乐舞与供养人图像展现丝路艺术、宗教信仰与本土审美的融合。",
+      "source_note": "宿白：《中国石窟寺研究》；云冈石窟研究院编《云冈石窟》相关图录。"
+    },
+    {
+      "id": "huayan_bracket_set",
+      "type": "建筑卡",
+      "title": "华严寺斗拱",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记。",
+      "lore": "辽金古建中的梁架、斗拱和寺院格局体现北方民族政权与中原建筑传统的交流。",
+      "source_note": "大同市华严寺管理处；柴泽俊：《山西古建筑》相关章节。"
+    },
+    {
+      "id": "shanhua_wooden_structure",
+      "type": "建筑卡",
+      "title": "善化寺木构",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记，并记录一次遗产保护事件。",
+      "lore": "善化寺保存辽金木构遗存，是大同古建文化层积的重要见证。",
+      "source_note": "大同市善化寺管理处；山西省文物局官网古建介绍。"
+    },
+    {
+      "id": "great_wall_pass",
+      "type": "边塞卡",
+      "title": "长城关隘",
+      "mark_id": "frontier",
+      "move": 0,
+      "effect": "获得 1 枚边塞印记。",
+      "lore": "大同长城不仅是防御体系，也承载边疆治理、共筑共守与族群互动记忆。",
+      "source_note": "《大同府志》关隘篇；山西省文物局长城资源调查资料。"
+    },
+    {
+      "id": "deshengbao_trade",
+      "type": "互市卡",
+      "title": "得胜堡互市",
+      "mark_id": "trade",
+      "move": 1,
+      "effect": "获得 1 枚互市印记；当前玩家与下一位玩家各前进 1 格。",
+      "lore": "互市体现边塞空间中的商贸往来和交往交流交融。",
+      "source_note": "《大同府志·边防》；新荣区得胜堡历史文化资料。"
+    },
+    {
+      "id": "inclusive_civilization",
+      "type": "文明互鉴卡",
+      "title": "兼容并蓄",
+      "mark_id": null,
+      "move": 0,
+      "effect": "获得当前玩家缺少的第一枚文明印记。",
+      "lore": "文明互鉴不是单向输入，而是在相遇、转译与共生中形成新的文化表达。",
+      "source_note": "机制卡，用于表达文明互鉴主题。"
+    },
+    {
+      "id": "datong_under_heaven",
+      "type": "文明互鉴卡",
+      "title": "天下大同",
+      "mark_id": null,
+      "move": 0,
+      "effect": "如果全场玩家合计已集齐五类印记且共同图卷满格，则触发共同胜利。",
+      "lore": "从竞争抵达转向共同完成图卷，体现共生共荣。",
+      "source_note": "机制卡，用于表达共同胜利主题。"
+    },
+    {
+      "id": "heritage_repair",
+      "type": "遗产保护卡",
+      "title": "风沙修护",
+      "mark_id": null,
+      "move": 0,
+      "effect": "记录一次遗产保护事件，共同图卷进度 +1，并可再次抽卡。",
+      "lore": "文化遗产不是静止的展品，需要持续保护、修复与公共传播。",
+      "source_note": "云冈石窟研究院保护中心；中国文化遗产研究院相关报告。",
+      "scroll_delta": 1,
+      "protection_delta": 1,
+      "extra_draw": true
+    },
+    {
+      "id": "cloud_flight",
+      "type": "行旅卡",
+      "title": "云纹飞渡",
+      "mark_id": null,
+      "move": 3,
+      "effect": "前进 3 格。",
+      "lore": "飞天与云纹将普通飞行棋的“飞行”转化为云冈造像美学中的行旅意象。",
+      "source_note": "机制卡，灵感来自云冈飞天与云纹图像。"
+    },
+    {
+      "id": "gandhara_legacy",
+      "type": "造像卡",
+      "title": "犍陀罗遗风",
+      "mark_id": "sculpture",
+      "move": 0,
+      "effect": "获得 1 枚造像印记。",
+      "lore": "云冈早期造像吸收犍陀罗、马图拉等外来艺术因素，再经本土转译。",
+      "source_note": "李崇峰：《中印佛教石窟寺比较研究》；云冈石窟研究院图录。"
+    },
+    {
+      "id": "two_buddhas",
+      "type": "造像卡",
+      "title": "二佛并坐",
+      "mark_id": "sculpture",
+      "move": 1,
+      "effect": "获得 1 枚造像印记，并前进 1 格。",
+      "lore": "《法华经》多宝、释迦二佛并坐图像，是云冈中期洞窟的显著题材。",
+      "source_note": "宿白：《中国石窟寺研究》；云冈石窟研究院：《云冈石窟》。"
+    },
+    {
+      "id": "giant_buddha",
+      "type": "造像卡",
+      "title": "巨佛高髻",
+      "mark_id": "sculpture",
+      "move": 0,
+      "effect": "获得 1 枚造像印记。",
+      "lore": "昙曜五窟高达十余米的巨佛，展现北魏皇家的政治与信仰诉求。",
+      "source_note": "云冈石窟研究院官网；UNESCO World Heritage Centre, \"Yungang Grottoes\"."
+    },
+    {
+      "id": "pingcheng_relic",
+      "type": "造像卡",
+      "title": "平城舍利",
+      "mark_id": "sculpture",
+      "move": 0,
+      "effect": "获得 1 枚造像印记。",
+      "lore": "北魏平城时期佛教兴盛，舍利供养与开窟造像相辅相成。",
+      "source_note": "《魏书·释老志》；云冈石窟研究院历史研究资料。"
+    },
+    {
+      "id": "sanskrit_han_blend",
+      "type": "造像卡",
+      "title": "梵汉合璧",
+      "mark_id": "sculpture",
+      "move": 0,
+      "effect": "获得 1 枚造像印记，并推进共同图卷 +1。",
+      "lore": "云冈造像融合印度佛教题材、中亚雕刻技法与汉地审美，形成中国佛教艺术新范式。",
+      "source_note": "李裕群：《云冈石窟》；中国社科院考古研究所相关报告。",
+      "scroll_delta": 1
+    },
+    {
+      "id": "lotus_rebirth",
+      "type": "纹样卡",
+      "title": "莲花化生",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记。",
+      "lore": "莲花与化生童子图像常见于云冈，象征清净与再生，也融入本土装饰传统。",
+      "source_note": "云冈石窟研究院：《云冈石窟装饰纹样》；《中国石窟·云冈》。"
+    },
+    {
+      "id": "acanthus_scroll",
+      "type": "纹样卡",
+      "title": "忍冬卷草",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记。",
+      "lore": "忍冬、卷草纹样自西域传入，在云冈与中原植物纹结合，形成新的装饰语汇。",
+      "source_note": "《云冈石窟装饰纹样》；北京大学考古文博学院相关研究。"
+    },
+    {
+      "id": "wei_silk_costume",
+      "type": "纹样卡",
+      "title": "北魏衣冠",
+      "mark_id": "pattern",
+      "move": 1,
+      "effect": "获得 1 枚纹样印记，并前进 1 格。",
+      "lore": "云冈造像中的褒衣博带、秀骨清像，折射出北魏汉化改革与服饰文化变迁。",
+      "source_note": "宿白：《中国石窟寺研究》；《北魏平城时代》相关章节。"
+    },
+    {
+      "id": "east_west_meet",
+      "type": "纹样卡",
+      "title": "东西交汇",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记。",
+      "lore": "云冈纹样汇聚希腊、波斯、印度与中原元素，是丝绸之路艺术交流的缩影。",
+      "source_note": "《丝绸之路与云冈石窟》相关论文；云冈石窟研究院学术交流资料。"
+    },
+    {
+      "id": "cloud_lantern",
+      "type": "纹样卡",
+      "title": "云中灯会",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记，并推进共同图卷 +1。",
+      "lore": "大同灯会、节庆烟火与石窟造像共同构成地方民俗与佛教信仰交织的光影记忆。",
+      "source_note": "大同市文旅局民俗活动资料；地方节庆志。",
+      "scroll_delta": 1
+    },
+    {
+      "id": "sutra_translation",
+      "type": "纹样卡",
+      "title": "丝路译经",
+      "mark_id": "pattern",
+      "move": 0,
+      "effect": "获得 1 枚纹样印记。",
+      "lore": "北魏平城是早期佛经翻译重镇，西域与中原僧侣在此转译、流通佛典。",
+      "source_note": "《魏书·释老志》；汤用彤：《汉魏两晋南北朝佛教史》。"
+    },
+    {
+      "id": "huayan_main_hall",
+      "type": "建筑卡",
+      "title": "华严大雄宝殿",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记。",
+      "lore": "华严寺大雄宝殿为现存辽金最大佛殿之一，体现辽代高等级木构建筑技术。",
+      "source_note": "大同市华严寺管理处；柴泽俊：《山西古建筑》。"
+    },
+    {
+      "id": "shanhua_sanhua",
+      "type": "建筑卡",
+      "title": "善化三圣殿",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记。",
+      "lore": "善化寺三圣殿为金代遗构，殿内减柱造与金代塑像具有重要建筑史价值。",
+      "source_note": "大同市善化寺管理处；《中国古代建筑史》辽宋金卷。"
+    },
+    {
+      "id": "chiwen_finial",
+      "type": "建筑卡",
+      "title": "辽金鸱吻",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记。",
+      "lore": "华严寺、善化寺屋顶鸱吻气势雄伟，是辽金建筑屋顶装饰的典型代表。",
+      "source_note": "大同市华严寺、善化寺管理处；山西省古建筑保护研究所资料。"
+    },
+    {
+      "id": "column_reduction",
+      "type": "建筑卡",
+      "title": "减柱造法",
+      "mark_id": "architecture",
+      "move": 0,
+      "effect": "获得 1 枚建筑印记。",
+      "lore": "辽金建筑常用减柱、移柱造，以扩大室内礼佛空间，体现技术与信仰的协调。",
+      "source_note": "《中国古代建筑史》辽宋金卷；柴泽俊：《山西古建筑》。"
+    },
+    {
+      "id": "zhenbian_beacon",
+      "type": "边塞卡",
+      "title": "镇边堡烽燧",
+      "mark_id": "frontier",
+      "move": 0,
+      "effect": "获得 1 枚边塞印记。",
+      "lore": "大同长城沿线的烽燧、城堡构成明代九边防御体系的重要节点。",
+      "source_note": "山西省文物局长城资源调查；《大同府志·边防》。"
+    },
+    {
+      "id": "shoukou_pass",
+      "type": "边塞卡",
+      "title": "守口堡长城",
+      "mark_id": "frontier",
+      "move": 0,
+      "effect": "获得 1 枚边塞印记。",
+      "lore": "守口堡段长城保存较好，是明代大同镇长城防御与边塞生活的见证。",
+      "source_note": "《山西省长城资源调查报告》；新荣区地方志。"
+    },
+    {
+      "id": "frontier_smoke",
+      "type": "边塞卡",
+      "title": "边塞烽烟",
+      "mark_id": "frontier",
+      "move": 0,
+      "effect": "获得 1 枚边塞印记。",
+      "lore": "烽火传递不仅是军事信号，也是农耕与游牧世界之间长期互动的空间叙事。",
+      "source_note": "《明史·兵志》九边相关；《大同府志·边防》。"
+    },
+    {
+      "id": "nine_frontiers",
+      "type": "边塞卡",
+      "title": "九边重镇",
+      "mark_id": "frontier",
+      "move": 0,
+      "effect": "获得 1 枚边塞印记，并推进共同图卷 +1。",
+      "lore": "大同作为明代九边重镇之一，是军事、商贸与民族交融的复合空间。",
+      "source_note": "《明史·地理志》；《明代九边军镇研究》相关章节。",
+      "scroll_delta": 1
+    },
+    {
+      "id": "tea_horse_trade",
+      "type": "互市卡",
+      "title": "茶马互市",
+      "mark_id": "trade",
+      "move": 0,
+      "effect": "获得 1 枚互市印记。",
+      "lore": "茶马互市连接中原与边疆，是物资流通与族群交往的重要纽带。",
+      "source_note": "《明代大同镇史料》；《中国茶马古道》相关研究。"
+    },
+    {
+      "id": "jin_caravan",
+      "type": "互市卡",
+      "title": "晋商驼队",
+      "mark_id": "trade",
+      "move": 1,
+      "effect": "获得 1 枚互市印记，并前进 1 格。",
+      "lore": "晋商穿越长城内外、草原丝路，将茶叶、丝绸与皮毛贸易连成网络。",
+      "source_note": "《晋商史料》；张正明：《晋商兴衰史》。"
+    },
+    {
+      "id": "ethnic_fusion",
+      "type": "互市卡",
+      "title": "民族融合",
+      "mark_id": "trade",
+      "move": 0,
+      "effect": "获得 1 枚互市印记，并推进共同图卷 +1。",
+      "lore": "北魏平城作为多民族都城，见证了鲜卑、汉、匈奴、羯、氐、羌等族群的汇聚。",
+      "source_note": "《魏书》；《北魏平城时代》相关章节。",
+      "scroll_delta": 1
+    },
+    {
+      "id": "deshengbao_horse_market",
+      "type": "互市卡",
+      "title": "得胜堡马市",
+      "mark_id": "trade",
+      "move": 0,
+      "effect": "获得 1 枚互市印记。",
+      "lore": "明代隆庆和议后，得胜堡成为官方马市，蒙汉贸易在此常态化。",
+      "source_note": "《明史·鞑靼传》；新荣区得胜堡历史文化资料。"
+    },
+    {
+      "id": "silk_road_bells",
+      "type": "行旅卡",
+      "title": "丝路驼铃",
+      "mark_id": null,
+      "move": 2,
+      "effect": "前进 2 格。",
+      "lore": "驼队沿丝路而来，将西域乐舞、宗教与工艺带入平城。",
+      "source_note": "机制卡，灵感来自丝绸之路与平城交通史。"
+    },
+    {
+      "id": "pingcheng_ancient_road",
+      "type": "行旅卡",
+      "title": "平城古道",
+      "mark_id": null,
+      "move": 2,
+      "effect": "前进 2 格。",
+      "lore": "平城古道连接中原、草原与西域，是北魏都城对外交往的通道。",
+      "source_note": "机制卡，灵感来自北魏交通与都城格局。"
+    },
+    {
+      "id": "cloud_horse",
+      "type": "行旅卡",
+      "title": "云中快马",
+      "mark_id": null,
+      "move": 4,
+      "effect": "前进 4 格。",
+      "lore": "大同古称云中，快马传讯与商旅往来共同构成边塞城市的节奏。",
+      "source_note": "机制卡，灵感来自大同“云中”古称与交通记忆。"
+    },
+    {
+      "id": "digital_preservation",
+      "type": "遗产保护卡",
+      "title": "数字化保护",
+      "mark_id": null,
+      "move": 0,
+      "effect": "共同图卷进度 +2，保护值 +1。",
+      "lore": "三维扫描、数字档案与线上展示，让云冈石窟跨越时空面向公众。",
+      "source_note": "云冈石窟研究院数字化中心；中国文化遗产研究院相关报告。",
+      "scroll_delta": 2,
+      "protection_delta": 1
+    },
+    {
+      "id": "archaeological_survey",
+      "type": "遗产保护卡",
+      "title": "考古测绘",
+      "mark_id": null,
+      "move": 0,
+      "effect": "共同图卷进度 +1，保护值 +1。",
+      "lore": "系统的考古调查与测绘是认识、保护与阐释文化遗产的基础。",
+      "source_note": "中国社科院考古研究所；山西省考古研究院相关报告。",
+      "scroll_delta": 1,
+      "protection_delta": 1
+    },
+    {
+      "id": "cliff_reinforcement",
+      "type": "遗产保护卡",
+      "title": "岩壁加固",
+      "mark_id": null,
+      "move": 0,
+      "effect": "保护值 +2。",
+      "lore": "石窟岩体加固与防风化工程，是应对自然侵蚀、延续遗产生命的关键。",
+      "source_note": "云冈石窟研究院保护中心；中国文化遗产研究院相关技术报告。",
+      "protection_delta": 2
+    },
+    {
+      "id": "heritage_quiz",
+      "type": "知识卡",
+      "title": "遗产问答",
+      "mark_id": null,
+      "move": 0,
+      "effect": "回答一道遗产知识题，答对可获得 1 枚随机印记并推进图卷 +1。",
+      "lore": "理解遗产背后的交流互鉴，是玩家参与保护与文化传承的第一步。",
+      "source_note": "机制卡，用于增强游戏教育性。"
+    },
+    {
+      "id": "trade_negotiation",
+      "type": "互市卡",
+      "title": "互市谈判",
+      "mark_id": null,
+      "move": 0,
+      "effect": "与一名其他玩家交换彼此各一枚对方缺少的印记；若无合适交换，则共同图卷 +1。",
+      "lore": "互市不仅是物资交换，更是信息与知识的流通。谈判桌上，双方各取所需。",
+      "source_note": "机制卡，灵感来自明代大同马市与民族交往交流交融。"
+    },
+    {
+      "id": "joint_repair",
+      "type": "遗产保护卡",
+      "title": "联合修护",
+      "mark_id": null,
+      "move": 0,
+      "effect": "所有玩家保护值 +1，共同图卷进度 +1。",
+      "lore": "文化遗产保护需要集体参与，联合修护体现共生共荣的文明理念。",
+      "source_note": "机制卡，灵感来自云冈石窟研究院与各方合作保护实践。"
+    },
+    {
+      "id": "storm_warning",
+      "type": "遗产保护卡",
+      "title": "风沙预警",
+      "mark_id": null,
+      "move": 0,
+      "effect": "所有玩家保护值 +2，以应对即将到来的风沙。",
+      "lore": "提前预警与加固防护，是应对自然侵蚀、延续遗产生命的关键。",
+      "source_note": "机制卡，灵感来自云冈石窟防风化与监测工作。",
+      "protection_delta": 2
+    },
+    {
+      "id": "cultural_exchange",
+      "type": "知识卡",
+      "title": "文化交流",
+      "mark_id": null,
+      "move": 0,
+      "effect": "选择并获得一枚自己缺少的文明印记；若已集齐，则共同图卷 +1。",
+      "lore": "不同文明之间的对话与借鉴，是创新表达的源泉。",
+      "source_note": "机制卡，表达文明互鉴主题。"
+    },
+    {
+      "id": "frontier_smoke_attack",
+      "type": "边塞卡",
+      "title": "边塞烽烟",
+      "mark_id": null,
+      "move": 0,
+      "effect": "指定一名其他玩家失去 1 枚随机印记；若无目标，则共同图卷 +1。",
+      "lore": "边塞烽火既是军事信号，也是族群互动与竞争的空间叙事。",
+      "source_note": "机制卡，灵感来自大同长城烽燧与九边防御。"
+    },
+    {
+      "id": "pilgrimage_road",
+      "type": "行旅卡",
+      "title": "朝圣之路",
+      "mark_id": null,
+      "move": 0,
+      "effect": "立即移动到下一个遗产节点，并触发节点事件。",
+      "lore": "朝圣与巡礼是跨越空间的信仰实践，也是文化遗产叙事的重要线索。",
+      "source_note": "机制卡，灵感来自云冈石窟朝圣与古道交通。"
+    }
+  ],
+  "route": [
+    {
+      "index": 0,
+      "type": "sculpture"
+    },
+    {
+      "index": 1,
+      "type": "sculpture"
+    },
+    {
+      "index": 2,
+      "type": "storm"
+    },
+    {
+      "index": 3,
+      "type": "architecture"
+    },
+    {
+      "index": 4,
+      "type": "fly"
+    },
+    {
+      "index": 5,
+      "type": "pattern"
+    },
+    {
+      "index": 6,
+      "type": "repair"
+    },
+    {
+      "index": 7,
+      "type": "trade"
+    },
+    {
+      "index": 8,
+      "type": "architecture"
+    },
+    {
+      "index": 9,
+      "type": "frontier"
+    },
+    {
+      "index": 10,
+      "type": "fly"
+    },
+    {
+      "index": 11,
+      "type": "trade_fair"
+    },
+    {
+      "index": 12,
+      "type": "blank"
+    },
+    {
+      "index": 13,
+      "type": "sculpture"
+    },
+    {
+      "index": 14,
+      "type": "storm"
+    },
+    {
+      "index": 15,
+      "type": "architecture"
+    },
+    {
+      "index": 16,
+      "type": "trade"
+    },
+    {
+      "index": 17,
+      "type": "pattern"
+    },
+    {
+      "index": 18,
+      "type": "repair"
+    },
+    {
+      "index": 19,
+      "type": "trade"
+    },
+    {
+      "index": 20,
+      "type": "blank"
+    },
+    {
+      "index": 21,
+      "type": "frontier"
+    },
+    {
+      "index": 22,
+      "type": "fly"
+    },
+    {
+      "index": 23,
+      "type": "trade_fair"
+    },
+    {
+      "index": 24,
+      "type": "frontier"
+    },
+    {
+      "index": 25,
+      "type": "sculpture"
+    },
+    {
+      "index": 26,
+      "type": "storm"
+    },
+    {
+      "index": 27,
+      "type": "architecture"
+    },
+    {
+      "index": 28,
+      "type": "fly"
+    },
+    {
+      "index": 29,
+      "type": "pattern"
+    },
+    {
+      "index": 30,
+      "type": "repair"
+    },
+    {
+      "index": 31,
+      "type": "trade"
+    },
+    {
+      "index": 32,
+      "type": "architecture"
+    },
+    {
+      "index": 33,
+      "type": "frontier"
+    },
+    {
+      "index": 34,
+      "type": "fly"
+    },
+    {
+      "index": 35,
+      "type": "trade_fair"
+    },
+    {
+      "index": 36,
+      "type": "blank"
+    },
+    {
+      "index": 37,
+      "type": "sculpture"
+    },
+    {
+      "index": 38,
+      "type": "storm"
+    },
+    {
+      "index": 39,
+      "type": "architecture"
+    },
+    {
+      "index": 40,
+      "type": "pattern"
+    },
+    {
+      "index": 41,
+      "type": "pattern"
+    },
+    {
+      "index": 42,
+      "type": "repair"
+    },
+    {
+      "index": 43,
+      "type": "trade"
+    },
+    {
+      "index": 44,
+      "type": "blank"
+    },
+    {
+      "index": 45,
+      "type": "frontier"
+    },
+    {
+      "index": 46,
+      "type": "trade_fair"
+    },
+    {
+      "index": 47,
+      "type": "blank"
+    }
+  ],
+  "heritage_nodes": [
+    {
+      "id": "yungang",
+      "name": "云冈石窟",
+      "icon": "佛",
+      "x": 50,
+      "y": 18,
+      "route_index": 47,
+      "summary": "中心遗产节点，代表佛教造像艺术和中外文明交流互鉴。"
+    },
+    {
+      "id": "huayan",
+      "name": "华严寺",
+      "icon": "塔",
+      "x": 18,
+      "y": 48,
+      "route_index": 8,
+      "summary": "辽金古建节点，体现北方民族政权与中原建筑传统的交融。"
+    },
+    {
+      "id": "shanhua",
+      "name": "善化寺",
+      "icon": "寺",
+      "x": 82,
+      "y": 48,
+      "route_index": 32,
+      "summary": "辽金木构遗存节点，体现建筑技术和宗教空间传承。"
+    },
+    {
+      "id": "wall_pass",
+      "name": "长城关隘",
+      "icon": "关",
+      "x": 36,
+      "y": 78,
+      "route_index": 24,
+      "summary": "边塞节点，代表共筑共守和边疆治理。"
+    },
+    {
+      "id": "trade_post",
+      "name": "互市驿站",
+      "icon": "市",
+      "x": 68,
+      "y": 78,
+      "route_index": 16,
+      "summary": "交流节点，代表边塞贸易和民族交往交流交融。"
+    },
+    {
+      "id": "pingcheng_ruins",
+      "name": "平城遗址",
+      "icon": "城",
+      "x": 50,
+      "y": 86,
+      "route_index": 4,
+      "summary": "历史都城节点，代表北魏平城与制度文化融合。"
+    }
+  ]
+}

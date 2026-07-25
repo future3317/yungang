@@ -1,0 +1,14 @@
+{
+    "env": {
+    "ANTHROPIC_BASE_URL": "https://api.kimi.com/coding/",
+    "ANTHROPIC_API_KEY": "sk-kimi-np981IcbXbmUiP2KXdOIAOpj3V1cQkryJbx7jhxYaaf8gFQCpgek1359ZAWZiB6v",
+    "ANTHROPIC_MODEL": "kimi-for-coding",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "kimi-for-coding",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-for-coding",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "kimi-for-coding",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "kimi-for-coding",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "API_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max"
+  }
+}

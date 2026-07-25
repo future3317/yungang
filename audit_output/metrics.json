@@ -1,0 +1,764 @@
+{
+  "desktop_1920": {
+    "h1": {
+      "width": 414.734375,
+      "height": 62.09375,
+      "top": 22,
+      "left": 220,
+      "fontSize": "54px",
+      "lineHeight": "62.1px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 414.734375,
+      "height": 25.59375,
+      "top": 92.09375,
+      "left": 220,
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 1026,
+      "height": 882.359375,
+      "top": 175.6875,
+      "left": 235,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 400,
+      "height": 639,
+      "top": 160.6875,
+      "left": 1300,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 80,
+      "height": 80,
+      "top": 418.1875,
+      "left": 1319,
+      "fontSize": "34px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 328,
+      "height": 26.390625,
+      "top": 1453.6875,
+      "left": 1336,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 328,
+      "height": 23.25,
+      "top": 1488.078125,
+      "left": 1336,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 148.5,
+      "height": 20,
+      "top": 1331.6875,
+      "left": 1333,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 575.1875,
+      "left": 1319,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 238.796875,
+      "height": 21,
+      "top": 894.6875,
+      "left": 1386,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 238.796875,
+      "height": 19,
+      "top": 917.6875,
+      "left": 1386,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 362,
+      "height": 42.5,
+      "top": 620.6875,
+      "left": 1319,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "desktop_1440": {
+    "h1": {
+      "width": 414.734375,
+      "height": 62.09375,
+      "top": 22,
+      "left": 28.796875,
+      "fontSize": "54px",
+      "lineHeight": "62.1px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 414.734375,
+      "height": 25.59375,
+      "top": 92.09375,
+      "left": 28.796875,
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 928.390625,
+      "height": 798.40625,
+      "top": 175.6875,
+      "left": 43.796875,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 400,
+      "height": 620.5,
+      "top": 160.6875,
+      "left": 1011.1875,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 80,
+      "height": 80,
+      "top": 418.1875,
+      "left": 1030.1875,
+      "fontSize": "34px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 328,
+      "height": 26.390625,
+      "top": 1435.1875,
+      "left": 1047.1875,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 328,
+      "height": 46.5,
+      "top": 1469.578125,
+      "left": 1047.1875,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 148.5,
+      "height": 20,
+      "top": 1313.1875,
+      "left": 1044.1875,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 575.1875,
+      "left": 1030.1875,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 238.796875,
+      "height": 21,
+      "top": 876.1875,
+      "left": 1097.1875,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 238.796875,
+      "height": 19,
+      "top": 899.1875,
+      "left": 1097.1875,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 362,
+      "height": 42.5,
+      "top": 620.6875,
+      "left": 1030.1875,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "laptop_1280": {
+    "h1": {
+      "width": 414.734375,
+      "height": 61.828125,
+      "top": 22,
+      "left": 25.59375,
+      "fontSize": "53.76px",
+      "lineHeight": "61.824px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 414.734375,
+      "height": 25.59375,
+      "top": 91.828125,
+      "left": 25.59375,
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 790.6875,
+      "height": 680,
+      "top": 175.421875,
+      "left": 40.59375,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 400,
+      "height": 639,
+      "top": 160.421875,
+      "left": 854.390625,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 80,
+      "height": 80,
+      "top": 417.921875,
+      "left": 873.390625,
+      "fontSize": "34px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 328,
+      "height": 26.390625,
+      "top": 1453.421875,
+      "left": 890.390625,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 328,
+      "height": 46.5,
+      "top": 1487.8125,
+      "left": 890.390625,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 148.5,
+      "height": 20,
+      "top": 1331.421875,
+      "left": 887.390625,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 574.921875,
+      "left": 873.390625,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 238.796875,
+      "height": 21,
+      "top": 894.421875,
+      "left": 940.390625,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 238.796875,
+      "height": 19,
+      "top": 917.421875,
+      "left": 940.390625,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 362,
+      "height": 42.5,
+      "top": 620.421875,
+      "left": 873.390625,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "tablet_1180": {
+    "h1": {
+      "width": 414.734375,
+      "height": 56.984375,
+      "top": 22,
+      "left": 23.59375,
+      "fontSize": "49.56px",
+      "lineHeight": "56.994px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 414.734375,
+      "height": 25.59375,
+      "top": 86.984375,
+      "left": 23.59375,
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 790.6875,
+      "height": 680,
+      "top": 170.578125,
+      "left": 38.59375,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 340,
+      "height": 655,
+      "top": 155.578125,
+      "left": 816.390625,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 80,
+      "height": 80,
+      "top": 421.078125,
+      "left": 835.390625,
+      "fontSize": "34px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 268,
+      "height": 26.390625,
+      "top": 1464.578125,
+      "left": 852.390625,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 268,
+      "height": 69.75,
+      "top": 1498.96875,
+      "left": 852.390625,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 118.5,
+      "height": 20,
+      "top": 1342.578125,
+      "left": 849.390625,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 586.078125,
+      "left": 835.390625,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 178.796875,
+      "height": 21,
+      "top": 905.578125,
+      "left": 902.390625,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 178.796875,
+      "height": 19,
+      "top": 928.578125,
+      "left": 902.390625,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 302,
+      "height": 42.5,
+      "top": 631.578125,
+      "left": 835.390625,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 1180,
+      "height": 800
+    }
+  },
+  "tablet_768": {
+    "h1": {
+      "width": 365.21875,
+      "height": 41.71875,
+      "top": -550,
+      "left": 15.359375,
+      "fontSize": "32.256px",
+      "lineHeight": "37.0944px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 365.21875,
+      "height": 51.1875,
+      "top": -500.28125,
+      "left": 15.359375,
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 790.6875,
+      "height": 680,
+      "top": -391.09375,
+      "left": 30.359375,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 820.6875,
+      "height": 476,
+      "top": 321.90625,
+      "left": 15.359375,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 80,
+      "height": 80,
+      "top": 469.65625,
+      "left": 34.359375,
+      "fontSize": "34px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 748.6875,
+      "height": 26.390625,
+      "top": 1332.90625,
+      "left": 51.359375,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 748.6875,
+      "height": 23.25,
+      "top": 1367.296875,
+      "left": 51.359375,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 161.671875,
+      "height": 20,
+      "top": 1210.90625,
+      "left": 48.359375,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 591.90625,
+      "left": 34.359375,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 242.140625,
+      "height": 21,
+      "top": 890.90625,
+      "left": 101.359375,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 242.140625,
+      "height": 19,
+      "top": 913.90625,
+      "left": 101.359375,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 782.6875,
+      "height": 42.5,
+      "top": 637.40625,
+      "left": 34.359375,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  "mobile_390": {
+    "h1": {
+      "width": 358,
+      "height": 38.984375,
+      "top": -724,
+      "left": 16,
+      "fontSize": "31.2px",
+      "lineHeight": "35.88px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, \"Source Han Serif SC\", serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "subtitle": {
+      "width": 358,
+      "height": 44.78125,
+      "top": -677.015625,
+      "left": 16,
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "board_wrap": {
+      "width": 720,
+      "height": 720,
+      "top": -600.234375,
+      "left": 12,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "side_first_panel": {
+      "width": 358,
+      "height": 611,
+      "top": 144.765625,
+      "left": 16,
+      "fontSize": "18px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(43, 35, 27)"
+    },
+    "dice": {
+      "width": 68,
+      "height": 68,
+      "top": 394.265625,
+      "left": 35,
+      "fontSize": "28px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(166, 73, 49)"
+    },
+    "turn_text": null,
+    "card_title": {
+      "width": 286,
+      "height": 26.390625,
+      "top": 1403.765625,
+      "left": 52,
+      "fontSize": "22px",
+      "lineHeight": "26.4px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "card_body": {
+      "width": 286,
+      "height": 23.25,
+      "top": 1438.15625,
+      "left": 52,
+      "fontSize": "15px",
+      "lineHeight": "23.25px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "hand_card_title": {
+      "width": 292,
+      "height": 20,
+      "top": 1281.765625,
+      "left": 49,
+      "fontSize": "16px",
+      "lineHeight": "20px",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "section_title": {
+      "width": 82.09375,
+      "height": 27,
+      "top": 531.265625,
+      "left": 35,
+      "fontSize": "19px",
+      "lineHeight": "normal",
+      "fontFamily": "\"Noto Serif SC\", STKaiti, KaiTi, serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_name": {
+      "width": 196.796875,
+      "height": 21,
+      "top": 848.765625,
+      "left": 102,
+      "fontSize": "16px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(74, 63, 50)"
+    },
+    "player_meta": {
+      "width": 196.796875,
+      "height": 19,
+      "top": 871.765625,
+      "left": 102,
+      "fontSize": "14px",
+      "lineHeight": "normal",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "log_item": {
+      "width": 320,
+      "height": 42.5,
+      "top": 576.765625,
+      "left": 35,
+      "fontSize": "15px",
+      "lineHeight": "22.5px",
+      "fontFamily": "\"PingFang SC\", \"Microsoft YaHei\", \"Noto Sans SC\", system-ui, sans-serif",
+      "color": "rgb(107, 93, 75)"
+    },
+    "viewport": {
+      "width": 390,
+      "height": 844
+    }
+  }
+}

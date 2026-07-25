@@ -1,0 +1,5 @@
+{
+  "content_schema_version": 2,
+  "content": {"roles":"roles.json","sites":"sites.json","tasks":"tasks.json","difficulty":"difficulty.json","culture_cards":"culture_cards.json","events":"events.json","routes":"routes.json"},
+  "domains": ["statue", "pattern", "architecture", "frontier", "trade"]
+}

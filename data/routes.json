@@ -1,0 +1,9 @@
+[
+  {"from":"yungang","to":"huayan_temple","cost":1},{"from":"huayan_temple","to":"yungang","cost":1},
+  {"from":"yungang","to":"shanhua_temple","cost":1},{"from":"shanhua_temple","to":"yungang","cost":1},
+  {"from":"yungang","to":"wall_pass","cost":1},{"from":"wall_pass","to":"yungang","cost":1},
+  {"from":"yungang","to":"trade_post","cost":1},{"from":"trade_post","to":"yungang","cost":1},
+  {"from":"yungang","to":"pingcheng_ruins","cost":1},{"from":"pingcheng_ruins","to":"yungang","cost":1},
+  {"from":"huayan_temple","to":"trade_post","cost":2},{"from":"trade_post","to":"huayan_temple","cost":2},
+  {"from":"shanhua_temple","to":"wall_pass","cost":2},{"from":"wall_pass","to":"shanhua_temple","cost":2}
+]
