@@ -238,4 +238,11 @@ class GameEngine:
     def _check_outcome(self, state):
         closed = sum(site.status == "closed" for site in state.sites.values())
         if len(state.shared.completed_domains) >= 5 and state.shared.influence >= 10 and closed < 2 and state.shared.turn <= state.shared.max_rounds: state.shared.outcome = GameOutcome.VICTORY
-        elif closed >= 2 or state.shared.turn > state.shared.max_rounds: state.shared.outcome = GameOutcome.DEFEAT
+        elif closed >= 2:
+            state.shared.outcome = GameOutcome.DEFEAT
+            state.shared.outcome_reason = "too_many_closed_sites"
+        elif state.shared.turn > state.shared.max_rounds:
+            state.shared.outcome = GameOutcome.DEFEAT
+            state.shared.outcome_reason = "round_limit_reached"
+        if state.shared.outcome == GameOutcome.VICTORY:
+            state.shared.outcome_reason = "all_domains_completed"

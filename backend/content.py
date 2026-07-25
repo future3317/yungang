@@ -8,6 +8,7 @@ class Content:
         if entry.get("content_schema_version") != 2:
             raise ValueError("content_schema_version must be 2")
         self.domains = entry["domains"]
+        self.domain_meta = entry.get("domain_meta", {domain: {"name": domain, "short_name": domain} for domain in self.domains})
         self.files = {key: self._read(name) for key, name in entry["content"].items()}
         self.roles = {x["id"]: x for x in self._items(self.files["roles"], "roles")}
         self.sites = {x["id"]: x for x in self._items(self.files["sites"], "sites")}

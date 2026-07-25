@@ -1,10 +1,10 @@
 {
   "cards": [
-    {"id":"survey","name":"行旅札记","domain":"pattern","origin_tags":["central"],"site_tags":["route"],"description":"探索后获得 1 AP，并抽取一张文化牌。","effect":{"type":"gain_ap","amount":1},"content_review_status":"verified"},
-    {"id":"craft","name":"匠人手稿","domain":"architecture","origin_tags":["central","craft"],"site_tags":["construction"],"description":"下一次贡献额外获得 1 影响力。","effect":{"type":"next_contribute_bonus","amount":1},"content_review_status":"verified"},
-    {"id":"alliance","name":"互市盟约","domain":"trade","origin_tags":["western","frontier"],"site_tags":["exchange"],"description":"本回合第一次移动不额外增加路线成本。","effect":{"type":"free_move"},"content_review_status":"verified"},
-    {"id":"archive","name":"石窟档案","domain":"statue","origin_tags":["central","western"],"site_tags":["archive"],"description":"恢复 1 点共同修复资源，并获得 1 影响力。","effect":{"type":"restore_and_influence","resource":1,"influence":1},"content_review_status":"verified"},
-    {"id":"motif","name":"莲华纹样","domain":"pattern","origin_tags":["western"],"site_tags":["buddha"],"description":"作为纹样证据贡献时，为任务提供跨来源证据。","effect":{"type":"influence","amount":1},"content_review_status":"needs_review"},
-    {"id":"frontier","name":"关塞盟书","domain":"frontier","origin_tags":["frontier"],"site_tags":["security"],"description":"降低 1 点威胁。","effect":{"type":"reduce_threat","amount":1},"content_review_status":"needs_review"}
+    {"id":"survey","icon_asset":"icon_card_scroll.png","name":"行旅札记","domain":"pattern","origin_tags":["central"],"site_tags":["route"],"description":"探索后获得 1 AP，并抽取一张文化牌。","effect":{"type":"gain_ap","amount":1},"content_review_status":"verified"},
+    {"id":"craft","icon_asset":"icon_action_restore.png","name":"匠人手稿","domain":"architecture","origin_tags":["central","craft"],"site_tags":["construction"],"description":"下一次贡献额外获得 1 影响力。","effect":{"type":"next_contribute_bonus","amount":1},"content_review_status":"verified"},
+    {"id":"alliance","icon_asset":"icon_resource_influence.png","name":"互市盟约","domain":"trade","origin_tags":["western","frontier"],"site_tags":["exchange"],"description":"本回合第一次移动不额外增加路线成本。","effect":{"type":"free_move"},"content_review_status":"verified"},
+    {"id":"archive","icon_asset":"icon_task_statue.png","name":"石窟档案","domain":"statue","origin_tags":["central","western"],"site_tags":["archive"],"description":"恢复 1 点共同修复资源，并获得 1 影响力。","effect":{"type":"restore_and_influence","resource":1,"influence":1},"content_review_status":"verified"},
+    {"id":"motif","icon_asset":"icon_card_scroll.png","name":"莲华纹样","domain":"pattern","origin_tags":["western"],"site_tags":["buddha"],"description":"作为纹样证据贡献时，为任务提供跨来源证据。","effect":{"type":"influence","amount":1},"content_review_status":"needs_review"},
+    {"id":"frontier","icon_asset":"icon_task_trade.png","name":"关塞盟书","domain":"frontier","origin_tags":["frontier"],"site_tags":["security"],"description":"降低 1 点威胁。","effect":{"type":"reduce_threat","amount":1},"content_review_status":"needs_review"}
   ]
 }

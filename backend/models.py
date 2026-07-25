@@ -80,6 +80,7 @@ class SharedState(BaseModel):
     completed_domains: List[str] = Field(default_factory=list)
     current_event_id: Optional[str] = None
     outcome: Optional[GameOutcome] = None
+    outcome_reason: Optional[str] = None
     log: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):

@@ -1,8 +1,8 @@
 {
   "events": [
-    {"id":"sandstorm","name":"风沙遮路","description":"风沙侵蚀两个未关闭节点，各增加 1 点损伤。","target_rule":"two_open_sites","damage":1,"modifier":0,"difficulty_weight":1,"effect":{"type":"damage_open_sites","amount":1},"content_review_status":"verified"},
-    {"id":"pilgrims","name":"四方来客","description":"交流带来机会，所有玩家获得 1 点个人影响力。","target_rule":"all_players","damage":0,"modifier":-1,"difficulty_weight":1,"effect":{"type":"all_influence","amount":1},"content_review_status":"verified"},
-    {"id":"quiet","name":"静夜守窟","description":"守护者完成修缮，团队获得 1 点共同修复资源。","target_rule":"shared_resource","damage":0,"modifier":-1,"difficulty_weight":0.8,"effect":{"type":"gain_resource","amount":1},"content_review_status":"verified"},
-    {"id":"route_blocked","name":"道路阻断","description":"交通受阻，威胁上升 1。下一轮移动仍可正常选择。","target_rule":"threat","damage":0,"modifier":1,"difficulty_weight":1,"effect":{"type":"threat","amount":1},"content_review_status":"verified"}
+    {"id":"sandstorm","scene_asset":"scene_frontier_pass.png","name":"风沙遮路","description":"风沙侵蚀两个未关闭节点，各增加 1 点损伤。","target_rule":"two_open_sites","damage":1,"modifier":0,"difficulty_weight":1,"effect":{"type":"damage_open_sites","amount":1},"content_review_status":"verified"},
+    {"id":"pilgrims","scene_asset":"scene_trade_meeting.png","name":"四方来客","description":"交流带来机会，所有玩家获得 1 点个人影响力。","target_rule":"all_players","damage":0,"modifier":-1,"difficulty_weight":1,"effect":{"type":"all_influence","amount":1},"content_review_status":"verified"},
+    {"id":"quiet","scene_asset":"scene_yungang_night.png","name":"静夜守窟","description":"守护者完成修缮，团队获得 1 点共同修复资源。","target_rule":"shared_resource","damage":0,"modifier":-1,"difficulty_weight":0.8,"effect":{"type":"gain_resource","amount":1},"content_review_status":"verified"},
+    {"id":"route_blocked","scene_asset":"scene_frontier_pass.png","name":"道路阻断","description":"交通受阻，威胁上升 1。下一轮移动仍可正常选择。","target_rule":"threat","damage":0,"modifier":1,"difficulty_weight":1,"effect":{"type":"threat","amount":1},"content_review_status":"verified"}
   ]
 }

@@ -2,6 +2,8 @@
   {
     "id": "yungang",
     "name": "云冈石窟",
+    "icon_asset": "icon_node_yungang.png",
+    "scene_asset": "scene_yungang_day.png",
     "type": "heritage",
     "x": 50,
     "y": 50,
@@ -15,6 +17,8 @@
   {
     "id": "huayan_temple",
     "name": "华严寺",
+    "icon_asset": "icon_node_huayan_temple.png",
+    "scene_asset": "scene_craft_restoration.png",
     "type": "heritage",
     "x": 28,
     "y": 20,
@@ -28,6 +32,8 @@
   {
     "id": "shanhua_temple",
     "name": "善化寺",
+    "icon_asset": "icon_node_shanhua_temple.png",
+    "scene_asset": "scene_archive_cave.png",
     "type": "heritage",
     "x": 72,
     "y": 22,
@@ -41,6 +47,8 @@
   {
     "id": "wall_pass",
     "name": "长城关隘",
+    "icon_asset": "icon_node_wall_pass.png",
+    "scene_asset": "scene_frontier_pass.png",
     "type": "heritage",
     "x": 48,
     "y": 84,
@@ -54,6 +62,8 @@
   {
     "id": "trade_post",
     "name": "互市驿站",
+    "icon_asset": "icon_node_trade_post.png",
+    "scene_asset": "scene_trade_meeting.png",
     "type": "heritage",
     "x": 86,
     "y": 72,
@@ -67,6 +77,8 @@
   {
     "id": "pingcheng_ruins",
     "name": "平城遗址",
+    "icon_asset": "icon_node_pingcheng_ruins.png",
+    "scene_asset": "scene_silk_road_expedition.png",
     "type": "heritage",
     "x": 18,
     "y": 70,

@@ -15,7 +15,7 @@ engine = GameEngine(content)
 
 @app.get("/api/meta")
 def meta():
-    return {"schema_version": 2, "mode": "heritage_network", "domains": content.domains, "roles": list(content.roles.values()), "sites": list(content.sites.values()), "cards": list(content.cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "difficulty": list(content.difficulty.values())}
+    return {"schema_version": 2, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "roles": list(content.roles.values()), "sites": list(content.sites.values()), "cards": list(content.cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "difficulty": list(content.difficulty.values())}
 
 @app.post("/api/games")
 def create_game(request: CreateGameRequest):
