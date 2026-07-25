@@ -1,6 +1,6 @@
 from collections import deque
 from .content import Content
-from .models import GameState, PlayerState, SiteState
+from .models import GameOutcome, GameState, PlayerState, SiteState, SiteStatus
 
 class GameEngine:
     def __init__(self, content=None):
@@ -232,10 +232,10 @@ class GameEngine:
     def _open(self, state, site_id): return state.sites[site_id].status != "closed"
 
     def _update_site(self, site):
-        site.status = "closed" if site.damage >= site.max_damage else "at_risk" if site.damage else "stable"
+        site.status = SiteStatus.CLOSED if site.damage >= site.max_damage else SiteStatus.AT_RISK if site.damage else SiteStatus.STABLE
         site.durability = max(0, site.max_damage - site.damage); site.max_durability = site.max_damage
 
     def _check_outcome(self, state):
         closed = sum(site.status == "closed" for site in state.sites.values())
-        if len(state.shared.completed_domains) >= 5 and state.shared.influence >= 10 and closed < 2 and state.shared.turn <= state.shared.max_rounds: state.shared.outcome = "victory"
-        elif closed >= 2 or state.shared.turn > state.shared.max_rounds: state.shared.outcome = "defeat"
+        if len(state.shared.completed_domains) >= 5 and state.shared.influence >= 10 and closed < 2 and state.shared.turn <= state.shared.max_rounds: state.shared.outcome = GameOutcome.VICTORY
+        elif closed >= 2 or state.shared.turn > state.shared.max_rounds: state.shared.outcome = GameOutcome.DEFEAT

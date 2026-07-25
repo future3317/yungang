@@ -1,0 +1,13 @@
+export type ActionType = 'move' | 'explore' | 'restore' | 'contribute' | 'exchange' | 'use_skill' | 'play_card' | 'end_turn' | 'resolve_event' | 'select_market_card' | 'discard';
+export type SiteStatus = 'stable' | 'at_risk' | 'closed';
+export type GameOutcome = 'victory' | 'defeat' | null;
+export interface Action { type: ActionType; label: string; cost?: number; target_id?: string; target_site_id?: string; card_id?: string; recipient_id?: string; skill?: string; }
+export interface Player { id: string; name: string; role_id: string; location: string; ap: number; max_ap: number; influence: number; durability: number; hand: string[]; skill_used: boolean; contributions: number; }
+export interface Site { id: string; name?: string; summary?: string; x?: number; y?: number; damage: number; max_damage: number; durability: number; max_durability: number; status: SiteStatus; influence: number; discovered: boolean; domains: string[]; contributions: Array<{ player_id: string; card_id: string; origin_tags?: string[] }>; active_task_id?: string; connections?: string[]; }
+export interface Task { id?: string; name: string; culture_explanation?: string; required_domains: string[]; required_origin_diversity: number; required_card_count: number; reward?: Record<string, number | string>; contributed_cards: string[]; completed: boolean; }
+export interface Shared { turn: number; max_rounds: number; active_player_id: string; player_order: string[]; threat: number; influence: number; restoration_resource: number; completed_domains: string[]; current_event_id: string | null; outcome: GameOutcome; log: string[]; }
+export interface GameState { schema_version: number; revision: number; session_id: string; mode: string; difficulty_id: string; players: Record<string, Player>; sites: Record<string, Site>; tasks: Record<string, Task>; shared: Shared; decks: Record<string, string[]>; market: string[]; pending_choice: { kind: string; event_id?: string; options?: Array<{ id: string; label: string }>; cards?: string[] } | null; legal_actions: Action[]; }
+export interface ContentCard { id: string; name: string; domain?: string; origin_tags?: string[]; summary?: string; effect?: Record<string, unknown>; }
+export interface ContentEvent { id: string; name: string; summary?: string; effect?: Record<string, unknown>; }
+export interface ContentRole { id: string; name: string; ability?: { name: string; action: string; ap_cost?: number }; start_site_id?: string; summary?: string; }
+export interface Meta { schema_version: number; mode: string; domains: string[]; roles: ContentRole[]; sites: Site[]; cards: ContentCard[]; events: ContentEvent[]; tasks: Task[]; difficulty: Array<{ id: string; name?: string; max_rounds?: number; restoration_resource?: number }>; }

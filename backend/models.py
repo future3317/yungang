@@ -1,9 +1,32 @@
+from enum import StrEnum
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+
+class ActionType(StrEnum):
+    MOVE = "move"
+    EXPLORE = "explore"
+    CONTRIBUTE = "contribute"
+    RESTORE = "restore"
+    EXCHANGE = "exchange"
+    USE_SKILL = "use_skill"
+    PLAY_CARD = "play_card"
+    END_TURN = "end_turn"
+    RESOLVE_EVENT = "resolve_event"
+    SELECT_MARKET_CARD = "select_market_card"
+    DISCARD = "discard"
+
+class SiteStatus(StrEnum):
+    STABLE = "stable"
+    AT_RISK = "at_risk"
+    CLOSED = "closed"
+
+class GameOutcome(StrEnum):
+    VICTORY = "victory"
+    DEFEAT = "defeat"
 
 class ActionRequest(BaseModel):
     player_id: str
-    action: str
+    action: ActionType
     expected_revision: int
     target_id: Optional[str] = None
     target_site_id: Optional[str] = None
@@ -33,18 +56,20 @@ class PlayerState(BaseModel):
     contributions: int = 0
 
 class SiteState(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
     id: str
     damage: int = 0
     max_damage: int = 3
     durability: int = 3
     max_durability: int = 3
-    status: str = "stable"
+    status: SiteStatus = SiteStatus.STABLE
     influence: int = 0
     discovered: bool = False
     domains: List[str] = Field(default_factory=list)
     contributions: List[Dict[str, Any]] = Field(default_factory=list)
 
 class SharedState(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
     turn: int = 1
     max_rounds: int = 8
     active_player_id: str = "p1"
@@ -54,7 +79,7 @@ class SharedState(BaseModel):
     restoration_resource: int = 6
     completed_domains: List[str] = Field(default_factory=list)
     current_event_id: Optional[str] = None
-    outcome: Optional[str] = None
+    outcome: Optional[GameOutcome] = None
     log: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):

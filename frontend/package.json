@@ -1,0 +1,34 @@
+{
+  "name": "yungang-heritage-network",
+  "private": true,
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:ui": "playwright test",
+    "lint": "tsc --noEmit",
+    "api:generate": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/shared/api/generated.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.66.8",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.4.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.5",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "openapi-typescript": "^7.6.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11",
+    "vitest": "^3.0.5"
+  }
+}
