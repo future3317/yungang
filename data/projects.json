@@ -23,11 +23,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "平城遗址（平城区人民政府）",
-      "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
-      "source_note": "平城遗址的城垣范围与地面遗迹仍需通过考古调查、钻探和文献互证。项目阶段是对“调查—比对—解释”流程的游戏化表达，不代表正式考古结论。"
+      ]
     },
     {
       "id": "project_02",
@@ -52,11 +48,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "大同市文物局关于市政协十五届一次会议第315号提案的答复",
-      "source_url": "https://www.dt.gov.cn/dtszf/2022zxta/202309/bc1c3a7626a1484fb4f170d2a6ab4bb5.shtml",
-      "source_note": "来源支持华严寺始建年代、坐西向东及上寺、下寺格局。项目的进度与修护行动为游戏抽象，需由古建筑专业人员复核。"
+      ]
     },
     {
       "id": "project_03",
@@ -81,11 +73,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "寻芳善化寺，收获超乎期待的惊喜（大同市人民政府门户网站）",
-      "source_url": "https://www.dt.gov.cn/dtszf/bmdt/202409/0c0a47137e054ce4a7c8f3415e08966d.shtml",
-      "source_note": "来源支持善化寺保存辽金时期建筑及其轴线布局。项目把建筑观察、证据比较与保护解释转化为游戏阶段，不替代专业测绘。"
+      ]
     },
     {
       "id": "project_04",
@@ -110,11 +98,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "UNESCO World Heritage Centre — The Great Wall",
-      "source_url": "https://whc.unesco.org/en/list/438/",
-      "source_note": "UNESCO资料说明长城防御体系包括墙体、马道、烽火台、堡垒与关隘。项目节点与阶段为教学游戏抽象，并非特定大同关隘的复原。"
+      ]
     },
     {
       "id": "project_05",
@@ -139,11 +123,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "UNESCO — About the Silk Roads",
-      "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
-      "source_note": "UNESCO将丝绸之路描述为商品、知识、技艺、信仰与文化交流的动态网络。本项目以编目流程表现交流证据，具体驿站与路线均为游戏化设置。"
+      ]
     },
     {
       "id": "project_06",
@@ -168,11 +148,7 @@
           "required_progress": 1,
           "action_type": "restore"
         }
-      ],
-      "content_review_status": "needs_review",
-      "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
-      "source_url": "https://whc.unesco.org/en/list/1039/",
-      "source_note": "UNESCO资料支持云冈石窟的开凿年代、洞窟和造像规模及北魏时期背景。项目阶段为数字游戏中的研究与保护流程模拟。"
+      ]
     }
   ]
 }

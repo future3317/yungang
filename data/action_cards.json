@@ -2,135 +2,87 @@
   "cards": [
     {
       "id": "action_01",
-      "name": "行动卡 01",
+      "name": "踏查旧径",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "勘察未明路线，揭示可移动的方向与潜在风险。"
     },
     {
       "id": "action_02",
-      "name": "行动卡 02",
+      "name": "清理险段",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "清除路线阻碍，让受损通道重新承担连接作用。"
     },
     {
       "id": "action_03",
-      "name": "行动卡 03",
+      "name": "建立联络点",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "在两个地点之间建立可靠联络，强化协作网络。"
     },
     {
       "id": "action_04",
-      "name": "行动卡 04",
+      "name": "整备行装",
       "action_type": "prepare",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "整理工具与记录，为下一次关键行动保留余地。"
     },
     {
       "id": "action_05",
-      "name": "行动卡 05",
+      "name": "标记岔口",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "在路线交会处留下清晰标记，帮助队伍判断下一步。"
     },
     {
       "id": "action_06",
-      "name": "行动卡 06",
+      "name": "加固栈道",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "为脆弱路段补上支撑，恢复稳定通行。"
     },
     {
       "id": "action_07",
-      "name": "行动卡 07",
+      "name": "互通文牒",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "以清晰记录连接相邻节点，让线索持续流转。"
     },
     {
       "id": "action_08",
-      "name": "行动卡 08",
+      "name": "静候时机",
       "action_type": "prepare",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "暂缓推进，观察局势后再作更有把握的选择。"
     },
     {
       "id": "action_09",
-      "name": "行动卡 09",
+      "name": "风痕辨路",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "依据地形与风痕辨认旧道走向，降低未知路线的代价。"
     },
     {
       "id": "action_10",
-      "name": "行动卡 10",
+      "name": "续接石阶",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "修复断续石阶，使行旅与物资能够再次通过。"
     },
     {
       "id": "action_11",
-      "name": "行动卡 11",
+      "name": "共享补给",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "协调两地资源，形成更稳固的支援关系。"
     },
     {
       "id": "action_12",
-      "name": "行动卡 12",
+      "name": "分配值守",
       "action_type": "prepare",
       "cost": 1,
-      "description": "游戏化占位行动卡，待审核后配置效果。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "安排队伍值守与补给，使后续行动更从容。"
     }
   ]
 }

@@ -3,50 +3,42 @@
     {
       "id": "achievement_01",
       "name": "旅程成就 01",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_02",
       "name": "旅程成就 02",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_03",
       "name": "旅程成就 03",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_04",
       "name": "旅程成就 04",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_05",
       "name": "旅程成就 05",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_06",
       "name": "旅程成就 06",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_07",
       "name": "旅程成就 07",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     },
     {
       "id": "achievement_08",
       "name": "旅程成就 08",
-      "condition": "placeholder",
-      "content_review_status": "placeholder"
+      "condition": "placeholder"
     }
   ]
 }

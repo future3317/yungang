@@ -9,16 +9,12 @@
         "craft_school",
         "yungang"
       ],
-      "content_review_status": "needs_review",
       "label_position": {
         "x": 22,
         "y": 20
       },
       "visual_token": "region-pingcheng",
-      "description": "以北魏平城都城遗址及考古记录为背景，组织都城、档案、工艺与云冈之间的游戏化研究网络；区域边界并非考古复原。",
-      "source_title": "平城遗址（平城区人民政府）",
-      "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
-      "source_note": "来源支持平城遗址范围、北魏都城遗存和考古调查背景；site_ids与区域连接是游戏设计。"
+      "description": "以北魏平城都城遗址及考古记录为背景，组织都城、档案、工艺与云冈之间的游戏化研究网络；区域边界并非考古复原。"
     },
     {
       "id": "cave_network",
@@ -29,16 +25,12 @@
         "motif_gallery",
         "huayan_temple"
       ],
-      "content_review_status": "needs_review",
       "label_position": {
         "x": 50,
         "y": 37
       },
       "visual_token": "region-cave",
-      "description": "以云冈石窟的洞窟、造像与装饰艺术为核心，连接造像制作、纹样比较和遗产研究等游戏化节点。",
-      "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
-      "source_url": "https://whc.unesco.org/en/list/1039/",
-      "source_note": "来源支持云冈石窟的年代、规模和艺术价值；区域内工坊与廊道为游戏抽象。"
+      "description": "以云冈石窟的洞窟、造像与装饰艺术为核心，连接造像制作、纹样比较和遗产研究等游戏化节点。"
     },
     {
       "id": "temple_network",
@@ -49,16 +41,12 @@
         "material_yard",
         "northern_workshop"
       ],
-      "content_review_status": "needs_review",
       "label_position": {
         "x": 72,
         "y": 45
       },
       "visual_token": "region-temple",
-      "description": "以华严寺、善化寺代表的辽金古建筑遗产为背景，组织建筑观察、材料记录与修护协作。",
-      "source_title": "History — DATONG CHINA（大同市人民政府国际门户）",
-      "source_url": "https://www.dt.gov.cn/english/history/listCon.shtml",
-      "source_note": "大同市政府资料将华严寺、善化寺列为辽金文化代表；区域分组和支撑节点为游戏化设置。"
+      "description": "以华严寺、善化寺代表的辽金古建筑遗产为背景，组织建筑观察、材料记录与修护协作。"
     },
     {
       "id": "frontier_network",
@@ -71,16 +59,12 @@
         "river_crossing",
         "caravan_camp"
       ],
-      "content_review_status": "needs_review",
       "label_position": {
         "x": 76,
         "y": 79
       },
       "visual_token": "region-frontier",
-      "description": "以大同长城、关堡和区域交通交流为背景，表现防御设施、行旅、市场与文化交换之间的关系。",
-      "source_title": "大同市建设国际知名文化旅游城市实施方案",
-      "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
-      "source_note": "来源支持大同长城关、堡、口、墙体及各民族交往交流交融主题；区域范围和路线为游戏抽象。"
+      "description": "以大同长城、关堡和区域交通交流为背景，表现防御设施、行旅、市场与文化交换之间的关系。"
     }
   ]
 }

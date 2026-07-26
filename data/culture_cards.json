@@ -15,8 +15,7 @@
       "effect": {
         "type": "gain_ap",
         "amount": 1
-      },
-      "content_review_status": "verified"
+      }
     },
     {
       "id": "craft",
@@ -34,8 +33,7 @@
       "effect": {
         "type": "next_contribute_bonus",
         "amount": 1
-      },
-      "content_review_status": "verified"
+      }
     },
     {
       "id": "alliance",
@@ -52,8 +50,7 @@
       "description": "本回合第一次移动不额外增加路线成本。",
       "effect": {
         "type": "free_move"
-      },
-      "content_review_status": "verified"
+      }
     },
     {
       "id": "archive",
@@ -72,8 +69,7 @@
         "type": "restore_and_influence",
         "resource": 1,
         "influence": 1
-      },
-      "content_review_status": "verified"
+      }
     },
     {
       "id": "motif",
@@ -90,8 +86,7 @@
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "needs_review"
+      }
     },
     {
       "id": "frontier",
@@ -108,12 +103,11 @@
       "effect": {
         "type": "reduce_threat",
         "amount": 1
-      },
-      "content_review_status": "needs_review"
+      }
     },
     {
       "id": "culture_07",
-      "name": "文化证据 07",
+      "name": "壁面凿痕",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -129,20 +123,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "壁面凿痕：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_08",
-      "name": "文化证据 08",
+      "name": "金箔微光",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -158,20 +148,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "金箔微光：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_09",
-      "name": "文化证据 09",
+      "name": "供养人衣纹",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -187,20 +173,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "供养人衣纹：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_10",
-      "name": "文化证据 10",
+      "name": "莲瓣边饰",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -216,20 +198,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "莲瓣边饰：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_11",
-      "name": "文化证据 11",
+      "name": "梁架尺度",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -245,20 +223,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "梁架尺度：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_12",
-      "name": "文化证据 12",
+      "name": "行旅驮队",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -274,20 +248,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "行旅驮队：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_13",
-      "name": "文化证据 13",
+      "name": "纹样交会",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -303,20 +273,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "纹样交会：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_14",
-      "name": "文化证据 14",
+      "name": "石料肌理",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -332,20 +298,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "石料肌理：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_15",
-      "name": "文化证据 15",
+      "name": "礼仪行列",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -361,20 +323,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "礼仪行列：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_16",
-      "name": "文化证据 16",
+      "name": "窟门风痕",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -390,20 +348,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "窟门风痕：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_17",
-      "name": "文化证据 17",
+      "name": "匠作铭记",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -419,20 +373,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "匠作铭记：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_18",
-      "name": "文化证据 18",
+      "name": "彩绘层次",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -448,20 +398,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "彩绘层次：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_19",
-      "name": "文化证据 19",
+      "name": "边塞关隘",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -477,20 +423,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "边塞关隘：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_20",
-      "name": "文化证据 20",
+      "name": "商旅凭信",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -506,20 +448,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "商旅凭信：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_21",
-      "name": "文化证据 21",
+      "name": "佛龛光位",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -535,20 +473,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "佛龛光位：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_22",
-      "name": "文化证据 22",
+      "name": "护持修补",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -564,20 +498,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "护持修补：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_23",
-      "name": "文化证据 23",
+      "name": "云气纹带",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -593,20 +523,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "云气纹带：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_24",
-      "name": "文化证据 24",
+      "name": "崖壁排水",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -622,20 +548,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "崖壁排水：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_25",
-      "name": "文化证据 25",
+      "name": "译经片语",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -651,20 +573,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "译经片语：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_26",
-      "name": "文化证据 26",
+      "name": "驻守旗影",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -680,20 +598,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "驻守旗影：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_27",
-      "name": "文化证据 27",
+      "name": "造像比例",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -709,20 +623,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "造像比例：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_28",
-      "name": "文化证据 28",
+      "name": "香火器座",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -738,20 +648,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "香火器座：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_29",
-      "name": "文化证据 29",
+      "name": "连珠纹环",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -767,20 +673,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "连珠纹环：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_30",
-      "name": "文化证据 30",
+      "name": "石工工具",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -796,20 +698,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "石工工具：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_31",
-      "name": "文化证据 31",
+      "name": "山道驿站",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -825,20 +723,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "山道驿站：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_32",
-      "name": "文化证据 32",
+      "name": "龛楣飞天",
       "icon_asset": "icon_action_restore.png",
       "domain": "pattern",
       "origin_tags": [
@@ -854,20 +748,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "龛楣飞天：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
+      "culture_note": "沿图案的重复与变化建立文化联系。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_33",
-      "name": "文化证据 33",
+      "name": "残彩花叶",
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
@@ -883,20 +773,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "残彩花叶：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
+      "culture_note": "把结构观察转化为空间理解。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_34",
-      "name": "文化证据 34",
+      "name": "共同造作",
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
@@ -912,20 +798,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "共同造作：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
+      "culture_note": "将地点放回行旅、补给与信息流动中。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_35",
-      "name": "文化证据 35",
+      "name": "洞窟回声",
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
@@ -941,20 +823,16 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "洞窟回声：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
+      "culture_note": "追踪一件线索如何穿越不同节点。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     },
     {
       "id": "culture_36",
-      "name": "文化证据 36",
+      "name": "守望灯火",
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
@@ -970,16 +848,12 @@
         "placeholder"
       ],
       "rarity": "common",
-      "description": "游戏化占位证据，须经文化审核后再作正式叙述。",
-      "culture_note": "待补充来源与审核记录。",
+      "description": "守望灯火：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
+      "culture_note": "从造像语言中辨认工艺与观看方式。",
       "effect": {
         "type": "influence",
         "amount": 1
-      },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      }
     }
   ]
 }

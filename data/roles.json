@@ -13,11 +13,7 @@
       "action": "fine_repair",
       "ap_cost": 1
     },
-    "meaning": "北魏平城与云冈营造需要组织石作、雕刻和持续维护；本角色将相关工艺劳动综合为合作型游戏身份。",
-    "content_review_status": "needs_review",
-    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
-    "source_url": "https://whc.unesco.org/en/list/1039/",
-    "source_note": "UNESCO来源支持云冈石窟的北魏皇家营造背景和大型石窟艺术规模；角色为虚构复合形象，并非具体历史人物。"
+    "meaning": "北魏平城与云冈营造需要组织石作、雕刻和持续维护；本角色将相关工艺劳动综合为合作型游戏身份。"
   },
   {
     "id": "western_dancer",
@@ -33,11 +29,7 @@
       "action": "harmony_hint",
       "ap_cost": 1
     },
-    "meaning": "丝绸之路上的人员流动推动乐舞、服饰、纹样与观念交流；本角色用于表现文化传播和跨来源协作。",
-    "content_review_status": "needs_review",
-    "source_title": "UNESCO — About the Silk Roads",
-    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
-    "source_note": "UNESCO来源支持丝路上的文化、宗教、技艺和艺术交流；角色名称与能力为游戏化复合设定。"
+    "meaning": "丝绸之路上的人员流动推动乐舞、服饰、纹样与观念交流；本角色用于表现文化传播和跨来源协作。"
   },
   {
     "id": "grassland_rider",
@@ -54,11 +46,7 @@
       "ap_cost": 1,
       "max_hops": 2
     },
-    "meaning": "北方边地交通连接农耕与游牧社会，长城沿线既有防御体系，也保存了文明接触和交流的历史线索。",
-    "content_review_status": "needs_review",
-    "source_title": "UNESCO World Heritage Centre — The Great Wall",
-    "source_url": "https://whc.unesco.org/en/list/438/",
-    "source_note": "UNESCO来源支持长城防御体系以及农耕、游牧文明碰撞与交流背景；角色为虚构复合形象。"
+    "meaning": "北方边地交通连接农耕与游牧社会，长城沿线既有防御体系，也保存了文明接触和交流的历史线索。"
   },
   {
     "id": "central_scribe",
@@ -74,10 +62,6 @@
       "action": "view_select",
       "ap_cost": 1
     },
-    "meaning": "文献、档案与分类工作帮助保存都城、建筑和造像研究线索；本角色以记录和选择信息表现知识整理。",
-    "content_review_status": "needs_review",
-    "source_title": "平城遗址（平城区人民政府）",
-    "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
-    "source_note": "平城遗址资料显示文献、地面遗迹和考古材料需要持续互证；角色及技能为游戏化设定。"
+    "meaning": "文献、档案与分类工作帮助保存都城、建筑和造像研究线索；本角色以记录和选择信息表现知识整理。"
   }
 ]

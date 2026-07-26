@@ -12,7 +12,6 @@
         "objective_protect_core",
         "objective_restore_routes"
       ],
-      "content_review_status": "placeholder",
       "enabled_site_ids": [
         "yungang",
         "huayan_temple",
@@ -89,7 +88,6 @@
         "objective_diversity",
         "objective_complete_projects"
       ],
-      "content_review_status": "placeholder",
       "enabled_site_ids": [
         "shanhua_temple",
         "wall_pass",
@@ -167,7 +165,6 @@
         "objective_restore_routes",
         "objective_connect_regions"
       ],
-      "content_review_status": "placeholder",
       "enabled_site_ids": [
         "yungang",
         "huayan_temple",
@@ -242,7 +239,6 @@
         "objective_connect_regions",
         "objective_protect_core"
       ],
-      "content_review_status": "placeholder",
       "enabled_site_ids": [
         "yungang",
         "huayan_temple",

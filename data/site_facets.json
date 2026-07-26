@@ -5,594 +5,378 @@
       "site_id": "yungang",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "yungang_facet_material",
       "site_id": "yungang",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "yungang_facet_route",
       "site_id": "yungang",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "huayan_temple_facet_image",
       "site_id": "huayan_temple",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "huayan_temple_facet_material",
       "site_id": "huayan_temple",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "huayan_temple_facet_route",
       "site_id": "huayan_temple",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "shanhua_temple_facet_image",
       "site_id": "shanhua_temple",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "shanhua_temple_facet_material",
       "site_id": "shanhua_temple",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "shanhua_temple_facet_route",
       "site_id": "shanhua_temple",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "wall_pass_facet_image",
       "site_id": "wall_pass",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "wall_pass_facet_material",
       "site_id": "wall_pass",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "wall_pass_facet_route",
       "site_id": "wall_pass",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "trade_post_facet_image",
       "site_id": "trade_post",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "trade_post_facet_material",
       "site_id": "trade_post",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "trade_post_facet_route",
       "site_id": "trade_post",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "pingcheng_ruins_facet_image",
       "site_id": "pingcheng_ruins",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "pingcheng_ruins_facet_material",
       "site_id": "pingcheng_ruins",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "pingcheng_ruins_facet_route",
       "site_id": "pingcheng_ruins",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "northern_workshop_facet_image",
       "site_id": "northern_workshop",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "northern_workshop_facet_material",
       "site_id": "northern_workshop",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "northern_workshop_facet_route",
       "site_id": "northern_workshop",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "archive_depot_facet_image",
       "site_id": "archive_depot",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "archive_depot_facet_material",
       "site_id": "archive_depot",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "archive_depot_facet_route",
       "site_id": "archive_depot",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "material_yard_facet_image",
       "site_id": "material_yard",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "material_yard_facet_material",
       "site_id": "material_yard",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "material_yard_facet_route",
       "site_id": "material_yard",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "carving_courtyard_facet_image",
       "site_id": "carving_courtyard",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "carving_courtyard_facet_material",
       "site_id": "carving_courtyard",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "carving_courtyard_facet_route",
       "site_id": "carving_courtyard",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "motif_gallery_facet_image",
       "site_id": "motif_gallery",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "motif_gallery_facet_material",
       "site_id": "motif_gallery",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "motif_gallery_facet_route",
       "site_id": "motif_gallery",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_crossing_facet_image",
       "site_id": "river_crossing",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_crossing_facet_material",
       "site_id": "river_crossing",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_crossing_facet_route",
       "site_id": "river_crossing",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "caravan_camp_facet_image",
       "site_id": "caravan_camp",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "caravan_camp_facet_material",
       "site_id": "caravan_camp",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "caravan_camp_facet_route",
       "site_id": "caravan_camp",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "border_market_facet_image",
       "site_id": "border_market",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "border_market_facet_material",
       "site_id": "border_market",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "border_market_facet_route",
       "site_id": "border_market",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "watchtower_facet_image",
       "site_id": "watchtower",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "watchtower_facet_material",
       "site_id": "watchtower",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "watchtower_facet_route",
       "site_id": "watchtower",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "craft_school_facet_image",
       "site_id": "craft_school",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "craft_school_facet_material",
       "site_id": "craft_school",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "craft_school_facet_route",
       "site_id": "craft_school",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_archive_facet_image",
       "site_id": "river_archive",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_archive_facet_material",
       "site_id": "river_archive",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "river_archive_facet_route",
       "site_id": "river_archive",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "route_junction_facet_image",
       "site_id": "route_junction",
       "kind": "image",
       "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "route_junction_facet_material",
       "site_id": "route_junction",
       "kind": "material",
       "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     },
     {
       "id": "route_junction_facet_route",
       "site_id": "route_junction",
       "kind": "route",
       "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。",
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "description": "待文化审核的游戏化面向。"
     }
   ]
 }
