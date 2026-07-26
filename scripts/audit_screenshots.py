@@ -9,7 +9,7 @@ OUT = ROOT / "audit_output" / "redesign"
 OUT.mkdir(exist_ok=True)
 BASE_URL = os.environ.get("AUDIT_BASE_URL", "http://127.0.0.1:8010")
 VIEWPORTS = [{"name":"desktop_1920","width":1920,"height":1080},{"name":"desktop_1440","width":1440,"height":900},{"name":"desktop_1280","width":1280,"height":800},{"name":"tablet_768","width":768,"height":1024},{"name":"mobile_390","width":390,"height":844}]
-SELECTORS = {"map":".network-frame","actions":".action-groups","site":".map-node","mission":".mission-panel","header":".game-header"}
+SELECTORS = {"map":".network-frame","actions":".command-deck","site":".map-node","inspector":".site-inspector","header":".game-header"}
 
 def measure(page):
     return page.evaluate("""selectors => { const result = {}; for (const [key, selector] of Object.entries(selectors)) { const element = document.querySelector(selector); result[key] = element ? (() => { const box = element.getBoundingClientRect(); return { width: box.width, height: box.height, top: box.top, left: box.left }; })() : null; } result.viewport = { width: innerWidth, height: innerHeight }; return result; }""", SELECTORS)

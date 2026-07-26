@@ -26,14 +26,6 @@ def create_game(request: CreateGameRequest):
     repo.save(state)
     return state
 
-@app.post("/api/games/{session_id}")
-def create_game_legacy(session_id: str, request: CreateGameRequest | None = None):
-    request = request or CreateGameRequest()
-    seed = request.seed if request.seed is not None else request.daily_seed
-    state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
-    repo.save(state)
-    return state
-
 @app.post("/api/games/{session_id}/players")
 def join_game(session_id: str, request: JoinGameRequest):
     state = repo.get(session_id)

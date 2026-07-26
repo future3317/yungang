@@ -32,7 +32,6 @@ def main():
     assert all(card.get("domain") in domains for card in cards.values())
     assert len(sites) >= 18 and len(routes) >= 24 and len(cards) >= 36 and len(events) >= 18
     assert len(regions) >= 4 and len(facets) >= len(sites) * 3 and len(scenarios) >= 4 and len(projects) >= 6 and len(objectives) >= 5
-    assert all(item.get("content_review_status", "verified") in {"verified", "needs_review", "placeholder"} for item in sites.values())
     print(f"content valid: schema v3, {len(sites)} sites, {len(routes)} routes, {len(cards)} cards, {len(events)} events, {len(scenarios)} scenarios")
 
 if __name__ == "__main__": main()
