@@ -4,7 +4,7 @@
       "id": "sandstorm",
       "scene_asset": "scene_frontier_pass.png",
       "name": "风沙遮路",
-      "description": "风沙侵蚀两个未关闭节点，各增加 1 点损伤。",
+      "description": "风沙与颗粒磨蚀会增加露天石质遗产和交通节点的保护压力；本事件对两个未关闭节点各增加1点损伤，是游戏化风险表达。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -13,13 +13,16 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "verified"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "公开保护资料列出表面风化等病害；事件目标数量和损伤数值是游戏机制。"
     },
     {
       "id": "pilgrims",
       "scene_asset": "scene_trade_meeting.png",
       "name": "四方来客",
-      "description": "交流带来机会，所有玩家获得 1 点个人影响力。",
+      "description": "人员往来可带来商品、知识、技艺和文化交流；所有玩家获得1点个人影响力是对交流机会的游戏化奖励。",
       "target_rule": "all_players",
       "damage": 0,
       "modifier": -1,
@@ -28,13 +31,16 @@
         "type": "all_influence",
         "amount": 1
       },
-      "content_review_status": "verified"
+      "content_review_status": "needs_review",
+      "source_title": "UNESCO — About the Silk Roads",
+      "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+      "source_note": "来源支持人员流动与文化交流背景；“所有玩家+1影响力”不是历史事实。"
     },
     {
       "id": "quiet",
       "scene_asset": "scene_yungang_night.png",
       "name": "静夜守窟",
-      "description": "守护者完成修缮，团队获得 1 点共同修复资源。",
+      "description": "日常巡查、监测和预防性保护有助于及时发现遗产风险；团队获得1点共同修复资源是游戏化表达。",
       "target_rule": "shared_resource",
       "damage": 0,
       "modifier": -1,
@@ -43,13 +49,16 @@
         "type": "gain_resource",
         "amount": 1
       },
-      "content_review_status": "verified"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源支持监测、排水、加固等保护工作；资源奖励属于游戏规则。"
     },
     {
       "id": "route_blocked",
       "scene_asset": "scene_frontier_pass.png",
       "name": "道路阻断",
-      "description": "交通受阻，威胁上升 1。下一轮移动仍可正常选择。",
+      "description": "历史交通网络可能受自然条件、维护和区域环境影响而中断；威胁上升1、下一轮仍可移动为游戏规则。",
       "target_rule": "threat",
       "damage": 0,
       "modifier": 1,
@@ -58,12 +67,15 @@
         "type": "threat",
         "amount": 1
       },
-      "content_review_status": "verified"
+      "content_review_status": "needs_review",
+      "source_title": "UNESCO — About the Silk Roads",
+      "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+      "source_note": "来源支持丝路为分段、动态的交通网络；具体阻断和数值为游戏抽象。"
     },
     {
       "id": "event_05",
-      "name": "环境观测 05",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "岩体裂隙",
+      "description": "岩体裂隙会削弱崖壁稳定性，需要调查、监测与加固；本事件对两个节点造成1点损伤为游戏抽象。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -72,15 +84,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源明确列出裂隙与危岩问题；事件作用范围和数值需游戏平衡。"
     },
     {
       "id": "event_06",
-      "name": "环境观测 06",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "崖顶渗水",
+      "description": "渗水和雨水冲刷可能加剧石质文物表层损害，需要排水和持续监测。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -89,15 +101,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源明确提及渗水、雨水冲刷和排水系统；双节点损伤为游戏化表达。"
     },
     {
       "id": "event_07",
-      "name": "环境观测 07",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "表层风化",
+      "description": "长期自然作用可能造成石质表面风化，保护工作需要记录病害并采取适度干预。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -106,15 +118,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源明确列出表面风化治理；事件强度和目标规则属于游戏机制。"
     },
     {
       "id": "event_08",
-      "name": "环境观测 08",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "生物附着",
+      "description": "生物附着是石质遗产病害调查中需要关注的一类现象，需结合环境监测评估处理。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -123,15 +135,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源提及生物类病害；事件对两个节点造成损伤是教学抽象。"
     },
     {
       "id": "event_09",
-      "name": "环境观测 09",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "危岩松动",
+      "description": "崖壁危岩和不稳定岩体可能威胁遗产本体与参观安全，需要专业加固和监测。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -140,15 +152,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源明确提及危岩和落石风险；事件数值不代表真实风险等级。"
     },
     {
       "id": "event_10",
-      "name": "环境观测 10",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "排水不畅",
+      "description": "排水系统不足会增加雨水冲刷和渗水风险，保护工程通常需要综合治理。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -157,15 +169,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源明确提及崖顶排水不足及修建排水系统；游戏损伤规则为抽象。"
     },
     {
       "id": "event_11",
-      "name": "环境观测 11",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "风化监测告警",
+      "description": "监测发现风化迹象时，需要安排调查、记录和保护资源，避免病害继续发展。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -174,15 +186,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源支持对表面风化和病害进行治理与监测；事件名称为游戏叙事。"
     },
     {
       "id": "event_12",
-      "name": "环境观测 12",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "保护巡查发现隐患",
+      "description": "文物保护需要持续巡查、记录和分类处置；本事件把多点隐患转化为两个节点的损伤压力。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -191,15 +203,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "大同古城保护条例",
+      "source_url": "https://www.dtsrd.gov.cn/static/dffg/20251117/471.html",
+      "source_note": "来源支持分类保护和修缮管理要求；具体隐患类型与数值需专业复核。"
     },
     {
       "id": "event_13",
-      "name": "环境观测 13",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "节点维护延误",
+      "description": "遗产保护依赖持续管理和有序修缮，维护延误可能使已有风险累积。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -208,15 +220,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "大同古城保护条例",
+      "source_url": "https://www.dtsrd.gov.cn/static/dffg/20251117/471.html",
+      "source_note": "来源支持制定保护修缮技术规定和分类管理；事件为游戏化情境。"
     },
     {
       "id": "event_14",
-      "name": "环境观测 14",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "路径承载压力",
+      "description": "遗产地的参观、交通与设施管理需要服从保护要求，过度扰动可能增加管理压力。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -225,15 +237,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源说明保护区交通、参观安全和本体保护要求；双节点损伤为游戏抽象。"
     },
     {
       "id": "event_15",
-      "name": "环境观测 15",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "保护记录缺口",
+      "description": "缺少连续记录会影响病害对比和保护决策，调查、档案和复核是遗产管理的重要基础。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -242,15 +254,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "平城遗址（平城区人民政府）",
+      "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
+      "source_note": "平城遗址资料显示文献、遗迹与考古材料需要互证；事件为通用保护流程抽象。"
     },
     {
       "id": "event_16",
-      "name": "环境观测 16",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "材料病害扩展",
+      "description": "石质与木构遗产的病害表现不同，需依据材质和结构采取分类保护措施。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -259,15 +271,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "大同古城保护条例",
+      "source_url": "https://www.dtsrd.gov.cn/static/dffg/20251117/471.html",
+      "source_note": "来源支持按结构、材质和施工工艺制定保护规定；具体病害和数值需专家审核。"
     },
     {
       "id": "event_17",
-      "name": "环境观测 17",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "多点监测告警",
+      "description": "当多个节点同时出现风险信号时，团队需要在有限资源中确定调查和修护优先级。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -276,15 +288,15 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "“世界文化遗产—云冈石窟”保护工作全面开启",
+      "source_url": "https://gzw.ln.gov.cn/gzw/gzjg/gqgg/DFB4800044C44532BC5A40D5411AB1C4/index.shtml",
+      "source_note": "来源支持监测和多类病害治理背景；多点同时受损是游戏化压力机制。"
     },
     {
       "id": "event_18",
-      "name": "环境观测 18",
-      "description": "游戏化占位事件，待文化审核后补充正式来源。",
+      "name": "联合保护压力",
+      "description": "大型文化遗产网络的保护需要管理、研究、工程和公共服务等多方协作；本事件模拟协作不足造成的风险。",
       "target_rule": "two_open_sites",
       "damage": 1,
       "modifier": 0,
@@ -293,10 +305,10 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "content_review_status": "placeholder",
-      "source_title": "",
-      "source_url": "",
-      "source_note": "TODO_CONTENT_REVIEW"
+      "content_review_status": "needs_review",
+      "source_title": "History — DATONG CHINA（大同市人民政府国际门户）",
+      "source_url": "https://www.dt.gov.cn/english/history/listCon.shtml",
+      "source_note": "来源支持大同多类型文化遗产需要系统保护；事件效果为游戏机制，需继续由文化与保护专家审核。"
     }
   ]
 }

@@ -27,22 +27,28 @@ class GameEngine:
             role = self.content.roles[role_id]
             players[pid] = PlayerState(id=pid, name=role["name"], role_id=role_id, location=role.get("start_site_id", "yungang"))
 
+        enabled_site_ids = set(scenario.get("enabled_site_ids", self.content.sites))
+        enabled_site_ids.update(role.get("start_site_id", "yungang") for role in self.content.roles.values())
         sites = {}
         for sid, definition in self.content.sites.items():
+            if sid not in enabled_site_ids:
+                continue
             maximum = definition.get("max_damage", 3)
             damage = scenario.get("initial_damage", {}).get(sid, definition.get("start_damage", 0))
             sites[sid] = SiteState(id=sid, damage=damage, max_damage=maximum, durability=max(0, maximum - damage), max_durability=maximum, domains=definition.get("domains", []))
 
-        tasks = {tid: {**task, "contributed_cards": [], "completed": False} for tid, task in self.content.tasks.items()}
-        routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id")) for route in self.content.routes}
+        tasks = {tid: {**task, "contributed_cards": [], "completed": False} for tid, task in self.content.tasks.items() if task.get("site_id") in sites}
+        routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id"), tags=route.get("tags", [])) for route in self.content.routes if route["from"] in sites and route["to"] in sites}
         route_ids = list(routes)
         rng.shuffle(route_ids)
         for route_id in route_ids[: scenario.get("blocked_route_count", 0)]:
             routes[route_id].status = "blocked"
-        projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items()}
+        enabled_project_ids = set(scenario.get("enabled_project_ids", self.content.projects))
+        projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items() if project_id in enabled_project_ids and project.get("site_id") in sites}
         objectives = {objective_id: ObjectiveState(id=objective_id, name=objective["name"], type=objective["type"], target=objective.get("target", 1)) for objective_id, objective in self.content.objectives.items() if not scenario.get("objective_ids") or objective_id in scenario["objective_ids"]}
-        culture_deck = list(self.content.cards) * 3
-        event_deck = list(self.content.events)
+        card_pool = scenario.get("card_pool", {})
+        culture_deck = [card_id for card_id in self.content.cards for _ in range(int(card_pool.get(card_id, 1)))] if card_pool else list(self.content.cards)
+        event_deck = [event_id for event_id in scenario.get("event_deck", self.content.events) if event_id in self.content.events]
         rng.shuffle(culture_deck)
         rng.shuffle(event_deck)
         state = GameState(
@@ -52,7 +58,7 @@ class GameEngine:
             sites=sites,
             tasks=tasks,
             shared={"max_rounds": scenario.get("max_rounds", difficulty.get("max_rounds", 8)), "active_player_id": ids[0], "player_order": ids, "restoration_resource": scenario.get("restoration_resource", difficulty.get("restoration_resource", 6)), "scenario_id": scenario_id},
-            decks={"culture": culture_deck, "events": event_deck},
+            decks={"culture": culture_deck, "events": event_deck, "discard": [], "archive": [], "action": [card_id for card_id in scenario.get("action_card_pool", self.content.action_cards) for _ in range(int(scenario.get("action_card_pool", {}).get(card_id, 1)))]},
             scenario_id=scenario_id,
             seed=rng.seed,
             rng_state=rng.state,
@@ -90,15 +96,18 @@ class GameEngine:
             state.action_options = self._build_action_options(state.legal_actions)
             return state
 
-        actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}]
+        actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
         site = state.sites[active.location]
         if site.status != SiteStatus.CLOSED and active.ap > 0:
             for route in self.content.routes:
-                if route["from"] != active.location or not self._open(state, route["to"]):
+                if active.location not in {route["from"], route["to"]}:
+                    continue
+                target = route["to"] if route["from"] == active.location else route["from"]
+                if not self._open(state, target):
                     continue
                 route_state = state.routes.get(route["id"])
                 if route_state and self._route_open(state, route["id"]):
-                    actions.append({"type": ActionType.MOVE.value, "target_id": route["to"], "label": f"\u524d\u5f80 {self.content.sites[route['to']]['name']}", "cost": 0 if active.flags.get("free_move") else route_state.cost, "route_id": route["id"]})
+                    actions.append({"type": ActionType.MOVE.value, "target_id": target, "label": f"\u524d\u5f80 {self.content.sites[route['to']]['name']}", "cost": 0 if active.flags.get("free_move") else route_state.cost, "route_id": route["id"]})
             if active.flags.get("sprint_move"):
                 for target in self._reachable(state, active.location, 2):
                     if target != active.location and not any(item.get("target_id") == target for item in actions):
@@ -108,17 +117,18 @@ class GameEngine:
             if active.ap >= 1 and state.shared.restoration_resource > 0 and site.damage > 0:
                 actions.append({"type": ActionType.RESTORE.value, "target_id": active.location, "label": "\u5171\u540c\u4fee\u62a4\u5f53\u524d\u8282\u70b9", "cost": 1})
             for route in self.content.routes:
-                if route["from"] != active.location:
+                if active.location not in {route["from"], route["to"]}:
                     continue
+                target = route["to"] if route["from"] == active.location else route["from"]
                 route_state = state.routes.get(route["id"])
                 if not route_state:
                     continue
                 if route_state.status in {"strained", "blocked"}:
-                    actions.append({"type": ActionType.SURVEY_ROUTE.value, "route_id": route["id"], "target_id": route["to"], "label": f"\u52d8\u5bdf\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.SURVEY_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u52d8\u5bdf\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
                 if route_state.status in {"strained", "blocked"} and state.shared.research_clues > 0:
-                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": route["to"], "label": f"\u4fee\u62a4\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u4fee\u62a4\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
                 if route_state.status == "restored" and route_state.connection_level < 1:
-                    actions.append({"type": ActionType.ESTABLISH_CONNECTION.value, "route_id": route["id"], "target_id": route["to"], "label": f"\u5efa\u7acb\u8fde\u63a5 · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.ESTABLISH_CONNECTION.value, "route_id": route["id"], "target_id": target, "label": f"\u5efa\u7acb\u8fde\u63a5 · {self.content.sites[route['to']]['name']}", "cost": 1})
             if state.shared.current_event_id and state.shared.current_event_id not in state.shared.prepared_event_ids:
                 actions.append({"type": ActionType.PREPARE.value, "label": "\u51c6\u5907\u5e94\u5bf9\u4e8b\u4ef6", "cost": 1})
             task = state.tasks.get(self.content.sites[active.location].get("active_task_id"))
@@ -158,13 +168,14 @@ class GameEngine:
         elif action == ActionType.ESTABLISH_CONNECTION.value: self._establish_connection(state, player, req.get("route_id"))
         elif action == ActionType.PREPARE.value: self._prepare(state, player)
         elif action == ActionType.END_TURN.value: self._end_turn(state, player)
+        elif action == ActionType.PLAN.value: self._plan(state, player, target)
         else: raise ValueError("unknown_action")
         state.revision += 1
         self._check_outcome(state)
         return self.refresh(state)
 
     def _move(self, state, player, target):
-        route = next((item for item in self.content.routes if item["from"] == player.location and item["to"] == target), None)
+        route = next((item for item in self.content.routes if {item["from"], item["to"]} == {player.location, target}), None)
         if not route or not self._open(state, target) or not self._route_open(state, route["id"]): raise ValueError("invalid_route")
         route_state = state.routes[route["id"]]
         cost = 0 if player.flags.pop("free_move", False) else route_state.cost
@@ -177,6 +188,8 @@ class GameEngine:
         if player.ap < 1 or card not in state.market or len(player.hand) >= 3: raise ValueError("invalid_explore")
         player.ap -= 1; player.hand.append(card); state.market.remove(card); self._refill_market(state); state.sites[player.location].discovered = True
         state.shared.research_clues += 1
+        project = state.projects.get(state.sites[player.location].active_project_id or "")
+        self._advance_project(state, project, player.id, "explore")
         state.shared.log.append(f"{player.name} \u5728 {self.content.sites[player.location]['name']} \u53d1\u73b0\u4e86 {self.content.cards[card]['name']}")
 
     def _contribute(self, state, player, site_id, card):
@@ -186,7 +199,12 @@ class GameEngine:
         site = state.sites[site_id]; site.contributions.append({"player_id": player.id, "card_id": card, "origin_tags": self.content.cards[card].get("origin_tags", [])})
         task["contributed_cards"].append(card); site.influence += 1; state.shared.influence += 1
         project = state.projects.get(site.active_project_id or "")
-        if project and project.status == "active": self._advance_project(state, project, player.id)
+        if project and project.status == "active": self._advance_project(state, project, player.id, "contribute")
+        bonus = player.flags.pop("next_contribute_bonus", 0)
+        if bonus:
+            player.influence += bonus; state.shared.influence += bonus
+            state.shared.log.append(f"{player.name} \u7684\u534f\u4f5c\u52a0\u6210\u751f\u6548\uff1a\u5f71\u54cd\u529b +{bonus}")
+        state.decks.setdefault("archive", []).append(card)
         if self._task_complete(task):
             task["completed"] = True; domain = task["reward"]["domain"]
             if domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
@@ -198,25 +216,30 @@ class GameEngine:
         site = state.sites[site_id]
         if site.damage <= 0 or site.status == SiteStatus.CLOSED: raise ValueError("site_does_not_need_restoration")
         player.ap -= 1; state.shared.restoration_resource -= 1; site.damage -= 1; self._update_site(site)
+        self._advance_project(state, state.projects.get(site.active_project_id or ""), player.id, "restore")
 
     def _survey_route(self, state, player, route_id):
         route = state.routes.get(route_id)
-        if player.ap < 1 or not route or route.from_site != player.location or route.status not in {"strained", "blocked"}: raise ValueError("invalid_route_survey")
+        if player.ap < 1 or not route or player.location not in {route.from_site, route.to_site} or route.status not in {"strained", "blocked"}: raise ValueError("invalid_route_survey")
         player.ap -= 1; state.shared.research_clues += 1; route.status = "strained"; route.risk = max(0, route.risk - 1)
 
     def _restore_route(self, state, player, route_id):
         route = state.routes.get(route_id)
-        if player.ap < 1 or state.shared.research_clues < 1 or not route or route.from_site != player.location or route.status not in {"strained", "blocked"}: raise ValueError("invalid_route_restoration")
+        if player.ap < 1 or state.shared.research_clues < 1 or not route or player.location not in {route.from_site, route.to_site} or route.status not in {"strained", "blocked"}: raise ValueError("invalid_route_restoration")
         player.ap -= 1; state.shared.research_clues -= 1; route.status = "restored"; route.risk = 0; route.connection_level = max(1, route.connection_level)
 
     def _establish_connection(self, state, player, route_id):
         route = state.routes.get(route_id)
-        if player.ap < 1 or not route or route.from_site != player.location or route.status != "restored": raise ValueError("invalid_connection")
+        if player.ap < 1 or not route or player.location not in {route.from_site, route.to_site} or route.status != "restored": raise ValueError("invalid_connection")
         player.ap -= 1; route.status = "illuminated"; route.connection_level = 2; state.shared.route_connection_score += 1
 
     def _prepare(self, state, player):
         if player.ap < 1 or not state.shared.current_event_id: raise ValueError("invalid_prepare")
-        player.ap -= 1; state.shared.prepared_event_ids.append(state.shared.current_event_id)
+        player.ap -= 1
+        event_id = state.shared.current_event_id
+        if event_id not in state.shared.prepared_event_ids: state.shared.prepared_event_ids.append(event_id)
+        player.flags["prepared_event_id"] = event_id
+        state.shared.log.append(f"{player.name} \u5df2\u51c6\u5907\u5e94\u5bf9\u4e8b\u4ef6\uff1a{self.content.events[event_id]['name']}")
 
     def _exchange(self, state, player, recipient_id, card):
         recipient = state.players.get(recipient_id)
@@ -237,7 +260,7 @@ class GameEngine:
 
     def _play_card(self, state, player, card):
         if card not in player.hand: raise ValueError("card_not_in_hand")
-        player.hand.remove(card); self._effect(state, player, self.content.cards[card].get("effect", {}))
+        player.hand.remove(card); state.decks.setdefault("discard", []).append(card); self._effect(state, player, self.content.cards[card].get("effect", {}))
 
     def _effect(self, state, player, effect):
         typ = effect.get("type")
@@ -249,7 +272,7 @@ class GameEngine:
         elif typ == "influence": state.shared.influence += effect.get("amount", 1)
 
     def _end_turn(self, state, player):
-        player.ap = player.max_ap; player.skill_used = False; player.flags.pop("harmony_active", None)
+        player.ap = player.max_ap; player.skill_used = False
         order = state.shared.player_order; index = order.index(player.id); last = index == len(order) - 1
         state.shared.active_player_id = order[0] if last else order[index + 1]
         if last:
@@ -260,7 +283,16 @@ class GameEngine:
         event_id = state.shared.current_event_id
         if not event_id: return
         event = self.content.events[event_id]
-        if event_id == "route_blocked":
+        prepared = event_id in state.shared.prepared_event_ids
+        harmony = [item for item in state.players.values() if item.flags.pop("harmony_active", False)]
+        if prepared:
+            state.shared.prepared_event_ids.remove(event_id)
+            state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.log.append(f"\u51c6\u5907\u751f\u6548\uff1a{event['name']} \u7684\u98ce\u5316\u538b\u529b\u964d\u4f4e 1")
+        if harmony:
+            state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.log.append("\u548c\u5408\u534f\u4f5c\u751f\u6548\uff1a\u4e8b\u4ef6\u538b\u529b\u964d\u4f4e 1")
+        if event_id == "route_blocked" and not prepared:
             state.pending_choice = {"kind": "event", "event_id": event_id, "options": [{"id": "mitigate", "label": "\u6d88\u8017 1 \u4fee\u590d\u8d44\u6e90\uff0c\u7f13\u548c\u9053\u8def\u963b\u65ad"}, {"id": "accept", "label": "\u63a5\u53d7\u963b\u65ad\uff0c\u5a01\u80c1\u4e0a\u5347 1"}]}
             return
         self._event_effect(state, event.get("effect", {}))
@@ -301,12 +333,24 @@ class GameEngine:
     def _refill_market(self, state):
         while len(state.market) < 3 and state.decks["culture"]: state.market.append(state.decks["culture"].pop(0))
 
-    def _advance_project(self, state, project, player_id):
+    def _advance_project(self, state, project, player_id, action_type="contribute"):
+        if not project or project.status != "active" or project.stage_index >= len(project.stages): return
+        stage = project.stages[project.stage_index]
+        if stage.get("action_type", "contribute") != action_type: return
         project.progress += 1
         if player_id not in project.contributors: project.contributors.append(player_id)
         while project.stage_index < len(project.stages) and project.progress >= project.stages[project.stage_index].get("required_progress", 1):
             project.progress = 0; project.stage_index += 1
         if project.stage_index >= len(project.stages): project.status = "completed"
+        state.shared.log.append(f"\u9879\u76ee {project.name} \u8fdb\u5165\u7b2c {project.stage_index + 1} \u9636\u6bb5")
+
+    def _plan(self, state, player, target):
+        if not target or (target not in state.sites and target not in state.projects and target not in state.routes):
+            raise ValueError("invalid_plan_target")
+        marks = state.shared.planning_marks.setdefault(player.id, [])
+        if len(marks) >= 2: raise ValueError("planning_limit_reached")
+        marks.append({"target_id": target, "turn": str(state.shared.turn)})
+        state.shared.log.append(f"{player.name} \u653e\u7f6e\u89c4\u5212\u6807\u8bb0\uff1a{target}")
 
     def _card_can_contribute(self, card, task):
         return self.content.cards[card].get("domain") in task.get("required_domains", [])
@@ -322,11 +366,14 @@ class GameEngine:
             current, distance = queue.popleft()
             if distance >= hops: continue
             for route in self.content.routes:
-                if route["from"] == current and self._route_open(state, route["id"]) and route["to"] not in found:
-                    found.add(route["to"]); queue.append((route["to"], distance + 1))
+                if current not in {route["from"], route["to"]} or not self._route_open(state, route["id"]):
+                    continue
+                target = route["to"] if route["from"] == current else route["from"]
+                if target not in found:
+                    found.add(target); queue.append((target, distance + 1))
         return found
 
-    def _open(self, state, site_id): return state.sites[site_id].status != SiteStatus.CLOSED
+    def _open(self, state, site_id): return site_id in state.sites and state.sites[site_id].status != SiteStatus.CLOSED
     def _route_open(self, state, route_id): return state.routes.get(route_id, RouteState(id=route_id, from_site="", to_site="")).status in {"open", "restored", "illuminated"}
 
     def _update_site(self, site):
@@ -361,7 +408,7 @@ class GameEngine:
 
     def _ensure_runtime_state(self, state):
         if not state.routes:
-            state.routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open")) for route in self.content.routes}
+            state.routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), tags=route.get("tags", [])) for route in self.content.routes if route["from"] in state.sites and route["to"] in state.sites}
         if not state.projects:
             state.projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items()}
         for site in state.sites.values():

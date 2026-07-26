@@ -12,7 +12,70 @@
         "objective_protect_core",
         "objective_restore_routes"
       ],
-      "content_review_status": "placeholder"
+      "content_review_status": "placeholder",
+      "enabled_site_ids": [
+        "yungang",
+        "huayan_temple",
+        "shanhua_temple",
+        "wall_pass",
+        "trade_post",
+        "pingcheng_ruins",
+        "northern_workshop",
+        "archive_depot",
+        "material_yard",
+        "carving_courtyard",
+        "motif_gallery",
+        "river_crossing"
+      ],
+      "enabled_project_ids": [
+        "project_01",
+        "project_02",
+        "project_03"
+      ],
+      "card_pool": {
+        "survey": 1,
+        "craft": 1,
+        "alliance": 1,
+        "archive": 1,
+        "motif": 1,
+        "frontier": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_11": 1,
+        "culture_12": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_16": 1,
+        "culture_17": 1,
+        "culture_18": 1
+      },
+      "event_deck": [
+        "sandstorm",
+        "pilgrims",
+        "quiet",
+        "route_blocked",
+        "event_05",
+        "event_06",
+        "event_07",
+        "event_08"
+      ],
+      "action_card_pool": {
+        "action_01": 1,
+        "action_02": 1,
+        "action_03": 1,
+        "action_04": 1,
+        "action_05": 1,
+        "action_06": 1,
+        "action_07": 1,
+        "action_08": 1,
+        "action_09": 1,
+        "action_10": 1,
+        "action_11": 1,
+        "action_12": 1
+      }
     },
     {
       "id": "civilization_confluence",
@@ -26,7 +89,70 @@
         "objective_diversity",
         "objective_complete_projects"
       ],
-      "content_review_status": "placeholder"
+      "content_review_status": "placeholder",
+      "enabled_site_ids": [
+        "shanhua_temple",
+        "wall_pass",
+        "trade_post",
+        "pingcheng_ruins",
+        "northern_workshop",
+        "archive_depot",
+        "material_yard",
+        "carving_courtyard",
+        "motif_gallery",
+        "river_crossing",
+        "caravan_camp",
+        "border_market"
+      ],
+      "enabled_project_ids": [
+        "project_02",
+        "project_03",
+        "project_04"
+      ],
+      "card_pool": {
+        "survey": 1,
+        "craft": 1,
+        "alliance": 1,
+        "archive": 1,
+        "motif": 1,
+        "frontier": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_11": 1,
+        "culture_12": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_16": 1,
+        "culture_17": 1,
+        "culture_18": 1
+      },
+      "event_deck": [
+        "pilgrims",
+        "quiet",
+        "route_blocked",
+        "event_05",
+        "event_06",
+        "event_07",
+        "event_08",
+        "event_09"
+      ],
+      "action_card_pool": {
+        "action_01": 1,
+        "action_02": 1,
+        "action_03": 1,
+        "action_04": 1,
+        "action_05": 1,
+        "action_06": 1,
+        "action_07": 1,
+        "action_08": 1,
+        "action_09": 1,
+        "action_10": 1,
+        "action_11": 1,
+        "action_12": 1
+      }
     },
     {
       "id": "market_reopening",
@@ -41,7 +167,67 @@
         "objective_restore_routes",
         "objective_connect_regions"
       ],
-      "content_review_status": "placeholder"
+      "content_review_status": "placeholder",
+      "enabled_site_ids": [
+        "yungang",
+        "huayan_temple",
+        "shanhua_temple",
+        "wall_pass",
+        "trade_post",
+        "pingcheng_ruins",
+        "northern_workshop",
+        "archive_depot",
+        "material_yard",
+        "carving_courtyard"
+      ],
+      "enabled_project_ids": [
+        "project_01",
+        "project_02"
+      ],
+      "card_pool": {
+        "survey": 1,
+        "craft": 1,
+        "alliance": 1,
+        "archive": 1,
+        "motif": 1,
+        "frontier": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_11": 1,
+        "culture_12": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_16": 1,
+        "culture_17": 1,
+        "culture_18": 1
+      },
+      "event_deck": [
+        "sandstorm",
+        "pilgrims",
+        "quiet",
+        "route_blocked",
+        "event_05",
+        "event_06",
+        "event_07",
+        "event_08"
+      ],
+      "action_card_pool": {
+        "action_01": 1,
+        "action_02": 1,
+        "action_03": 1,
+        "action_04": 1,
+        "action_05": 1,
+        "action_06": 1,
+        "action_07": 1,
+        "action_08": 1,
+        "action_09": 1,
+        "action_10": 1,
+        "action_11": 1,
+        "action_12": 1
+      }
     },
     {
       "id": "panorama_unfolding",
@@ -56,7 +242,86 @@
         "objective_connect_regions",
         "objective_protect_core"
       ],
-      "content_review_status": "placeholder"
+      "content_review_status": "placeholder",
+      "enabled_site_ids": [
+        "yungang",
+        "huayan_temple",
+        "shanhua_temple",
+        "wall_pass",
+        "trade_post",
+        "pingcheng_ruins",
+        "northern_workshop",
+        "archive_depot",
+        "material_yard",
+        "carving_courtyard",
+        "motif_gallery",
+        "river_crossing",
+        "caravan_camp",
+        "border_market",
+        "watchtower"
+      ],
+      "enabled_project_ids": [
+        "project_01",
+        "project_02",
+        "project_03",
+        "project_04",
+        "project_05",
+        "project_06"
+      ],
+      "card_pool": {
+        "survey": 1,
+        "craft": 1,
+        "alliance": 1,
+        "archive": 1,
+        "motif": 1,
+        "frontier": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_11": 1,
+        "culture_12": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_16": 1,
+        "culture_17": 1,
+        "culture_18": 1
+      },
+      "event_deck": [
+        "sandstorm",
+        "pilgrims",
+        "quiet",
+        "route_blocked",
+        "event_05",
+        "event_06",
+        "event_07",
+        "event_08",
+        "event_09",
+        "event_10",
+        "event_11",
+        "event_12",
+        "event_13",
+        "event_14",
+        "event_15",
+        "event_16",
+        "event_17",
+        "event_18"
+      ],
+      "action_card_pool": {
+        "action_01": 1,
+        "action_02": 1,
+        "action_03": 1,
+        "action_04": 1,
+        "action_05": 1,
+        "action_06": 1,
+        "action_07": 1,
+        "action_08": 1,
+        "action_09": 1,
+        "action_10": 1,
+        "action_11": 1,
+        "action_12": 1
+      }
     }
   ]
 }

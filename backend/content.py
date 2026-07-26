@@ -17,7 +17,13 @@ class Content:
         self.events = {x["id"]: x for x in self._items(self.files["events"], "events")}
         self.tasks = {x["id"]: x for x in self._items(self.files["tasks"], "tasks")}
         self.difficulty = {x["id"]: x for x in self._items(self.files["difficulty"], "difficulty")}
-        self.routes = self._items(self.files["routes"], "routes")
+        raw_routes = self._items(self.files["routes"], "routes")
+        unique_routes = {}
+        for route in raw_routes:
+            pair = tuple(sorted((route.get("from"), route.get("to"))))
+            if None not in pair and pair not in unique_routes:
+                unique_routes[pair] = {**route, "from": pair[0], "to": pair[1], "directional_rules": route.get("directional_rules", {})}
+        self.routes = list(unique_routes.values())
         self.regions = self._items(self.files.get("regions", []), "regions")
         self.site_facets = self._items(self.files.get("site_facets", []), "facets")
         self.scenarios = {x["id"]: x for x in self._items(self.files.get("scenarios", []), "scenarios")}
@@ -35,6 +41,7 @@ class Content:
             route.setdefault("risk", 0)
             route.setdefault("connection_level", 0)
             route.setdefault("active_project_id", None)
+            route.setdefault("tags", [])
         for site in self.sites.values():
             tags = set(site.get("domains", site.get("site_tags", [])))
             site["domains"] = [domain for domain in self.domains if domain in tags or (domain == "architecture" and tags & {"construction", "craft", "worship"}) or (domain == "statue" and tags & {"buddha", "statue"}) or (domain == "frontier" and tags & {"frontier", "security"}) or (domain == "trade" and tags & {"trade", "exchange", "mobility"})]

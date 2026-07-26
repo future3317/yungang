@@ -2,7 +2,7 @@
   {
     "id": "task_statue",
     "site_id": "pingcheng_ruins",
-    "name": "造像重构任务",
+    "name": "平城—云冈造像线索对照",
     "required_domains": [
       "statue",
       "pattern"
@@ -15,17 +15,17 @@
       "restoration_delta": 1,
       "domain": "statue"
     },
-    "learning_objective": "比较不同来源的造像题材与纹饰转译。",
-    "culture_explanation": "通过将平城来源与丝路来源的文化记忆对照，完成同一造像主题的复原。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "比较北魏都城考古线索与云冈造像、纹样材料，理解都城环境、皇家营造与佛教艺术之间需要通过多类证据建立联系。",
+    "culture_explanation": "平城遗址的范围与遗存仍在考古辨识；云冈石窟是北魏时期重要佛教石窟群。任务中的“平城来源”“丝路来源”与卡牌组合属于教学模型。",
+    "source_title": "平城遗址（平城区人民政府）",
+    "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "主要依据平城区政府的平城遗址介绍；云冈背景另参考UNESCO《Yungang Grottoes》。游戏中的证据组合不等同于学术断代。"
   },
   {
     "id": "task_architecture_huayan",
     "site_id": "huayan_temple",
-    "name": "结构审议",
+    "name": "华严寺建筑结构辨识",
     "required_domains": [
       "architecture"
     ],
@@ -37,17 +37,17 @@
       "restoration_delta": 1,
       "domain": "architecture"
     },
-    "learning_objective": "识别木构与石构构件中的工艺差异。",
-    "culture_explanation": "比较寺观结构中的梁柱做法与区域修护策略，强调修复共识。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "识别华严寺上寺、下寺格局及辽金建筑遗存，理解古建筑保护需要结合形制、材料和历史修缮记录。",
+    "culture_explanation": "华严寺始建于辽重熙七年，坐西向东，由上寺和下寺组成，是第一批全国重点文物保护单位。任务中的修护决策为游戏抽象。",
+    "source_title": "大同市文物局关于市政协十五届一次会议第315号提案的答复",
+    "source_url": "https://www.dt.gov.cn/dtszf/2022zxta/202309/bc1c3a7626a1484fb4f170d2a6ab4bb5.shtml",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "来源支持华严寺始建年代、朝向、寺院格局和文物保护级别；不支持游戏中的数值与卡牌规则。"
   },
   {
     "id": "task_architecture_shanhua",
     "site_id": "shanhua_temple",
-    "name": "空间协同",
+    "name": "善化寺辽金木构协同调查",
     "required_domains": [
       "architecture",
       "trade"
@@ -60,17 +60,17 @@
       "restoration_delta": 1,
       "domain": "pattern"
     },
-    "learning_objective": "将材作与贸易流向共同纳入修护计划。",
-    "culture_explanation": "文化修护不只看实物，还包含材料调配、运输与记录体系协作。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "辨识善化寺辽金木构遗存及中轴布局，讨论建筑记录、材料调配和保护工作的协同关系。",
+    "culture_explanation": "善化寺保存大雄宝殿、三圣殿、山门、普贤阁等辽金时期遗构，整体布局具有重要古建筑研究价值。材料与贸易标签是游戏化协作机制。",
+    "source_title": "寻芳善化寺，收获超乎期待的惊喜（大同市人民政府门户网站）",
+    "source_url": "https://www.dt.gov.cn/dtszf/bmdt/202409/0c0a47137e054ce4a7c8f3415e08966d.shtml",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "来源支持善化寺建筑年代、布局与木构价值；任务中的贸易领域和修护数值为教学设计。"
   },
   {
     "id": "task_frontier",
     "site_id": "wall_pass",
-    "name": "边塞联动",
+    "name": "长城关隘与交流体系辨识",
     "required_domains": [
       "frontier",
       "trade"
@@ -83,17 +83,17 @@
       "restoration_delta": 1,
       "domain": "frontier"
     },
-    "learning_objective": "在不同文明标签下讨论共守与共行的权衡。",
-    "culture_explanation": "边塞不是断裂，而是以交流为前提的秩序修复过程。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "理解长城不仅包含墙体，还包括关隘、堡垒、烽火台等组成部分，并讨论防御、交通与区域交流的复杂关系。",
+    "culture_explanation": "UNESCO指出长城体系包含墙体、马道、烽火台、堡垒和关隘，也反映古代农耕与游牧文明的碰撞和交流。游戏节点不是特定遗址复原。",
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "来源支持长城防御体系及交流背景；“边塞联动”与卡牌组合为游戏抽象。"
   },
   {
     "id": "task_trade",
     "site_id": "trade_post",
-    "name": "互市共治",
+    "name": "丝路交换与共同决策",
     "required_domains": [
       "trade",
       "frontier"
@@ -106,17 +106,17 @@
       "restoration_delta": 1,
       "domain": "trade"
     },
-    "learning_objective": "用不同起源证据完成一次跨节点合作。",
-    "culture_explanation": "互市驿站强调证据共享与共同决策，而非单方收割。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "通过不同来源的证据组合，理解历史交通网络中商品、技艺、知识与观念的多向交流。",
+    "culture_explanation": "UNESCO将丝绸之路描述为动态、开放的陆海交通网络，商旅在途中停留、补给并交换商品与文化。互市驿站是游戏化主题节点。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "来源支持丝路的商业和文化交流属性；本任务不对应某一处已确认的历史驿站。"
   },
   {
     "id": "task_yungang_core",
     "site_id": "yungang",
-    "name": "核心协同任务",
+    "name": "云冈多元文化信息整合",
     "required_domains": [
       "statue",
       "pattern",
@@ -132,17 +132,17 @@
       "restoration_delta": 2,
       "domain": "trade"
     },
-    "learning_objective": "将五类文明元素组合成跨域解释。",
-    "culture_explanation": "云冈中心节点强调多文明元素同时参与才能形成完整叙事。",
-    "source_title": "待专家审核",
-    "source_url": "",
+    "learning_objective": "综合造像、纹样、建筑、边塞和交流证据，形成一段有来源意识的云冈文化解释。",
+    "culture_explanation": "云冈石窟集中体现五、六世纪中国佛教石窟艺术成就，其艺术形成与北魏国家营造及跨区域文化交流背景相关。五领域合成是本游戏的教学框架。",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
     "content_review_status": "needs_review",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "source_note": "来源支持云冈的年代、规模、艺术价值和北魏背景；五类领域与胜利奖励是游戏设计。"
   },
   {
     "id": "task_northern_workshop",
     "site_id": "northern_workshop",
-    "name": "节点调查 01",
+    "name": "石作与造像工具调查",
     "required_domains": [
       "statue"
     ],
@@ -153,17 +153,17 @@
       "restoration_delta": 1,
       "domain": "statue"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "认识大型石窟营造需要石材加工、工具、工匠组织与持续维护等多方面协作。",
+    "culture_explanation": "云冈石窟的大规模开凿反映了复杂的营造组织。“北线工坊”为游戏化设施名称，并非已确认的历史遗址。",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
+    "content_review_status": "needs_review",
+    "source_note": "来源用于支持云冈大规模石窟营造背景；节点名称、位置和任务要求均需专家审核。"
   },
   {
     "id": "task_archive_depot",
     "site_id": "archive_depot",
-    "name": "节点调查 02",
+    "name": "纹样档案归类",
     "required_domains": [
       "pattern"
     ],
@@ -174,17 +174,17 @@
       "restoration_delta": 1,
       "domain": "pattern"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "通过记录、分类和比较纹样材料，理解图案在跨区域传播中可能发生的吸收与变化。",
+    "culture_explanation": "UNESCO相关出版物讨论了丝绸之路上纹样、染料、模仿与文化混合。“档案库”为游戏化研究设施。",
+    "source_title": "UNESCO — Textiles and Clothing along the Silk Roads",
+    "source_url": "https://www.unesco.org/en/publication/textiles-and-clothing-along-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持纹样跨文化交流的一般背景；该节点与具体档案制度为游戏抽象。"
   },
   {
     "id": "task_material_yard",
     "site_id": "material_yard",
-    "name": "节点调查 03",
+    "name": "古建筑材料与工艺记录",
     "required_domains": [
       "architecture"
     ],
@@ -195,17 +195,17 @@
       "restoration_delta": 1,
       "domain": "architecture"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "关注建筑保护中的材质、结构、施工工艺和修缮记录，理解材料选择需要服从真实性与保护要求。",
+    "culture_explanation": "大同古城保护条例要求对历史建筑的结构、色彩、材质和施工工艺进行规范。“材料场”为游戏化设施。",
+    "source_title": "大同古城保护条例",
+    "source_url": "https://www.dtsrd.gov.cn/static/dffg/20251117/471.html",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持保护工作关注材质与工艺；节点、牌型和奖励不代表实际修缮规范。"
   },
   {
     "id": "task_carving_courtyard",
     "site_id": "carving_courtyard",
-    "name": "节点调查 04",
+    "name": "边地造像题材辨识",
     "required_domains": [
       "frontier"
     ],
@@ -216,17 +216,17 @@
       "restoration_delta": 1,
       "domain": "frontier"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "观察造像材料中的服饰、姿态与构图线索，讨论北方都城和跨区域文化环境对艺术表达的影响。",
+    "culture_explanation": "云冈石窟是北魏时期佛教石窟艺术的重要代表。“造像院”及其边塞领域要求是游戏化教学设置。",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持云冈艺术和北魏背景；具体题材归属需图像学与考古专家审核。"
   },
   {
     "id": "task_motif_gallery",
     "site_id": "motif_gallery",
-    "name": "节点调查 05",
+    "name": "纹样传播线索整理",
     "required_domains": [
       "trade"
     ],
@@ -237,17 +237,17 @@
       "restoration_delta": 1,
       "domain": "trade"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "比较不同来源的纹样与装饰信息，理解交通和交换网络对图案传播的作用。",
+    "culture_explanation": "UNESCO资料指出丝绸之路传播的不只是商品，也包括技艺、观念和艺术形式。“纹样廊”为游戏化展示设施。",
+    "source_title": "UNESCO — Textiles and Clothing along the Silk Roads",
+    "source_url": "https://www.unesco.org/en/publication/textiles-and-clothing-along-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持纹样交流背景；任务中的贸易领域和卡牌条件为游戏机制。"
   },
   {
     "id": "task_river_crossing",
     "site_id": "river_crossing",
-    "name": "节点调查 06",
+    "name": "渡口造像线索记录",
     "required_domains": [
       "statue"
     ],
@@ -258,17 +258,17 @@
       "restoration_delta": 1,
       "domain": "statue"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "讨论交通节点如何帮助人员、物资与宗教艺术信息在区域间流动。",
+    "culture_explanation": "丝绸之路由多条陆路和水路交通网络组成，旅人常在节点停留和补给。“河谷渡口”不是已核定的具体遗址。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持交通网络与交流的一般背景；将造像证据放入渡口任务属于游戏抽象。"
   },
   {
     "id": "task_caravan_camp",
     "site_id": "caravan_camp",
-    "name": "节点调查 07",
+    "name": "行旅纹样交流记录",
     "required_domains": [
       "pattern"
     ],
@@ -279,17 +279,17 @@
       "restoration_delta": 1,
       "domain": "pattern"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "识别旅途中携带的织物、服饰和纹样可能成为文化交流媒介。",
+    "culture_explanation": "UNESCO资料说明商旅在路线节点休息补给，商品、技艺和文化随人员流动。“行旅营地”为游戏化节点。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持商旅停留与文化交流背景；具体营地并非历史复原。"
   },
   {
     "id": "task_border_market",
     "site_id": "border_market",
-    "name": "节点调查 08",
+    "name": "边市营造线索调查",
     "required_domains": [
       "architecture"
     ],
@@ -300,17 +300,17 @@
       "restoration_delta": 1,
       "domain": "architecture"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "讨论边塞交通、市场空间与设施维护之间的关系，区分防御建筑与交流空间的不同功能。",
+    "culture_explanation": "大同市相关规划将长城关、堡、口、墙体及多民族交往交流交融作为长城文化展示内容。“边市前沿”为游戏化节点。",
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持大同长城文化与区域交流主题；节点名称和建筑要求需进一步审核。"
   },
   {
     "id": "task_watchtower",
     "site_id": "watchtower",
-    "name": "节点调查 09",
+    "name": "烽火台防御体系辨识",
     "required_domains": [
       "frontier"
     ],
@@ -321,17 +321,17 @@
       "restoration_delta": 1,
       "domain": "frontier"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "认识烽火台、关隘、堡垒和墙体共同组成长城防御系统。",
+    "culture_explanation": "UNESCO长城资料明确列出烽火台、堡垒、关隘等组成部分。“烽火台”节点未指向某一处具体遗存。",
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持长城系统构成；本任务的数值条件和节点位置为游戏设计。"
   },
   {
     "id": "task_craft_school",
     "site_id": "craft_school",
-    "name": "节点调查 10",
+    "name": "工艺传播与交换调查",
     "required_domains": [
       "trade"
     ],
@@ -342,17 +342,17 @@
       "restoration_delta": 1,
       "domain": "trade"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "理解工艺知识可随商旅、工匠和文化网络传播，并在不同地区被吸收和改造。",
+    "culture_explanation": "UNESCO丝绸之路资料指出工艺和技术会随交通网络传播。“工艺学堂”为游戏化教育设施。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持工艺知识传播背景；节点不是历史机构复原。"
   },
   {
     "id": "task_river_archive",
     "site_id": "river_archive",
-    "name": "节点调查 11",
+    "name": "交通沿线造像档案整理",
     "required_domains": [
       "statue"
     ],
@@ -363,17 +363,17 @@
       "restoration_delta": 1,
       "domain": "statue"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "把交通、记录与造像证据联系起来，学习区分实物证据、文献记录和推测性解释。",
+    "culture_explanation": "丝绸之路网络促进宗教、艺术和知识传播；“河道档案”为游戏化节点，未对应具体历史档案机构。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持跨区域传播的一般背景；造像档案与河道关系需专家审核。"
   },
   {
     "id": "task_route_junction",
     "site_id": "route_junction",
-    "name": "节点调查 12",
+    "name": "路线交汇中的纹样传播",
     "required_domains": [
       "pattern"
     ],
@@ -384,11 +384,11 @@
       "restoration_delta": 1,
       "domain": "pattern"
     },
-    "learning_objective": "占位目标",
-    "culture_explanation": "待审核的游戏化任务。",
-    "source_title": "",
-    "source_url": "",
-    "content_review_status": "placeholder",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "learning_objective": "比较路线交汇处的文化证据，理解图案、技艺和观念可能通过多段交通网络扩散。",
+    "culture_explanation": "UNESCO指出丝绸之路是动态且相互连接的路线网络。“路线枢纽”为游戏拓扑抽象。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "content_review_status": "needs_review",
+    "source_note": "来源支持多线路交流概念；具体枢纽、位置和纹样组合为游戏设计。"
   }
 ]

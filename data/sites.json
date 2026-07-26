@@ -22,7 +22,11 @@
       "core",
       "buddha"
     ],
-    "summary": "以云冈石窟为核心的造像与装饰交流枢纽。"
+    "summary": "云冈石窟开凿于五世纪中叶至六世纪初，拥有252个洞窟和龛、约5.1万尊造像，是中国佛教石窟艺术的重要代表。",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
+    "source_note": "来源支持云冈石窟的年代、洞窟与造像规模及艺术价值。游戏中的坐标、任务和连接关系不属于遗产资料。",
+    "content_review_status": "verified"
   },
   {
     "id": "huayan_temple",
@@ -45,7 +49,11 @@
       "religion",
       "lore"
     ],
-    "summary": "寺观结构、礼制和修护实践的文化节点。"
+    "summary": "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
+    "source_title": "大同市文物局关于市政协十五届一次会议第315号提案的答复",
+    "source_url": "https://www.dt.gov.cn/dtszf/2022zxta/202309/bc1c3a7626a1484fb4f170d2a6ab4bb5.shtml",
+    "source_note": "来源支持华严寺始建年代、朝向、上寺与下寺格局及全国重点文物保护单位信息。游戏连接和任务为设计抽象。",
+    "content_review_status": "verified"
   },
   {
     "id": "shanhua_temple",
@@ -68,7 +76,11 @@
       "worship",
       "craft"
     ],
-    "summary": "辽金木构建筑技艺与地域修护的交叉节点。"
+    "summary": "善化寺保存大雄宝殿、三圣殿、山门、普贤阁等辽金时期建筑遗存，寺院中轴布局和木构技术具有重要研究价值。",
+    "source_title": "寻芳善化寺，收获超乎期待的惊喜（大同市人民政府门户网站）",
+    "source_url": "https://www.dt.gov.cn/dtszf/bmdt/202409/0c0a47137e054ce4a7c8f3415e08966d.shtml",
+    "source_note": "来源支持善化寺辽金建筑遗存、布局与木构特点；游戏中的贸易标签、坐标和任务不属于历史事实。",
+    "content_review_status": "verified"
   },
   {
     "id": "wall_pass",
@@ -92,7 +104,11 @@
       "security",
       "exchange"
     ],
-    "summary": "边境共守与跨文明协同防护示例点。"
+    "summary": "以长城关隘、堡垒、烽火台和交通设施组成的防御体系为文化背景，用于表现边塞保护与区域交流。该名称不指向某一处特定遗址。",
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO来源支持长城系统构成及历史、战略和建筑价值；本节点为综合性游戏主题节点。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "trade_post",
@@ -116,7 +132,11 @@
       "exchange",
       "mobility"
     ],
-    "summary": "物质与信息流交换的文化交汇点。"
+    "summary": "以丝绸之路沿线商旅停留、补给和交换商品、技艺与观念的历史现象为背景。该驿站名称和位置为游戏化设置。",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO来源支持丝路节点的商业与文化交流功能；本节点不对应已确认的具体驿站。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "pingcheng_ruins",
@@ -140,7 +160,11 @@
       "archive",
       "route"
     ],
-    "summary": "制度记忆、文献传播与造像流向的起点之一。"
+    "summary": "北魏平城遗址大体叠压在今大同老城区及周边，城垣范围仍需考古调查与文献互证，已发现城墙、建筑遗迹和北魏遗物线索。",
+    "source_title": "平城遗址（平城区人民政府）",
+    "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
+    "source_note": "来源支持平城遗址范围尚未完全确定及相关考古发现；游戏坐标和线路并非考古复原。",
+    "content_review_status": "verified"
   },
   {
     "id": "northern_workshop",
@@ -159,13 +183,13 @@
       "pattern",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以云冈大型石窟营造所需的石作、工具和工匠协作为背景；“北线工坊”不是已确认的历史遗址名称。",
     "icon_asset": "generated/nodes/icon_node_northern_workshop.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
+    "source_note": "来源支持云冈大规模石窟营造背景；节点名称、位置和功能需专家审核。"
   },
   {
     "id": "archive_depot",
@@ -184,13 +208,13 @@
       "pattern",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以平城遗址中建筑构件、瓦当、陶片等考古材料的记录、分类和比对工作为背景。",
     "icon_asset": "generated/nodes/icon_node_archive_depot.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "平城遗址（平城区人民政府）",
+    "source_url": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml",
+    "source_note": "来源支持平城遗址发现的建筑与陶质遗物线索；“档案库”为研究流程抽象。"
   },
   {
     "id": "material_yard",
@@ -209,13 +233,13 @@
       "trade",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，用于表现古建筑保护中对材质、结构、施工工艺和修缮记录的关注，并非真实历史场址。",
     "icon_asset": "generated/nodes/icon_node_material_yard.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "大同古城保护条例",
+    "source_url": "https://www.dtsrd.gov.cn/static/dffg/20251117/471.html",
+    "source_note": "来源支持大同古城保护对材质、结构和施工工艺的规范要求；节点位置和能力为游戏设计。"
   },
   {
     "id": "carving_courtyard",
@@ -234,13 +258,13 @@
       "architecture",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以云冈石窟造像开凿、雕刻组织和图像研究为背景；“造像院”不作为历史机构名称使用。",
     "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO World Heritage Centre — Yungang Grottoes",
+    "source_url": "https://whc.unesco.org/en/list/1039/",
+    "source_note": "来源支持云冈造像与洞窟艺术背景；节点名称和空间关系需专家审核。"
   },
   {
     "id": "motif_gallery",
@@ -259,13 +283,13 @@
       "statue",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收和再创造为背景。",
     "icon_asset": "generated/nodes/icon_node_motif_gallery.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — Textiles and Clothing along the Silk Roads",
+    "source_url": "https://www.unesco.org/en/publication/textiles-and-clothing-along-silk-roads",
+    "source_note": "来源支持纹样与染织文化交流的一般背景；“纹样廊”为展示机制抽象。"
   },
   {
     "id": "river_crossing",
@@ -284,13 +308,13 @@
       "frontier",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以历史交通网络中的渡口、补给和人员流动为背景；未对应大同地区某一处已核定渡口遗址。",
     "icon_asset": "generated/nodes/icon_node_river_crossing.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "来源支持陆海交通网络和旅人停留补给的一般历史背景；名称、坐标和连接均为游戏设计。"
   },
   {
     "id": "caravan_camp",
@@ -309,13 +333,13 @@
       "frontier",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以商旅分段行进、休息补给和转运交换为背景，表现文化信息随人员和物资流动。",
     "icon_asset": "generated/nodes/icon_node_caravan_camp.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "来源支持商旅在路线节点停留补给与文化交流；本营地不是具体遗址复原。"
   },
   {
     "id": "border_market",
@@ -334,13 +358,13 @@
       "trade",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以大同长城沿线关堡和多民族交往交流交融的文化展示主题为背景。",
     "icon_asset": "generated/nodes/icon_node_border_market.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "来源支持大同长城关、堡、口、墙体及交流主题；“边市前沿”名称和功能需专家审核。"
   },
   {
     "id": "watchtower",
@@ -359,13 +383,13 @@
       "architecture",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以长城防御体系中的烽火台和观察设施为背景，不指向某一处特定烽火台遗存。",
     "icon_asset": "generated/nodes/icon_node_watchtower.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO来源支持烽火台是长城体系组成部分；节点坐标和任务为游戏抽象。"
   },
   {
     "id": "craft_school",
@@ -384,13 +408,13 @@
       "statue",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以丝绸之路上工艺、技术和知识的跨区域传播为背景；“工艺学堂”不是历史机构复原。",
     "icon_asset": "generated/nodes/icon_node_craft_school.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "来源支持工艺与技术随交流网络传播；节点名称和能力需专家审核。"
   },
   {
     "id": "river_archive",
@@ -409,13 +433,13 @@
       "pattern",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，用于表现交通网络、路线记录与文化证据整理之间的关系，未对应真实档案机构。",
     "icon_asset": "generated/nodes/icon_node_river_archive.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "来源支持多路线交流和知识传播的一般背景；“河道档案”为教学抽象。"
   },
   {
     "id": "route_junction",
@@ -434,12 +458,12 @@
       "trade",
       "placeholder"
     ],
-    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "summary": "游戏化主题节点，以丝绸之路由多条相互连接、随时间变化的路线构成这一特点为背景。",
     "icon_asset": "generated/nodes/icon_node_route_junction.png",
     "scene_asset": "scene_craft_restoration.png",
-    "content_review_status": "placeholder",
-    "source_title": "",
-    "source_url": "",
-    "source_note": "TODO_CONTENT_REVIEW"
+    "content_review_status": "needs_review",
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "来源支持动态路线网络概念；节点位置和连线不表示历史地理复原。"
   }
 ]

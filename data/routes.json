@@ -1,87 +1,99 @@
 [
   {
-    "from": "yungang",
-    "to": "huayan_temple",
-    "cost": 1,
-    "id": "route_yungang_huayan_temple"
-  },
-  {
     "from": "huayan_temple",
     "to": "yungang",
     "cost": 1,
-    "id": "route_huayan_temple_yungang"
-  },
-  {
-    "from": "yungang",
-    "to": "shanhua_temple",
-    "cost": 1,
-    "id": "route_yungang_shanhua_temple"
+    "id": "route_huayan_temple_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "shanhua_temple",
     "to": "yungang",
     "cost": 1,
-    "id": "route_shanhua_temple_yungang"
-  },
-  {
-    "from": "yungang",
-    "to": "wall_pass",
-    "cost": 1,
-    "id": "route_yungang_wall_pass"
+    "id": "route_shanhua_temple_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "wall_pass",
     "to": "yungang",
     "cost": 1,
-    "id": "route_wall_pass_yungang"
-  },
-  {
-    "from": "yungang",
-    "to": "trade_post",
-    "cost": 1,
-    "id": "route_yungang_trade_post"
+    "id": "route_wall_pass_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "trade_post",
     "to": "yungang",
     "cost": 1,
-    "id": "route_trade_post_yungang"
-  },
-  {
-    "from": "yungang",
-    "to": "pingcheng_ruins",
-    "cost": 1,
-    "id": "route_yungang_pingcheng_ruins"
+    "id": "route_trade_post_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "pingcheng_ruins",
     "to": "yungang",
     "cost": 1,
-    "id": "route_pingcheng_ruins_yungang"
+    "id": "route_pingcheng_ruins_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "huayan_temple",
     "to": "trade_post",
     "cost": 2,
-    "id": "route_huayan_temple_trade_post"
-  },
-  {
-    "from": "trade_post",
-    "to": "huayan_temple",
-    "cost": 2,
-    "id": "route_trade_post_huayan_temple"
+    "id": "route_huayan_temple_trade_post",
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "from": "shanhua_temple",
     "to": "wall_pass",
     "cost": 2,
-    "id": "route_shanhua_temple_wall_pass"
-  },
-  {
-    "from": "wall_pass",
-    "to": "shanhua_temple",
-    "cost": 2,
-    "id": "route_wall_pass_shanhua_temple"
+    "id": "route_shanhua_temple_wall_pass",
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_northern_workshop_yungang",
@@ -91,17 +103,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_yungang_northern_workshop",
-    "from": "yungang",
-    "to": "northern_workshop",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_archive_depot_pingcheng_ruins",
@@ -111,17 +119,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_pingcheng_ruins_archive_depot",
-    "from": "pingcheng_ruins",
-    "to": "archive_depot",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_material_yard_shanhua_temple",
@@ -131,17 +135,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_shanhua_temple_material_yard",
-    "from": "shanhua_temple",
-    "to": "material_yard",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_carving_courtyard_yungang",
@@ -151,27 +151,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_yungang_carving_courtyard",
-    "from": "yungang",
-    "to": "carving_courtyard",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_motif_gallery_huayan_temple",
-    "from": "motif_gallery",
-    "to": "huayan_temple",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_huayan_temple_motif_gallery",
@@ -181,7 +167,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_river_crossing_trade_post",
@@ -191,17 +183,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_trade_post_river_crossing",
-    "from": "trade_post",
-    "to": "river_crossing",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_caravan_camp_trade_post",
@@ -211,17 +199,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_trade_post_caravan_camp",
-    "from": "trade_post",
-    "to": "caravan_camp",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_border_market_wall_pass",
@@ -231,27 +215,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_wall_pass_border_market",
-    "from": "wall_pass",
-    "to": "border_market",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_watchtower_wall_pass",
-    "from": "watchtower",
-    "to": "wall_pass",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_wall_pass_watchtower",
@@ -261,7 +231,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_craft_school_pingcheng_ruins",
@@ -271,17 +247,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_pingcheng_ruins_craft_school",
-    "from": "pingcheng_ruins",
-    "to": "craft_school",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_river_archive_trade_post",
@@ -291,17 +263,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_trade_post_river_archive",
-    "from": "trade_post",
-    "to": "river_archive",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_route_junction_yungang",
@@ -311,27 +279,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_yungang_route_junction",
-    "from": "yungang",
-    "to": "route_junction",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_northern_workshop_carving_courtyard",
-    "from": "northern_workshop",
-    "to": "carving_courtyard",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_carving_courtyard_northern_workshop",
@@ -341,7 +295,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_carving_courtyard_motif_gallery",
@@ -351,17 +311,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_motif_gallery_carving_courtyard",
-    "from": "motif_gallery",
-    "to": "carving_courtyard",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_material_yard_river_crossing",
@@ -371,27 +327,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_river_crossing_material_yard",
-    "from": "river_crossing",
-    "to": "material_yard",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_river_crossing_river_archive",
-    "from": "river_crossing",
-    "to": "river_archive",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_river_archive_river_crossing",
@@ -401,17 +343,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_caravan_camp_border_market",
-    "from": "caravan_camp",
-    "to": "border_market",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_border_market_caravan_camp",
@@ -421,7 +359,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_border_market_watchtower",
@@ -431,27 +375,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_watchtower_border_market",
-    "from": "watchtower",
-    "to": "border_market",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_watchtower_craft_school",
-    "from": "watchtower",
-    "to": "craft_school",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_craft_school_watchtower",
@@ -461,17 +391,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_craft_school_archive_depot",
-    "from": "craft_school",
-    "to": "archive_depot",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_archive_depot_craft_school",
@@ -481,7 +407,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "大同市建设国际知名文化旅游城市实施方案",
+    "source_url": "https://www.dt.gov.cn/dtszf/guizwjh/202408/d7a238926abd479baabee46e87f17f65.shtml",
+    "source_note": "大同市文化旅游规划以北魏、辽金和长城主题组织文化线路。本路线仅用于游戏移动和协作，不主张两节点之间存在对应的历史道路。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_archive_depot_route_junction",
@@ -491,17 +423,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_route_junction_archive_depot",
-    "from": "route_junction",
-    "to": "archive_depot",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_route_junction_trade_post",
@@ -511,17 +439,13 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_trade_post_route_junction",
-    "from": "trade_post",
-    "to": "route_junction",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO — About the Silk Roads",
+    "source_url": "https://www.unesco.org/en/silk-roads/about-silk-roads",
+    "source_note": "UNESCO资料支持丝绸之路是由多条动态交通与交流路线组成的网络。本路线为游戏连线，端点和成本不代表历史道路复原。",
+    "content_review_status": "needs_review"
   },
   {
     "id": "route_route_junction_wall_pass",
@@ -531,16 +455,12 @@
     "status": "open",
     "risk": 0,
     "connection_level": 0,
-    "active_project_id": null
-  },
-  {
-    "id": "route_wall_pass_route_junction",
-    "from": "wall_pass",
-    "to": "route_junction",
-    "cost": 1,
-    "status": "open",
-    "risk": 0,
-    "connection_level": 0,
-    "active_project_id": null
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [],
+    "source_title": "UNESCO World Heritage Centre — The Great Wall",
+    "source_url": "https://whc.unesco.org/en/list/438/",
+    "source_note": "UNESCO资料支持长城由墙体、道路、烽火台、堡垒和关隘构成复杂系统。本路线的端点、成本和连通关系仅为游戏拓扑，不表示已核定的历史道路。",
+    "content_review_status": "needs_review"
   }
 ]

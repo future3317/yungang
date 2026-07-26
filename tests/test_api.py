@@ -98,3 +98,39 @@ def test_scenario_changes_initial_rules_and_route_state():
     assert state['scenario_id'] == 'market_reopening'
     assert state['shared']['max_rounds'] == 10
     assert sum(route['status'] == 'blocked' for route in state['routes'].values()) == 4
+
+def test_routes_are_single_records_and_move_from_either_endpoint():
+    session = 'test-undirected-route'
+    state = create(session)
+    pairs = {tuple(sorted((route['from_site'], route['to_site']))) for route in state['routes'].values()}
+    assert len(pairs) == len(state['routes'])
+    stored = repo.get(session)
+    stored.players['p1'].location = 'yungang'
+    repo.save(stored)
+    state = client.get(f'/api/games/{session}').json()
+    updated = action(session, state, 'p1', 'move', target_id='pingcheng_ruins').json()
+    assert updated['players']['p1']['location'] == 'pingcheng_ruins'
+
+def test_prepare_event_consumes_flag_and_prevents_event_choice():
+    session = 'test-prepare-effect'
+    state = create(session)
+    stored = repo.get(session)
+    stored.shared.current_event_id = 'route_blocked'
+    stored.shared.player_order = ['p1']
+    stored.players.pop('p2')
+    repo.save(stored)
+    state = client.get(f'/api/games/{session}').json()
+    prepared = action(session, state, 'p1', 'prepare').json()
+    assert prepared['players']['p1']['flags']['prepared_event_id'] == 'route_blocked'
+    ended = action(session, prepared, 'p1', 'end_turn').json()
+    assert ended['pending_choice'] is None
+    assert ended['shared']['prepared_event_ids'] == []
+
+def test_card_has_archive_and_discard_paths():
+    session = 'test-card-dual-use'
+    state = create(session)
+    assert state['decks']['action']
+    card = state['market'][0]
+    explored = action(session, state, 'p1', 'explore', target_id='pingcheng_ruins', card_id=card).json()
+    played = action(session, explored, 'p1', 'play_card', card_id=card).json()
+    assert card in played['decks']['discard']

@@ -1,51 +1,77 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import { LocateFixed, ZoomIn, ZoomOut } from 'lucide-react';
 import type { ActionType, Player, Region, RouteState, Site } from '../../types/game';
 
-type NetworkActionMode = Extract<ActionType, 'move' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection'> | null;
-type Edge = { from: string; to: string; routeId?: string };
+type MapActionMode = Extract<ActionType, 'move' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection'> | null;
+type RouteLine = { id: string; from: string; to: string; route: RouteState };
 
-export function HeritageNetwork({ sites, metaSites, regions = [], routes = {}, active, focusedId, reachableIds, actionMode, onFocus }: { sites: Record<string, Site>; metaSites: Record<string, Site>; regions?: Region[]; routes?: Record<string, RouteState>; active: Player; focusedId: string | null; reachableIds: ReadonlySet<string>; actionMode: NetworkActionMode; onFocus: (id: string) => void }) {
+function point(site: Site) { return { x: site.x ?? 50, y: site.y ?? 50 }; }
+function curve(a: Site, b: Site) {
+  const p1 = point(a); const p2 = point(b);
+  const dx = p2.x - p1.x; const dy = p2.y - p1.y;
+  const bend = Math.max(4, Math.min(12, Math.hypot(dx, dy) * .18));
+  const nx = -dy / (Math.hypot(dx, dy) || 1) * bend;
+  const ny = dx / (Math.hypot(dx, dy) || 1) * bend;
+  return `M ${p1.x} ${p1.y} Q ${(p1.x + p2.x) / 2 + nx} ${(p1.y + p2.y) / 2 + ny} ${p2.x} ${p2.y}`;
+}
+
+function nodeKind(site: Site): 'core' | 'support' | 'event' {
+  if (site.node_kind === 'event' || site.status === 'event') return 'event';
+  if (site.node_kind === 'support' || site.kind === 'facility') return 'support';
+  return 'core';
+}
+
+export function HeritageNetwork({ sites, metaSites, regions = [], routes = {}, active, focusedId, reachableIds, actionMode, onFocus }: { sites: Record<string, Site>; metaSites: Record<string, Site>; regions?: Region[]; routes?: Record<string, RouteState>; active: Player; focusedId: string | null; reachableIds: ReadonlySet<string>; actionMode: MapActionMode; onFocus: (id: string) => void }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const [worldTransform, setWorldTransform] = useState<ZoomTransform>(zoomIdentity);
-  const nodeList = Object.values(sites);
-  const edges = useMemo<Edge[]>(() => {
-    const routeByPair = new Map(Object.values(routes).map(route => [`${[route.from_site, route.to_site].sort().join(':')}`, route.id]));
-    const unique = new Map<string, Edge>();
-    for (const site of Object.values(metaSites)) for (const target of site.connections || []) {
-      if (!metaSites[target]) continue;
-      const [from, to] = [site.id, target].sort();
-      unique.set(`${from}:${to}`, { from, to, routeId: routeByPair.get(`${from}:${to}`) });
-    }
-    return [...unique.values()];
-  }, [metaSites, routes]);
-  const regionLabels = useMemo(() => regions.map(region => {
-    const points = region.site_ids.map(id => metaSites[id]).filter(Boolean);
-    if (!points.length) return null;
-    return { ...region, x: points.reduce((sum, point) => sum + (point.x || 50), 0) / points.length, y: points.reduce((sum, point) => sum + (point.y || 50), 0) / points.length };
+  const routeLines = useMemo<RouteLine[]>(() => Object.values(routes).map(route => ({ id: route.id, from: route.from_site, to: route.to_site, route })).filter(item => metaSites[item.from] && metaSites[item.to]), [metaSites, routes]);
+  const neighborRouteIds = useMemo(() => new Set(routeLines.filter(line => line.from === active.location || line.to === active.location).map(line => line.id)), [active.location, routeLines]);
+  const regionShapes = useMemo(() => regions.map(region => {
+    const explicit = region.hull_points?.length ? region.hull_points : region.site_ids.map(id => point(metaSites[id])).filter(Boolean);
+    if (!explicit.length) return null;
+    const minX = Math.max(2, Math.min(...explicit.map(p => p.x)) - 8); const maxX = Math.min(98, Math.max(...explicit.map(p => p.x)) + 8);
+    const minY = Math.max(5, Math.min(...explicit.map(p => p.y)) - 8); const maxY = Math.min(95, Math.max(...explicit.map(p => p.y)) + 8);
+    const label = region.label_position || { x: (minX + maxX) / 2, y: minY + 3 };
+    return { ...region, shape: `M ${minX} ${minY} L ${maxX} ${minY} L ${maxX} ${maxY} L ${minX} ${maxY} Z`, label };
   }).filter(Boolean), [metaSites, regions]);
   useEffect(() => {
     if (!svgRef.current) return;
     const selection = select(svgRef.current);
-    const behavior = zoom<SVGSVGElement, unknown>().scaleExtent([.75, 1.7]).on('zoom', event => setWorldTransform(event.transform));
+    const behavior = zoom<SVGSVGElement, unknown>().scaleExtent([.72, 1.9]).on('zoom', event => setWorldTransform(event.transform));
     zoomRef.current = behavior;
     selection.call(behavior);
     return () => { selection.on('.zoom', null); };
   }, []);
-  function scaleBy(factor: number) { if (svgRef.current && zoomRef.current) select(svgRef.current).call(zoomRef.current.scaleBy, factor); }
-  function resetWorld() { if (svgRef.current && zoomRef.current) select(svgRef.current).call(zoomRef.current.transform, zoomIdentity); }
-  const overlayTransform = `translate(${worldTransform.x}px, ${worldTransform.y}px) scale(${worldTransform.k})`;
+  const scaleBy = (factor: number) => { if (svgRef.current && zoomRef.current) select(svgRef.current).call(zoomRef.current.scaleBy, factor); };
+  const resetWorld = () => { if (svgRef.current && zoomRef.current) select(svgRef.current).call(zoomRef.current.transform, zoomIdentity); };
+  const lod = worldTransform.k < .9 ? 'overview' : worldTransform.k > 1.25 ? 'detail' : 'standard';
+  const contentTransform = worldTransform.toString();
+  const visibleLines = routeLines.filter(line => lod !== 'overview' || line.route.tags?.includes('main') || line.route.status !== 'open' || neighborRouteIds.has(line.id));
   return <div className="network-frame world-stage">
-    <div className="network-tools"><button onClick={() => scaleBy(1.15)} title="放大"><ZoomIn /></button><button onClick={() => scaleBy(.87)} title="缩小"><ZoomOut /></button><button onClick={resetWorld} title="适配世界"><LocateFixed /></button></div>
-    <svg ref={svgRef} viewBox="0 0 100 100" role="img" aria-label="云冈遗产节点网络">
-      <defs><filter id="glow"><feGaussianBlur stdDeviation="1.4" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs>
-      <g transform={worldTransform.toString()}><image href="/ui-assets/01_buddha_relief_medallion.webp" x="30" y="30" width="40" height="40" opacity=".65" /><g className="network-lines">{edges.map(edge => { const a = metaSites[edge.from]; const b = metaSites[edge.to]; const x1 = a.x || 50; const y1 = a.y || 50; const x2 = b.x || 50; const y2 = b.y || 50; const highlighted = Boolean(actionMode) && reachableIds.has(edge.from) && reachableIds.has(edge.to) && (edge.from === active.location || edge.to === active.location); const route = edge.routeId ? routes[edge.routeId] : undefined; const restored = route?.status === 'restored' || route?.connection_level && route.connection_level >= 2; const routeAsset = highlighted ? actionMode === 'establish_connection' ? 'route_connected' : actionMode === 'survey_route' ? 'route_surveyed' : 'route_active' : restored ? 'route_restored' : route?.risk && route.risk >= 3 ? 'route_danger' : 'route_base'; const length = Math.hypot(x2 - x1, y2 - y1); const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI; return <g key={`${edge.from}:${edge.to}`} className={highlighted ? 'route-highlight' : ''}><line x1={x1} y1={y1} x2={x2} y2={y2} className={highlighted ? 'highlighted' : ''} style={{ opacity: highlighted ? .35 : .14 }} /><image href={`/ui-assets/generated/routes/${routeAsset}.png`} x={x1} y={y1 - .9} width={length} height="1.8" transform={`rotate(${angle} ${x1} ${y1})`} preserveAspectRatio="none" opacity={highlighted ? .95 : .65} /></g>; })}</g></g>
+    <div className="network-tools"><button onClick={() => scaleBy(1.15)} title="放大"><ZoomIn /></button><button onClick={() => scaleBy(.87)} title="缩小"><ZoomOut /></button><button onClick={resetWorld} title="重置地图"><LocateFixed /></button></div>
+    <svg ref={svgRef} viewBox="0 0 100 100" role="img" aria-label="大同文化舆图">
+      <defs><filter id="route-focus"><feGaussianBlur stdDeviation=".55" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs>
+      <g className="map-world" transform={contentTransform}>
+        <g className="region-layer">{regionShapes.map(region => region && <g key={region.id} className={`region-shape region-${region.visual_token || region.id}`}><path d={region.shape} /><text x={region.label.x} y={region.label.y}>{region.name}</text></g>)}</g>
+        <g className="route-layer">{visibleLines.map(line => {
+          const from = metaSites[line.from]; const to = metaSites[line.to];
+          const focused = actionMode !== null && reachableIds.has(line.from) && reachableIds.has(line.to) && (line.from === active.location || line.to === active.location);
+          const abnormal = line.route.status !== 'open' || line.route.risk > 0;
+          const className = [focused ? 'is-target' : '', abnormal ? `is-${line.route.status}` : '', line.route.connection_level >= 2 ? 'is-illuminated' : ''].filter(Boolean).join(' ');
+          return <path key={line.id} className={className} d={curve(from, to)} filter={focused ? 'url(#route-focus)' : undefined} />;
+        })}</g>
+      </g>
     </svg>
-    <div className="world-region-layer">{regionLabels.map(region => region && <span key={region.id} className="world-region" style={{ left: `${region.x}%`, top: `${region.y}%` }}>{region.name}</span>)}</div>
-    <div className="map-nodes" style={{ transform: overlayTransform }}>{nodeList.map(site => { const meta = metaSites[site.id] || site; const current = active.location === site.id; const reachable = reachableIds.has(site.id); const target = actionMode !== null && reachable && !current; const variant = current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'; const icon = `/ui-assets/generated/nodes/states/${site.id}_${variant}.png`; const damageBadge = site.status === 'at_risk' ? '/ui-assets/generated/badges/badge_damaged.png' : undefined; return <button key={site.id} className={`site-node ${current ? 'current' : ''} ${focusedId === site.id ? 'focused' : ''} ${reachable ? 'reachable' : ''} ${site.status === 'closed' ? 'closed' : ''}`} style={{ left: `${meta.x || 50}%`, top: `${meta.y || 50}%`, borderColor: target ? 'var(--accent-gold)' : undefined, boxShadow: target ? '0 0 28px rgba(209,173,99,.35)' : undefined }} onClick={() => onFocus(site.id)} aria-label={`${meta.name || site.id}，${site.status}`}><span className="node-ring" /><img className="node-icon" src={icon} alt="" />{damageBadge && <img className="node-status-badge" src={damageBadge} alt="" />}<b>{meta.name || site.id}</b><small>{site.status === 'closed' ? '已关闭' : current ? '当前位置' : target ? '可选目标' : `${site.damage}/${site.max_damage} 损伤`}</small></button>; })}</div>
-    <div className="network-corner">遗产世界<span>{actionMode ? `选择${actionMode === 'move' ? '移动' : actionMode === 'restore' ? '修护' : '路线'}目标 · Escape 取消` : '滚轮缩放 · 拖动查看 · 点击节点聚焦'}</span></div>
+    <div className="map-nodes" style={{ transform: `translate(${worldTransform.x}px, ${worldTransform.y}px) scale(${worldTransform.k})` }}>{Object.values(sites).filter(site => lod !== 'overview' || site.node_kind !== 'event').map(site => {
+      const meta = metaSites[site.id] || site; const current = active.location === site.id; const reachable = reachableIds.has(site.id); const target = actionMode !== null && reachable && !current; const kind = nodeKind(meta);
+      const icon = meta.icon_asset ? `/ui-assets/${meta.icon_asset}` : `/ui-assets/generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.png`;
+      return <button key={site.id} className={`site-node node-${kind} ${current ? 'current' : ''} ${focusedId === site.id ? 'focused' : ''} ${target ? 'reachable' : ''} ${site.status === 'closed' ? 'closed' : ''}`} style={{ left: `${meta.x ?? 50}%`, top: `${meta.y ?? 50}%`, '--node-scale': `${1 / worldTransform.k}` } as CSSProperties} onClick={() => onFocus(site.id)} aria-label={`${meta.name || site.id}，${site.status}`}>
+        <span className="node-ring" /><img className="node-icon" src={icon} alt="" />{site.status === 'at_risk' && <span className="node-risk" aria-label="有风险" />}{kind === 'event' && <span className="node-event-mark">!</span>}<b>{meta.name || site.id}</b>{lod === 'detail' && <small>{site.status === 'closed' ? '已关闭' : current ? '当前位置' : target ? '可选目标' : site.damage > 0 ? '需要关注' : '稳定'}</small>}
+      </button>;
+    })}</div>
+    <div className="network-corner">大同文化舆图<span>{actionMode ? `选择${actionMode === 'move' ? '移动' : '行动'}目标 · Escape 取消` : '滚轮缩放 · 拖动地图 · 点击节点查看详情'}</span></div>
   </div>;
 }

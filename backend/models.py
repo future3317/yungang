@@ -19,6 +19,7 @@ class ActionType(StrEnum):
     ESTABLISH_CONNECTION = "establish_connection"
     PREPARE = "prepare"
     SELECT_UPGRADE = "select_upgrade"
+    PLAN = "plan"
 
 class SiteStatus(StrEnum):
     STABLE = "stable"
@@ -76,6 +77,7 @@ class RouteState(BaseModel):
     risk: int = 0
     connection_level: int = 0
     active_project_id: Optional[str] = None
+    tags: List[str] = Field(default_factory=list)
 
 
 class ProjectState(BaseModel):
@@ -140,6 +142,7 @@ class SharedState(BaseModel):
     prepared_event_ids: List[str] = Field(default_factory=list)
     route_connection_score: int = 0
     log: List[str] = Field(default_factory=list)
+    planning_marks: Dict[str, List[Dict[str, str]]] = Field(default_factory=dict)
 
 class GameState(BaseModel):
     schema_version: int = 3
