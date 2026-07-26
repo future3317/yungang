@@ -1,92 +1,445 @@
-﻿[
+[
   {
     "id": "yungang",
     "name": "云冈石窟",
-    "icon_asset": "icon_node_yungang.png",
+    "icon_asset": "generated/nodes/icon_node_yungang.png",
     "scene_asset": "scene_yungang_day.png",
     "type": "heritage",
     "x": 50,
     "y": 50,
-    "connections": ["huayan_temple", "shanhua_temple", "wall_pass", "trade_post", "pingcheng_ruins"],
+    "connections": [
+      "huayan_temple",
+      "shanhua_temple",
+      "wall_pass",
+      "trade_post",
+      "pingcheng_ruins"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_yungang_core",
-    "site_tags": ["central", "core", "buddha"],
+    "site_tags": [
+      "central",
+      "core",
+      "buddha"
+    ],
     "summary": "以云冈石窟为核心的造像与装饰交流枢纽。"
   },
   {
     "id": "huayan_temple",
     "name": "华严寺",
-    "icon_asset": "icon_node_huayan_temple.png",
+    "icon_asset": "generated/nodes/icon_node_huayan_temple.png",
     "scene_asset": "scene_craft_restoration.png",
     "type": "heritage",
     "x": 28,
     "y": 20,
-    "connections": ["yungang", "wall_pass", "trade_post"],
+    "connections": [
+      "yungang",
+      "wall_pass",
+      "trade_post"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_architecture_huayan",
-    "site_tags": ["frontier", "religion", "lore"],
+    "site_tags": [
+      "frontier",
+      "religion",
+      "lore"
+    ],
     "summary": "寺观结构、礼制和修护实践的文化节点。"
   },
   {
     "id": "shanhua_temple",
     "name": "善化寺",
-    "icon_asset": "icon_node_shanhua_temple.png",
+    "icon_asset": "generated/nodes/icon_node_shanhua_temple.png",
     "scene_asset": "scene_archive_cave.png",
     "type": "heritage",
     "x": 72,
     "y": 22,
-    "connections": ["yungang", "wall_pass", "trade_post"],
+    "connections": [
+      "yungang",
+      "wall_pass",
+      "trade_post"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_architecture_shanhua",
-    "site_tags": ["construction", "worship", "craft"],
+    "site_tags": [
+      "construction",
+      "worship",
+      "craft"
+    ],
     "summary": "辽金木构建筑技艺与地域修护的交叉节点。"
   },
   {
     "id": "wall_pass",
     "name": "长城关隘",
-    "icon_asset": "icon_node_wall_pass.png",
+    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
     "scene_asset": "scene_frontier_pass.png",
     "type": "heritage",
     "x": 48,
     "y": 84,
-    "connections": ["yungang", "huayan_temple", "shanhua_temple", "pingcheng_ruins"],
+    "connections": [
+      "yungang",
+      "huayan_temple",
+      "shanhua_temple",
+      "pingcheng_ruins"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_frontier",
-    "site_tags": ["frontier", "security", "exchange"],
+    "site_tags": [
+      "frontier",
+      "security",
+      "exchange"
+    ],
     "summary": "边境共守与跨文明协同防护示例点。"
   },
   {
     "id": "trade_post",
     "name": "互市驿站",
-    "icon_asset": "icon_node_trade_post.png",
+    "icon_asset": "generated/nodes/icon_node_trade_post.png",
     "scene_asset": "scene_trade_meeting.png",
     "type": "heritage",
     "x": 86,
     "y": 72,
-    "connections": ["yungang", "huayan_temple", "shanhua_temple", "pingcheng_ruins"],
+    "connections": [
+      "yungang",
+      "huayan_temple",
+      "shanhua_temple",
+      "pingcheng_ruins"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_trade",
-    "site_tags": ["trade", "exchange", "mobility"],
+    "site_tags": [
+      "trade",
+      "exchange",
+      "mobility"
+    ],
     "summary": "物质与信息流交换的文化交汇点。"
   },
   {
     "id": "pingcheng_ruins",
     "name": "平城遗址",
-    "icon_asset": "icon_node_pingcheng_ruins.png",
+    "icon_asset": "generated/nodes/icon_node_pingcheng_ruins.png",
     "scene_asset": "scene_silk_road_expedition.png",
     "type": "heritage",
     "x": 18,
     "y": 70,
-    "connections": ["yungang", "wall_pass", "trade_post", "shanhua_temple"],
+    "connections": [
+      "yungang",
+      "wall_pass",
+      "trade_post",
+      "shanhua_temple"
+    ],
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_statue",
-    "site_tags": ["capital", "archive", "route"],
+    "site_tags": [
+      "capital",
+      "archive",
+      "route"
+    ],
     "summary": "制度记忆、文献传播与造像流向的起点之一。"
+  },
+  {
+    "id": "northern_workshop",
+    "name": "北线工坊",
+    "type": "workshop",
+    "x": 13,
+    "y": 34,
+    "connections": [
+      "yungang"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_northern_workshop",
+    "site_tags": [
+      "architecture",
+      "pattern",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_northern_workshop.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "archive_depot",
+    "name": "档案库",
+    "type": "workshop",
+    "x": 30,
+    "y": 43,
+    "connections": [
+      "pingcheng_ruins"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_archive_depot",
+    "site_tags": [
+      "statue",
+      "pattern",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "material_yard",
+    "name": "材料场",
+    "type": "workshop",
+    "x": 62,
+    "y": 40,
+    "connections": [
+      "shanhua_temple"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_material_yard",
+    "site_tags": [
+      "architecture",
+      "trade",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_material_yard.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "carving_courtyard",
+    "name": "造像院",
+    "type": "workshop",
+    "x": 39,
+    "y": 30,
+    "connections": [
+      "yungang"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_carving_courtyard",
+    "site_tags": [
+      "statue",
+      "architecture",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "motif_gallery",
+    "name": "纹样廊",
+    "type": "workshop",
+    "x": 65,
+    "y": 18,
+    "connections": [
+      "huayan_temple"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_motif_gallery",
+    "site_tags": [
+      "pattern",
+      "statue",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_motif_gallery.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "river_crossing",
+    "name": "河谷渡口",
+    "type": "workshop",
+    "x": 90,
+    "y": 48,
+    "connections": [
+      "trade_post"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_river_crossing",
+    "site_tags": [
+      "trade",
+      "frontier",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_river_crossing.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "caravan_camp",
+    "name": "行旅营地",
+    "type": "workshop",
+    "x": 81,
+    "y": 88,
+    "connections": [
+      "trade_post"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_caravan_camp",
+    "site_tags": [
+      "trade",
+      "frontier",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_caravan_camp.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "border_market",
+    "name": "边市前沿",
+    "type": "workshop",
+    "x": 69,
+    "y": 92,
+    "connections": [
+      "wall_pass"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_border_market",
+    "site_tags": [
+      "frontier",
+      "trade",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_border_market.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "watchtower",
+    "name": "烽火台",
+    "type": "workshop",
+    "x": 32,
+    "y": 91,
+    "connections": [
+      "wall_pass"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_watchtower",
+    "site_tags": [
+      "frontier",
+      "architecture",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_watchtower.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "craft_school",
+    "name": "工艺学堂",
+    "type": "workshop",
+    "x": 10,
+    "y": 54,
+    "connections": [
+      "pingcheng_ruins"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_craft_school",
+    "site_tags": [
+      "architecture",
+      "statue",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_craft_school.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "river_archive",
+    "name": "河道档案",
+    "type": "workshop",
+    "x": 94,
+    "y": 25,
+    "connections": [
+      "trade_post"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_river_archive",
+    "site_tags": [
+      "trade",
+      "pattern",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_river_archive.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "route_junction",
+    "name": "路线枢纽",
+    "type": "workshop",
+    "x": 52,
+    "y": 63,
+    "connections": [
+      "yungang"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_route_junction",
+    "site_tags": [
+      "frontier",
+      "trade",
+      "placeholder"
+    ],
+    "summary": "游戏化主题节点，待文化审核后补充正式叙述。",
+    "icon_asset": "generated/nodes/icon_node_route_junction.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "content_review_status": "placeholder",
+    "source_title": "",
+    "source_url": "",
+    "source_note": "TODO_CONTENT_REVIEW"
   }
 ]

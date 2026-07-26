@@ -1,9 +1,546 @@
 [
-  {"from":"yungang","to":"huayan_temple","cost":1},{"from":"huayan_temple","to":"yungang","cost":1},
-  {"from":"yungang","to":"shanhua_temple","cost":1},{"from":"shanhua_temple","to":"yungang","cost":1},
-  {"from":"yungang","to":"wall_pass","cost":1},{"from":"wall_pass","to":"yungang","cost":1},
-  {"from":"yungang","to":"trade_post","cost":1},{"from":"trade_post","to":"yungang","cost":1},
-  {"from":"yungang","to":"pingcheng_ruins","cost":1},{"from":"pingcheng_ruins","to":"yungang","cost":1},
-  {"from":"huayan_temple","to":"trade_post","cost":2},{"from":"trade_post","to":"huayan_temple","cost":2},
-  {"from":"shanhua_temple","to":"wall_pass","cost":2},{"from":"wall_pass","to":"shanhua_temple","cost":2}
+  {
+    "from": "yungang",
+    "to": "huayan_temple",
+    "cost": 1,
+    "id": "route_yungang_huayan_temple"
+  },
+  {
+    "from": "huayan_temple",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_huayan_temple_yungang"
+  },
+  {
+    "from": "yungang",
+    "to": "shanhua_temple",
+    "cost": 1,
+    "id": "route_yungang_shanhua_temple"
+  },
+  {
+    "from": "shanhua_temple",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_shanhua_temple_yungang"
+  },
+  {
+    "from": "yungang",
+    "to": "wall_pass",
+    "cost": 1,
+    "id": "route_yungang_wall_pass"
+  },
+  {
+    "from": "wall_pass",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_wall_pass_yungang"
+  },
+  {
+    "from": "yungang",
+    "to": "trade_post",
+    "cost": 1,
+    "id": "route_yungang_trade_post"
+  },
+  {
+    "from": "trade_post",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_trade_post_yungang"
+  },
+  {
+    "from": "yungang",
+    "to": "pingcheng_ruins",
+    "cost": 1,
+    "id": "route_yungang_pingcheng_ruins"
+  },
+  {
+    "from": "pingcheng_ruins",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_pingcheng_ruins_yungang"
+  },
+  {
+    "from": "huayan_temple",
+    "to": "trade_post",
+    "cost": 2,
+    "id": "route_huayan_temple_trade_post"
+  },
+  {
+    "from": "trade_post",
+    "to": "huayan_temple",
+    "cost": 2,
+    "id": "route_trade_post_huayan_temple"
+  },
+  {
+    "from": "shanhua_temple",
+    "to": "wall_pass",
+    "cost": 2,
+    "id": "route_shanhua_temple_wall_pass"
+  },
+  {
+    "from": "wall_pass",
+    "to": "shanhua_temple",
+    "cost": 2,
+    "id": "route_wall_pass_shanhua_temple"
+  },
+  {
+    "id": "route_northern_workshop_yungang",
+    "from": "northern_workshop",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_yungang_northern_workshop",
+    "from": "yungang",
+    "to": "northern_workshop",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_archive_depot_pingcheng_ruins",
+    "from": "archive_depot",
+    "to": "pingcheng_ruins",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_pingcheng_ruins_archive_depot",
+    "from": "pingcheng_ruins",
+    "to": "archive_depot",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_material_yard_shanhua_temple",
+    "from": "material_yard",
+    "to": "shanhua_temple",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_shanhua_temple_material_yard",
+    "from": "shanhua_temple",
+    "to": "material_yard",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_carving_courtyard_yungang",
+    "from": "carving_courtyard",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_yungang_carving_courtyard",
+    "from": "yungang",
+    "to": "carving_courtyard",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_motif_gallery_huayan_temple",
+    "from": "motif_gallery",
+    "to": "huayan_temple",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_huayan_temple_motif_gallery",
+    "from": "huayan_temple",
+    "to": "motif_gallery",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_river_crossing_trade_post",
+    "from": "river_crossing",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_trade_post_river_crossing",
+    "from": "trade_post",
+    "to": "river_crossing",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_caravan_camp_trade_post",
+    "from": "caravan_camp",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_trade_post_caravan_camp",
+    "from": "trade_post",
+    "to": "caravan_camp",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_border_market_wall_pass",
+    "from": "border_market",
+    "to": "wall_pass",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_wall_pass_border_market",
+    "from": "wall_pass",
+    "to": "border_market",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_watchtower_wall_pass",
+    "from": "watchtower",
+    "to": "wall_pass",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_wall_pass_watchtower",
+    "from": "wall_pass",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_craft_school_pingcheng_ruins",
+    "from": "craft_school",
+    "to": "pingcheng_ruins",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_pingcheng_ruins_craft_school",
+    "from": "pingcheng_ruins",
+    "to": "craft_school",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_river_archive_trade_post",
+    "from": "river_archive",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_trade_post_river_archive",
+    "from": "trade_post",
+    "to": "river_archive",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_route_junction_yungang",
+    "from": "route_junction",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_yungang_route_junction",
+    "from": "yungang",
+    "to": "route_junction",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_northern_workshop_carving_courtyard",
+    "from": "northern_workshop",
+    "to": "carving_courtyard",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_carving_courtyard_northern_workshop",
+    "from": "carving_courtyard",
+    "to": "northern_workshop",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_carving_courtyard_motif_gallery",
+    "from": "carving_courtyard",
+    "to": "motif_gallery",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_motif_gallery_carving_courtyard",
+    "from": "motif_gallery",
+    "to": "carving_courtyard",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_material_yard_river_crossing",
+    "from": "material_yard",
+    "to": "river_crossing",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_river_crossing_material_yard",
+    "from": "river_crossing",
+    "to": "material_yard",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_river_crossing_river_archive",
+    "from": "river_crossing",
+    "to": "river_archive",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_river_archive_river_crossing",
+    "from": "river_archive",
+    "to": "river_crossing",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_caravan_camp_border_market",
+    "from": "caravan_camp",
+    "to": "border_market",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_border_market_caravan_camp",
+    "from": "border_market",
+    "to": "caravan_camp",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_border_market_watchtower",
+    "from": "border_market",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_watchtower_border_market",
+    "from": "watchtower",
+    "to": "border_market",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_watchtower_craft_school",
+    "from": "watchtower",
+    "to": "craft_school",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_craft_school_watchtower",
+    "from": "craft_school",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_craft_school_archive_depot",
+    "from": "craft_school",
+    "to": "archive_depot",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_archive_depot_craft_school",
+    "from": "archive_depot",
+    "to": "craft_school",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_archive_depot_route_junction",
+    "from": "archive_depot",
+    "to": "route_junction",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_route_junction_archive_depot",
+    "from": "route_junction",
+    "to": "archive_depot",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_route_junction_trade_post",
+    "from": "route_junction",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_trade_post_route_junction",
+    "from": "trade_post",
+    "to": "route_junction",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_route_junction_wall_pass",
+    "from": "route_junction",
+    "to": "wall_pass",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  },
+  {
+    "id": "route_wall_pass_route_junction",
+    "from": "wall_pass",
+    "to": "route_junction",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null
+  }
 ]

@@ -15,6 +15,6 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 export const api = {
   meta: () => request<Meta>('/api/meta'),
   game: (id: string) => request<GameState>(`/api/games/${encodeURIComponent(id)}`),
-  create: (playerIds: string[], difficultyId: string) => request<GameState>('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId }) }),
+  create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => request<GameState>('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed }) }),
   action: (id: string, action: Action, playerId: string, revision: number) => request<GameState>(`/api/games/${encodeURIComponent(id)}/actions`, { method: 'POST', body: JSON.stringify({ ...action, action: action.type, player_id: playerId, expected_revision: revision }) })
 };

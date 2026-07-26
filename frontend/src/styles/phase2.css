@@ -1,0 +1,92 @@
+:root {
+  --phase2-header: 60px;
+  --phase2-dock: 112px;
+}
+
+body { font-size: 16px; }
+.network-frame:before { display: none; }
+.game-shell { min-height: 100dvh; height: 100dvh; padding-bottom: var(--phase2-dock); overflow: hidden; }
+.game-header { height: var(--phase2-header); grid-template-columns: 240px 1fr 240px; padding: 0 24px; }
+.brand-mark { font-size: 16px; }
+.game-grid { display: block; max-width: none; height: calc(100dvh - var(--phase2-header) - var(--phase2-dock)); padding: 0; margin: 0; position: relative; }
+.stage-column { height: 100%; min-width: 0; position: relative; }
+.stage-heading { position: absolute; left: 30px; top: 20px; z-index: 8; margin: 0; pointer-events: none; }
+.stage-heading:after { content: ''; display: block; width: 280px; height: 34px; margin-top: 8px; background: url('/ui-assets/generated/panels/banner_top.png') center / 100% 100% no-repeat; opacity: .72; }
+.stage-heading h1 { font-size: clamp(32px, 4vw, 60px); text-shadow: 0 4px 24px rgba(0,0,0,.55); }
+.turn-badge { pointer-events: auto; position: absolute; left: 0; top: 94px; }
+.network-frame.world-stage { height: 100%; min-height: 0; border: 0; border-radius: 0; background-image: linear-gradient(rgba(9,18,18,.78), rgba(9,18,18,.82)), url('/ui-assets/generated/ui_banner_scene_frame.png'); background-position: center; background-size: cover; background-blend-mode: multiply; }
+.network-frame.world-stage:before { display: none; }
+.network-frame.world-stage svg { z-index: 1; cursor: grab; }
+.network-frame.world-stage svg:active { cursor: grabbing; }
+.world-region-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.world-region { position: absolute; transform: translate(-50%, -50%); padding: 7px 12px; border: 1px solid rgba(209,173,99,.18); border-radius: 999px; color: rgba(238,232,216,.42); background: rgba(11,17,18,.22); font: 12px 'Noto Serif SC', serif; letter-spacing: .08em; white-space: nowrap; }
+.network-frame.world-stage .map-nodes { z-index: 4; transform-origin: 0 0; }
+.network-frame.world-stage .site-node { width: 148px; min-height: 138px; background: rgba(20,31,31,.84); backdrop-filter: blur(4px); }
+.network-frame.world-stage .site-node { clip-path: none; border-radius: 16px; padding: 6px 7px; background: rgba(10,18,18,.72); }
+.network-frame.world-stage .site-node .node-ring { clip-path: none; border-radius: 12px; inset: 2px; }
+.network-frame.world-stage .site-node b { font-size: 15px; }
+.network-frame.world-stage .site-node small { font-size: 12px; }
+.network-frame.world-stage .site-node .node-icon { width: 78px; height: 78px; object-fit: contain; }
+.network-frame.world-stage .site-node .node-status-badge { position: absolute; right: 7px; top: 7px; width: 26px; height: 26px; object-fit: contain; z-index: 2; }
+.network-corner { bottom: 24px; left: 30px; font-size: 12px; }
+.roster-column { position: absolute; left: 24px; top: 116px; width: 264px; z-index: 10; gap: 12px; pointer-events: none; }
+.roster-column > * { pointer-events: auto; background: rgba(20,31,31,.78); backdrop-filter: blur(12px); box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+.roster-column .roster { max-height: 230px; overflow: auto; }
+.roster-column .roster-note { font-size: 14px; line-height: 1.65; }
+.context-column { position: absolute; right: 24px; top: 24px; bottom: 24px; width: min(360px, 27vw); z-index: 10; overflow-y: auto; align-content: start; gap: 10px; padding-right: 2px; scrollbar-width: thin; }
+.context-panel { position: relative; overflow: hidden; background: rgba(20,31,31,.82); backdrop-filter: blur(12px); box-shadow: 0 18px 50px rgba(0,0,0,.2); }
+.context-panel:before, .stage-caption:before, .lower-dock:before { content: ''; position: absolute; inset: 0; background: url('/ui-assets/generated/panels/panel_long.png') center / 100% 100% no-repeat; opacity: .12; pointer-events: none; }
+.context-panel:after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 8px; height: 24px; background: url('/ui-assets/generated/panels/banner_cloud.png') center / 100% 100% no-repeat; opacity: .4; pointer-events: none; }
+.mission-panel:after { background-image: url('/ui-assets/generated/panels/banner_scene.png'); }
+.event-forecast:after { background-image: url('/ui-assets/generated/panels/banner_event.png'); }
+.market-panel:after { background-image: url('/ui-assets/generated/panels/banner_route.png'); }
+.context-panel > *, .stage-caption > *, .lower-dock > * { position: relative; z-index: 1; }
+.context-panel p { font-size: 15px; line-height: 1.7; }
+.context-panel h2 { font-size: 24px; }
+.event-help { font-size: 14px !important; }
+.market-panel { max-height: 310px; overflow: auto; }
+.stage-caption { position: absolute; left: 320px; bottom: 24px; width: min(540px, 38vw); z-index: 8; margin: 0; overflow: hidden; background: rgba(20,31,31,.82); backdrop-filter: blur(12px); box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+.lower-dock { height: var(--phase2-dock); grid-template-columns: 220px minmax(420px, 1fr) 320px; padding: 12px 24px 16px; gap: 20px; overflow: hidden; }
+.dock-hint { font-size: 13px; line-height: 1.45; }
+.command-group > span { font-size: 12px; }
+.command-group b { font-size: 13px; }
+.command-group button { min-height: 48px; }
+.hand-card b { font-size: 12px; }
+.hand-card small { font-size: 11px; }
+.timeline-panel { position: fixed; right: 24px; bottom: calc(var(--phase2-dock) + 12px); width: min(360px, 27vw); z-index: 9; max-height: 110px; overflow: auto; margin: 0; padding: 12px 16px; background: rgba(20,31,31,.82); backdrop-filter: blur(12px); }
+.timeline-list { display: block; }
+.timeline-list > div { min-width: 0; margin-top: 8px; }
+.timeline-panel:before { content: ''; position: absolute; inset: auto 12px 4px; height: 22px; background: url('/ui-assets/generated/panels/banner_scroll.png') center / 100% 100% no-repeat; opacity: .38; pointer-events: none; }
+.lower-dock:after { content: ''; position: absolute; left: 24px; right: 24px; top: 2px; height: 18px; background: url('/ui-assets/generated/panels/banner_route.png') center / 100% 100% no-repeat; opacity: .28; pointer-events: none; }
+.eyebrow, .section-label { font-size: 12px; }
+.result-dialog { overflow: hidden; }
+.result-dialog:before { content: ''; position: absolute; inset: 12% 18%; background: url('/ui-assets/generated/effects/effect_victory_ring.png') center / contain no-repeat; opacity: .12; pointer-events: none; }
+.result-dialog > * { position: relative; z-index: 1; }
+
+@media (max-width: 1200px) {
+  .context-column { width: 31vw; }
+  .stage-caption { left: 300px; width: 42vw; }
+  .lower-dock { grid-template-columns: 180px 1fr 270px; }
+}
+
+@media (max-width: 820px) {
+  :root { --phase2-header: 64px; --phase2-dock: 230px; }
+  .game-shell { height: auto; min-height: 100dvh; overflow: visible; }
+  .game-header { grid-template-columns: 1fr auto; padding: 0 14px; }
+  .game-grid { height: auto; min-height: calc(100dvh - var(--phase2-header)); }
+  .stage-column { height: calc(100dvh - var(--phase2-header) - 48px); }
+  .stage-heading { left: 16px; top: 14px; }
+  .stage-heading h1 { font-size: 30px; }
+  .turn-badge { top: 72px; }
+  .network-frame.world-stage { height: 100%; min-height: 0; }
+  .network-frame.world-stage .site-node { width: 112px; min-height: 108px; }
+  .network-frame.world-stage .site-node b { font-size: 12px; }
+  .network-frame.world-stage .site-node small { font-size: 10px; }
+  .network-frame.world-stage .site-node .node-icon { width: 54px; height: 54px; }
+  .network-frame.world-stage .site-node .node-status-badge { width: 20px; height: 20px; right: 4px; top: 4px; }
+  .roster-column { display: none; }
+  .context-column { position: static; width: auto; max-height: none; padding: 12px; }
+  .stage-caption { position: absolute; left: 12px; right: 12px; bottom: 12px; width: auto; }
+  .timeline-panel { display: none; }
+  .lower-dock { height: auto; min-height: var(--phase2-dock); position: fixed; grid-template-columns: 1fr; padding: 10px 12px 12px; }
+}

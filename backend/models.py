@@ -14,6 +14,11 @@ class ActionType(StrEnum):
     RESOLVE_EVENT = "resolve_event"
     SELECT_MARKET_CARD = "select_market_card"
     DISCARD = "discard"
+    SURVEY_ROUTE = "survey_route"
+    RESTORE_ROUTE = "restore_route"
+    ESTABLISH_CONNECTION = "establish_connection"
+    PREPARE = "prepare"
+    SELECT_UPGRADE = "select_upgrade"
 
 class SiteStatus(StrEnum):
     STABLE = "stable"
@@ -32,10 +37,15 @@ class ActionRequest(BaseModel):
     target_site_id: Optional[str] = None
     card_id: Optional[str] = None
     recipient_id: Optional[str] = None
+    route_id: Optional[str] = None
+    upgrade_id: Optional[str] = None
 
 class CreateGameRequest(BaseModel):
     player_ids: List[str] = Field(default_factory=lambda: ["p1", "p2"])
     difficulty_id: str = "normal"
+    scenario_id: str = "sand_and_stone"
+    seed: Optional[int] = None
+    daily_seed: Optional[str] = None
 
 class JoinGameRequest(BaseModel):
     player_id: str
@@ -54,6 +64,49 @@ class PlayerState(BaseModel):
     flags: Dict[str, Any] = Field(default_factory=dict)
     skill_used: bool = False
     contributions: int = 0
+    upgrades: List[str] = Field(default_factory=list)
+
+
+class RouteState(BaseModel):
+    id: str
+    from_site: str
+    to_site: str
+    cost: int = 1
+    status: str = "open"
+    risk: int = 0
+    connection_level: int = 0
+    active_project_id: Optional[str] = None
+
+
+class ProjectState(BaseModel):
+    id: str
+    site_id: str
+    name: str
+    stages: List[Dict[str, Any]] = Field(default_factory=list)
+    stage_index: int = 0
+    progress: int = 0
+    status: str = "active"
+    contributors: List[str] = Field(default_factory=list)
+
+
+class ObjectiveState(BaseModel):
+    id: str
+    name: str
+    type: str
+    target: int = 1
+    progress: int = 0
+    completed: bool = False
+
+
+class ScoreState(BaseModel):
+    tasks: int = 0
+    routes: int = 0
+    diversity: int = 0
+    protection: int = 0
+    resources: int = 0
+    efficiency: int = 0
+    discovery: int = 0
+    total: int = 0
 
 class SiteState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
@@ -67,6 +120,7 @@ class SiteState(BaseModel):
     discovered: bool = False
     domains: List[str] = Field(default_factory=list)
     contributions: List[Dict[str, Any]] = Field(default_factory=list)
+    active_project_id: Optional[str] = None
 
 class SharedState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
@@ -81,10 +135,14 @@ class SharedState(BaseModel):
     current_event_id: Optional[str] = None
     outcome: Optional[GameOutcome] = None
     outcome_reason: Optional[str] = None
+    scenario_id: str = "sand_and_stone"
+    research_clues: int = 0
+    prepared_event_ids: List[str] = Field(default_factory=list)
+    route_connection_score: int = 0
     log: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
-    schema_version: int = 2
+    schema_version: int = 3
     revision: int = 0
     session_id: str
     mode: str = "heritage_network"
@@ -97,3 +155,13 @@ class GameState(BaseModel):
     market: List[str] = Field(default_factory=list)
     pending_choice: Optional[Dict[str, Any]] = None
     legal_actions: List[Dict[str, Any]] = Field(default_factory=list)
+    action_options: List[Dict[str, Any]] = Field(default_factory=list)
+    scenario_id: str = "sand_and_stone"
+    seed: int = 0
+    rng_state: int = 0
+    rng_position: int = 0
+    migrated_from_schema_version: Optional[int] = None
+    routes: Dict[str, RouteState] = Field(default_factory=dict)
+    projects: Dict[str, ProjectState] = Field(default_factory=dict)
+    objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
+    score: ScoreState = Field(default_factory=ScoreState)

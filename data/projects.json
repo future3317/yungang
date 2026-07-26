@@ -1,0 +1,160 @@
+{
+  "projects": [
+    {
+      "id": "project_01",
+      "site_id": "pingcheng_ruins",
+      "name": "多阶段文化项目 01",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "project_02",
+      "site_id": "huayan_temple",
+      "name": "多阶段文化项目 02",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "project_03",
+      "site_id": "shanhua_temple",
+      "name": "多阶段文化项目 03",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "project_04",
+      "site_id": "wall_pass",
+      "name": "多阶段文化项目 04",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "project_05",
+      "site_id": "trade_post",
+      "name": "多阶段文化项目 05",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "project_06",
+      "site_id": "yungang",
+      "name": "多阶段文化项目 06",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "发现线索",
+          "required_progress": 1
+        },
+        {
+          "id": "compare",
+          "name": "比较证据",
+          "required_progress": 2
+        },
+        {
+          "id": "interpret",
+          "name": "完成解释",
+          "required_progress": 1
+        }
+      ],
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    }
+  ]
+}

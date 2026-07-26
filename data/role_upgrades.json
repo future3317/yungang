@@ -1,0 +1,84 @@
+{
+  "role_upgrades": [
+    {
+      "id": "pingcheng_artisan_upgrade_1",
+      "role_id": "pingcheng_artisan",
+      "name": "成长专长 1",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "pingcheng_artisan_upgrade_2",
+      "role_id": "pingcheng_artisan",
+      "name": "成长专长 2",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "western_dancer_upgrade_1",
+      "role_id": "western_dancer",
+      "name": "成长专长 1",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "western_dancer_upgrade_2",
+      "role_id": "western_dancer",
+      "name": "成长专长 2",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "grassland_rider_upgrade_1",
+      "role_id": "grassland_rider",
+      "name": "成长专长 1",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "grassland_rider_upgrade_2",
+      "role_id": "grassland_rider",
+      "name": "成长专长 2",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "central_scribe_upgrade_1",
+      "role_id": "central_scribe",
+      "name": "成长专长 1",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "central_scribe_upgrade_2",
+      "role_id": "central_scribe",
+      "name": "成长专长 2",
+      "effect": {
+        "type": "action_modifier",
+        "value": 1
+      },
+      "content_review_status": "placeholder"
+    }
+  ]
+}

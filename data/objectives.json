@@ -1,0 +1,39 @@
+{
+  "objectives": [
+    {
+      "id": "objective_protect_core",
+      "name": "保护核心节点",
+      "type": "site_protection",
+      "target": 3,
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "objective_restore_routes",
+      "name": "恢复路线",
+      "type": "route_restoration",
+      "target": 3,
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "objective_diversity",
+      "name": "跨来源互鉴",
+      "type": "origin_diversity",
+      "target": 4,
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "objective_complete_projects",
+      "name": "完成项目",
+      "type": "projects",
+      "target": 3,
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "objective_connect_regions",
+      "name": "连通区域",
+      "type": "regions",
+      "target": 3,
+      "content_review_status": "placeholder"
+    }
+  ]
+}

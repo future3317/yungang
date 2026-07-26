@@ -1,0 +1,36 @@
+{
+  "event_chains": [
+    {
+      "id": "chain_01",
+      "event_ids": [
+        "event_01",
+        "event_02"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "chain_02",
+      "event_ids": [
+        "event_02",
+        "event_03"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "chain_03",
+      "event_ids": [
+        "event_03",
+        "event_04"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "chain_04",
+      "event_ids": [
+        "event_04",
+        "event_05"
+      ],
+      "content_review_status": "placeholder"
+    }
+  ]
+}

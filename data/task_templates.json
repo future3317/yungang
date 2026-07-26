@@ -1,0 +1,172 @@
+{
+  "task_templates": [
+    {
+      "id": "template_01",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_02",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_03",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_04",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_05",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_06",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_07",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_08",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_09",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_10",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_11",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "template_12",
+      "stage_types": [
+        "discover",
+        "compare",
+        "interpret"
+      ],
+      "required_progress": [
+        1,
+        2,
+        1
+      ],
+      "content_review_status": "placeholder"
+    }
+  ]
+}

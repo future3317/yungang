@@ -1,0 +1,62 @@
+{
+  "scenarios": [
+    {
+      "id": "sand_and_stone",
+      "name": "风沙与石",
+      "description": "风化压力高，重点是修护与路线保全。",
+      "max_rounds": 8,
+      "restoration_resource": 6,
+      "influence_goal": 10,
+      "closed_site_limit": 2,
+      "objective_ids": [
+        "objective_protect_core",
+        "objective_restore_routes"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "civilization_confluence",
+      "name": "文明汇流",
+      "description": "强调不同来源组合和跨区交换。",
+      "max_rounds": 9,
+      "restoration_resource": 5,
+      "influence_goal": 12,
+      "closed_site_limit": 3,
+      "objective_ids": [
+        "objective_diversity",
+        "objective_complete_projects"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "market_reopening",
+      "name": "互市重开",
+      "description": "多条路线初始阻断，需要勘察和恢复。",
+      "max_rounds": 10,
+      "restoration_resource": 5,
+      "influence_goal": 10,
+      "closed_site_limit": 2,
+      "blocked_route_count": 4,
+      "objective_ids": [
+        "objective_restore_routes",
+        "objective_connect_regions"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "panorama_unfolding",
+      "name": "万象成卷",
+      "description": "长局场，需要完成多区域项目和核心任务。",
+      "max_rounds": 12,
+      "restoration_resource": 8,
+      "influence_goal": 15,
+      "closed_site_limit": 3,
+      "objective_ids": [
+        "objective_complete_projects",
+        "objective_connect_regions",
+        "objective_protect_core"
+      ],
+      "content_review_status": "placeholder"
+    }
+  ]
+}

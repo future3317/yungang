@@ -1,0 +1,50 @@
+{
+  "regions": [
+    {
+      "id": "pingcheng_network",
+      "name": "平城都城网络",
+      "site_ids": [
+        "pingcheng_ruins",
+        "archive_depot",
+        "craft_school",
+        "yungang"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "cave_network",
+      "name": "云冈石窟与造像网络",
+      "site_ids": [
+        "yungang",
+        "carving_courtyard",
+        "motif_gallery",
+        "huayan_temple"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "temple_network",
+      "name": "寺观营造网络",
+      "site_ids": [
+        "huayan_temple",
+        "shanhua_temple",
+        "material_yard",
+        "northern_workshop"
+      ],
+      "content_review_status": "placeholder"
+    },
+    {
+      "id": "frontier_network",
+      "name": "边塞与互市网络",
+      "site_ids": [
+        "wall_pass",
+        "trade_post",
+        "border_market",
+        "watchtower",
+        "river_crossing",
+        "caravan_camp"
+      ],
+      "content_review_status": "placeholder"
+    }
+  ]
+}

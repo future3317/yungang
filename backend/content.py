@@ -5,8 +5,9 @@ class Content:
     def __init__(self, root=None):
         self.root = Path(root or Path(__file__).resolve().parents[1] / "data")
         entry = self._read("game_data.json")
-        if entry.get("content_schema_version") != 2:
-            raise ValueError("content_schema_version must be 2")
+        if entry.get("content_schema_version") not in {2, 3}:
+            raise ValueError("content_schema_version must be 2 or 3")
+        self.schema_version = entry.get("content_schema_version", 2)
         self.domains = entry["domains"]
         self.domain_meta = entry.get("domain_meta", {domain: {"name": domain, "short_name": domain} for domain in self.domains})
         self.files = {key: self._read(name) for key, name in entry["content"].items()}
@@ -17,6 +18,23 @@ class Content:
         self.tasks = {x["id"]: x for x in self._items(self.files["tasks"], "tasks")}
         self.difficulty = {x["id"]: x for x in self._items(self.files["difficulty"], "difficulty")}
         self.routes = self._items(self.files["routes"], "routes")
+        self.regions = self._items(self.files.get("regions", []), "regions")
+        self.site_facets = self._items(self.files.get("site_facets", []), "facets")
+        self.scenarios = {x["id"]: x for x in self._items(self.files.get("scenarios", []), "scenarios")}
+        self.task_templates = self._items(self.files.get("task_templates", []), "task_templates")
+        self.projects = {x["id"]: x for x in self._items(self.files.get("projects", []), "projects")}
+        self.action_cards = {x["id"]: x for x in self._items(self.files.get("action_cards", []), "cards")}
+        self.event_chains = self._items(self.files.get("event_chains", []), "event_chains")
+        self.role_upgrades = self._items(self.files.get("role_upgrades", []), "role_upgrades")
+        self.objectives = {x["id"]: x for x in self._items(self.files.get("objectives", []), "objectives")}
+        self.achievements = self._items(self.files.get("achievements", []), "achievements")
+        self.terminology = self.files.get("terminology", {})
+        for index, route in enumerate(self.routes):
+            route.setdefault("id", f"route_{route['from']}_{route['to']}_{index}")
+            route.setdefault("status", "open")
+            route.setdefault("risk", 0)
+            route.setdefault("connection_level", 0)
+            route.setdefault("active_project_id", None)
         for site in self.sites.values():
             tags = set(site.get("domains", site.get("site_tags", [])))
             site["domains"] = [domain for domain in self.domains if domain in tags or (domain == "architecture" and tags & {"construction", "craft", "worship"}) or (domain == "statue" and tags & {"buddha", "statue"}) or (domain == "frontier" and tags & {"frontier", "security"}) or (domain == "trade" and tags & {"trade", "exchange", "mobility"})]
@@ -34,3 +52,5 @@ class Content:
             raise ValueError("route references unknown site")
         if any(t.get("site_id") not in known for t in self.tasks.values()):
             raise ValueError("task references unknown site")
+        if self.schema_version >= 3 and len(self.sites) < 18:
+            raise ValueError("phase 2 content requires at least 18 sites")

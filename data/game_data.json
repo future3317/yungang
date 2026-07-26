@@ -1,6 +1,6 @@
 {
-  "content_schema_version": 2,
-  "content": {"roles":"roles.json","sites":"sites.json","tasks":"tasks.json","difficulty":"difficulty.json","culture_cards":"culture_cards.json","events":"events.json","routes":"routes.json"},
+  "content_schema_version": 3,
+  "content": {"roles":"roles.json","sites":"sites.json","tasks":"tasks.json","difficulty":"difficulty.json","culture_cards":"culture_cards.json","action_cards":"action_cards.json","events":"events.json","routes":"routes.json","regions":"regions.json","site_facets":"site_facets.json","scenarios":"scenarios.json","task_templates":"task_templates.json","projects":"projects.json","event_chains":"event_chains.json","role_upgrades":"role_upgrades.json","objectives":"objectives.json","achievements":"achievements.json","terminology":"terminology.json"},
   "domains": ["statue", "pattern", "architecture", "frontier", "trade"],
   "domain_meta": {
     "statue": {"name": "造像", "short_name": "造像", "color_token": "mineral-ochre"},

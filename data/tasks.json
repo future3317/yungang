@@ -1,9 +1,12 @@
-﻿[
+[
   {
     "id": "task_statue",
     "site_id": "pingcheng_ruins",
     "name": "造像重构任务",
-    "required_domains": ["statue", "pattern"],
+    "required_domains": [
+      "statue",
+      "pattern"
+    ],
     "required_origin_diversity": 2,
     "required_card_count": 3,
     "required_cards_per_player_min": 1,
@@ -23,7 +26,9 @@
     "id": "task_architecture_huayan",
     "site_id": "huayan_temple",
     "name": "结构审议",
-    "required_domains": ["architecture"],
+    "required_domains": [
+      "architecture"
+    ],
     "required_origin_diversity": 2,
     "required_card_count": 2,
     "required_cards_per_player_min": 1,
@@ -43,14 +48,17 @@
     "id": "task_architecture_shanhua",
     "site_id": "shanhua_temple",
     "name": "空间协同",
-    "required_domains": ["architecture", "trade"],
+    "required_domains": [
+      "architecture",
+      "trade"
+    ],
     "required_origin_diversity": 2,
     "required_card_count": 2,
     "required_cards_per_player_min": 1,
     "reward": {
       "scroll_delta": 2,
       "restoration_delta": 1,
-    "domain": "pattern"
+      "domain": "pattern"
     },
     "learning_objective": "将材作与贸易流向共同纳入修护计划。",
     "culture_explanation": "文化修护不只看实物，还包含材料调配、运输与记录体系协作。",
@@ -63,7 +71,10 @@
     "id": "task_frontier",
     "site_id": "wall_pass",
     "name": "边塞联动",
-    "required_domains": ["frontier", "trade"],
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
     "required_origin_diversity": 2,
     "required_card_count": 2,
     "required_cards_per_player_min": 1,
@@ -83,7 +94,10 @@
     "id": "task_trade",
     "site_id": "trade_post",
     "name": "互市共治",
-    "required_domains": ["trade", "frontier"],
+    "required_domains": [
+      "trade",
+      "frontier"
+    ],
     "required_origin_diversity": 2,
     "required_card_count": 3,
     "required_cards_per_player_min": 1,
@@ -103,7 +117,13 @@
     "id": "task_yungang_core",
     "site_id": "yungang",
     "name": "核心协同任务",
-    "required_domains": ["statue", "pattern", "architecture", "frontier", "trade"],
+    "required_domains": [
+      "statue",
+      "pattern",
+      "architecture",
+      "frontier",
+      "trade"
+    ],
     "required_origin_diversity": 3,
     "required_card_count": 5,
     "required_cards_per_player_min": 2,
@@ -117,6 +137,258 @@
     "source_title": "待专家审核",
     "source_url": "",
     "content_review_status": "needs_review",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_northern_workshop",
+    "site_id": "northern_workshop",
+    "name": "节点调查 01",
+    "required_domains": [
+      "statue"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_archive_depot",
+    "site_id": "archive_depot",
+    "name": "节点调查 02",
+    "required_domains": [
+      "pattern"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "pattern"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_material_yard",
+    "site_id": "material_yard",
+    "name": "节点调查 03",
+    "required_domains": [
+      "architecture"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_carving_courtyard",
+    "site_id": "carving_courtyard",
+    "name": "节点调查 04",
+    "required_domains": [
+      "frontier"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "frontier"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_motif_gallery",
+    "site_id": "motif_gallery",
+    "name": "节点调查 05",
+    "required_domains": [
+      "trade"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_river_crossing",
+    "site_id": "river_crossing",
+    "name": "节点调查 06",
+    "required_domains": [
+      "statue"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_caravan_camp",
+    "site_id": "caravan_camp",
+    "name": "节点调查 07",
+    "required_domains": [
+      "pattern"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "pattern"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_border_market",
+    "site_id": "border_market",
+    "name": "节点调查 08",
+    "required_domains": [
+      "architecture"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_watchtower",
+    "site_id": "watchtower",
+    "name": "节点调查 09",
+    "required_domains": [
+      "frontier"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "frontier"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_craft_school",
+    "site_id": "craft_school",
+    "name": "节点调查 10",
+    "required_domains": [
+      "trade"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_river_archive",
+    "site_id": "river_archive",
+    "name": "节点调查 11",
+    "required_domains": [
+      "statue"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
+    "source_note": "TODO_CONTENT_REVIEW"
+  },
+  {
+    "id": "task_route_junction",
+    "site_id": "route_junction",
+    "name": "节点调查 12",
+    "required_domains": [
+      "pattern"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "pattern"
+    },
+    "learning_objective": "占位目标",
+    "culture_explanation": "待审核的游戏化任务。",
+    "source_title": "",
+    "source_url": "",
+    "content_review_status": "placeholder",
     "source_note": "TODO_CONTENT_REVIEW"
   }
 ]

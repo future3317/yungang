@@ -1,4 +1,5 @@
 from pathlib import Path
+from uuid import uuid4
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -15,19 +16,21 @@ engine = GameEngine(content)
 
 @app.get("/api/meta")
 def meta():
-    return {"schema_version": 2, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "roles": list(content.roles.values()), "sites": list(content.sites.values()), "cards": list(content.cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "difficulty": list(content.difficulty.values())}
+    return {"schema_version": 3, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "terminology": content.terminology, "regions": content.regions, "scenarios": list(content.scenarios.values()), "roles": list(content.roles.values()), "sites": list(content.sites.values()), "facets": content.site_facets, "cards": list(content.cards.values()), "action_cards": list(content.action_cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "projects": list(content.projects.values()), "objectives": list(content.objectives.values()), "difficulty": list(content.difficulty.values())}
 
 @app.post("/api/games")
 def create_game(request: CreateGameRequest):
-    session_id = f"game-{repo.next_id()}"
-    state = engine.new_game(session_id, request.player_ids, request.difficulty_id)
+    session_id = f"game-{uuid4().hex[:10]}"
+    seed = request.seed if request.seed is not None else request.daily_seed
+    state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
 
 @app.post("/api/games/{session_id}")
 def create_game_legacy(session_id: str, request: CreateGameRequest | None = None):
     request = request or CreateGameRequest()
-    state = engine.new_game(session_id, request.player_ids, request.difficulty_id)
+    seed = request.seed if request.seed is not None else request.daily_seed
+    state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
 
@@ -60,11 +63,14 @@ def game_action(session_id: str, request: ActionRequest):
     if not state: raise HTTPException(404, "game not found")
     if request.expected_revision != state.revision:
         raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": state.model_dump()})
+    expected_revision = request.expected_revision
     try:
         state = dispatch(engine, state, request)
     except ValueError as exc:
-        raise HTTPException(400, str(exc)) from exc
-    repo.save(state)
+        raise HTTPException(400, {"code": str(exc), "message": content.terminology.get("errors", {}).get(str(exc), str(exc)), "details": {}}) from exc
+    if not repo.save_if_revision(state, expected_revision):
+        current = repo.get(session_id)
+        raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": current.model_dump() if current else None})
     return state
 
 frontend_root = Path(__file__).resolve().parents[1] / "frontend"

@@ -1,0 +1,121 @@
+{
+  "domains": {
+    "statue": {
+      "name": "??",
+      "short_name": "??",
+      "color_token": "statue"
+    },
+    "pattern": {
+      "name": "??",
+      "short_name": "??",
+      "color_token": "pattern"
+    },
+    "architecture": {
+      "name": "??",
+      "short_name": "??",
+      "color_token": "architecture"
+    },
+    "frontier": {
+      "name": "??",
+      "short_name": "??",
+      "color_token": "frontier"
+    },
+    "trade": {
+      "name": "??",
+      "short_name": "??",
+      "color_token": "trade"
+    }
+  },
+  "origins": {
+    "central": {
+      "name": "??"
+    },
+    "western": {
+      "name": "??"
+    },
+    "frontier": {
+      "name": "??"
+    },
+    "craft": {
+      "name": "??"
+    },
+    "northern": {
+      "name": "??"
+    },
+    "silk": {
+      "name": "??"
+    }
+  },
+  "statuses": {
+    "stable": {
+      "name": "??"
+    },
+    "at_risk": {
+      "name": "??"
+    },
+    "closed": {
+      "name": "??"
+    },
+    "open": {
+      "name": "??"
+    },
+    "strained": {
+      "name": "??"
+    },
+    "blocked": {
+      "name": "??"
+    },
+    "restored": {
+      "name": "???"
+    },
+    "illuminated": {
+      "name": "???"
+    }
+  },
+  "actions": {
+    "move": {
+      "name": "??"
+    },
+    "explore": {
+      "name": "??"
+    },
+    "survey_route": {
+      "name": "????"
+    },
+    "restore_route": {
+      "name": "????"
+    },
+    "establish_connection": {
+      "name": "????"
+    },
+    "prepare": {
+      "name": "??"
+    },
+    "contribute": {
+      "name": "??"
+    },
+    "restore": {
+      "name": "??"
+    },
+    "use_skill": {
+      "name": "??"
+    },
+    "end_turn": {
+      "name": "????"
+    }
+  },
+  "resources": {
+    "ap": {
+      "name": "???"
+    },
+    "restoration": {
+      "name": "????"
+    },
+    "clues": {
+      "name": "????"
+    },
+    "influence": {
+      "name": "????"
+    }
+  }
+}

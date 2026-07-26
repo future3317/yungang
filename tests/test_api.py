@@ -15,15 +15,19 @@ def action(session, state, player, kind, **extra):
     payload = {'player_id':player, 'action':kind, 'expected_revision':state['revision'], **extra}
     return client.post(f'/api/games/{session}/actions', json=payload)
 
-def test_meta_and_v2_game_setup():
+def test_meta_and_v3_game_setup():
     meta = client.get('/api/meta').json()
-    assert meta['schema_version'] == 2
+    assert meta['schema_version'] == 3
     assert len(meta['roles']) == 4
-    state = create('test-v2')
+    assert len(meta['regions']) == 4
+    assert len(meta['sites']) >= 18
+    state = create('test-v3')
     assert state['mode'] == 'heritage_network'
-    assert state['shared']['current_event_id'] == 'sandstorm'
+    assert state['schema_version'] == 3
+    assert state['shared']['current_event_id'] in {item['id'] for item in meta['events']}
     assert len(state['market']) == 3
     assert state['players']['p1']['location'] == 'pingcheng_ruins'
+    assert state['action_options']
 
 def test_market_explore_and_revision_conflict():
     session = 'test-market'
@@ -79,3 +83,18 @@ def test_move_is_route_driven():
     updated = action(session, state, 'p1', 'move', target_id='yungang').json()
     assert updated['players']['p1']['location'] == 'yungang'
     assert updated['players']['p1']['ap'] == 2
+
+def test_same_seed_reproduces_opening_and_different_seed_changes_it():
+    first = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 42}).json()
+    second = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 42}).json()
+    other = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 43}).json()
+    assert first['seed'] == second['seed'] == 42
+    assert first['market'] == second['market']
+    assert first['shared']['current_event_id'] == second['shared']['current_event_id']
+    assert first['market'] != other['market'] or first['shared']['current_event_id'] != other['shared']['current_event_id']
+
+def test_scenario_changes_initial_rules_and_route_state():
+    state = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'market_reopening', 'seed': 7}).json()
+    assert state['scenario_id'] == 'market_reopening'
+    assert state['shared']['max_rounds'] == 10
+    assert sum(route['status'] == 'blocked' for route in state['routes'].values()) == 4

@@ -1,0 +1,136 @@
+{
+  "cards": [
+    {
+      "id": "action_01",
+      "name": "行动卡 01",
+      "action_type": "survey_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_02",
+      "name": "行动卡 02",
+      "action_type": "restore_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_03",
+      "name": "行动卡 03",
+      "action_type": "establish_connection",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_04",
+      "name": "行动卡 04",
+      "action_type": "prepare",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_05",
+      "name": "行动卡 05",
+      "action_type": "survey_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_06",
+      "name": "行动卡 06",
+      "action_type": "restore_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_07",
+      "name": "行动卡 07",
+      "action_type": "establish_connection",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_08",
+      "name": "行动卡 08",
+      "action_type": "prepare",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_09",
+      "name": "行动卡 09",
+      "action_type": "survey_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_10",
+      "name": "行动卡 10",
+      "action_type": "restore_route",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_11",
+      "name": "行动卡 11",
+      "action_type": "establish_connection",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    },
+    {
+      "id": "action_12",
+      "name": "行动卡 12",
+      "action_type": "prepare",
+      "cost": 1,
+      "description": "游戏化占位行动卡，待审核后配置效果。",
+      "content_review_status": "placeholder",
+      "source_title": "",
+      "source_url": "",
+      "source_note": "TODO_CONTENT_REVIEW"
+    }
+  ]
+}
