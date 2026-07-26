@@ -10,9 +10,10 @@ import { ScenarioHeader } from '../../widgets/game/ScenarioHeader';
 import { SiteInspector } from '../../widgets/game/SiteInspector';
 import { ActionTargetGuide } from '../../widgets/game/JourneyGuide';
 
-type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange'> | null;
+type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 const actionOrder: ActionType[] = ['move', 'survey_route', 'explore', 'contribute', 'restore', 'restore_route', 'establish_connection', 'exchange', 'prepare', 'use_action_card', 'use_skill', 'end_turn'];
 const actionLabels: Partial<Record<ActionType, string>> = { move: '移动', survey_route: '勘察路线', explore: '探索', contribute: '贡献', restore: '修护节点', restore_route: '修护路线', establish_connection: '建立连接', exchange: '交换', prepare: '准备', use_action_card: '使用策略牌', use_skill: '技能', end_turn: '结束回合' };
+actionLabels.plan = '规划';
 function findCardAction(actions: Action[], type: ActionType, cardId: string) { return actions.find(action => action.type === type && action.card_id === cardId); }
 function actionModeLabel(mode: ActionMode) { return mode ? actionLabels[mode] || mode : ''; }
 

@@ -124,6 +124,7 @@ class GameEngine:
 
         actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
         site = state.sites[active.location]
+        actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
         if site.status != SiteStatus.CLOSED and active.ap > 0:
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
@@ -168,6 +169,7 @@ class GameEngine:
         role = self.content.roles[active.role_id]
         if active.ap >= role.get("ability", {}).get("ap_cost", 1) and not active.skill_used:
             actions.append({"type": ActionType.USE_SKILL.value, "label": role["ability"]["name"], "skill": role["ability"]["action"], "cost": role["ability"].get("ap_cost", 1)})
+        actions = [action for action in actions if action["type"] != ActionType.PLAN.value or action.get("target_id")]
         state.legal_actions = actions
         state.action_options = self._build_action_options(actions)
         self._update_objectives(state)
@@ -406,7 +408,7 @@ class GameEngine:
         if not target or (target not in state.sites and target not in state.projects and target not in state.routes):
             raise ValueError("invalid_plan_target")
         marks = state.shared.planning_marks.setdefault(player.id, [])
-        if len(marks) >= 2: raise ValueError("planning_limit_reached")
+        if len(marks) >= int(state.shared.effective_rules.get("planning_marks_per_round", 2)): raise ValueError("planning_limit_reached")
         marks.append({"target_id": target, "turn": str(state.shared.turn)})
         state.shared.log.append(f"{player.name} \u653e\u7f6e\u89c4\u5212\u6807\u8bb0\uff1a{target}")
 
