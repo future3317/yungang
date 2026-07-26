@@ -11,8 +11,8 @@
       ],
       "content_review_status": "needs_review",
       "label_position": {
-        "x": 24,
-        "y": 25
+        "x": 22,
+        "y": 20
       },
       "visual_token": "region-pingcheng",
       "description": "以北魏平城都城遗址及考古记录为背景，组织都城、档案、工艺与云冈之间的游戏化研究网络；区域边界并非考古复原。",
@@ -31,8 +31,8 @@
       ],
       "content_review_status": "needs_review",
       "label_position": {
-        "x": 47,
-        "y": 35
+        "x": 50,
+        "y": 37
       },
       "visual_token": "region-cave",
       "description": "以云冈石窟的洞窟、造像与装饰艺术为核心，连接造像制作、纹样比较和遗产研究等游戏化节点。",
@@ -51,8 +51,8 @@
       ],
       "content_review_status": "needs_review",
       "label_position": {
-        "x": 69,
-        "y": 48
+        "x": 72,
+        "y": 45
       },
       "visual_token": "region-temple",
       "description": "以华严寺、善化寺代表的辽金古建筑遗产为背景，组织建筑观察、材料记录与修护协作。",
@@ -73,8 +73,8 @@
       ],
       "content_review_status": "needs_review",
       "label_position": {
-        "x": 78,
-        "y": 74
+        "x": 76,
+        "y": 79
       },
       "visual_token": "region-frontier",
       "description": "以大同长城、关堡和区域交通交流为背景，表现防御设施、行旅、市场与文化交换之间的关系。",
