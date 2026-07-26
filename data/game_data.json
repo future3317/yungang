@@ -29,29 +29,44 @@
   ],
   "domain_meta": {
     "statue": {
-      "name": "造像",
+      "name": "造像与图像",
       "short_name": "造像",
-      "color_token": "mineral-ochre"
+      "color_token": "mineral-ochre",
+      "description": "人物、佛教图像、龛像关系与观看方式等证据。"
     },
     "pattern": {
-      "name": "纹样",
+      "name": "纹样与色彩",
       "short_name": "纹样",
-      "color_token": "azure"
+      "color_token": "azure",
+      "description": "装饰纹样、衣纹、边饰、残彩与重复构图等证据。"
     },
     "architecture": {
-      "name": "建筑",
+      "name": "建筑与材料",
       "short_name": "建筑",
-      "color_token": "cinnabar"
+      "color_token": "cinnabar",
+      "description": "空间、梁架、石作、排水、材料和修护工艺等证据。"
     },
     "frontier": {
-      "name": "边塞",
+      "name": "边塞与守护",
       "short_name": "边塞",
-      "color_token": "malachite"
+      "color_token": "malachite",
+      "description": "关隘、守望、通行安全、环境风险与区域协同等证据。"
     },
     "trade": {
-      "name": "互市",
+      "name": "交通与互市",
       "short_name": "互市",
-      "color_token": "gold"
+      "color_token": "gold",
+      "description": "商旅、驿站、路线、凭信、译介与物资流动等证据。"
     }
+  },
+  "mechanics_version": "3.2",
+  "content_revision": "cooperative-evidence-route-risk",
+  "feature_hints": {
+    "evidence_combos": true,
+    "scenario_specific_content": true,
+    "route_governance": true,
+    "event_forecast": true,
+    "role_upgrades": true,
+    "solo_rules_defined": true
   }
 }

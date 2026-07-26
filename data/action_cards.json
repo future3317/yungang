@@ -5,84 +5,219 @@
       "name": "踏查旧径",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "勘察未明路线，揭示可移动的方向与潜在风险。"
+      "description": "先勘察再修护，可避免把研究线索投入错误路线。",
+      "timing": "行动阶段",
+      "target_rule": "相邻承压或阻断路线",
+      "effect": {
+        "type": "survey_route",
+        "risk_delta": -1,
+        "clues": 1
+      },
+      "best_use": "先勘察再修护，可避免把研究线索投入错误路线。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "route_governance"
+      ]
     },
     {
       "id": "action_02",
       "name": "清理险段",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "清除路线阻碍，让受损通道重新承担连接作用。"
+      "description": "研究线索不足但必须立即恢复通行时使用。",
+      "timing": "行动阶段",
+      "target_rule": "相邻承压或阻断路线",
+      "effect": {
+        "type": "restore_route",
+        "ignore_clue_cost": true
+      },
+      "best_use": "研究线索不足但必须立即恢复通行时使用。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "route_governance"
+      ]
     },
     {
       "id": "action_03",
       "name": "建立联络点",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "在两个地点之间建立可靠联络，强化协作网络。"
+      "description": "用于完成连通区域目标或提高终局路线评价。",
+      "timing": "行动阶段",
+      "target_rule": "相邻已修复路线",
+      "effect": {
+        "type": "establish_connection",
+        "connection_bonus": 1
+      },
+      "best_use": "用于完成连通区域目标或提高终局路线评价。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "route_governance"
+      ]
     },
     {
       "id": "action_04",
       "name": "整备行装",
       "action_type": "prepare",
       "cost": 1,
-      "description": "整理工具与记录，为下一次关键行动保留余地。"
+      "description": "事件将影响多个节点时，先投入准备比事后修护更节省。",
+      "timing": "事件预告阶段",
+      "target_rule": "当前世界事件",
+      "effect": {
+        "type": "prepare_event",
+        "threat_reduction": 1
+      },
+      "best_use": "事件将影响多个节点时，先投入准备比事后修护更节省。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "material_diagnosis"
+      ]
     },
     {
       "id": "action_05",
       "name": "标记岔口",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "在路线交会处留下清晰标记，帮助队伍判断下一步。"
+      "description": "路线信息不完全或多个方向同时承压时使用。",
+      "timing": "行动阶段",
+      "target_rule": "当前节点相邻的至多两条路线",
+      "effect": {
+        "type": "survey_multiple_routes",
+        "max_targets": 2
+      },
+      "best_use": "路线信息不完全或多个方向同时承压时使用。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "archive_context"
+      ]
     },
     {
       "id": "action_06",
       "name": "加固栈道",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "为脆弱路段补上支撑，恢复稳定通行。"
+      "description": "保留通行而不急于建立连接，适合资源紧张局面。",
+      "timing": "行动阶段",
+      "target_rule": "相邻承压路线",
+      "effect": {
+        "type": "reduce_route_risk",
+        "amount": 2
+      },
+      "best_use": "保留通行而不急于建立连接，适合资源紧张局面。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "material_diagnosis"
+      ]
     },
     {
       "id": "action_07",
       "name": "互通文牒",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "以清晰记录连接相邻节点，让线索持续流转。"
+      "description": "队伍分散在不同区域时维持证据流动。",
+      "timing": "行动阶段",
+      "target_rule": "一名队友或一条已修复路线",
+      "effect": {
+        "type": "remote_exchange_or_connect",
+        "range": 1
+      },
+      "best_use": "队伍分散在不同区域时维持证据流动。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "cross_origin"
+      ]
     },
     {
       "id": "action_08",
       "name": "静候时机",
       "action_type": "prepare",
       "cost": 1,
-      "description": "暂缓推进，观察局势后再作更有把握的选择。"
+      "description": "本回合没有合适目标时，将行动转为事件响应能力。",
+      "timing": "行动阶段",
+      "target_rule": "当前玩家",
+      "effect": {
+        "type": "reserve_ap",
+        "amount": 1
+      },
+      "best_use": "本回合没有合适目标时，将行动转为事件响应能力。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "archive_context"
+      ]
     },
     {
       "id": "action_09",
       "name": "风痕辨路",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "依据地形与风痕辨认旧道走向，降低未知路线的代价。"
+      "description": "针对风沙、磨蚀和路径承压事件。",
+      "timing": "事件响应阶段",
+      "target_rule": "受风沙影响的路线",
+      "effect": {
+        "type": "survey_and_mitigate",
+        "risk_delta": -1,
+        "threat_delta": -1
+      },
+      "best_use": "针对风沙、磨蚀和路径承压事件。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "route_governance"
+      ]
     },
     {
       "id": "action_10",
       "name": "续接石阶",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "修复断续石阶，使行旅与物资能够再次通过。"
+      "description": "必须在同一回合恢复通行并赶往目标节点时使用。",
+      "timing": "行动阶段",
+      "target_rule": "相邻阻断路线",
+      "effect": {
+        "type": "restore_and_move",
+        "move_after_restore": true
+      },
+      "best_use": "必须在同一回合恢复通行并赶往目标节点时使用。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "craft_coordination"
+      ]
     },
     {
       "id": "action_11",
       "name": "共享补给",
       "action_type": "establish_connection",
       "cost": 1,
-      "description": "协调两地资源，形成更稳固的支援关系。"
+      "description": "将团队资源和证据交换结合，支持分工明确的队伍。",
+      "timing": "任意行动阶段",
+      "target_rule": "同节点队友",
+      "effect": {
+        "type": "transfer_resource",
+        "resource": "restoration",
+        "amount": 1
+      },
+      "best_use": "将团队资源和证据交换结合，支持分工明确的队伍。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "cross_origin"
+      ]
     },
     {
       "id": "action_12",
       "name": "分配值守",
       "action_type": "prepare",
       "cost": 1,
-      "description": "安排队伍值守与补给，使后续行动更从容。"
+      "description": "面对多点事件时，将准备分配到不同节点或路线。",
+      "timing": "事件预告阶段",
+      "target_rule": "两名玩家或两个目标",
+      "effect": {
+        "type": "team_prepare",
+        "max_targets": 2
+      },
+      "best_use": "面对多点事件时，将准备分配到不同节点或路线。",
+      "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
+      "combo_tags": [
+        "route_governance"
+      ]
     }
   ]
 }

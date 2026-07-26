@@ -1,23 +1,50 @@
 [
   {
+    "id": "guided",
+    "name": "导览",
+    "description": "适合首次体验或单人双角色操作，事件压力较低，修护资源充足。",
+    "max_rounds": 10,
+    "restoration_resource": 9,
+    "event_weight": 0.7,
+    "node_damage_base": 0,
+    "recommended_experience": "首次体验",
+    "event_preview_count": 2,
+    "solo_ap_bonus": 1
+  },
+  {
     "id": "easy",
+    "name": "从容",
+    "description": "适合熟悉地图与证据组合，容错较高。",
     "max_rounds": 10,
     "restoration_resource": 8,
     "event_weight": 0.8,
-    "node_damage_base": 1
+    "node_damage_base": 1,
+    "recommended_experience": "轻松合作",
+    "event_preview_count": 1,
+    "solo_ap_bonus": 1
   },
   {
     "id": "normal",
+    "name": "标准",
+    "description": "路线、证据与修护压力相对均衡。",
     "max_rounds": 8,
     "restoration_resource": 6,
     "event_weight": 1.0,
-    "node_damage_base": 1
+    "node_damage_base": 1,
+    "recommended_experience": "标准合作",
+    "event_preview_count": 1,
+    "solo_ap_bonus": 0
   },
   {
     "id": "hard",
+    "name": "严峻",
+    "description": "初始资源紧张，事件更集中，需要明确分工和提前准备。",
     "max_rounds": 7,
     "restoration_resource": 5,
     "event_weight": 1.2,
-    "node_damage_base": 2
+    "node_damage_base": 2,
+    "recommended_experience": "熟练团队",
+    "event_preview_count": 1,
+    "solo_ap_bonus": 0
   }
 ]

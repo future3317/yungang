@@ -4,379 +4,649 @@
       "id": "yungang_facet_image",
       "site_id": "yungang",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "云冈石窟·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "yungang_facet_material",
       "site_id": "yungang",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "云冈石窟·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "yungang_facet_route",
       "site_id": "yungang",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "云冈石窟·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "huayan_temple_facet_image",
       "site_id": "huayan_temple",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "华严寺·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "huayan_temple_facet_material",
       "site_id": "huayan_temple",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "华严寺·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "huayan_temple_facet_route",
       "site_id": "huayan_temple",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "华严寺·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "shanhua_temple_facet_image",
       "site_id": "shanhua_temple",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "善化寺·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "shanhua_temple_facet_material",
       "site_id": "shanhua_temple",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "善化寺·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "shanhua_temple_facet_route",
       "site_id": "shanhua_temple",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "善化寺·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "wall_pass_facet_image",
       "site_id": "wall_pass",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "长城关隘·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "wall_pass_facet_material",
       "site_id": "wall_pass",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "长城关隘·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "wall_pass_facet_route",
       "site_id": "wall_pass",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "长城关隘·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "trade_post_facet_image",
       "site_id": "trade_post",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "互市驿站·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "trade_post_facet_material",
       "site_id": "trade_post",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "互市驿站·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "trade_post_facet_route",
       "site_id": "trade_post",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "互市驿站·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "pingcheng_ruins_facet_image",
       "site_id": "pingcheng_ruins",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "平城遗址·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "pingcheng_ruins_facet_material",
       "site_id": "pingcheng_ruins",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "平城遗址·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "pingcheng_ruins_facet_route",
       "site_id": "pingcheng_ruins",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "平城遗址·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "northern_workshop_facet_image",
       "site_id": "northern_workshop",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "北线工坊·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "northern_workshop_facet_material",
       "site_id": "northern_workshop",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "北线工坊·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "northern_workshop_facet_route",
       "site_id": "northern_workshop",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "北线工坊·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "archive_depot_facet_image",
       "site_id": "archive_depot",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "档案库·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "archive_depot_facet_material",
       "site_id": "archive_depot",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "档案库·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "archive_depot_facet_route",
       "site_id": "archive_depot",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "档案库·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "material_yard_facet_image",
       "site_id": "material_yard",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "材料场·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "material_yard_facet_material",
       "site_id": "material_yard",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "材料场·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "material_yard_facet_route",
       "site_id": "material_yard",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "材料场·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "carving_courtyard_facet_image",
       "site_id": "carving_courtyard",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "造像院·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "carving_courtyard_facet_material",
       "site_id": "carving_courtyard",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "造像院·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "carving_courtyard_facet_route",
       "site_id": "carving_courtyard",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "造像院·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "motif_gallery_facet_image",
       "site_id": "motif_gallery",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "纹样廊·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "motif_gallery_facet_material",
       "site_id": "motif_gallery",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "纹样廊·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "motif_gallery_facet_route",
       "site_id": "motif_gallery",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "纹样廊·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "river_crossing_facet_image",
       "site_id": "river_crossing",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河谷渡口·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "river_crossing_facet_material",
       "site_id": "river_crossing",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河谷渡口·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "river_crossing_facet_route",
       "site_id": "river_crossing",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河谷渡口·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "caravan_camp_facet_image",
       "site_id": "caravan_camp",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "行旅营地·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "caravan_camp_facet_material",
       "site_id": "caravan_camp",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "行旅营地·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "caravan_camp_facet_route",
       "site_id": "caravan_camp",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "行旅营地·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "border_market_facet_image",
       "site_id": "border_market",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "边市前沿·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "border_market_facet_material",
       "site_id": "border_market",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "边市前沿·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "border_market_facet_route",
       "site_id": "border_market",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "边市前沿·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "watchtower_facet_image",
       "site_id": "watchtower",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "烽火台·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "watchtower_facet_material",
       "site_id": "watchtower",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "烽火台·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "watchtower_facet_route",
       "site_id": "watchtower",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "烽火台·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "craft_school_facet_image",
       "site_id": "craft_school",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "工艺学堂·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "craft_school_facet_material",
       "site_id": "craft_school",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "工艺学堂·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "craft_school_facet_route",
       "site_id": "craft_school",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "工艺学堂·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "river_archive_facet_image",
       "site_id": "river_archive",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河道档案·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "river_archive_facet_material",
       "site_id": "river_archive",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河道档案·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "river_archive_facet_route",
       "site_id": "river_archive",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "河道档案·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     },
     {
       "id": "route_junction_facet_image",
       "site_id": "route_junction",
       "kind": "image",
-      "name": "节点面向 image",
-      "description": "待文化审核的游戏化面向。"
+      "name": "路线枢纽·图像与纹样",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
     },
     {
       "id": "route_junction_facet_material",
       "site_id": "route_junction",
       "kind": "material",
-      "name": "节点面向 material",
-      "description": "待文化审核的游戏化面向。"
+      "name": "路线枢纽·材料与修护",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
     },
     {
       "id": "route_junction_facet_route",
       "site_id": "route_junction",
       "kind": "route",
-      "name": "节点面向 route",
-      "description": "待文化审核的游戏化面向。"
+      "name": "路线枢纽·交通与协作",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "evidence_domains": [
+        "trade",
+        "frontier"
+      ],
+      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
     }
   ]
 }

@@ -31,7 +31,7 @@ class Content:
         self.projects = {x["id"]: x for x in self._items(self.files.get("projects", []), "projects")}
         self.action_cards = {x["id"]: x for x in self._items(self.files.get("action_cards", []), "cards")}
         self.event_chains = self._items(self.files.get("event_chains", []), "event_chains")
-        self.role_upgrades = self._items(self.files.get("role_upgrades", []), "role_upgrades")
+        self.role_upgrades = {x["id"]: x for x in self._items(self.files.get("role_upgrades", []), "role_upgrades")}
         self.objectives = {x["id"]: x for x in self._items(self.files.get("objectives", []), "objectives")}
         self.achievements = self._items(self.files.get("achievements", []), "achievements")
         self.terminology = self.files.get("terminology", {})

@@ -20,6 +20,7 @@ class ActionType(StrEnum):
     PREPARE = "prepare"
     SELECT_UPGRADE = "select_upgrade"
     PLAN = "plan"
+    USE_ACTION_CARD = "use_action_card"
 
 class SiteStatus(StrEnum):
     STABLE = "stable"
@@ -62,6 +63,7 @@ class PlayerState(BaseModel):
     influence: int = 0
     durability: int = 3
     hand: List[str] = Field(default_factory=list)
+    action_hand: List[str] = Field(default_factory=list)
     flags: Dict[str, Any] = Field(default_factory=dict)
     skill_used: bool = False
     contributions: int = 0
@@ -89,6 +91,7 @@ class ProjectState(BaseModel):
     progress: int = 0
     status: str = "active"
     contributors: List[str] = Field(default_factory=list)
+    stage_evidence: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class ObjectiveState(BaseModel):
@@ -143,6 +146,7 @@ class SharedState(BaseModel):
     route_connection_score: int = 0
     log: List[str] = Field(default_factory=list)
     planning_marks: Dict[str, List[Dict[str, str]]] = Field(default_factory=dict)
+    node_ability_uses: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
     schema_version: int = 3

@@ -6,8 +6,24 @@
     "id": "route_huayan_temple_yungang",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "华严寺—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "shanhua_temple",
@@ -16,8 +32,24 @@
     "id": "route_shanhua_temple_yungang",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "善化寺—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "construction",
+      "worship",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "wall_pass",
@@ -26,8 +58,24 @@
     "id": "route_wall_pass_yungang",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "长城关隘—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "security",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "trade_post",
@@ -36,8 +84,24 @@
     "id": "route_trade_post_yungang",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "互市驿站—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "trade",
+      "exchange",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "pingcheng_ruins",
@@ -46,8 +110,24 @@
     "id": "route_pingcheng_ruins_yungang",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "平城遗址—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "capital",
+      "archive",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "huayan_temple",
@@ -56,8 +136,24 @@
     "id": "route_huayan_temple_trade_post",
     "directional_rules": {},
     "tags": [
-      "main"
-    ]
+      "main",
+      "gate"
+    ],
+    "name": "华严寺—互市驿站",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "trade",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "from": "shanhua_temple",
@@ -65,7 +161,25 @@
     "cost": 2,
     "id": "route_shanhua_temple_wall_pass",
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "善化寺—长城关隘",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "construction",
+      "worship",
+      "frontier",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_northern_workshop_yungang",
@@ -77,7 +191,23 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "main"
+    ],
+    "name": "北线工坊—云冈石窟",
+    "strategic_role": "区域主干",
+    "risk_profile": "中等影响：连接主要遗产节点或核心项目。",
+    "evidence_tags": [
+      "architecture",
+      "pattern",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_archive_depot_pingcheng_ruins",
@@ -89,7 +219,23 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "档案库—平城遗址",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "capital",
+      "archive"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_material_yard_shanhua_temple",
@@ -101,7 +247,23 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "材料场—善化寺",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "architecture",
+      "trade",
+      "construction",
+      "worship"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_carving_courtyard_yungang",
@@ -113,7 +275,23 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "main"
+    ],
+    "name": "造像院—云冈石窟",
+    "strategic_role": "区域主干",
+    "risk_profile": "中等影响：连接主要遗产节点或核心项目。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_huayan_temple_motif_gallery",
@@ -125,7 +303,25 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "华严寺—纹样廊",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "pattern",
+      "statue"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_river_crossing_trade_post",
@@ -137,7 +333,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "河谷渡口—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "frontier",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_caravan_camp_trade_post",
@@ -149,7 +360,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "行旅营地—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "frontier",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_border_market_wall_pass",
@@ -161,7 +387,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—长城关隘",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_wall_pass_watchtower",
@@ -173,7 +414,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "长城关隘—烽火台",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "security",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_craft_school_pingcheng_ruins",
@@ -185,7 +441,23 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "工艺学堂—平城遗址",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "architecture",
+      "statue",
+      "capital",
+      "archive"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_river_archive_trade_post",
@@ -197,7 +469,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "河道档案—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "pattern",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_route_junction_yungang",
@@ -209,7 +496,25 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "路线枢纽—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_carving_courtyard_northern_workshop",
@@ -221,7 +526,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "造像院—北线工坊",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "pattern"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_carving_courtyard_motif_gallery",
@@ -233,7 +553,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "造像院—纹样廊",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "pattern"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_material_yard_river_crossing",
@@ -245,7 +580,24 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "材料场—河谷渡口",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "architecture",
+      "trade",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_river_archive_river_crossing",
@@ -257,7 +609,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "河道档案—河谷渡口",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "pattern",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_border_market_caravan_camp",
@@ -269,7 +636,21 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—行旅营地",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_border_market_watchtower",
@@ -281,7 +662,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—烽火台",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_craft_school_watchtower",
@@ -293,7 +689,24 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "工艺学堂—烽火台",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "architecture",
+      "statue",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_archive_depot_craft_school",
@@ -305,7 +718,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "档案库—工艺学堂",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_archive_depot_route_junction",
@@ -317,7 +745,25 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "档案库—路线枢纽",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "frontier",
+      "trade"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_route_junction_trade_post",
@@ -329,7 +775,22 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "路线枢纽—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   },
   {
     "id": "route_route_junction_wall_pass",
@@ -341,6 +802,21 @@
     "connection_level": 0,
     "active_project_id": null,
     "directional_rules": {},
-    "tags": []
+    "tags": [
+      "local"
+    ],
+    "name": "路线枢纽—长城关隘",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。"
   }
 ]

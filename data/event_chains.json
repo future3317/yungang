@@ -2,31 +2,125 @@
   "event_chains": [
     {
       "id": "chain_01",
+      "name": "风沙—磨蚀链",
       "event_ids": [
-        "event_01",
-        "event_02"
-      ]
+        "sandstorm",
+        "event_07",
+        "event_17"
+      ],
+      "description": "从风沙遮路发展为表层风化和多点告警，若连续出现，应优先准备和修护核心节点。",
+      "entry_tags": [
+        "wind",
+        "weathering"
+      ],
+      "resolution_hint": "完成准备、使用降低压力证据，或在链条中段完成重大修护项目。"
     },
     {
       "id": "chain_02",
+      "name": "渗水—材料病害链",
       "event_ids": [
-        "event_02",
-        "event_03"
-      ]
+        "event_06",
+        "event_10",
+        "event_16"
+      ],
+      "description": "渗水、排水不畅和材料病害依次加剧，适合用材料诊断与修护资源处理。",
+      "entry_tags": [
+        "water",
+        "material"
+      ],
+      "resolution_hint": "提前完成材料场或寺观项目，并保留共同修护资源。"
     },
     {
       "id": "chain_03",
+      "name": "阻断—承载压力链",
       "event_ids": [
-        "event_03",
-        "event_04"
-      ]
+        "route_blocked",
+        "event_14",
+        "event_13"
+      ],
+      "description": "路线阻断导致通行集中，随后出现承载压力和维护延误。",
+      "entry_tags": [
+        "route",
+        "schedule"
+      ],
+      "resolution_hint": "建立替代路线，不要把所有玩家集中在同一门户。"
     },
     {
       "id": "chain_04",
+      "name": "监测—档案缺口链",
       "event_ids": [
-        "event_04",
-        "event_05"
-      ]
+        "event_11",
+        "event_15",
+        "event_12"
+      ],
+      "description": "监测异常暴露记录缺口，完成巡查和档案整理后可转化为修护机会。",
+      "entry_tags": [
+        "monitoring",
+        "archive"
+      ],
+      "resolution_hint": "优先推进档案库、河道档案或守望节点任务。"
+    },
+    {
+      "id": "chain_05",
+      "name": "裂隙—危岩链",
+      "event_ids": [
+        "event_05",
+        "event_09",
+        "event_17"
+      ],
+      "description": "裂隙发展为危岩和多点告警，需要集中修护而非平均投入。",
+      "entry_tags": [
+        "rock",
+        "site_damage"
+      ],
+      "resolution_hint": "保护损伤最高的核心节点，并用路线替代减少移动浪费。"
+    },
+    {
+      "id": "chain_06",
+      "name": "交流—协作窗口链",
+      "event_ids": [
+        "pilgrims",
+        "event_18",
+        "quiet"
+      ],
+      "description": "人员往来、联合保护与静夜维护形成正向协作窗口。",
+      "entry_tags": [
+        "opportunity",
+        "cooperation"
+      ],
+      "resolution_hint": "集中完成多人贡献、角色升级和核心项目。"
+    },
+    {
+      "id": "chain_07",
+      "name": "附着—记录修复链",
+      "event_ids": [
+        "event_08",
+        "event_11",
+        "event_12"
+      ],
+      "description": "表面附着引发监测异常，巡查后可转化为修护资源。",
+      "entry_tags": [
+        "surface",
+        "monitoring"
+      ],
+      "resolution_hint": "提前准备可避免压力累积，并为后续修护保留行动点。"
+    },
+    {
+      "id": "chain_08",
+      "name": "互市—路线治理链",
+      "event_ids": [
+        "pilgrims",
+        "route_blocked",
+        "event_14",
+        "event_18"
+      ],
+      "description": "交流机会增加通行需求，路线阻断与承载压力随之出现，最终需要联合保护。",
+      "entry_tags": [
+        "exchange",
+        "route",
+        "cooperation"
+      ],
+      "resolution_hint": "先建立联络，再保留修护资源处理阻断。"
     }
   ]
 }

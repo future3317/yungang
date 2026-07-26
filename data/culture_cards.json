@@ -4,18 +4,51 @@
       "id": "survey",
       "icon_asset": "icon_card_scroll.png",
       "name": "行旅札记",
-      "domain": "pattern",
+      "domain": "trade",
       "origin_tags": [
-        "central"
+        "central",
+        "silk"
       ],
       "site_tags": [
-        "route"
+        "trade",
+        "frontier",
+        "architecture"
       ],
-      "description": "探索后获得 1 AP，并抽取一张文化牌。",
+      "description": "记录沿途节点、道路状态与人员往来，可作为路线判断的基础证据。",
       "effect": {
         "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "technique_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "与边塞或建筑证据共同贡献时，适合推进路线治理类任务。",
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "frontier",
+        "architecture"
+      ],
+      "combo_name": "行旅与路线互证",
+      "combo_reward_text": "与边塞或建筑证据共同贡献时，适合推进路线治理类任务。",
+      "strategic_role": "机动与调查",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "archive_context",
+        "trade"
+      ]
     },
     {
       "id": "craft",
@@ -27,13 +60,44 @@
         "craft"
       ],
       "site_tags": [
-        "construction"
+        "architecture",
+        "statue"
       ],
-      "description": "下一次贡献额外获得 1 影响力。",
+      "description": "记录工具、工序与材料判断，适合支撑营造和修护类项目。",
       "effect": {
         "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "technique_tags": [
+        "craft_coordination",
+        "material_diagnosis"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "下一次贡献获得加成，并可作为营造类组合的核心证据。",
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "craft_coordination",
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "architecture"
+      ],
+      "combo_name": "工序协同",
+      "combo_reward_text": "下一次贡献获得加成，并可作为营造类组合的核心证据。",
+      "strategic_role": "项目推进",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "craft_coordination",
+        "material_diagnosis",
+        "architecture"
+      ]
     },
     {
       "id": "alliance",
@@ -45,12 +109,43 @@
         "frontier"
       ],
       "site_tags": [
-        "exchange"
+        "trade",
+        "frontier"
       ],
-      "description": "本回合第一次移动不额外增加路线成本。",
+      "description": "以交换约定和通行协作为主题，适合缓解跨区域移动与交换压力。",
       "effect": {
         "type": "free_move"
-      }
+      },
+      "technique_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "与边塞证据共同贡献时，形成路线治理组合。",
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "本回合下一次移动不消耗路线行动点。",
+      "combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "关市互通",
+      "combo_reward_text": "与边塞证据共同贡献时，形成路线治理组合。",
+      "strategic_role": "路线机动",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "cross_origin",
+        "trade"
+      ]
     },
     {
       "id": "archive",
@@ -62,14 +157,46 @@
         "western"
       ],
       "site_tags": [
-        "archive"
+        "statue",
+        "pattern",
+        "architecture"
       ],
-      "description": "恢复 1 点共同修复资源，并获得 1 影响力。",
+      "description": "将造像、位置与保存状态整理为可比较记录，兼顾研究与修护。",
       "effect": {
         "type": "restore_and_influence",
         "resource": 1,
         "influence": 1
-      }
+      },
+      "technique_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "uncommon",
+      "culture_note": "与纹样或建筑证据配合时，可支撑图像复原和空间解释。",
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "pattern",
+        "architecture"
+      ],
+      "combo_name": "图像档案互证",
+      "combo_reward_text": "与纹样或建筑证据配合时，可支撑图像复原和空间解释。",
+      "strategic_role": "修护与核心证据",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "image_reconstruction",
+        "statue"
+      ]
     },
     {
       "id": "motif",
@@ -77,16 +204,47 @@
       "name": "莲华纹样",
       "domain": "pattern",
       "origin_tags": [
-        "western"
+        "western",
+        "craft"
       ],
       "site_tags": [
-        "buddha"
+        "pattern",
+        "statue"
       ],
-      "description": "作为纹样证据贡献时，为任务提供跨来源证据。",
+      "description": "以莲华构图的重复、变化和位置关系作为装饰艺术比较线索。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "technique_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "与造像证据共同贡献时，形成图像复原组合。",
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "造像与莲华",
+      "combo_reward_text": "与造像证据共同贡献时，形成图像复原组合。",
+      "strategic_role": "纹样组合",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "cross_origin",
+        "pattern"
+      ]
     },
     {
       "id": "frontier",
@@ -94,316 +252,632 @@
       "name": "关塞盟书",
       "domain": "frontier",
       "origin_tags": [
-        "frontier"
+        "frontier",
+        "central"
       ],
       "site_tags": [
-        "security"
+        "frontier",
+        "trade"
       ],
-      "description": "降低 1 点威胁。",
+      "description": "记录关隘通行、值守与协同约定，可用于降低突发风险。",
       "effect": {
         "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "technique_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "与互市证据共同贡献时，适合完成边塞交流任务。",
+      "evidence_use_text": "作为边塞证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "trade"
+      ],
+      "combo_name": "关塞通行互证",
+      "combo_reward_text": "与互市证据共同贡献时，适合完成边塞交流任务。",
+      "strategic_role": "风险控制",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "archive_context",
+        "frontier"
+      ]
     },
     {
       "id": "culture_07",
       "name": "壁面凿痕",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "architecture",
       "origin_tags": [
+        "craft",
         "central"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "archive_context"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "壁面凿痕：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "description": "凿痕的方向、密度与叠压关系可帮助判断营造过程和后期干预。",
+      "culture_note": "与造像记录共同贡献时，可支持营造顺序判断。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "material_diagnosis",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "工痕辨序",
+      "combo_reward_text": "与造像记录共同贡献时，可支持营造顺序判断。",
+      "strategic_role": "诊断",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "archive_context",
+        "architecture"
+      ]
     },
     {
       "id": "culture_08",
       "name": "金箔微光",
       "icon_asset": "icon_resource_influence.png",
-      "domain": "architecture",
+      "domain": "pattern",
       "origin_tags": [
-        "western"
+        "western",
+        "craft"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "craft_coordination"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "金箔微光：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "微小金色残留可作为装饰层次和工艺选择的观察线索。",
+      "culture_note": "与材料或建筑证据组合时，增强装饰工艺解释。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "craft_coordination"
+      ],
+      "combo_with_domains": [
+        "architecture"
+      ],
+      "combo_name": "装饰层次",
+      "combo_reward_text": "与材料或建筑证据组合时，增强装饰工艺解释。",
+      "strategic_role": "文化解释",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "craft_coordination",
+        "pattern"
+      ]
     },
     {
       "id": "culture_09",
       "name": "供养人衣纹",
       "icon_asset": "icon_task_statue.png",
-      "domain": "frontier",
+      "domain": "pattern",
       "origin_tags": [
-        "frontier"
+        "central",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "cross_origin",
+        "image_reconstruction"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "供养人衣纹：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "description": "衣纹、服饰和排列方式可用于比较不同图像传统的表达差异。",
+      "culture_note": "与造像证据共同贡献时，形成跨来源图像比较。",
       "effect": {
-        "type": "influence",
+        "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "人物图像对照",
+      "combo_reward_text": "与造像证据共同贡献时，形成跨来源图像比较。",
+      "strategic_role": "调查加速",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "cross_origin",
+        "image_reconstruction",
+        "pattern"
+      ]
     },
     {
       "id": "culture_10",
       "name": "莲瓣边饰",
       "icon_asset": "icon_task_trade.png",
-      "domain": "trade",
+      "domain": "pattern",
       "origin_tags": [
-        "craft"
+        "craft",
+        "northern"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "statue",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "craft_coordination"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "莲瓣边饰：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "边饰中的莲瓣节奏可帮助识别装饰单元的组合方式。",
+      "culture_note": "适合与造像或营造证据共同推进装饰类项目。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "craft_coordination"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "architecture"
+      ],
+      "combo_name": "边饰构成",
+      "combo_reward_text": "适合与造像或营造证据共同推进装饰类项目。",
+      "strategic_role": "贡献强化",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "craft_coordination",
+        "pattern"
+      ]
     },
     {
       "id": "culture_11",
       "name": "梁架尺度",
       "icon_asset": "icon_card_scroll.png",
-      "domain": "statue",
+      "domain": "architecture",
       "origin_tags": [
-        "northern"
+        "northern",
+        "craft"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "trade"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "craft_coordination"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "梁架尺度：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "description": "梁架比例、构件关系与空间尺度可作为建筑结构判断的基础。",
+      "culture_note": "与运输或材料流通证据组合时，支撑建筑修护。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 0
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "material_diagnosis",
+        "craft_coordination"
+      ],
+      "combo_with_domains": [
+        "trade"
+      ],
+      "combo_name": "结构与材料调度",
+      "combo_reward_text": "与运输或材料流通证据组合时，支撑建筑修护。",
+      "strategic_role": "修护资源",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "craft_coordination",
+        "architecture"
+      ]
     },
     {
       "id": "culture_12",
       "name": "行旅驮队",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "trade",
       "origin_tags": [
-        "silk"
+        "silk",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "trade",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "route_governance",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "行旅驮队：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "description": "驮运、补给与分段行进体现路线网络对物资和信息交换的支撑。",
+      "culture_note": "与边塞证据共同贡献时，适合恢复跨区域路线。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "free_move"
+      },
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "本回合下一次移动不消耗路线行动点。",
+      "combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "商旅通道",
+      "combo_reward_text": "与边塞证据共同贡献时，适合恢复跨区域路线。",
+      "strategic_role": "远程机动",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "cross_origin",
+        "trade"
+      ]
     },
     {
       "id": "culture_13",
       "name": "纹样交会",
       "icon_asset": "icon_resource_influence.png",
-      "domain": "architecture",
+      "domain": "pattern",
       "origin_tags": [
-        "central"
+        "central",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "statue",
+        "trade"
       ],
       "technique_tags": [
-        "placeholder"
+        "cross_origin",
+        "image_reconstruction"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "纹样交会：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "不同装饰单元在同一画面中的并置与重组，可作为文化互鉴的比较线索。",
+      "culture_note": "满足来源多样性时，提高结局中的互鉴评价。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "trade"
+      ],
+      "combo_name": "多源纹样重组",
+      "combo_reward_text": "满足来源多样性时，提高结局中的互鉴评价。",
+      "strategic_role": "来源多样性",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "cross_origin",
+        "image_reconstruction",
+        "pattern"
+      ]
     },
     {
       "id": "culture_14",
       "name": "石料肌理",
       "icon_asset": "icon_task_statue.png",
-      "domain": "frontier",
+      "domain": "architecture",
       "origin_tags": [
-        "western"
+        "craft",
+        "northern"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "石料肌理：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "description": "石材表面的颗粒、裂隙与风化差异可用于判断修护优先级。",
+      "culture_note": "与风险或边塞证据共同贡献时，适合处理高危节点。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "材质风险诊断",
+      "combo_reward_text": "与风险或边塞证据共同贡献时，适合处理高危节点。",
+      "strategic_role": "风险诊断",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "architecture"
+      ]
     },
     {
       "id": "culture_15",
       "name": "礼仪行列",
       "icon_asset": "icon_task_trade.png",
-      "domain": "trade",
+      "domain": "statue",
       "origin_tags": [
+        "central",
         "frontier"
       ],
       "site_tags": [
-        "placeholder"
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "礼仪行列：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "人物行列的方向、层次与位置关系可用于理解图像叙事的组织方式。",
+      "culture_note": "与纹样证据组合时，补足图像场景解释。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "pattern"
+      ],
+      "combo_name": "人物与纹样叙事",
+      "combo_reward_text": "与纹样证据组合时，补足图像场景解释。",
+      "strategic_role": "造像解释",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "cross_origin",
+        "statue"
+      ]
     },
     {
       "id": "culture_16",
       "name": "窟门风痕",
       "icon_asset": "icon_card_scroll.png",
-      "domain": "statue",
+      "domain": "architecture",
       "origin_tags": [
-        "craft"
+        "craft",
+        "frontier"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "窟门风痕：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "description": "入口附近的风痕、沉积与磨蚀可提示环境作用和维护需求。",
+      "culture_note": "适合在风沙或通行压力事件中解锁缓解选项。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "入口环境诊断",
+      "combo_reward_text": "适合在风沙或通行压力事件中解锁缓解选项。",
+      "strategic_role": "事件应对",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "route_governance",
+        "architecture"
+      ]
     },
     {
       "id": "culture_17",
       "name": "匠作铭记",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "architecture",
       "origin_tags": [
-        "northern"
+        "craft",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "craft_coordination",
+        "archive_context"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "匠作铭记：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "description": "通过工序、工具和修补痕迹的记录，呈现长期营造与维护的协作关系。",
+      "culture_note": "与图像证据组合时，适合推进多阶段修护项目。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "craft_coordination",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "pattern"
+      ],
+      "combo_name": "工艺档案",
+      "combo_reward_text": "与图像证据组合时，适合推进多阶段修护项目。",
+      "strategic_role": "项目加速",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "craft_coordination",
+        "archive_context",
+        "architecture"
+      ]
     },
     {
       "id": "culture_18",
       "name": "彩绘层次",
       "icon_asset": "icon_resource_influence.png",
-      "domain": "architecture",
+      "domain": "pattern",
       "origin_tags": [
-        "silk"
+        "silk",
+        "craft"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "material_diagnosis"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "彩绘层次：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "不同色层与覆盖关系可作为观察装饰变化和保存状态的线索。",
+      "culture_note": "与建筑材料证据共同贡献时，形成保存状态组合。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 0
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "architecture"
+      ],
+      "combo_name": "色层与材料",
+      "combo_reward_text": "与建筑材料证据共同贡献时，形成保存状态组合。",
+      "strategic_role": "修护支持",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "material_diagnosis",
+        "pattern"
+      ]
     },
     {
       "id": "culture_19",
@@ -411,24 +885,46 @@
       "icon_asset": "icon_task_statue.png",
       "domain": "frontier",
       "origin_tags": [
+        "frontier",
         "central"
       ],
       "site_tags": [
-        "placeholder"
+        "frontier",
+        "trade",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "边塞关隘：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "description": "关隘与道路节点共同构成通行、守望和区域协作的空间网络。",
+      "culture_note": "适合降低跨区域移动和路线项目的行动压力。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "free_move"
+      },
+      "evidence_use_text": "作为边塞证据投入任务。",
+      "instant_use_text": "本回合下一次移动不消耗路线行动点。",
+      "combo_tags": [
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "trade",
+        "architecture"
+      ],
+      "combo_name": "关隘网络",
+      "combo_reward_text": "适合降低跨区域移动和路线项目的行动压力。",
+      "strategic_role": "路线选择",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "frontier"
+      ]
     },
     {
       "id": "culture_20",
@@ -436,24 +932,47 @@
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
-        "western"
+        "western",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "trade",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "archive_context",
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "商旅凭信：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "用于确认身份、货物或约定的记录，可作为交换秩序的游戏化证据。",
+      "culture_note": "与关塞证据组合时，适合解锁事件协商选项。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "archive_context",
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "凭信与通行",
+      "combo_reward_text": "与关塞证据组合时，适合解锁事件协商选项。",
+      "strategic_role": "事件选项",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "route_governance",
+        "trade"
+      ]
     },
     {
       "id": "culture_21",
@@ -461,99 +980,192 @@
       "icon_asset": "icon_card_scroll.png",
       "domain": "statue",
       "origin_tags": [
-        "frontier"
+        "central",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "statue",
+        "pattern",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "佛龛光位：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "description": "龛内明暗、观看方向和造像位置共同影响图像被理解的方式。",
+      "culture_note": "与纹样或空间证据共同贡献时，推进核心图像项目。",
       "effect": {
-        "type": "influence",
+        "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "pattern",
+        "architecture"
+      ],
+      "combo_name": "空间中的造像",
+      "combo_reward_text": "与纹样或空间证据共同贡献时，推进核心图像项目。",
+      "strategic_role": "核心任务",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "statue"
+      ]
     },
     {
       "id": "culture_22",
       "name": "护持修补",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "architecture",
       "origin_tags": [
-        "craft"
+        "craft",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "craft_coordination"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
-      "rarity": "common",
-      "description": "护持修补：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "rarity": "uncommon",
+      "description": "修补层与原有材料的关系可用于讨论保护、记录和可逆性等基本原则。",
+      "culture_note": "适合在高损伤节点兼顾修护和项目推进。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 1
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "material_diagnosis",
+        "craft_coordination"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "修补与记录",
+      "combo_reward_text": "适合在高损伤节点兼顾修护和项目推进。",
+      "strategic_role": "强修护",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "craft_coordination",
+        "architecture"
+      ]
     },
     {
       "id": "culture_23",
       "name": "云气纹带",
       "icon_asset": "icon_resource_influence.png",
-      "domain": "architecture",
+      "domain": "pattern",
       "origin_tags": [
-        "northern"
+        "northern",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "云气纹带：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "连续纹带中的转折和节奏可作为图像空间连接的装饰线索。",
+      "culture_note": "与造像证据共同贡献时，提高跨来源组合价值。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "纹带连接",
+      "combo_reward_text": "与造像证据共同贡献时，提高跨来源组合价值。",
+      "strategic_role": "组合得分",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "cross_origin",
+        "pattern"
+      ]
     },
     {
       "id": "culture_24",
       "name": "崖壁排水",
       "icon_asset": "icon_task_statue.png",
-      "domain": "frontier",
+      "domain": "architecture",
       "origin_tags": [
-        "silk"
+        "craft",
+        "frontier"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "崖壁排水：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "description": "排水方向、汇水位置与表面病害之间的关系可用于判断环境风险。",
+      "culture_note": "可在渗水、排水不畅等事件中提供缓解线索。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "水害治理",
+      "combo_reward_text": "可在渗水、排水不畅等事件中提供缓解线索。",
+      "strategic_role": "水害应对",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "route_governance",
+        "architecture"
+      ]
     },
     {
       "id": "culture_25",
@@ -561,74 +1173,143 @@
       "icon_asset": "icon_task_trade.png",
       "domain": "trade",
       "origin_tags": [
-        "central"
+        "central",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "trade",
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "cross_origin",
+        "archive_context"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "译经片语：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "文本转译与概念传播体现知识在不同语言和文化环境中的再表达。",
+      "culture_note": "与图像证据共同贡献时，可扩展项目解释维度。",
       "effect": {
-        "type": "influence",
+        "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "cross_origin",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "pattern"
+      ],
+      "combo_name": "文字与图像互证",
+      "combo_reward_text": "与图像证据共同贡献时，可扩展项目解释维度。",
+      "strategic_role": "知识交流",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "cross_origin",
+        "archive_context",
+        "trade"
+      ]
     },
     {
       "id": "culture_26",
       "name": "驻守旗影",
       "icon_asset": "icon_card_scroll.png",
-      "domain": "statue",
+      "domain": "frontier",
       "origin_tags": [
-        "western"
+        "frontier",
+        "northern"
       ],
       "site_tags": [
-        "placeholder"
+        "frontier",
+        "trade"
       ],
       "technique_tags": [
-        "placeholder"
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "驻守旗影：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "description": "守望标记与值守秩序可用于表现路线安全和事件预警。",
+      "culture_note": "适合在路线阻断或多点告警事件前使用。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为边塞证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "trade"
+      ],
+      "combo_name": "守望与通行",
+      "combo_reward_text": "适合在路线阻断或多点告警事件前使用。",
+      "strategic_role": "预警",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "frontier"
+      ]
     },
     {
       "id": "culture_27",
       "name": "造像比例",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "statue",
       "origin_tags": [
-        "frontier"
+        "craft",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "craft_coordination"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "造像比例：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "description": "形体比例、姿态和龛像关系是比较造像组织方式的重要线索。",
+      "culture_note": "与纹样证据共同贡献时，强化造像复原项目。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "craft_coordination"
+      ],
+      "combo_with_domains": [
+        "pattern"
+      ],
+      "combo_name": "比例与装饰",
+      "combo_reward_text": "与纹样证据共同贡献时，强化造像复原项目。",
+      "strategic_role": "造像项目",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "craft_coordination",
+        "statue"
+      ]
     },
     {
       "id": "culture_28",
@@ -636,224 +1317,434 @@
       "icon_asset": "icon_resource_influence.png",
       "domain": "architecture",
       "origin_tags": [
-        "craft"
+        "craft",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "material_diagnosis",
+        "archive_context"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "香火器座：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "器座、台基与周边空间关系可用于理解使用方式和空间组织。",
+      "culture_note": "与造像证据共同贡献时，补足空间使用线索。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 0
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "material_diagnosis",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "器物与空间",
+      "combo_reward_text": "与造像证据共同贡献时，补足空间使用线索。",
+      "strategic_role": "空间解释",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "material_diagnosis",
+        "archive_context",
+        "architecture"
+      ]
     },
     {
       "id": "culture_29",
       "name": "连珠纹环",
       "icon_asset": "icon_task_statue.png",
-      "domain": "frontier",
+      "domain": "pattern",
       "origin_tags": [
+        "western",
         "northern"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "trade"
       ],
       "technique_tags": [
-        "placeholder"
+        "cross_origin",
+        "image_reconstruction"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "连珠纹环：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "description": "连续圆珠构成的边饰可用于比较装饰单元的传播和再组合。",
+      "culture_note": "与互市证据共同贡献时，提高文化流动评价。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "trade"
+      ],
+      "combo_name": "纹样传播",
+      "combo_reward_text": "与互市证据共同贡献时，提高文化流动评价。",
+      "strategic_role": "互鉴评价",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "cross_origin",
+        "image_reconstruction",
+        "pattern"
+      ]
     },
     {
       "id": "culture_30",
       "name": "石工工具",
       "icon_asset": "icon_task_trade.png",
-      "domain": "trade",
+      "domain": "architecture",
       "origin_tags": [
+        "craft",
         "silk"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue"
       ],
       "technique_tags": [
-        "placeholder"
+        "craft_coordination",
+        "material_diagnosis"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "石工工具：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "工具类型和使用痕迹可帮助理解石作工序与协作方式。",
+      "culture_note": "与造像证据共同贡献时，可推进工艺阶段。",
       "effect": {
-        "type": "influence",
+        "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "craft_coordination",
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "statue"
+      ],
+      "combo_name": "工具与造作",
+      "combo_reward_text": "与造像证据共同贡献时，可推进工艺阶段。",
+      "strategic_role": "行动效率",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "craft_coordination",
+        "material_diagnosis",
+        "architecture"
+      ]
     },
     {
       "id": "culture_31",
       "name": "山道驿站",
       "icon_asset": "icon_card_scroll.png",
-      "domain": "statue",
+      "domain": "trade",
       "origin_tags": [
-        "central"
+        "silk",
+        "frontier"
       ],
       "site_tags": [
-        "placeholder"
+        "trade",
+        "frontier"
       ],
       "technique_tags": [
-        "placeholder"
+        "route_governance"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "山道驿站：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "description": "驿站、补给和路线节点体现长距离移动需要多点协作。",
+      "culture_note": "适合在路线治理情景中建立连续通行。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "free_move"
+      },
+      "evidence_use_text": "作为互市证据投入任务。",
+      "instant_use_text": "本回合下一次移动不消耗路线行动点。",
+      "combo_tags": [
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "frontier"
+      ],
+      "combo_name": "驿路联络",
+      "combo_reward_text": "适合在路线治理情景中建立连续通行。",
+      "strategic_role": "跨区移动",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "trade"
+      ]
     },
     {
       "id": "culture_32",
       "name": "龛楣飞天",
       "icon_asset": "icon_action_restore.png",
-      "domain": "pattern",
+      "domain": "statue",
       "origin_tags": [
-        "western"
+        "western",
+        "craft"
       ],
       "site_tags": [
-        "placeholder"
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "龛楣飞天：纹样在石壁边缘持续展开，将不同视觉传统组织为连贯的装饰节奏。",
-      "culture_note": "沿图案的重复与变化建立文化联系。",
+      "description": "龛楣中的飞天形象与周边纹样可作为图像构成和文化交流的观察线索。",
+      "culture_note": "与纹样证据共同贡献时，形成完整龛楣组合。",
       "effect": {
-        "type": "influence",
+        "type": "gain_ap",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "立即恢复1点行动点。",
+      "combo_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "pattern"
+      ],
+      "combo_name": "飞天与边饰",
+      "combo_reward_text": "与纹样证据共同贡献时，形成完整龛楣组合。",
+      "strategic_role": "图像组合",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "cross_origin",
+        "statue"
+      ]
     },
     {
       "id": "culture_33",
       "name": "残彩花叶",
       "icon_asset": "icon_resource_influence.png",
-      "domain": "architecture",
+      "domain": "pattern",
       "origin_tags": [
-        "frontier"
+        "craft",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "pattern",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "image_reconstruction",
+        "material_diagnosis"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "残彩花叶：洞窟的尺度、结构与光线共同塑造了可被观看和使用的空间。",
-      "culture_note": "把结构观察转化为空间理解。",
+      "description": "残留花叶色彩可用于比较装饰层次与保存状态。",
+      "culture_note": "与材料证据组合时，适合推进保护记录项目。",
       "effect": {
-        "type": "influence",
+        "type": "next_contribute_bonus",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为纹样证据投入任务。",
+      "instant_use_text": "下一次贡献获得额外影响。",
+      "combo_tags": [
+        "image_reconstruction",
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "architecture"
+      ],
+      "combo_name": "残彩诊断",
+      "combo_reward_text": "与材料证据组合时，适合推进保护记录项目。",
+      "strategic_role": "组合强化",
+      "event_option_tags": [
+        "project"
+      ],
+      "finale_tags": [
+        "image_reconstruction",
+        "material_diagnosis",
+        "pattern"
+      ]
     },
     {
       "id": "culture_34",
       "name": "共同造作",
       "icon_asset": "icon_task_statue.png",
-      "domain": "frontier",
+      "domain": "architecture",
       "origin_tags": [
-        "craft"
+        "craft",
+        "central",
+        "western"
       ],
       "site_tags": [
-        "placeholder"
+        "architecture",
+        "statue",
+        "pattern"
       ],
       "technique_tags": [
-        "placeholder"
+        "craft_coordination",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
-      "rarity": "common",
-      "description": "共同造作：边地道路、关隘与聚落的痕迹显示出交流网络的日常韧性。",
-      "culture_note": "将地点放回行旅、补给与信息流动中。",
+      "rarity": "uncommon",
+      "description": "多类工序和人员协同完成大型营造，可作为合作分工的综合证据。",
+      "culture_note": "由不同玩家共同贡献时，适合完成大型项目。",
       "effect": {
-        "type": "influence",
-        "amount": 1
-      }
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 1
+      },
+      "evidence_use_text": "作为建筑证据投入任务。",
+      "instant_use_text": "补充修护资源，并获得个人影响。",
+      "combo_tags": [
+        "craft_coordination",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "statue",
+        "pattern"
+      ],
+      "combo_name": "多工种协作",
+      "combo_reward_text": "由不同玩家共同贡献时，适合完成大型项目。",
+      "strategic_role": "团队协作",
+      "event_option_tags": [
+        "restoration"
+      ],
+      "finale_tags": [
+        "craft_coordination",
+        "cross_origin",
+        "architecture"
+      ]
     },
     {
       "id": "culture_35",
       "name": "洞窟回声",
       "icon_asset": "icon_task_trade.png",
-      "domain": "trade",
+      "domain": "statue",
       "origin_tags": [
-        "northern"
+        "northern",
+        "central"
       ],
       "site_tags": [
-        "placeholder"
+        "statue",
+        "architecture"
       ],
       "technique_tags": [
-        "placeholder"
+        "archive_context",
+        "image_reconstruction"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "洞窟回声：物资、凭信与驿站线索揭示了远距离往来所依赖的协作网络。",
-      "culture_note": "追踪一件线索如何穿越不同节点。",
+      "description": "空间回声与观看距离提示洞窟体验不仅来自图像，也来自整体空间。",
+      "culture_note": "与建筑证据共同贡献时，扩展核心项目解释。",
       "effect": {
         "type": "influence",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为造像证据投入任务。",
+      "instant_use_text": "立即增加1点共同影响。",
+      "combo_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "architecture"
+      ],
+      "combo_name": "空间感知",
+      "combo_reward_text": "与建筑证据共同贡献时，扩展核心项目解释。",
+      "strategic_role": "结局评价",
+      "event_option_tags": [
+        "finale"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "image_reconstruction",
+        "statue"
+      ]
     },
     {
       "id": "culture_36",
       "name": "守望灯火",
       "icon_asset": "icon_card_scroll.png",
-      "domain": "statue",
+      "domain": "frontier",
       "origin_tags": [
+        "frontier",
         "silk"
       ],
       "site_tags": [
-        "placeholder"
+        "frontier",
+        "trade"
       ],
       "technique_tags": [
-        "placeholder"
+        "route_governance",
+        "cross_origin"
       ],
       "era_tags": [
-        "placeholder"
+        "cross_cultural_evidence"
       ],
-      "rarity": "common",
-      "description": "守望灯火：造像细部保留了工匠对比例、衣褶与庄严感的细致安排。",
-      "culture_note": "从造像语言中辨认工艺与观看方式。",
+      "rarity": "uncommon",
+      "description": "夜间守望和灯火联络可作为路线安全与协作响应的象征性证据。",
+      "culture_note": "适合在事件结算前降低风险并连接边塞与互市任务。",
       "effect": {
-        "type": "influence",
+        "type": "reduce_threat",
         "amount": 1
-      }
+      },
+      "evidence_use_text": "作为边塞证据投入任务。",
+      "instant_use_text": "降低1点风化压力。",
+      "combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "trade"
+      ],
+      "combo_name": "灯火联络",
+      "combo_reward_text": "适合在事件结算前降低风险并连接边塞与互市任务。",
+      "strategic_role": "终局风险控制",
+      "event_option_tags": [
+        "wind",
+        "route"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "cross_origin",
+        "frontier"
+      ]
     }
   ]
 }

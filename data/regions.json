@@ -14,7 +14,10 @@
         "y": 20
       },
       "visual_token": "region-pingcheng",
-      "description": "以北魏平城都城遗址及考古记录为背景，组织都城、档案、工艺与云冈之间的游戏化研究网络；区域边界并非考古复原。"
+      "description": "以平城遗址、档案整理和工艺协作为主线，表现都城线索如何进入云冈相关研究与保护网络。区域边界是游戏信息分组，不是历史地理复原。",
+      "gameplay_focus": "调查、档案保留、角色成长",
+      "entry_hint": "适合开局收集线索和锁定核心项目所需证据。",
+      "risk_profile": "信息缺口和行动分散"
     },
     {
       "id": "cave_network",
@@ -30,7 +33,10 @@
         "y": 37
       },
       "visual_token": "region-cave",
-      "description": "以云冈石窟的洞窟、造像与装饰艺术为核心，连接造像制作、纹样比较和遗产研究等游戏化节点。"
+      "description": "以云冈核心节点、造像工序和纹样对照为主线，强调图像、装饰、材料和观看空间之间的互证。",
+      "gameplay_focus": "造像组合、纹样互证、核心项目",
+      "entry_hint": "适合中局汇集跨区域证据，并为终局项目准备五个领域。",
+      "risk_profile": "核心节点风险集中"
     },
     {
       "id": "temple_network",
@@ -46,7 +52,10 @@
         "y": 45
       },
       "visual_token": "region-temple",
-      "description": "以华严寺、善化寺代表的辽金古建筑遗产为背景，组织建筑观察、材料记录与修护协作。"
+      "description": "以华严寺、善化寺及材料协作节点为主线，表现结构判断、材料调度和修护记录之间的联系。",
+      "gameplay_focus": "建筑诊断、修护资源、多人项目",
+      "entry_hint": "适合把探索转化为修护和项目推进。",
+      "risk_profile": "材料病害与资源消耗"
     },
     {
       "id": "frontier_network",
@@ -64,7 +73,10 @@
         "y": 79
       },
       "visual_token": "region-frontier",
-      "description": "以大同长城、关堡和区域交通交流为背景，表现防御设施、行旅、市场与文化交换之间的关系。"
+      "description": "以关隘、互市、守望和行旅节点为主线，表现安全、通行、交换和路线治理之间的平衡。",
+      "gameplay_focus": "路线治理、交换、事件预警",
+      "entry_hint": "适合处理阻断路线、建立区域连接和完成多来源任务。",
+      "risk_profile": "路线阻断和事件压力"
     }
   ]
 }

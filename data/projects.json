@@ -3,152 +3,430 @@
     {
       "id": "project_01",
       "site_id": "pingcheng_ruins",
-      "name": "平城遗址考古线索整理",
+      "name": "平城线索编年",
+      "project_type": "investigation",
+      "summary": "将地点探索、造像证据和修护记录串联为一份可复查的线索序列。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
+          "name": "定位遗存线索",
           "required_progress": 1,
-          "action_type": "explore"
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "在平城遗址探索并取得一份可归档的文化证据。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
+          "name": "建立图像对照",
           "required_progress": 2,
-          "action_type": "contribute"
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "statue",
+              "pattern"
+            ],
+            "origin_diversity": 2
+          },
+          "stage_text": "提交造像与纹样证据，建立至少两种来源的对照。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
+          "name": "整理保护记录",
           "required_progress": 1,
-          "action_type": "restore"
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "完成一次节点修护，把风险记录纳入项目解释。"
         }
-      ]
+      ],
+      "reward": {
+        "influence": 2,
+        "research_clues": 1,
+        "objective_tags": [
+          "projects",
+          "origin_diversity"
+        ]
+      },
+      "strategy_note": "适合作为开局项目，先探索再汇集证据，最后用修护收束。"
     },
     {
       "id": "project_02",
       "site_id": "huayan_temple",
-      "name": "华严寺建筑档案整理",
+      "name": "华严寺结构档案",
+      "project_type": "restoration",
+      "summary": "围绕结构、材料和装饰关系建立可用于修护决策的建筑档案。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
+          "name": "读取结构线索",
           "required_progress": 1,
-          "action_type": "explore"
+          "action_type": "explore",
+          "requirements": {
+            "domains": [
+              "architecture"
+            ]
+          },
+          "stage_text": "探索建筑或材料证据。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
-          "required_progress": 2,
-          "action_type": "contribute"
+          "name": "诊断材料风险",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "先进行一次修护，验证结构判断。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
-          "required_progress": 1,
-          "action_type": "restore"
+          "name": "补充跨来源证据",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "architecture",
+              "pattern"
+            ],
+            "origin_diversity": 2
+          },
+          "stage_text": "提交建筑与纹样证据，完成结构和装饰互证。"
         }
-      ]
+      ],
+      "reward": {
+        "restoration_resource": 2,
+        "influence": 1,
+        "objective_tags": [
+          "projects",
+          "site_protection"
+        ]
+      },
+      "strategy_note": "要求先处理实际风险，再用证据确认修护解释。"
     },
     {
       "id": "project_03",
       "site_id": "shanhua_temple",
-      "name": "善化寺辽金木构辨识",
+      "name": "善化寺营造协同",
+      "project_type": "restoration",
+      "summary": "把结构观察、材料调度和多人贡献组合成一次完整的营造协作。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
+          "name": "观察构件关系",
           "required_progress": 1,
-          "action_type": "explore"
+          "action_type": "explore",
+          "requirements": {
+            "domains": [
+              "architecture"
+            ]
+          },
+          "stage_text": "探索一份建筑证据。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
+          "name": "协调材料与运输",
           "required_progress": 2,
-          "action_type": "contribute"
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "architecture",
+              "trade"
+            ],
+            "contributors": 2
+          },
+          "stage_text": "由不同玩家提交建筑与互市证据。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
-          "required_progress": 1,
-          "action_type": "restore"
+          "name": "完成稳定处理",
+          "required_progress": 2,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 2
+          },
+          "stage_text": "进行两次修护，完成稳定处理。"
         }
-      ]
+      ],
+      "reward": {
+        "restoration_resource": 1,
+        "route_connection": 1,
+        "objective_tags": [
+          "projects",
+          "regions"
+        ]
+      },
+      "strategy_note": "多人参与收益最高，适合中局集中行动。"
     },
     {
       "id": "project_04",
       "site_id": "wall_pass",
-      "name": "长城关隘体系调查",
+      "name": "关隘路线治理",
+      "project_type": "route",
+      "summary": "把关隘观察、通行证据和节点修护组合为一套路线治理方案。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
-          "required_progress": 1,
-          "action_type": "explore"
+          "name": "勘明周边通道",
+          "required_progress": 2,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 2
+          },
+          "stage_text": "通过两次探索积累路线判断依据。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
+          "name": "提交守望与互市证据",
           "required_progress": 2,
-          "action_type": "contribute"
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "frontier",
+              "trade"
+            ],
+            "origin_diversity": 2
+          },
+          "stage_text": "组合边塞与互市证据。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
+          "name": "稳定关隘节点",
           "required_progress": 1,
-          "action_type": "restore"
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "完成一次节点修护，形成可持续通行方案。"
         }
-      ]
+      ],
+      "reward": {
+        "route_connection": 2,
+        "threat_reduction": 1,
+        "objective_tags": [
+          "route_restoration",
+          "regions"
+        ]
+      },
+      "strategy_note": "配合路线勘察与修护行动使用，可明显改变地图通行。"
     },
     {
       "id": "project_05",
       "site_id": "trade_post",
-      "name": "丝路交流证据编目",
+      "name": "互市证据编目",
+      "project_type": "cooperation",
+      "summary": "通过交换、档案与多来源证据建立一套可追踪的互市协作记录。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
+          "name": "收集通行记录",
           "required_progress": 1,
-          "action_type": "explore"
+          "action_type": "explore",
+          "requirements": {
+            "domains": [
+              "trade"
+            ]
+          },
+          "stage_text": "探索一份互市或路线证据。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
-          "required_progress": 2,
-          "action_type": "contribute"
+          "name": "完成多方互证",
+          "required_progress": 3,
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "trade",
+              "frontier"
+            ],
+            "origin_diversity": 3,
+            "contributors": 2
+          },
+          "stage_text": "提交三张不同来源证据，并由至少两名玩家参与。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
+          "name": "维护交换节点",
           "required_progress": 1,
-          "action_type": "restore"
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "完成一次节点修护，保证交换网络持续运行。"
         }
-      ]
+      ],
+      "reward": {
+        "influence": 3,
+        "research_clues": 1,
+        "objective_tags": [
+          "origin_diversity",
+          "projects"
+        ]
+      },
+      "strategy_note": "需要手牌交换和多人分工，是文明汇流情景的关键项目。"
     },
     {
       "id": "project_06",
       "site_id": "yungang",
-      "name": "云冈洞窟与造像信息整合",
+      "name": "云冈多域总汇",
+      "project_type": "core",
+      "summary": "将五类证据、多个地点成果和修护记录汇入核心节点，完成全局解释。",
       "stages": [
         {
           "id": "discover",
-          "name": "发现线索",
-          "required_progress": 1,
-          "action_type": "explore"
+          "name": "开启核心调查",
+          "required_progress": 2,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 2
+          },
+          "stage_text": "在核心区域完成两次探索。"
         },
         {
           "id": "compare",
-          "name": "比较证据",
-          "required_progress": 2,
-          "action_type": "contribute"
+          "name": "汇集五域证据",
+          "required_progress": 5,
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "statue",
+              "pattern",
+              "architecture",
+              "frontier",
+              "trade"
+            ],
+            "origin_diversity": 3,
+            "contributors": 2
+          },
+          "stage_text": "汇集五个领域且至少三种来源的证据。"
         },
         {
           "id": "interpret",
-          "name": "完成解释",
+          "name": "完成核心修护",
           "required_progress": 1,
-          "action_type": "restore"
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 2
+          },
+          "stage_text": "在云冈核心节点完成最终修护。"
         }
-      ]
+      ],
+      "reward": {
+        "influence": 5,
+        "finale_unlock": true,
+        "objective_tags": [
+          "projects",
+          "origin_diversity",
+          "site_protection"
+        ]
+      },
+      "strategy_note": "标准局终局项目，应在中局前确定证据分工。"
+    },
+    {
+      "id": "project_07",
+      "site_id": "archive_depot",
+      "name": "跨来源档案索引",
+      "project_type": "archive",
+      "summary": "把分散证据按领域、来源和地点关系整理为可检索索引。",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "建立档案目录",
+          "required_progress": 1,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "取得一张新的文化证据，建立目录入口。"
+        },
+        {
+          "id": "compare",
+          "name": "完成来源交叉索引",
+          "required_progress": 3,
+          "action_type": "contribute",
+          "requirements": {
+            "origin_diversity": 3,
+            "domains": [
+              "statue",
+              "pattern"
+            ]
+          },
+          "stage_text": "提交三张不同来源的图像或纹样证据。"
+        },
+        {
+          "id": "interpret",
+          "name": "保护档案环境",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "进行一次修护，完成档案保存环节。"
+        }
+      ],
+      "reward": {
+        "market_reserve": 1,
+        "archive_retrieve": 1,
+        "objective_tags": [
+          "origin_diversity",
+          "projects"
+        ]
+      },
+      "strategy_note": "让团队更容易保留关键证据，适合信息不完全情景。"
+    },
+    {
+      "id": "project_08",
+      "site_id": "route_junction",
+      "name": "多路线联络方案",
+      "project_type": "route",
+      "summary": "比较多条路线的风险与收益，建立一条主通道和一条备用通道。",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "记录路线差异",
+          "required_progress": 2,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 2
+          },
+          "stage_text": "通过探索获取两份路线或环境证据。"
+        },
+        {
+          "id": "compare",
+          "name": "形成治理方案",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "domains": [
+              "frontier",
+              "trade"
+            ],
+            "origin_diversity": 2
+          },
+          "stage_text": "提交边塞和互市证据，比较不同通道。"
+        },
+        {
+          "id": "interpret",
+          "name": "稳定枢纽节点",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "修护路线枢纽，完成联络方案。"
+        }
+      ],
+      "reward": {
+        "route_connection": 2,
+        "research_clues": 1,
+        "objective_tags": [
+          "route_restoration",
+          "regions"
+        ]
+      },
+      "strategy_note": "用于互市重开情景，可降低路线阻断带来的单点风险。"
     }
   ]
 }

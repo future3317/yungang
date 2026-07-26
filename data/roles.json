@@ -9,11 +9,19 @@
     "start_site_id": "pingcheng_ruins",
     "ability": {
       "name": "精修",
-      "description": "本回合在当前遗产点执行一次强化修护，额外移除 2 点损伤（按普通修护一次资源结算）。",
+      "description": "消耗1点行动点和1点共同修护资源，在当前节点移除最多2点损伤。适合抢救接近关闭的核心节点。",
       "action": "fine_repair",
       "ap_cost": 1
     },
-    "meaning": "北魏平城与云冈营造需要组织石作、雕刻和持续维护；本角色将相关工艺劳动综合为合作型游戏身份。"
+    "meaning": "以都城营造、石作组织和持续维护为灵感的合作角色，重点是把有限修护资源投入最关键的位置。",
+    "team_role": "节点修护与项目收束",
+    "play_style": "先观察事件目标和节点损伤，再在中后局用强化修护完成项目。",
+    "solo_rule": "单人模式下首次精修后获得1点研究线索。",
+    "upgrade_ids": [
+      "pingcheng_artisan_upgrade_1",
+      "pingcheng_artisan_upgrade_2"
+    ],
+    "starting_hint": "不要在只有1点损伤的普通节点上过早使用精修。"
   },
   {
     "id": "western_dancer",
@@ -25,11 +33,19 @@
     "start_site_id": "huayan_temple",
     "ability": {
       "name": "和鸣",
-      "description": "本回合贡献卡时可把一张卡的起源标签视为另一种来源，以满足互鉴多样性。",
+      "description": "消耗1点行动点，使本回合下一次贡献额外满足一种来源多样性；事件结算时还可降低1点压力。",
       "action": "harmony_hint",
       "ap_cost": 1
     },
-    "meaning": "丝绸之路上的人员流动推动乐舞、服饰、纹样与观念交流；本角色用于表现文化传播和跨来源协作。"
+    "meaning": "以乐舞、服饰、图像和观念在交流网络中的传播为灵感，重点是连接不同来源的证据。",
+    "team_role": "来源多样性与事件协同",
+    "play_style": "寻找只差一种来源即可完成的任务，并与队友交换证据后集中贡献。",
+    "solo_rule": "单人模式下和鸣可作用于两个由同一玩家控制的角色。",
+    "upgrade_ids": [
+      "western_dancer_upgrade_1",
+      "western_dancer_upgrade_2"
+    ],
+    "starting_hint": "和鸣最适合用于三来源任务和互市类项目。"
   },
   {
     "id": "grassland_rider",
@@ -41,12 +57,20 @@
     "start_site_id": "wall_pass",
     "ability": {
       "name": "疾行",
-      "description": "本回合第一次移动可跨越最多两段连接边，仍消耗 1 AP。",
+      "description": "消耗1点行动点，使下一次移动可跨越最多两段已通行路线，仍按1点行动结算。",
       "action": "sprint_move",
       "ap_cost": 1,
       "max_hops": 2
     },
-    "meaning": "北方边地交通连接农耕与游牧社会，长城沿线既有防御体系，也保存了文明接触和交流的历史线索。"
+    "meaning": "以北方交通、行旅机动和边塞联络为灵感，重点是快速处理远端风险与路线任务。",
+    "team_role": "地图机动与路线治理",
+    "play_style": "先勘察替代路线，再利用疾行在不同区域间支援。",
+    "solo_rule": "单人模式下疾行后可免费放置一个计划标记。",
+    "upgrade_ids": [
+      "grassland_rider_upgrade_1",
+      "grassland_rider_upgrade_2"
+    ],
+    "starting_hint": "避免只把疾行用于普通移动，应优先解决远端事件或阻断。"
   },
   {
     "id": "central_scribe",
@@ -58,10 +82,18 @@
     "start_site_id": "trade_post",
     "ability": {
       "name": "博览",
-      "description": "查看文化市场与牌库顶部 3 张候选，选择 1 张加入手牌，其余按确定规则放回。",
+      "description": "消耗1点行动点，从公开市场的三张候选中选择一张加入手牌，减少随机抽取造成的浪费。",
       "action": "view_select",
       "ap_cost": 1
     },
-    "meaning": "文献、档案与分类工作帮助保存都城、建筑和造像研究线索；本角色以记录和选择信息表现知识整理。"
+    "meaning": "以文献整理、记录比对和知识转译为灵感，重点是改善团队信息质量与证据配置。",
+    "team_role": "市场控制与档案整理",
+    "play_style": "根据当前项目缺口选择证据，并帮助队友保留稀缺领域或来源。",
+    "solo_rule": "单人模式下博览后可将一张未选牌置于市场底部。",
+    "upgrade_ids": [
+      "central_scribe_upgrade_1",
+      "central_scribe_upgrade_2"
+    ],
+    "starting_hint": "先查看核心项目和公共目标，再决定市场优先级。"
   }
 ]

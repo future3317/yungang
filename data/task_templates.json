@@ -2,6 +2,7 @@
   "task_templates": [
     {
       "id": "template_01",
+      "name": "双域互证",
       "stage_types": [
         "discover",
         "compare",
@@ -11,10 +12,14 @@
         1,
         2,
         1
-      ]
+      ],
+      "recommended_domains": 2,
+      "rule_text": "先探索，再提交两个领域的证据，最后用修护或记录完成解释。",
+      "complexity": "基础"
     },
     {
       "id": "template_02",
+      "name": "三源对照",
       "stage_types": [
         "discover",
         "compare",
@@ -22,139 +27,201 @@
       ],
       "required_progress": [
         1,
-        2,
+        3,
         1
-      ]
+      ],
+      "recommended_origins": 3,
+      "rule_text": "需要三种来源，适合交流与档案类任务。",
+      "complexity": "中等"
     },
     {
       "id": "template_03",
+      "name": "材料诊断",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "inspect",
+        "stabilize",
+        "record"
       ],
       "required_progress": [
         1,
         2,
         1
-      ]
+      ],
+      "recommended_domains": [
+        "architecture",
+        "frontier"
+      ],
+      "rule_text": "先判断风险，再投入修护，最后补充记录。",
+      "complexity": "基础"
     },
     {
       "id": "template_04",
+      "name": "路线治理",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "survey",
+        "restore",
+        "connect"
       ],
       "required_progress": [
         1,
-        2,
+        1,
         1
-      ]
+      ],
+      "recommended_domains": [
+        "frontier",
+        "trade"
+      ],
+      "rule_text": "勘察、修护和建立连接构成连续路线行动。",
+      "complexity": "中等"
     },
     {
       "id": "template_05",
+      "name": "多人协作",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "gather",
+        "exchange",
+        "contribute"
       ],
       "required_progress": [
         1,
-        2,
-        1
-      ]
+        1,
+        2
+      ],
+      "minimum_players": 2,
+      "rule_text": "需要至少两名玩家参与，强调交换和分工。",
+      "complexity": "中等"
     },
     {
       "id": "template_06",
+      "name": "核心汇总",
       "stage_types": [
         "discover",
         "compare",
-        "interpret"
+        "restore"
       ],
       "required_progress": [
-        1,
         2,
+        5,
         1
-      ]
+      ],
+      "recommended_domains": 5,
+      "rule_text": "汇集多个区域成果，作为终局核心项目。",
+      "complexity": "高"
     },
     {
       "id": "template_07",
+      "name": "档案编目",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "collect",
+        "classify",
+        "crosscheck"
       ],
       "required_progress": [
         1,
         2,
         1
-      ]
+      ],
+      "recommended_tags": [
+        "archive_context"
+      ],
+      "rule_text": "证据进入档案后按来源与领域建立交叉索引。",
+      "complexity": "中等"
     },
     {
       "id": "template_08",
+      "name": "事件应对",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "forecast",
+        "prepare",
+        "resolve"
       ],
       "required_progress": [
         1,
-        2,
+        1,
         1
-      ]
+      ],
+      "recommended_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "rule_text": "根据事件预告选择准备目标，并在结算后记录结果。",
+      "complexity": "基础"
     },
     {
       "id": "template_09",
+      "name": "图像复原",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "observe",
+        "match",
+        "reconstruct"
       ],
       "required_progress": [
         1,
         2,
         1
-      ]
+      ],
+      "recommended_tags": [
+        "image_reconstruction"
+      ],
+      "rule_text": "组合造像与纹样证据完成图像解释。",
+      "complexity": "中等"
     },
     {
       "id": "template_10",
+      "name": "协同营造",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "plan",
+        "contribute",
+        "restore"
       ],
       "required_progress": [
         1,
         2,
-        1
-      ]
+        2
+      ],
+      "recommended_tags": [
+        "craft_coordination"
+      ],
+      "rule_text": "先规划，再由多人贡献，最后集中修护。",
+      "complexity": "高"
     },
     {
       "id": "template_11",
+      "name": "区域联络",
       "stage_types": [
-        "discover",
-        "compare",
-        "interpret"
+        "survey",
+        "connect",
+        "maintain"
       ],
       "required_progress": [
-        1,
         2,
+        1,
         1
-      ]
+      ],
+      "recommended_tags": [
+        "route_governance"
+      ],
+      "rule_text": "比较两条路线后建立主通道，并保留备用方案。",
+      "complexity": "高"
     },
     {
       "id": "template_12",
+      "name": "来源转译",
       "stage_types": [
-        "discover",
-        "compare",
+        "collect",
+        "exchange",
         "interpret"
       ],
       "required_progress": [
-        1,
         2,
-        1
-      ]
+        1,
+        2
+      ],
+      "recommended_tags": [
+        "cross_origin"
+      ],
+      "rule_text": "通过交换把分散来源汇入同一任务。",
+      "complexity": "中等"
     }
   ]
 }

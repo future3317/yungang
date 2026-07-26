@@ -2,43 +2,51 @@
   "achievements": [
     {
       "id": "achievement_01",
-      "name": "旅程成就 01",
-      "condition": "placeholder"
+      "name": "无损守护",
+      "condition": "胜利时没有任何节点处于关闭状态。",
+      "description": "团队始终把风险控制在可修护范围内。"
     },
     {
       "id": "achievement_02",
-      "name": "旅程成就 02",
-      "condition": "placeholder"
+      "name": "丝路再通",
+      "condition": "一局中建立3条已连接路线。",
+      "description": "关键区域之间形成稳定联络。"
     },
     {
       "id": "achievement_03",
-      "name": "旅程成就 03",
-      "condition": "placeholder"
+      "name": "五域互证",
+      "condition": "完成包含五个文化领域的核心任务。",
+      "description": "不同类型证据被整合为完整解释。"
     },
     {
       "id": "achievement_04",
-      "name": "旅程成就 04",
-      "condition": "placeholder"
+      "name": "协作成卷",
+      "condition": "至少3个任务由两名或以上玩家共同贡献完成。",
+      "description": "团队分工真正进入任务过程。"
     },
     {
       "id": "achievement_05",
-      "name": "旅程成就 05",
-      "condition": "placeholder"
+      "name": "先见之明",
+      "condition": "连续两轮通过准备行动缓解事件。",
+      "description": "团队根据预告提前分配行动。"
     },
     {
       "id": "achievement_06",
-      "name": "旅程成就 06",
-      "condition": "placeholder"
+      "name": "节点复明",
+      "condition": "将一个2点损伤节点恢复为稳定状态并完成其任务。",
+      "description": "修护与文化解释同时完成。"
     },
     {
       "id": "achievement_07",
-      "name": "旅程成就 07",
-      "condition": "placeholder"
+      "name": "档案丰收",
+      "condition": "档案区累计保存8张来自至少4种来源的证据。",
+      "description": "团队形成了可比较的证据集合。"
     },
     {
       "id": "achievement_08",
-      "name": "旅程成就 08",
-      "condition": "placeholder"
+      "name": "完整光谱",
+      "condition": "以80分以上团队评分完成万象成卷情景。",
+      "description": "项目、路线、保护和多样性均达到较高水平。"
     }
   ]
 }

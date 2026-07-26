@@ -1,121 +1,196 @@
 {
   "domains": {
     "statue": {
-      "name": "??",
-      "short_name": "??",
-      "color_token": "statue"
+      "name": "造像与图像",
+      "short_name": "造像",
+      "color_token": "statue",
+      "description": "人物、佛教图像、龛像关系与观看方式等证据。"
     },
     "pattern": {
-      "name": "??",
-      "short_name": "??",
-      "color_token": "pattern"
+      "name": "纹样与色彩",
+      "short_name": "纹样",
+      "color_token": "pattern",
+      "description": "装饰纹样、衣纹、边饰、残彩与重复构图等证据。"
     },
     "architecture": {
-      "name": "??",
-      "short_name": "??",
-      "color_token": "architecture"
+      "name": "建筑与材料",
+      "short_name": "建筑",
+      "color_token": "architecture",
+      "description": "空间、梁架、石作、排水、材料和修护工艺等证据。"
     },
     "frontier": {
-      "name": "??",
-      "short_name": "??",
-      "color_token": "frontier"
+      "name": "边塞与守护",
+      "short_name": "边塞",
+      "color_token": "frontier",
+      "description": "关隘、守望、通行安全、环境风险与区域协同等证据。"
     },
     "trade": {
-      "name": "??",
-      "short_name": "??",
-      "color_token": "trade"
+      "name": "交通与互市",
+      "short_name": "互市",
+      "color_token": "trade",
+      "description": "商旅、驿站、路线、凭信、译介与物资流动等证据。"
     }
   },
   "origins": {
     "central": {
-      "name": "??"
+      "name": "平城与中原线索",
+      "short_name": "平城"
     },
     "western": {
-      "name": "??"
+      "name": "西域与丝路线索",
+      "short_name": "西域"
     },
     "frontier": {
-      "name": "??"
+      "name": "边塞与关隘线索",
+      "short_name": "边塞"
     },
     "craft": {
-      "name": "??"
+      "name": "工匠与营造线索",
+      "short_name": "工艺"
     },
     "northern": {
-      "name": "??"
+      "name": "北方区域线索",
+      "short_name": "北方"
     },
     "silk": {
-      "name": "??"
+      "name": "行旅与交流线索",
+      "short_name": "行旅"
     }
   },
   "statuses": {
     "stable": {
-      "name": "??"
+      "name": "稳定",
+      "description": "当前没有需要优先处理的损伤。"
     },
     "at_risk": {
-      "name": "??"
+      "name": "受风险影响",
+      "description": "节点已出现损伤，应安排修护。"
     },
     "closed": {
-      "name": "??"
+      "name": "暂时关闭",
+      "description": "节点达到损伤上限，无法正常行动。"
     },
     "open": {
-      "name": "??"
+      "name": "通行",
+      "description": "路线可以正常移动。"
     },
     "strained": {
-      "name": "??"
+      "name": "承压",
+      "description": "路线风险上升，需要勘察或修护。"
     },
     "blocked": {
-      "name": "??"
+      "name": "阻断",
+      "description": "路线暂时不能通行。"
     },
     "restored": {
-      "name": "???"
+      "name": "已修复",
+      "description": "路线恢复通行，可进一步建立稳定连接。"
     },
     "illuminated": {
-      "name": "???"
+      "name": "已建立连接",
+      "description": "路线已形成稳定的协作联系。"
     }
   },
   "actions": {
     "move": {
-      "name": "??"
+      "name": "移动",
+      "description": "沿可通行路线前往相邻节点。"
     },
     "explore": {
-      "name": "??"
+      "name": "探索",
+      "description": "从公开市场选择一张文化证据并获得研究线索。"
     },
     "survey_route": {
-      "name": "????"
+      "name": "勘察路线",
+      "description": "识别承压或阻断路线的风险。"
     },
     "restore_route": {
-      "name": "????"
+      "name": "修护路线",
+      "description": "消耗研究线索恢复受损路线。"
     },
     "establish_connection": {
-      "name": "????"
+      "name": "建立连接",
+      "description": "将已修复路线提升为稳定协作线路。"
     },
     "prepare": {
-      "name": "??"
+      "name": "准备应对",
+      "description": "投入行动点，降低本轮事件带来的压力。"
     },
     "contribute": {
-      "name": "??"
+      "name": "贡献证据",
+      "description": "将手牌投入当前节点任务或项目。"
     },
     "restore": {
-      "name": "??"
+      "name": "修护节点",
+      "description": "消耗团队修护资源，降低当前节点损伤。"
+    },
+    "exchange": {
+      "name": "交换证据",
+      "description": "与同一节点的队友交换或赠予文化证据。"
+    },
+    "plan": {
+      "name": "放置计划",
+      "description": "标记本轮拟处理的节点、路线或项目。"
+    },
+    "play_card": {
+      "name": "使用卡牌",
+      "description": "放弃证据用途，改为发动即时效果。"
     },
     "use_skill": {
-      "name": "??"
+      "name": "角色技能",
+      "description": "使用角色每回合一次的专属能力。"
     },
     "end_turn": {
-      "name": "????"
+      "name": "结束回合",
+      "description": "结束当前玩家行动并推进轮次。"
     }
   },
   "resources": {
     "ap": {
-      "name": "???"
+      "name": "行动点",
+      "short_name": "AP"
     },
     "restoration": {
-      "name": "????"
+      "name": "共同修护资源",
+      "short_name": "修护"
     },
     "clues": {
-      "name": "????"
+      "name": "研究线索",
+      "short_name": "线索"
     },
     "influence": {
-      "name": "????"
+      "name": "共同影响",
+      "short_name": "影响"
+    },
+    "threat": {
+      "name": "风化压力",
+      "short_name": "压力"
+    }
+  },
+  "combo_tags": {
+    "image_reconstruction": {
+      "name": "图像复原",
+      "description": "造像与纹样证据共同投入。"
+    },
+    "material_diagnosis": {
+      "name": "材料诊断",
+      "description": "建筑证据与修护线索共同投入。"
+    },
+    "route_governance": {
+      "name": "路线治理",
+      "description": "边塞与互市证据共同投入。"
+    },
+    "cross_origin": {
+      "name": "跨来源互证",
+      "description": "同一任务中出现不同来源标签。"
+    },
+    "craft_coordination": {
+      "name": "协同营造",
+      "description": "工艺来源与建筑或造像证据共同投入。"
+    },
+    "archive_context": {
+      "name": "档案互证",
+      "description": "记录类证据与地点线索共同投入。"
     }
   }
 }

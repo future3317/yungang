@@ -3,14 +3,14 @@
     {
       "id": "sand_and_stone",
       "name": "风沙与石",
-      "description": "风化压力高，重点是修护与路线保全。",
+      "description": "风化事件密集，团队必须在节点修护、材料诊断和核心项目之间分配有限行动。",
       "max_rounds": 8,
-      "restoration_resource": 6,
-      "influence_goal": 10,
+      "restoration_resource": 7,
+      "influence_goal": 11,
       "closed_site_limit": 2,
       "objective_ids": [
         "objective_protect_core",
-        "objective_restore_routes"
+        "objective_complete_projects"
       ],
       "enabled_site_ids": [
         "yungang",
@@ -20,68 +20,100 @@
         "trade_post",
         "pingcheng_ruins",
         "northern_workshop",
-        "archive_depot",
         "material_yard",
         "carving_courtyard",
-        "motif_gallery",
-        "river_crossing"
+        "watchtower",
+        "route_junction"
       ],
       "enabled_project_ids": [
         "project_01",
         "project_02",
-        "project_03"
+        "project_03",
+        "project_04",
+        "project_06"
       ],
       "card_pool": {
-        "survey": 1,
-        "craft": 1,
-        "alliance": 1,
+        "craft": 2,
         "archive": 1,
-        "motif": 1,
-        "frontier": 1,
+        "frontier": 2,
         "culture_07": 1,
-        "culture_08": 1,
-        "culture_09": 1,
-        "culture_10": 1,
         "culture_11": 1,
-        "culture_12": 1,
-        "culture_13": 1,
-        "culture_14": 1,
-        "culture_15": 1,
+        "culture_14": 2,
         "culture_16": 1,
         "culture_17": 1,
-        "culture_18": 1
+        "culture_18": 1,
+        "culture_22": 2,
+        "culture_24": 2,
+        "culture_26": 1,
+        "culture_28": 1,
+        "culture_30": 1,
+        "culture_34": 1,
+        "culture_36": 1,
+        "survey": 1,
+        "motif": 1,
+        "culture_21": 1,
+        "culture_27": 1,
+        "culture_33": 1,
+        "alliance": 1,
+        "culture_19": 1,
+        "culture_31": 1
       },
       "event_deck": [
         "sandstorm",
-        "pilgrims",
-        "quiet",
-        "route_blocked",
         "event_05",
         "event_06",
         "event_07",
-        "event_08"
+        "event_10",
+        "event_16",
+        "event_17",
+        "event_12",
+        "quiet",
+        "route_blocked"
       ],
       "action_card_pool": {
-        "action_01": 1,
-        "action_02": 1,
-        "action_03": 1,
-        "action_04": 1,
-        "action_05": 1,
+        "action_02": 2,
+        "action_04": 2,
         "action_06": 1,
-        "action_07": 1,
-        "action_08": 1,
         "action_09": 1,
         "action_10": 1,
-        "action_11": 1,
         "action_12": 1
-      }
+      },
+      "blocked_route_count": 1,
+      "initial_damage": {
+        "yungang": 1,
+        "huayan_temple": 1,
+        "wall_pass": 1
+      },
+      "recommended_players": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "25–35",
+      "core_project_id": "project_06",
+      "event_chain_ids": [
+        "chain_01",
+        "chain_02",
+        "chain_05"
+      ],
+      "scenario_rule": "每轮首次完成节点修护后，团队可将一个计划标记移动到相邻节点。",
+      "starting_threat": 1,
+      "starting_clues": 0,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2,
+        "hand_limit_bonus": 1
+      },
+      "victory_brief": "完成云冈多域总汇和两个公共目标，并保持风化压力可控。",
+      "failure_brief": "核心节点关闭、关闭节点达到上限或回合耗尽。"
     },
     {
       "id": "civilization_confluence",
       "name": "文明汇流",
-      "description": "强调不同来源组合和跨区交换。",
-      "max_rounds": 9,
-      "restoration_resource": 5,
+      "description": "证据来源分散，团队必须通过交换、编目和跨来源组合完成项目。",
+      "max_rounds": 8,
+      "restoration_resource": 6,
       "influence_goal": 12,
       "closed_site_limit": 3,
       "objective_ids": [
@@ -89,78 +121,109 @@
         "objective_complete_projects"
       ],
       "enabled_site_ids": [
+        "yungang",
+        "huayan_temple",
         "shanhua_temple",
         "wall_pass",
         "trade_post",
         "pingcheng_ruins",
-        "northern_workshop",
         "archive_depot",
-        "material_yard",
-        "carving_courtyard",
         "motif_gallery",
-        "river_crossing",
+        "craft_school",
         "caravan_camp",
-        "border_market"
+        "river_archive",
+        "route_junction"
       ],
       "enabled_project_ids": [
-        "project_02",
+        "project_01",
         "project_03",
-        "project_04"
+        "project_05",
+        "project_06",
+        "project_07",
+        "project_08"
       ],
       "card_pool": {
         "survey": 1,
         "craft": 1,
-        "alliance": 1,
+        "alliance": 2,
         "archive": 1,
-        "motif": 1,
+        "motif": 2,
         "frontier": 1,
-        "culture_07": 1,
         "culture_08": 1,
         "culture_09": 1,
         "culture_10": 1,
-        "culture_11": 1,
         "culture_12": 1,
-        "culture_13": 1,
-        "culture_14": 1,
+        "culture_13": 2,
         "culture_15": 1,
-        "culture_16": 1,
         "culture_17": 1,
-        "culture_18": 1
+        "culture_18": 1,
+        "culture_20": 2,
+        "culture_21": 1,
+        "culture_23": 1,
+        "culture_25": 2,
+        "culture_27": 1,
+        "culture_29": 2,
+        "culture_32": 1,
+        "culture_33": 1,
+        "culture_34": 1,
+        "culture_35": 1
       },
       "event_deck": [
         "pilgrims",
+        "event_18",
         "quiet",
+        "event_11",
+        "event_15",
         "route_blocked",
-        "event_05",
-        "event_06",
-        "event_07",
-        "event_08",
-        "event_09"
+        "event_14",
+        "event_12",
+        "event_08"
       ],
       "action_card_pool": {
-        "action_01": 1,
-        "action_02": 1,
         "action_03": 1,
         "action_04": 1,
-        "action_05": 1,
-        "action_06": 1,
-        "action_07": 1,
+        "action_07": 2,
         "action_08": 1,
-        "action_09": 1,
-        "action_10": 1,
-        "action_11": 1,
+        "action_11": 2,
         "action_12": 1
-      }
+      },
+      "blocked_route_count": 1,
+      "initial_damage": {
+        "trade_post": 1,
+        "archive_depot": 1
+      },
+      "recommended_players": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "20–30",
+      "core_project_id": "project_05",
+      "event_chain_ids": [
+        "chain_04",
+        "chain_06",
+        "chain_08"
+      ],
+      "scenario_rule": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究线索。",
+      "starting_threat": 0,
+      "starting_clues": 1,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2,
+        "virtual_exchange": true
+      },
+      "victory_brief": "完成互市证据编目、跨来源互证目标和任意两个其他项目。",
+      "failure_brief": "回合耗尽或多个交流节点关闭。"
     },
     {
       "id": "market_reopening",
       "name": "互市重开",
-      "description": "多条路线初始阻断，需要勘察和恢复。",
-      "max_rounds": 10,
-      "restoration_resource": 5,
+      "description": "多条门户路线初始阻断，团队需要勘察、修护并建立一条可持续的区域通道。",
+      "max_rounds": 9,
+      "restoration_resource": 6,
       "influence_goal": 10,
       "closed_site_limit": 2,
-      "blocked_route_count": 4,
       "objective_ids": [
         "objective_restore_routes",
         "objective_connect_regions"
@@ -172,65 +235,100 @@
         "wall_pass",
         "trade_post",
         "pingcheng_ruins",
-        "northern_workshop",
-        "archive_depot",
         "material_yard",
-        "carving_courtyard"
+        "river_crossing",
+        "caravan_camp",
+        "border_market",
+        "watchtower",
+        "route_junction"
       ],
       "enabled_project_ids": [
-        "project_01",
-        "project_02"
+        "project_03",
+        "project_04",
+        "project_05",
+        "project_08"
       ],
       "card_pool": {
-        "survey": 1,
-        "craft": 1,
-        "alliance": 1,
-        "archive": 1,
-        "motif": 1,
-        "frontier": 1,
-        "culture_07": 1,
-        "culture_08": 1,
-        "culture_09": 1,
-        "culture_10": 1,
-        "culture_11": 1,
-        "culture_12": 1,
-        "culture_13": 1,
+        "survey": 2,
+        "alliance": 2,
+        "frontier": 2,
+        "culture_12": 2,
         "culture_14": 1,
-        "culture_15": 1,
         "culture_16": 1,
+        "culture_19": 2,
+        "culture_20": 1,
+        "culture_24": 1,
+        "culture_26": 1,
+        "culture_29": 1,
+        "culture_31": 2,
+        "culture_36": 1,
+        "craft": 1,
+        "archive": 1,
+        "culture_07": 1,
+        "culture_11": 1,
         "culture_17": 1,
-        "culture_18": 1
+        "culture_22": 1,
+        "culture_25": 1,
+        "culture_30": 1,
+        "culture_34": 1,
+        "culture_09": 1,
+        "culture_13": 1
       },
       "event_deck": [
-        "sandstorm",
-        "pilgrims",
-        "quiet",
         "route_blocked",
-        "event_05",
-        "event_06",
-        "event_07",
-        "event_08"
+        "event_14",
+        "sandstorm",
+        "event_09",
+        "event_10",
+        "event_13",
+        "event_17",
+        "pilgrims",
+        "event_18",
+        "quiet"
       ],
       "action_card_pool": {
-        "action_01": 1,
-        "action_02": 1,
-        "action_03": 1,
-        "action_04": 1,
+        "action_01": 2,
+        "action_02": 2,
+        "action_03": 2,
         "action_05": 1,
-        "action_06": 1,
-        "action_07": 1,
-        "action_08": 1,
         "action_09": 1,
-        "action_10": 1,
-        "action_11": 1,
-        "action_12": 1
-      }
+        "action_10": 1
+      },
+      "blocked_route_count": 5,
+      "initial_damage": {
+        "wall_pass": 1,
+        "trade_post": 1,
+        "route_junction": 1
+      },
+      "recommended_players": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "25–35",
+      "core_project_id": "project_08",
+      "event_chain_ids": [
+        "chain_03",
+        "chain_05",
+        "chain_08"
+      ],
+      "scenario_rule": "每完成一条已连接路线，下一名玩家的第一次移动减少1点行动消耗。",
+      "starting_threat": 1,
+      "starting_clues": 2,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2,
+        "route_action_discount": 1
+      },
+      "victory_brief": "完成多路线联络方案，并达成路线恢复与区域联络目标。",
+      "failure_brief": "关键门户长期阻断、风化压力失控或回合耗尽。"
     },
     {
       "id": "panorama_unfolding",
       "name": "万象成卷",
-      "description": "长局场，需要完成多区域项目和核心任务。",
-      "max_rounds": 12,
+      "description": "长局整合情景。团队需要在多区域项目、核心证据、路线风险和事件链之间持续调整计划。",
+      "max_rounds": 10,
       "restoration_resource": 8,
       "influence_goal": 15,
       "closed_site_limit": 3,
@@ -262,15 +360,17 @@
         "project_03",
         "project_04",
         "project_05",
-        "project_06"
+        "project_06",
+        "project_07",
+        "project_08"
       ],
       "card_pool": {
-        "survey": 1,
-        "craft": 1,
-        "alliance": 1,
-        "archive": 1,
+        "survey": 2,
+        "craft": 2,
+        "alliance": 2,
+        "archive": 2,
         "motif": 1,
-        "frontier": 1,
+        "frontier": 2,
         "culture_07": 1,
         "culture_08": 1,
         "culture_09": 1,
@@ -282,7 +382,25 @@
         "culture_15": 1,
         "culture_16": 1,
         "culture_17": 1,
-        "culture_18": 1
+        "culture_18": 1,
+        "culture_19": 1,
+        "culture_20": 1,
+        "culture_21": 1,
+        "culture_22": 2,
+        "culture_23": 1,
+        "culture_24": 1,
+        "culture_25": 1,
+        "culture_26": 1,
+        "culture_27": 1,
+        "culture_28": 1,
+        "culture_29": 1,
+        "culture_30": 1,
+        "culture_31": 2,
+        "culture_32": 1,
+        "culture_33": 1,
+        "culture_34": 2,
+        "culture_35": 1,
+        "culture_36": 1
       },
       "event_deck": [
         "sandstorm",
@@ -291,17 +409,13 @@
         "route_blocked",
         "event_05",
         "event_06",
-        "event_07",
         "event_08",
         "event_09",
-        "event_10",
         "event_11",
         "event_12",
-        "event_13",
         "event_14",
         "event_15",
         "event_16",
-        "event_17",
         "event_18"
       ],
       "action_card_pool": {
@@ -317,7 +431,39 @@
         "action_10": 1,
         "action_11": 1,
         "action_12": 1
-      }
+      },
+      "blocked_route_count": 3,
+      "initial_damage": {
+        "yungang": 1,
+        "shanhua_temple": 1,
+        "wall_pass": 1,
+        "trade_post": 1
+      },
+      "recommended_players": [
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "30–35",
+      "core_project_id": "project_06",
+      "event_chain_ids": [
+        "chain_01",
+        "chain_02",
+        "chain_03",
+        "chain_04",
+        "chain_06",
+        "chain_08"
+      ],
+      "scenario_rule": "每轮结束时，若团队完成了一个项目阶段且至少修复一条路线，风化压力降低1点。",
+      "starting_threat": 1,
+      "starting_clues": 1,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2,
+        "max_rounds_bonus": 1
+      },
+      "victory_brief": "完成云冈多域总汇、三个公共目标和至少三条稳定区域连接。",
+      "failure_brief": "核心节点关闭、风化压力达到上限或回合耗尽。"
     }
   ]
 }

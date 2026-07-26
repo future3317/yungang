@@ -2,33 +2,58 @@
   "objectives": [
     {
       "id": "objective_protect_core",
-      "name": "保护核心节点",
+      "name": "守住关键节点",
       "type": "site_protection",
-      "target": 3
+      "target": 4,
+      "description": "结算时至少有4个启用节点保持稳定状态。",
+      "progress_text": "稳定节点",
+      "completion_text": "关键节点均处于可持续守护状态。",
+      "scoring_weight": 3,
+      "strategy_hint": "不要平均修护；优先保护核心项目、门户路线和角色起点。"
     },
     {
       "id": "objective_restore_routes",
-      "name": "恢复路线",
+      "name": "恢复受损路线",
       "type": "route_restoration",
-      "target": 3
+      "target": 3,
+      "description": "将至少3条承压或阻断路线恢复为已修复或已连接状态。",
+      "progress_text": "已恢复路线",
+      "completion_text": "关键通道重新承担人员、证据和资源流动。",
+      "scoring_weight": 3,
+      "strategy_hint": "先勘察获得线索，再修护并建立连接，避免重复投入同一路线。"
     },
     {
       "id": "objective_diversity",
-      "name": "跨来源互鉴",
+      "name": "完成跨来源互证",
       "type": "origin_diversity",
-      "target": 4
+      "target": 4,
+      "description": "在团队手牌、档案和已完成任务中形成至少4种来源线索。",
+      "progress_text": "来源种类",
+      "completion_text": "团队已用多种来源的证据建立互相支撑的解释。",
+      "scoring_weight": 4,
+      "strategy_hint": "通过交换和多人贡献避免同一种来源过度集中。"
     },
     {
       "id": "objective_complete_projects",
-      "name": "完成项目",
+      "name": "完成协作项目",
       "type": "projects",
-      "target": 3
+      "target": 3,
+      "description": "完成至少3个多阶段项目。",
+      "progress_text": "已完成项目",
+      "completion_text": "调查、贡献与修护已经形成连续成果。",
+      "scoring_weight": 4,
+      "strategy_hint": "中局前确定主项目，不要让所有项目同时停留在第一阶段。"
     },
     {
       "id": "objective_connect_regions",
-      "name": "连通区域",
+      "name": "建立区域联络",
       "type": "regions",
-      "target": 3
+      "target": 3,
+      "description": "通过已连接路线建立至少3次区域间稳定联络。",
+      "progress_text": "区域联络",
+      "completion_text": "文化证据与修护资源可以在多个区域间持续流动。",
+      "scoring_weight": 3,
+      "strategy_hint": "优先处理区域门户路线，而不是所有支路。"
     }
   ]
 }
