@@ -1,0 +1,8 @@
+.primary-cta, .ghost-button { border: 0; min-height: 44px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: transform var(--motion-fast) var(--ease-out), background var(--motion-fast); }
+.primary-cta { background: var(--action-primary); color: #fff7ed; padding: 0 18px; font-weight: 800; box-shadow: 0 8px 18px rgba(117, 41, 27, .26); }
+.primary-cta:hover { background: #d26b4f; transform: translateY(-1px); }
+.ghost-button { background: transparent; color: inherit; border: 1px solid var(--line-subtle); padding: 0 12px; }
+.progress { height: 5px; overflow: hidden; border-radius: var(--radius-pill); background: rgba(29, 38, 32, .14); }
+.progress > span { display: block; height: 100%; background: var(--connection); transition: width var(--motion-standard) var(--ease-out); }
+.progress.azure > span { background: var(--discovery); }
+.state-chip { padding: 3px 7px; border-radius: var(--radius-pill); color: var(--repair); border: 1px solid currentColor; font: 700 var(--text-micro)/1 var(--font-data); }

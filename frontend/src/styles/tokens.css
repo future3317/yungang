@@ -1,1 +1,17 @@
-:root{--surface-cave:#11191a;--surface-deep:#0b1112;--surface-stone:#1c2828;--surface-stone-2:#243232;--surface-label:#2b3938;--text-primary:#eee8d8;--text-secondary:#aeb9ae;--text-muted:#71807a;--text-inverse:#11191a;--accent-cinnabar:#cf684c;--accent-azure:#5d9da0;--accent-malachite:#76a77d;--accent-gold:#d1ad63;--state-stable:#76a77d;--state-risk:#c98a55;--state-closed:#b76056;--focus-ring:#d1ad63;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--radius-stone:8px;--radius-pill:999px;--border:rgba(226,218,194,.13);--shadow-deep:0 24px 80px rgba(0,0,0,.32);--motion-fast:160ms;--motion-standard:280ms;--ease:cubic-bezier(.2,.8,.2,1)}
+:root {
+  --font-display: "Noto Serif SC", "Source Han Serif SC", Songti SC, STSong, serif;
+  --font-body: "Noto Sans SC", "Source Han Sans SC", PingFang SC, "Microsoft YaHei", sans-serif;
+  --font-data: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --text-display: clamp(2.4rem, 5vw, 5.8rem); --text-heading-1: clamp(1.45rem, 2vw, 2rem); --text-heading-2: 1.18rem;
+  --text-body: 1rem; --text-caption: .87rem; --text-micro: .78rem;
+  --surface-environment: #121715; --surface-stage: #19201d; --surface-raised: #222b26; --surface-inspector: #e7e0d0;
+  --surface-interactive: #2a352e; --surface-selected: #39473c; --surface-paper: #f0eadc;
+  --ink-primary: #f3eddf; --ink-secondary: #c3c8b9; --ink-muted: #89948a; --ink-dark: #29342e;
+  --action-primary: #c65b42; --discovery: #739fa1; --repair: #789a76; --connection: #b99a58; --risk: #bb7651; --closed: #94534b;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --radius-sm: 6px; --radius-md: 12px; --radius-lg: 18px; --radius-pill: 999px;
+  --line-subtle: rgba(233, 227, 205, .16); --line-dark: rgba(31, 40, 34, .16);
+  --shadow-stage: 0 24px 70px rgba(0, 0, 0, .22); --shadow-lift: 0 10px 24px rgba(0, 0, 0, .18);
+  --motion-fast: 140ms; --motion-standard: 240ms; --motion-slow: 520ms; --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --z-dock: 10; --z-dialog: 30; --rail-width: 196px; --inspector-width: 304px; --header-height: 58px;
+}
