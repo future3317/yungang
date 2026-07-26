@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Archive, ChevronDown, CircleAlert, Clock3, Map as MapIcon, Send, ShieldCheck, Target, Users, X } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
 import type { Action, ActionType, ContentCard, ContentEvent, GameState, Meta, Site } from '../../types/game';
 import { HeritageNetwork } from '../../widgets/heritage-network/HeritageNetwork';
@@ -25,6 +25,7 @@ export function GamePage() {
   useEffect(() => { const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') { setActionMode(null); setCard(null); } }; window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, []);
   if (gameQuery.isLoading || metaQuery.isLoading) return <div className="state-screen"><span className="loading-orbit" /><p>正在读取遗产网络…</p></div>;
   if (gameQuery.isError || metaQuery.isError || !state || !metaQuery.data) return <div className="state-screen danger"><CircleAlert /><h1>旅程暂时无法打开</h1><p>请检查本地服务后重新进入旅程。</p><button className="ghost-button" onClick={() => { void gameQuery.refetch(); void metaQuery.refetch(); }}>重新连接</button></div>;
+  if (state.shared.outcome) return <Navigate to={`/game/${sessionId}/result`} replace />;
   const meta = metaQuery.data; const active = state.players[state.shared.active_player_id]; const sites = Object.fromEntries(meta.sites.map(site => [site.id, site])); const cards = Object.fromEntries(meta.cards.map(item => [item.id, item])); const events = Object.fromEntries(meta.events.map(item => [item.id, item])); const roles = Object.fromEntries(meta.roles.map(item => [item.id, item])); const focused: Site = state.sites[focus || active.location] || state.sites[active.location] || Object.values(state.sites)[0]; const focusedMeta = sites[focused.id] || focused; const task = focusedMeta.active_task_id ? state.tasks[focusedMeta.active_task_id] : undefined; const currentEvent = state.shared.current_event_id ? events[state.shared.current_event_id] : undefined;
   const targetIds = new Set(legal.filter(action => action.type === actionMode).map(action => action.target_id || action.target_site_id).filter((id): id is string => Boolean(id))); const actionsByType = new Map(actionOrder.map(type => [type, legal.filter(action => action.type === type)])); const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : gameQuery.isError || metaQuery.isError ? '离线' : '已连接';
   const run = (action?: Action) => { if (action && !mutation.isPending) mutation.mutate(action); };

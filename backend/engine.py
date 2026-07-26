@@ -12,6 +12,25 @@ class GameEngine:
     def __init__(self, content: Content | None = None):
         self.content = content or Content()
 
+    def _effective_rules(self, scenario, difficulty, solo):
+        normal = self.content.difficulty.get("normal", {})
+        rules = {
+            "max_rounds": int(scenario.get("max_rounds", normal.get("max_rounds", 8))),
+            "restoration_resource": int(scenario.get("restoration_resource", normal.get("restoration_resource", 6))),
+            "event_weight": float(difficulty.get("event_weight", 1)),
+            "node_damage_base": int(difficulty.get("node_damage_base", 0)),
+            "event_preview_count": int(difficulty.get("event_preview_count", 1)),
+            "solo_ap_bonus": int(difficulty.get("solo_ap_bonus", 0)) if solo else 0,
+        }
+        rules["max_rounds"] += int(difficulty.get("max_rounds", normal.get("max_rounds", 8))) - int(normal.get("max_rounds", 8))
+        rules["restoration_resource"] += int(difficulty.get("restoration_resource", normal.get("restoration_resource", 6))) - int(normal.get("restoration_resource", 6))
+        if solo:
+            solo_rules = scenario.get("solo_rules", {})
+            rules["max_rounds"] += int(solo_rules.get("max_rounds_bonus", 0))
+            rules["planning_marks_per_round"] = int(solo_rules.get("planning_marks_per_round", 1))
+            rules["route_action_discount"] = int(solo_rules.get("route_action_discount", 0))
+        return rules
+
     def new_game(self, session_id="demo", player_ids=None, difficulty_id="normal", scenario_id="sand_and_stone", seed=None):
         ids = player_ids or ["p1", "p2"]
         if not 1 <= len(ids) <= 4:
@@ -21,6 +40,7 @@ class GameEngine:
         scenario_id = scenario.get("id", scenario_id)
         rng = DeterministicRng(seed)
         solo = len(ids) == 1
+        effective_rules = self._effective_rules(scenario, difficulty, solo)
         if solo:
             controlled_roles = int(scenario.get("solo_rules", {}).get("controlled_roles", 2))
             ids = [ids[0], *[f"{ids[0]}-ally-{index}" for index in range(2, controlled_roles + 1)]]
@@ -29,7 +49,7 @@ class GameEngine:
         for index, pid in enumerate(ids):
             role_id = role_ids[index % len(role_ids)]
             role = self.content.roles[role_id]
-            bonus = int(difficulty.get("solo_ap_bonus", 0)) if solo else 0
+            bonus = effective_rules["solo_ap_bonus"]
             players[pid] = PlayerState(id=pid, name=role["name"], role_id=role_id, location=role.get("start_site_id", "yungang"), ap=3 + bonus, max_ap=3 + bonus)
 
         enabled_site_ids = set(scenario.get("enabled_site_ids", self.content.sites))
@@ -39,7 +59,8 @@ class GameEngine:
             if sid not in enabled_site_ids:
                 continue
             maximum = definition.get("max_damage", 3)
-            damage = scenario.get("initial_damage", {}).get(sid, definition.get("start_damage", 0))
+            damage = scenario.get("initial_damage", {}).get(sid, definition.get("start_damage", 0)) + effective_rules["node_damage_base"]
+            damage = min(maximum, damage)
             sites[sid] = SiteState(id=sid, damage=damage, max_damage=maximum, durability=max(0, maximum - damage), max_durability=maximum, domains=definition.get("domains", []))
 
         tasks = {tid: {**task, "contributed_cards": [], "completed": False} for tid, task in self.content.tasks.items() if task.get("site_id") in sites}
@@ -61,7 +82,7 @@ class GameEngine:
             players=players,
             sites=sites,
             tasks=tasks,
-            shared={"max_rounds": scenario.get("max_rounds", difficulty.get("max_rounds", 8)), "active_player_id": ids[0], "player_order": ids, "restoration_resource": scenario.get("restoration_resource", difficulty.get("restoration_resource", 6)), "scenario_id": scenario_id, "threat": scenario.get("starting_threat", 0), "research_clues": scenario.get("starting_clues", 0)},
+            shared={"max_rounds": effective_rules["max_rounds"], "active_player_id": ids[0], "player_order": ids, "restoration_resource": effective_rules["restoration_resource"], "scenario_id": scenario_id, "threat": scenario.get("starting_threat", 0), "research_clues": scenario.get("starting_clues", 0), "phase": "player_action", "weathering_track": scenario.get("starting_threat", 0), "weathering_limit": scenario.get("weathering_limit", 5), "effective_rules": effective_rules, "solo_mode": solo, "controlled_character_ids": ids if solo else []},
             decks={"culture": culture_deck, "events": event_deck, "discard": [], "archive": [], "action": [card_id for card_id in scenario.get("action_card_pool", self.content.action_cards) for _ in range(int(scenario.get("action_card_pool", {}).get(card_id, 1)))]},
             scenario_id=scenario_id,
             seed=rng.seed,
@@ -308,9 +329,10 @@ class GameEngine:
         order = state.shared.player_order; index = order.index(player.id); last = index == len(order) - 1
         state.shared.active_player_id = order[0] if last else order[index + 1]
         if last:
-            state.shared.turn += 1; self._settle_event(state)
+            state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
             if not state.pending_choice: self._reveal_event(state)
             for teammate in state.players.values(): self._draw_action_card(state, teammate)
+            if not state.pending_choice: state.shared.phase = "player_action"
 
     def _settle_event(self, state):
         event_id = state.shared.current_event_id
@@ -326,6 +348,7 @@ class GameEngine:
             state.shared.threat = max(0, state.shared.threat - 1)
             state.shared.log.append("\u548c\u5408\u534f\u4f5c\u751f\u6548\uff1a\u4e8b\u4ef6\u538b\u529b\u964d\u4f4e 1")
         if event_id == "route_blocked" and not prepared:
+            state.shared.phase = "pending_choice"
             state.pending_choice = {"kind": "event", "event_id": event_id, "options": [{"id": "mitigate", "label": "\u6d88\u8017 1 \u4fee\u590d\u8d44\u6e90\uff0c\u7f13\u548c\u9053\u8def\u963b\u65ad"}, {"id": "accept", "label": "\u63a5\u53d7\u963b\u65ad\uff0c\u5a01\u80c1\u4e0a\u5347 1"}]}
             return
         self._event_effect(state, event.get("effect", {}))
@@ -338,8 +361,8 @@ class GameEngine:
             if choice == "mitigate":
                 if state.shared.restoration_resource < 1: raise ValueError("not_enough_restoration_resource")
                 state.shared.restoration_resource -= 1
-            else: state.shared.threat += 1
-            state.pending_choice = None; self._reveal_event(state)
+            else: state.shared.threat += 1; state.shared.weathering_track = state.shared.threat
+            state.pending_choice = None; self._reveal_event(state); state.shared.phase = "player_action"
         elif state.pending_choice["kind"] == "view_select":
             player = state.players[state.shared.active_player_id]; card = req.get("card_id")
             if action != ActionType.SELECT_MARKET_CARD.value or card not in state.pending_choice["cards"]: raise ValueError("invalid_market_choice")
@@ -358,6 +381,7 @@ class GameEngine:
             for player in state.players.values(): player.influence += effect.get("amount", 1)
         elif typ == "gain_resource": state.shared.restoration_resource += effect.get("amount", 1)
         elif typ == "threat": state.shared.threat += effect.get("amount", 1)
+        state.shared.weathering_track = state.shared.threat
 
     def _reveal_event(self, state):
         if not state.decks["events"]: state.shared.current_event_id = None; return
@@ -420,14 +444,21 @@ class GameEngine:
         completed_projects = sum(project.status == "completed" for project in state.projects.values())
         restored_routes = sum(route.status in {"restored", "illuminated"} for route in state.routes.values())
         protected_sites = sum(site.status == SiteStatus.STABLE for site in state.sites.values())
+        all_evidence = [card for player in state.players.values() for card in player.hand] + state.decks.get("archive", [])
+        for task in state.tasks.values(): all_evidence.extend(task.get("contributed_cards", []))
+        diversity = len({origin for card_id in all_evidence for origin in self.content.cards.get(card_id, {}).get("origin_tags", [])})
         for objective in state.objectives.values():
-            objective.progress = {"projects": completed_projects, "route_restoration": restored_routes, "site_protection": protected_sites, "regions": min(4, state.shared.route_connection_score), "origin_diversity": len({origin for player in state.players.values() for card in player.hand for origin in self.content.cards.get(card, {}).get("origin_tags", [])})}.get(objective.type, objective.progress)
+            objective.progress = {"projects": completed_projects, "route_restoration": restored_routes, "site_protection": protected_sites, "regions": min(4, state.shared.route_connection_score), "origin_diversity": diversity}.get(objective.type, objective.progress)
             objective.completed = objective.progress >= objective.target
         state.score.tasks = sum(task.get("completed", False) for task in state.tasks.values())
         state.score.routes = restored_routes
         state.score.protection = protected_sites
         state.score.discovery = sum(site.discovered for site in state.sites.values())
-        state.score.total = state.score.tasks * 10 + state.score.routes * 5 + state.score.protection * 2 + state.score.discovery
+        state.score.diversity = diversity
+        state.score.resources = state.shared.restoration_resource
+        state.score.efficiency = max(0, state.shared.max_rounds - state.shared.turn + 1)
+        state.score.total = state.score.tasks * 10 + state.score.routes * 5 + state.score.protection * 2 + state.score.discovery + state.score.diversity * 2 + state.score.efficiency
+        state.score.grade = "gold" if state.score.total >= 55 else "silver" if state.score.total >= 35 else "bronze"
 
     def _check_outcome(self, state):
         self._update_objectives(state)
@@ -436,12 +467,17 @@ class GameEngine:
         objectives_done = sum(objective.completed for objective in state.objectives.values())
         core = state.projects.get(scenario.get("core_project_id", "")); core_complete = bool(core and core.status == "completed")
         victory = (core_complete and objectives_done == len(state.objectives) and objectives_done > 0) or (not scenario.get("core_project_id") and len(state.shared.completed_domains) >= len(self.content.domains) and state.shared.influence >= scenario.get("influence_goal", 10))
-        if victory and closed < scenario.get("closed_site_limit", 2) and state.shared.turn <= state.shared.max_rounds:
-            state.shared.outcome = GameOutcome.VICTORY; state.shared.outcome_reason = "all_domains_completed"
+        if victory and closed < scenario.get("closed_site_limit", 2) and state.shared.weathering_track < state.shared.weathering_limit and state.shared.turn <= state.shared.max_rounds:
+            state.shared.outcome = GameOutcome.VICTORY; state.shared.outcome_reason = "core_project_and_objectives_completed" if core_complete else "domain_interpretation_completed"
         elif closed >= scenario.get("closed_site_limit", 2):
             state.shared.outcome = GameOutcome.DEFEAT; state.shared.outcome_reason = "too_many_closed_sites"
+        elif state.shared.weathering_track >= state.shared.weathering_limit:
+            state.shared.outcome = GameOutcome.DEFEAT; state.shared.outcome_reason = "weathering_track_reached_limit"
         elif state.shared.turn > state.shared.max_rounds:
             state.shared.outcome = GameOutcome.DEFEAT; state.shared.outcome_reason = "round_limit_reached"
+        if state.shared.outcome:
+            state.shared.phase = "game_over"
+            state.result = {"outcome": state.shared.outcome, "outcome_reason": state.shared.outcome_reason, "score": state.score.model_dump(), "completed_objectives": [item.id for item in state.objectives.values() if item.completed], "completed_projects": [item.id for item in state.projects.values() if item.status == "completed"], "seed": state.seed}
 
     def _ensure_runtime_state(self, state):
         if not state.routes:

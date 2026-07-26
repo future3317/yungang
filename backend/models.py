@@ -112,6 +112,7 @@ class ScoreState(BaseModel):
     efficiency: int = 0
     discovery: int = 0
     total: int = 0
+    grade: str = "stone"
 
 class SiteState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
@@ -147,6 +148,13 @@ class SharedState(BaseModel):
     log: List[str] = Field(default_factory=list)
     planning_marks: Dict[str, List[Dict[str, str]]] = Field(default_factory=dict)
     node_ability_uses: List[str] = Field(default_factory=list)
+    phase: str = "player_action"
+    weathering_track: int = 0
+    weathering_limit: int = 5
+    effective_rules: Dict[str, Any] = Field(default_factory=dict)
+    solo_mode: bool = False
+    controlled_character_ids: List[str] = Field(default_factory=list)
+    journal: List[Dict[str, Any]] = Field(default_factory=list)
 
 class GameState(BaseModel):
     schema_version: int = 3
@@ -172,3 +180,4 @@ class GameState(BaseModel):
     projects: Dict[str, ProjectState] = Field(default_factory=dict)
     objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
     score: ScoreState = Field(default_factory=ScoreState)
+    result: Dict[str, Any] = Field(default_factory=dict)

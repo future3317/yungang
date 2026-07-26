@@ -66,9 +66,10 @@ def test_event_choice_is_server_driven():
     ended = action(session, state, 'p1', 'end_turn').json()
     assert ended['pending_choice']['kind'] == 'event'
     assert {item['type'] for item in ended['legal_actions']} == {'resolve_event'}
+    resources_before = ended['shared']['restoration_resource']
     resolved = action(session, ended, 'p1', 'resolve_event', target_id='mitigate').json()
     assert resolved['pending_choice'] is None
-    assert resolved['shared']['restoration_resource'] == 5
+    assert resolved['shared']['restoration_resource'] == resources_before - 1
 
 def test_join_game_before_first_action():
     session = 'test-join'
@@ -96,8 +97,9 @@ def test_same_seed_reproduces_opening_and_different_seed_changes_it():
 def test_scenario_changes_initial_rules_and_route_state():
     state = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'market_reopening', 'seed': 7}).json()
     assert state['scenario_id'] == 'market_reopening'
-    assert state['shared']['max_rounds'] == 10
-    assert sum(route['status'] == 'blocked' for route in state['routes'].values()) == 4
+    scenario = GameEngine().content.scenarios['market_reopening']
+    assert state['shared']['max_rounds'] == scenario['max_rounds']
+    assert sum(route['status'] == 'blocked' for route in state['routes'].values()) == scenario['blocked_route_count']
 
 def test_routes_are_single_records_and_move_from_either_endpoint():
     session = 'test-undirected-route'
