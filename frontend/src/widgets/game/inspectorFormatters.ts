@@ -1,13 +1,8 @@
 import type { ContentCard, Meta, Task } from '../../types/game';
+import { comboNames, domainName } from './contentLabels';
 
 export type CardRecord = Record<string, unknown>;
-
-export const comboNames: Record<string, string> = {
-  image_reconstruction: '图像对照',
-  cross_origin: '跨来源互证',
-  route_governance: '路线治理',
-  archive_context: '档案互证',
-};
+export { comboNames, domainName } from './contentLabels';
 
 const originNames: Record<string, string> = {
   central: '中原',
@@ -25,20 +20,6 @@ const requirementNames: Record<string, string> = {
   route_governance: '路线治理',
   archive_context: '档案互证',
 };
-
-export function domainName(meta: Meta, id: string) {
-  const labels: Record<string, string> = {
-    architecture: '建筑',
-    statue: '造像',
-    pattern: '纹样',
-    frontier: '边地',
-    trade: '交流',
-    archive: '档案',
-    material: '材料',
-    religion: '信仰',
-  };
-  return meta.domain_meta?.[id]?.short_name || labels[id] || '未标注领域';
-}
 
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
   return values.map(value => {

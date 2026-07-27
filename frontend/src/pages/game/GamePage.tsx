@@ -15,6 +15,7 @@ import { ActionPreview } from '../../widgets/game/ActionPreview';
 import { TutorialGuide } from '../../widgets/game/TutorialGuide';
 import { SeatHandoff } from '../../widgets/game/SeatHandoff';
 import { useDialogFocus } from '../../widgets/game/useDialogFocus';
+import { actionFeedback, actionLabels, actionModeLabel, findCardAction, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
 import { useRoomEvents } from '../../shared/useRoomEvents';
 import '../../styles/experience.css';
 import '../../styles/tutorial.css';
@@ -22,30 +23,6 @@ import '../../styles/interface-scale.css';
 import '../../styles/handoff.css';
 import '../../styles/fullscreen-map.css';
 
-type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
-const actionLabels: Partial<Record<ActionType, string>> = { move: '移动', survey_route: '勘察路线', explore: '探索', contribute: '贡献', restore: '修护节点', restore_route: '修护路线', establish_connection: '建立连接', exchange: '交换', prepare: '准备', use_action_card: '使用策略牌', use_node_ability: '地点能力', use_upgrade: '角色专长', use_skill: '技能', end_planning: '开始行动', end_turn: '结束回合', plan: '规划' };
-const previewDeltaLabels: Record<string, string> = { ap: '行动点', influence: '个人影响', restoration_resource: '修护资源', research_clues: '研究线索', threat: '风化压力', risk: '路线风险', restoration: '修护进度' };
-function previewDeltaText(delta: Record<string, unknown> | undefined, fallback: string) { const text = Object.entries(delta || {}).filter(([, value]) => typeof value === 'number').map(([key, value]) => `${previewDeltaLabels[key] || '状态变化'} ${Number(value) > 0 ? '+' : ''}${value}`).join(' · '); return text || fallback; }
-
-function findCardAction(actions: Action[], type: ActionType, cardId: string) { return actions.find(action => action.type === type && action.card_id === cardId); }
-function actionModeLabel(mode: ActionMode) { return mode ? actionLabels[mode] || mode : ''; }
-const roleBadgeAssets: Record<string, string> = { pingcheng_artisan: 'role-badge-artisan.png', western_dancer: 'role-badge-dancer.png', grassland_rider: 'role-badge-rider.png', central_scribe: 'role-badge-scribe.png' };
-function roleBadgeAsset(roleId: string | undefined, fallback?: string) { return roleBadgeAssets[roleId || ''] ? `ornaments/${roleBadgeAssets[roleId || '']}` : fallback || 'icon_role_scribe.png'; }
-function optionAction(option: ActionOption, target?: ActionOption['targets'][number]): Action { const payload = { ...(option.payload || {}), ...(target?.payload || {}) }; return { ...payload, type: option.type, label: target?.label || option.label, cost: option.cost?.ap, preview_delta: target?.preview_delta || option.preview_delta } as Action; }
-function actionFeedback(action: Action, before: GameState | undefined, after: GameState) {
-  const actorId = before?.shared.active_player_id || after.shared.active_player_id;
-  const previousPlayer = actorId ? before?.players[actorId] : undefined;
-  const nextPlayer = actorId ? after.players[actorId] : undefined;
-  const changes: string[] = [];
-  const delta = (label: string, previous?: number, next?: number) => { if (typeof previous === 'number' && typeof next === 'number' && previous !== next) changes.push(`${label} ${next - previous > 0 ? '+' : ''}${next - previous}`); };
-  delta('AP', previousPlayer?.ap, nextPlayer?.ap);
-  delta('研究线索', before?.shared.research_clues, after.shared.research_clues);
-  delta('修护资源', before?.shared.restoration_resource, after.shared.restoration_resource);
-  delta('威胁', before?.shared.threat, after.shared.threat);
-  delta('共同影响', before?.shared.influence, after.shared.influence);
-  const copy: Partial<Record<ActionType, string>> = { move: '已抵达新地点。新的线索与风险已经显影。', explore: '文化证据已进入手牌，可用于当前地点的互证。', contribute: '证据已投入委托，节点会按完整条件推进。', restore: '节点损伤已降低，可以继续推进当前项目。', restore_route: '路线已恢复通行，新的协作路径已经打开。', survey_route: '路线状况已记录，可以据此决定修护或绕行。', establish_connection: '地点之间已建立稳定连接。', use_action_card: '策略牌已结算，地图和资源状态已经更新。', end_planning: '规划标记已结算，现在开始本轮行动。' };
-  return `${copy[action.type] || '行动已记录，世界状态已更新。'}${changes.length ? ` ${changes.join('、')}。` : ''}`;
-}
 
 export function GamePage() {
   const { sessionId = '', roomId = '' } = useParams();
@@ -62,9 +39,10 @@ export function GamePage() {
   const [handoffName, setHandoffName] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<ActionOption | null>(null);
   const [roomToken] = useState(() => roomId ? window.sessionStorage.getItem(`yungang-room-token:${roomId}`) || '' : '');
+  const [roomEventState, setRoomEventState] = useState<'connected' | 'retrying' | 'ended' | 'unauthorized'>('connected');
   const enqueueToast = (text: string) => { const id = crypto.randomUUID(); setToasts(items => [...items.slice(-3), { id, text }]); window.setTimeout(() => setToasts(items => items.filter(item => item.id !== id)), 4800); };
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId), refetchOnWindowFocus: false, refetchInterval: roomId ? 2500 : false });
-  useRoomEvents({ roomId, token: roomToken, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); } });
+  useRoomEvents({ roomId, token: roomToken, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); }, onState: setRoomEventState });
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const state = gameQuery.data;
   const legal = state?.legal_actions || [];
@@ -99,7 +77,7 @@ export function GamePage() {
   const currentEvent = state.shared.current_event_id ? events[state.shared.current_event_id] : undefined;
   const eventTargetLabels = (state.shared.event_targets || []).map(id => sites[id]?.name || (state.routes?.[id] ? '选中路线' : '事件目标'));
   const targetIds = new Set((selectedOption?.type === actionMode ? selectedOption.targets : []).map(target => String(target.payload?.target_id || target.payload?.target_site_id || target.id)));
-  const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : '已连接';
+  const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : roomEventState === 'unauthorized' ? '席位失效' : roomEventState === 'retrying' ? '重连中' : roomEventState === 'ended' ? '重新连接' : '已连接';
   const run = (action?: Action) => { if (action && canAct && !mutation.isPending) mutation.mutate({ ...action, request_id: action.request_id || crypto.randomUUID() }); };
   const chooseOption = (option: ActionOption) => { if (!canAct || option.enabled === false) return; if (option.targets.length) { setSelectedOption(option); if (['move', 'restore', 'survey_route', 'restore_route', 'establish_connection'].includes(option.type)) { setActionMode(option.type as ActionMode); setFocus(active.location); } else setActionMode(null); return; } run(optionAction(option)); };
   const chooseAction = (type: ActionType) => { const option = state.action_options?.find(item => item.type === type && item.enabled !== false); if (option) chooseOption(option); };
