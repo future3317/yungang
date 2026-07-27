@@ -218,6 +218,55 @@
       "combo_tags": [
         "route_governance"
       ]
+    },
+    {
+      "id": "action_13",
+      "name": "??????",
+      "description": "????????????????????",
+      "cost": 1,
+      "target_rule": "route",
+      "effect": {
+        "type": "reduce_route_risk",
+        "risk_delta": -1,
+        "clues": 1
+      },
+      "strategic_role": "????"
+    },
+    {
+      "id": "action_14",
+      "name": "?????",
+      "description": "??????????????????????",
+      "cost": 1,
+      "target_rule": "route",
+      "effect": {
+        "type": "survey_route",
+        "risk_delta": -1,
+        "clues": 1
+      },
+      "strategic_role": "????"
+    },
+    {
+      "id": "action_15",
+      "name": "??????",
+      "description": "????????1????",
+      "cost": 1,
+      "target_rule": "player",
+      "effect": {
+        "type": "transfer_resource",
+        "amount": 1
+      },
+      "strategic_role": "????"
+    },
+    {
+      "id": "action_16",
+      "name": "??????",
+      "description": "?????????????",
+      "cost": 1,
+      "target_rule": "event",
+      "effect": {
+        "type": "team_prepare"
+      },
+      "strategic_role": "????"
     }
   ]
 }

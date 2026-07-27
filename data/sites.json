@@ -616,5 +616,221 @@
       }
     },
     "gameplay_hint": "优先处理区域门户，不要把资源分散到所有支路。"
+  },
+  {
+    "id": "eastern_cave_observatory",
+    "name": "???????",
+    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
+    "scene_asset": "scene_yungang_day.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 72,
+    "y": 30,
+    "connections": [
+      "digital_mapping_station",
+      "environmental_monitoring_station"
+    ],
+    "start_damage": 0,
+    "max_damage": 2,
+    "active_task_id": "task_eastern_survey",
+    "site_tags": [
+      "east",
+      "survey",
+      "cave"
+    ],
+    "summary": "?????????????????????????????????",
+    "region_id": "cave_network",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "eastern_observation",
+      "name": "????",
+      "description": "?????????1??????",
+      "trigger": "after_explore",
+      "effect": {
+        "type": "gain_clue",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "??????????????????????"
+  },
+  {
+    "id": "central_cave_observatory",
+    "name": "???????",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
+    "scene_asset": "scene_yungang_day.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 58,
+    "y": 38,
+    "connections": [
+      "yungang",
+      "material_yard"
+    ],
+    "start_damage": 1,
+    "max_damage": 2,
+    "active_task_id": "task_central_sequence",
+    "site_tags": [
+      "central",
+      "survey",
+      "cave"
+    ],
+    "summary": "????????????????????????????????????",
+    "region_id": "cave_network",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "central_sequence",
+      "name": "????",
+      "description": "?????????????????1????????",
+      "trigger": "after_architecture_contribution",
+      "effect": {
+        "type": "gain_clue",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "???????????????????"
+  },
+  {
+    "id": "western_cave_observatory",
+    "name": "???????",
+    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
+    "scene_asset": "scene_frontier_pass.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 25,
+    "y": 38,
+    "connections": [
+      "wall_pass",
+      "digital_mapping_station"
+    ],
+    "start_damage": 0,
+    "max_damage": 2,
+    "active_task_id": "task_western_compare",
+    "site_tags": [
+      "west",
+      "survey",
+      "frontier"
+    ],
+    "summary": "????????????????????????????????",
+    "region_id": "frontier_belt",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "western_compare",
+      "name": "????",
+      "description": "??????????1??????",
+      "trigger": "task_completed",
+      "effect": {
+        "type": "reduce_threat",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "???????????????????"
+  },
+  {
+    "id": "digital_mapping_station",
+    "name": "?????",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
+    "scene_asset": "scene_archive_cave.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 48,
+    "y": 24,
+    "connections": [
+      "eastern_cave_observatory",
+      "western_cave_observatory"
+    ],
+    "start_damage": 0,
+    "max_damage": 2,
+    "active_task_id": "task_digital_mosaic",
+    "site_tags": [
+      "archive",
+      "digital",
+      "mapping"
+    ],
+    "summary": "?????????????????????????",
+    "region_id": "archive_belt",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "digital_mapping",
+      "name": "????",
+      "description": "???????????????",
+      "trigger": "after_explore",
+      "effect": {
+        "type": "preview_event",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "????????????????"
+  },
+  {
+    "id": "environmental_monitoring_station",
+    "name": "?????",
+    "icon_asset": "generated/nodes/icon_node_material_yard.png",
+    "scene_asset": "scene_craft_restoration.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 76,
+    "y": 62,
+    "connections": [
+      "eastern_cave_observatory",
+      "visitor_emergency_point"
+    ],
+    "start_damage": 1,
+    "max_damage": 2,
+    "active_task_id": "task_environment_sequence",
+    "site_tags": [
+      "environment",
+      "monitoring",
+      "risk"
+    ],
+    "summary": "???????????????????????????????",
+    "region_id": "east_belt",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "environment_monitoring",
+      "name": "????",
+      "description": "??????????????1??????",
+      "trigger": "round_start",
+      "effect": {
+        "type": "reduce_threat",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "????????????????????????"
+  },
+  {
+    "id": "visitor_emergency_point",
+    "name": "????????",
+    "icon_asset": "generated/nodes/icon_node_route_junction.png",
+    "scene_asset": "scene_trade_meeting.png",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 88,
+    "y": 74,
+    "connections": [
+      "environmental_monitoring_station",
+      "trade_post"
+    ],
+    "start_damage": 0,
+    "max_damage": 2,
+    "active_task_id": "task_visitor_dispatch",
+    "site_tags": [
+      "visitor",
+      "emergency",
+      "trade"
+    ],
+    "summary": "????????????????????????",
+    "region_id": "east_belt",
+    "strategic_role": "?????????",
+    "node_ability": {
+      "id": "visitor_dispatch",
+      "name": "????",
+      "description": "???????1??????",
+      "trigger": "task_completed",
+      "effect": {
+        "type": "gain_influence",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "????????????????"
   }
 ]

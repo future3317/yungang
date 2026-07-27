@@ -23,6 +23,7 @@ TRIGGER_HANDLERS = {
 
 CULTURE_EFFECT_HANDLERS = {
     "gain_ap": "_effect_gain_ap",
+    "gain_clue": "_effect_gain_clue",
     "next_contribute_bonus": "_effect_next_contribute_bonus",
     "free_move": "_effect_free_move",
     "restore_and_influence": "_effect_restore_and_influence",

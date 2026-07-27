@@ -603,5 +603,187 @@
     "strategic_role": "区域连接任务",
     "route_synergy": "完成后计入连通区域和路线恢复目标。",
     "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少3种来源。"
+  },
+  {
+    "id": "task_eastern_survey",
+    "site_id": "eastern_cave_observatory",
+    "name": "????????",
+    "required_domains": [
+      "statue",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "????????????????????",
+    "culture_explanation": "????????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "image_reconstruction"
+      ],
+      "preferred_origins": [
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
+  },
+  {
+    "id": "task_central_sequence",
+    "site_id": "central_cave_observatory",
+    "name": "????????",
+    "required_domains": [
+      "architecture",
+      "statue"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "research_clues": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "????????????????????????",
+    "culture_explanation": "??????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis"
+      ],
+      "preferred_origins": [
+        "central",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
+  },
+  {
+    "id": "task_western_compare",
+    "site_id": "western_cave_observatory",
+    "name": "??????",
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "threat_reduction": 1,
+      "domain": "frontier"
+    },
+    "learning_objective": "???????????????????????",
+    "culture_explanation": "?????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "silk"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
+  },
+  {
+    "id": "task_digital_mosaic",
+    "site_id": "digital_mapping_station",
+    "name": "??????",
+    "required_domains": [
+      "architecture",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "research_clues": 2,
+      "domain": "architecture"
+    },
+    "learning_objective": "?????????????????????????",
+    "culture_explanation": "?????????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "preferred_origins": [
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
+  },
+  {
+    "id": "task_environment_sequence",
+    "site_id": "environmental_monitoring_station",
+    "name": "??????",
+    "required_domains": [
+      "architecture",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "????????????????????",
+    "culture_explanation": "???????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "craft",
+        "frontier"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
+  },
+  {
+    "id": "task_visitor_dispatch",
+    "site_id": "visitor_emergency_point",
+    "name": "??????",
+    "required_domains": [
+      "trade",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "influence": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "??????????????????????????",
+    "culture_explanation": "??????????????????????????????",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "central",
+        "silk"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "??????",
+    "ui_instruction": "??2????????????"
   }
 ]

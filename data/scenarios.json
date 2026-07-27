@@ -464,6 +464,139 @@
       },
       "victory_brief": "完成云冈多域总汇、三个公共目标和至少三条稳定区域连接。",
       "failure_brief": "核心节点关闭、风化压力达到上限或回合耗尽。"
+    },
+    {
+      "id": "rainy_season",
+      "name": "????",
+      "description": "??????????????????????????????????",
+      "max_rounds": 9,
+      "restoration_resource": 7,
+      "influence_goal": 10,
+      "closed_site_limit": 2,
+      "objective_ids": [
+        "objective_protect_core",
+        "objective_complete_projects"
+      ],
+      "enabled_site_ids": [
+        "yungang",
+        "central_cave_observatory",
+        "eastern_cave_observatory",
+        "environmental_monitoring_station",
+        "visitor_emergency_point",
+        "shanhua_temple",
+        "material_yard",
+        "route_junction"
+      ],
+      "enabled_project_ids": [
+        "project_03",
+        "project_09",
+        "project_10",
+        "project_11"
+      ],
+      "event_deck": [
+        "event_19",
+        "event_23",
+        "event_20",
+        "sandstorm",
+        "quiet",
+        "route_blocked"
+      ],
+      "action_card_pool": {
+        "action_02": 1,
+        "action_04": 1,
+        "action_13": 1,
+        "action_14": 1,
+        "action_16": 1
+      },
+      "blocked_route_count": 1,
+      "initial_damage": {
+        "central_cave_observatory": 1,
+        "environmental_monitoring_station": 1
+      },
+      "recommended_players": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "25?35",
+      "core_project_id": "project_10",
+      "scenario_rule": "???????????????????1????",
+      "event_chain_ids": [],
+      "starting_threat": 1,
+      "starting_clues": 1,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2
+      },
+      "victory_brief": "?????????????????????????",
+      "failure_brief": "????????????????????"
+    },
+    {
+      "id": "digital_archive",
+      "name": "????",
+      "description": "??????????????????????????",
+      "max_rounds": 8,
+      "restoration_resource": 6,
+      "influence_goal": 10,
+      "closed_site_limit": 3,
+      "objective_ids": [
+        "objective_diversity",
+        "objective_complete_projects"
+      ],
+      "enabled_site_ids": [
+        "yungang",
+        "central_cave_observatory",
+        "western_cave_observatory",
+        "digital_mapping_station",
+        "archive_depot",
+        "pingcheng_ruins",
+        "trade_post",
+        "route_junction"
+      ],
+      "enabled_project_ids": [
+        "project_01",
+        "project_05",
+        "project_09",
+        "project_10"
+      ],
+      "event_deck": [
+        "event_22",
+        "event_21",
+        "event_24",
+        "pilgrims",
+        "quiet",
+        "route_blocked"
+      ],
+      "action_card_pool": {
+        "action_03": 1,
+        "action_07": 1,
+        "action_08": 1,
+        "action_15": 1,
+        "action_16": 1
+      },
+      "blocked_route_count": 1,
+      "initial_damage": {
+        "digital_mapping_station": 1
+      },
+      "recommended_players": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "recommended_minutes": "20?30",
+      "core_project_id": "project_09",
+      "scenario_rule": "??????????????????1??????",
+      "event_chain_ids": [],
+      "starting_threat": 0,
+      "starting_clues": 1,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 2
+      },
+      "victory_brief": "???????????????????????????",
+      "failure_brief": "????????????????????"
     }
   ]
 }

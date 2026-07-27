@@ -1745,6 +1745,603 @@
         "cross_origin",
         "frontier"
       ]
+    },
+    {
+      "id": "evidence_37",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "architecture",
+      "origin_tags": [
+        "central",
+        "craft"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????architecture????????????????",
+      "effect": {
+        "type": "gain_clue",
+        "amount": 1
+      },
+      "technique_tags": [
+        "archive_context",
+        "material_diagnosis"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "archive_context",
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "material_diagnosis"
+      ]
+    },
+    {
+      "id": "evidence_38",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "statue",
+      "origin_tags": [
+        "central",
+        "western"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????statue????????????????",
+      "effect": {
+        "type": "next_contribute_bonus",
+        "amount": 1
+      },
+      "technique_tags": [
+        "image_reconstruction"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "image_reconstruction"
+      ]
+    },
+    {
+      "id": "evidence_39",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "frontier",
+      "origin_tags": [
+        "frontier",
+        "silk"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????frontier????????????????",
+      "effect": {
+        "type": "reduce_threat",
+        "amount": 1
+      },
+      "technique_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "cross_origin"
+      ]
+    },
+    {
+      "id": "evidence_40",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "pattern",
+      "origin_tags": [
+        "central",
+        "western"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????pattern????????????????",
+      "effect": {
+        "type": "gain_ap",
+        "amount": 1
+      },
+      "technique_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ]
+    },
+    {
+      "id": "evidence_41",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "architecture",
+      "origin_tags": [
+        "craft",
+        "frontier"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????architecture????????????????",
+      "effect": {
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 1
+      },
+      "technique_tags": [
+        "material_diagnosis"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "material_diagnosis"
+      ]
+    },
+    {
+      "id": "evidence_42",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "?????",
+      "domain": "trade",
+      "origin_tags": [
+        "central",
+        "silk"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????trade????????????????",
+      "effect": {
+        "type": "free_move"
+      },
+      "technique_tags": [
+        "route_governance"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance"
+      ]
+    },
+    {
+      "id": "evidence_43",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "pattern",
+      "origin_tags": [
+        "western",
+        "central"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????pattern????????????????",
+      "effect": {
+        "type": "next_contribute_bonus",
+        "amount": 1
+      },
+      "technique_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ]
+    },
+    {
+      "id": "evidence_44",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "architecture",
+      "origin_tags": [
+        "craft",
+        "frontier"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????architecture????????????????",
+      "effect": {
+        "type": "reduce_threat",
+        "amount": 1
+      },
+      "technique_tags": [
+        "material_diagnosis"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "material_diagnosis"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "material_diagnosis"
+      ]
+    },
+    {
+      "id": "evidence_45",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "trade",
+      "origin_tags": [
+        "central",
+        "silk"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????trade????????????????",
+      "effect": {
+        "type": "influence",
+        "amount": 1
+      },
+      "technique_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "route_governance",
+        "archive_context"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "archive_context"
+      ]
+    },
+    {
+      "id": "evidence_46",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "??????",
+      "domain": "frontier",
+      "origin_tags": [
+        "frontier",
+        "western"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????frontier????????????????",
+      "effect": {
+        "type": "free_move"
+      },
+      "technique_tags": [
+        "route_governance"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "route_governance"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance"
+      ]
+    },
+    {
+      "id": "evidence_47",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "?????",
+      "domain": "trade",
+      "origin_tags": [
+        "central",
+        "western"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????trade????????????????",
+      "effect": {
+        "type": "gain_clue",
+        "amount": 1
+      },
+      "technique_tags": [
+        "archive_context",
+        "cross_origin"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "archive_context",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "archive_context",
+        "cross_origin"
+      ]
+    },
+    {
+      "id": "evidence_48",
+      "icon_asset": "icon_card_scroll.png",
+      "name": "?????",
+      "domain": "trade",
+      "origin_tags": [
+        "silk",
+        "central"
+      ],
+      "site_tags": [
+        "new_content",
+        "support"
+      ],
+      "description": "?????????trade????????????????",
+      "effect": {
+        "type": "restore_and_influence",
+        "resource": 1,
+        "influence": 1
+      },
+      "technique_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "era_tags": [
+        "cross_cultural_evidence"
+      ],
+      "rarity": "common",
+      "culture_note": "???????????????????????",
+      "evidence_use_text": "?????????????",
+      "instant_use_text": "????????????",
+      "combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "combo_with_domains": [
+        "architecture",
+        "frontier",
+        "trade",
+        "pattern",
+        "statue"
+      ],
+      "combo_name": "???????",
+      "combo_reward_text": "?????????????????",
+      "strategic_role": "??????",
+      "event_option_tags": [
+        "research"
+      ],
+      "finale_tags": [
+        "route_governance",
+        "cross_origin"
+      ]
     }
   ]
 }

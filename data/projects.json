@@ -427,6 +427,198 @@
         ]
       },
       "strategy_note": "用于互市重开情景，可降低路线阻断带来的单点风险。"
+    },
+    {
+      "id": "project_09",
+      "site_id": "eastern_cave_observatory",
+      "name": "????????",
+      "project_type": "new_content",
+      "summary": "??????????????????????????",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "compare",
+          "name": "??????",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "origin_diversity": 2
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "interpret",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "??????????????"
+        }
+      ],
+      "reward": {
+        "influence": 1,
+        "research_clues": 1,
+        "objective_tags": [
+          "projects",
+          "statue"
+        ]
+      },
+      "strategy_note": "????????????????????????"
+    },
+    {
+      "id": "project_10",
+      "site_id": "central_cave_observatory",
+      "name": "?????????",
+      "project_type": "new_content",
+      "summary": "????????????????????????",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "compare",
+          "name": "??????",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "origin_diversity": 2
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "interpret",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "??????????????"
+        }
+      ],
+      "reward": {
+        "influence": 1,
+        "research_clues": 1,
+        "objective_tags": [
+          "projects",
+          "architecture"
+        ]
+      },
+      "strategy_note": "????????????????????????"
+    },
+    {
+      "id": "project_11",
+      "site_id": "environmental_monitoring_station",
+      "name": "??????",
+      "project_type": "new_content",
+      "summary": "???????????????????????",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "compare",
+          "name": "??????",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "origin_diversity": 2
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "interpret",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "??????????????"
+        }
+      ],
+      "reward": {
+        "influence": 1,
+        "research_clues": 1,
+        "objective_tags": [
+          "projects",
+          "architecture"
+        ]
+      },
+      "strategy_note": "????????????????????????"
+    },
+    {
+      "id": "project_12",
+      "site_id": "visitor_emergency_point",
+      "name": "?????????",
+      "project_type": "new_content",
+      "summary": "????????????????????????",
+      "stages": [
+        {
+          "id": "discover",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "explore",
+          "requirements": {
+            "clues": 1
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "compare",
+          "name": "??????",
+          "required_progress": 2,
+          "action_type": "contribute",
+          "requirements": {
+            "origin_diversity": 2
+          },
+          "stage_text": "????????????"
+        },
+        {
+          "id": "interpret",
+          "name": "??????",
+          "required_progress": 1,
+          "action_type": "restore",
+          "requirements": {
+            "restoration_resource": 1
+          },
+          "stage_text": "??????????????"
+        }
+      ],
+      "reward": {
+        "influence": 1,
+        "research_clues": 1,
+        "objective_tags": [
+          "projects",
+          "trade"
+        ]
+      },
+      "strategy_note": "????????????????????????"
     }
   ]
 }
