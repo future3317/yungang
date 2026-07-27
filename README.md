@@ -122,6 +122,24 @@ npm run api:generate
 - [测试策略](docs/TEST_STRATEGY.md)
 - [五分钟演示脚本](docs/playtest/DEMO_SCRIPT.md)
 
+## 生产化补充
+
+当前版本的运行时规则以服务端返回的 `action_options` 为唯一行动来源。前端不再根据动作类型猜测合法性：需要目标的行动会进入目标选择和确认，提交时携带 `expected_revision` 与幂等 `request_id`，成功后地图、资源栏和结构化时间线同步反馈。
+
+地图是全屏世界层，左侧角色与行动 HUD、右侧地点检查器叠加在地图之上。右侧检查器分为任务、事件、市场三页；移动端对应独立的地图、地点、手牌内容区。地图路线支持 `waypoints`、`roadClass`、`terrain` 和 `labelPosition`，运行时端点始终由路线两端节点计算。
+
+开发工具：本地开发服务器启动后访问 `/dev/map-editor`，可拖动、网格吸附、锁定节点、保存草稿并导出布局 JSON。
+
+内容分类：`documented` 表示真实遗产信息，`interpretive` 表示研究性解释，`gameplay` 表示游戏化功能。游戏化节点不会被 UI 伪装成确定的历史遗址。
+
+发布前建议执行：
+
+```powershell
+python scripts/validate_content.py
+cd frontend; npm run typecheck; npm run test; npm run build
+cd ..; pytest -q
+```
+
 ## 交付边界
 
 当前后端测试、前端类型检查、Vitest 和 production build 已纳入本地验收。Playwright、axe、Lighthouse、五种分辨率视觉回归和真人试玩必须在本地服务启动后实际执行，不能仅凭代码推断通过。测试产生的 `data/games.sqlite3`、截图和 `audit_output/` 不应提交。

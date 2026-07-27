@@ -1,3 +1,5 @@
+@layer reset, tokens, base, layout, components, utilities;
+
 :root {
   --font-display: "Noto Serif SC", "Source Han Serif SC", Songti SC, STSong, serif;
   --font-body: "Noto Sans SC", "Source Han Sans SC", PingFang SC, "Microsoft YaHei", sans-serif;

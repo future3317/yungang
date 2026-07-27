@@ -1,100 +1,108 @@
 {
-  "role_upgrades": [
-    {
-      "id": "pingcheng_artisan_upgrade_1",
-      "role_id": "pingcheng_artisan",
-      "name": "石作精修",
-      "description": "精修完成后，若节点仍有损伤，再降低1点风化压力。",
-      "effect": {
-        "type": "fine_repair_threat_bonus",
-        "value": 1
-      },
-      "trigger": "使用精修后",
-      "strategic_direction": "高风险节点救援"
-    },
-    {
-      "id": "pingcheng_artisan_upgrade_2",
-      "role_id": "pingcheng_artisan",
-      "name": "营造统筹",
-      "description": "每轮第一次为项目执行修护时，不消耗共同修护资源。",
-      "effect": {
-        "type": "project_restore_discount",
-        "value": 1
-      },
-      "trigger": "项目阶段修护",
-      "strategic_direction": "项目效率"
-    },
-    {
-      "id": "western_dancer_upgrade_1",
-      "role_id": "western_dancer",
-      "name": "和鸣互证",
-      "description": "和鸣可同时视为一种额外来源和一个跨来源组合标签。",
-      "effect": {
-        "type": "harmony_origin_bonus",
-        "value": 1
-      },
-      "trigger": "使用和鸣后贡献",
-      "strategic_direction": "来源多样性"
-    },
-    {
-      "id": "western_dancer_upgrade_2",
-      "role_id": "western_dancer",
-      "name": "流动传播",
-      "description": "完成一次跨来源贡献后，在相邻节点获得1点研究线索。",
-      "effect": {
-        "type": "post_contribution_clue",
-        "value": 1
-      },
-      "trigger": "完成跨来源贡献",
-      "strategic_direction": "证据传播"
-    },
-    {
-      "id": "grassland_rider_upgrade_1",
-      "role_id": "grassland_rider",
-      "name": "疾行勘路",
-      "description": "疾行结束后，可免费勘察抵达节点的一条承压路线。",
-      "effect": {
-        "type": "sprint_survey",
-        "value": 1
-      },
-      "trigger": "疾行移动后",
-      "strategic_direction": "路线信息"
-    },
-    {
-      "id": "grassland_rider_upgrade_2",
-      "role_id": "grassland_rider",
-      "name": "关隘联络",
-      "description": "每轮第一次修护路线时，研究线索消耗减少1点。",
-      "effect": {
-        "type": "route_action_discount",
-        "value": 1
-      },
-      "trigger": "修护路线",
-      "strategic_direction": "路线恢复"
-    },
-    {
-      "id": "central_scribe_upgrade_1",
-      "role_id": "central_scribe",
-      "name": "博览编目",
-      "description": "博览时查看的候选数量增加1张，并可保留一张到下一轮。",
-      "effect": {
-        "type": "market_look_bonus",
-        "value": 1
-      },
-      "trigger": "使用博览",
-      "strategic_direction": "市场控制"
-    },
-    {
-      "id": "central_scribe_upgrade_2",
-      "role_id": "central_scribe",
-      "name": "档案回收",
-      "description": "每轮一次，可从项目档案区取回一张已贡献证据，替换为同领域手牌。",
-      "effect": {
-        "type": "archive_retrieve",
-        "value": 1
-      },
-      "trigger": "行动阶段",
-      "strategic_direction": "证据循环"
-    }
-  ]
+    "role_upgrades":  [
+                          {
+                              "id":  "pingcheng_artisan_upgrade_1",
+                              "role_id":  "pingcheng_artisan",
+                              "name":  "石作精修",
+                              "description":  "精修完成后，若节点仍有损伤，再降低1点风化压力。",
+                              "effect":  {
+                                             "type":  "fine_repair_threat_bonus",
+                                             "value":  1
+                                         },
+                              "trigger":  "使用精修后",
+                              "strategic_direction":  "高风险节点救援",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "pingcheng_artisan_upgrade_2",
+                              "role_id":  "pingcheng_artisan",
+                              "name":  "营造统筹",
+                              "description":  "每轮第一次为项目执行修护时，不消耗共同修护资源。",
+                              "effect":  {
+                                             "type":  "project_restore_discount",
+                                             "value":  1
+                                         },
+                              "trigger":  "项目阶段修护",
+                              "strategic_direction":  "项目效率",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "western_dancer_upgrade_1",
+                              "role_id":  "western_dancer",
+                              "name":  "和鸣互证",
+                              "description":  "和鸣可同时视为一种额外来源和一个跨来源组合标签。",
+                              "effect":  {
+                                             "type":  "harmony_origin_bonus",
+                                             "value":  1
+                                         },
+                              "trigger":  "使用和鸣后贡献",
+                              "strategic_direction":  "来源多样性",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "western_dancer_upgrade_2",
+                              "role_id":  "western_dancer",
+                              "name":  "流动传播",
+                              "description":  "完成一次跨来源贡献后，在相邻节点获得1点研究线索。",
+                              "effect":  {
+                                             "type":  "post_contribution_clue",
+                                             "value":  1
+                                         },
+                              "trigger":  "完成跨来源贡献",
+                              "strategic_direction":  "证据传播",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "grassland_rider_upgrade_1",
+                              "role_id":  "grassland_rider",
+                              "name":  "疾行勘路",
+                              "description":  "疾行结束后，可免费勘察抵达节点的一条承压路线。",
+                              "effect":  {
+                                             "type":  "sprint_survey",
+                                             "value":  1
+                                         },
+                              "trigger":  "疾行移动后",
+                              "strategic_direction":  "路线信息",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "grassland_rider_upgrade_2",
+                              "role_id":  "grassland_rider",
+                              "name":  "关隘联络",
+                              "description":  "每轮第一次修护路线时，研究线索消耗减少1点。",
+                              "effect":  {
+                                             "type":  "route_action_discount",
+                                             "value":  1
+                                         },
+                              "trigger":  "修护路线",
+                              "strategic_direction":  "路线恢复",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "central_scribe_upgrade_1",
+                              "role_id":  "central_scribe",
+                              "name":  "博览编目",
+                              "description":  "博览时查看的候选数量增加1张，并可保留一张到下一轮。",
+                              "effect":  {
+                                             "type":  "market_look_bonus",
+                                             "value":  1
+                                         },
+                              "trigger":  "使用博览",
+                              "strategic_direction":  "市场控制",
+                              "content_class":  "gameplay"
+                          },
+                          {
+                              "id":  "central_scribe_upgrade_2",
+                              "role_id":  "central_scribe",
+                              "name":  "档案回收",
+                              "description":  "每轮一次，可从项目档案区取回一张已贡献证据，替换为同领域手牌。",
+                              "effect":  {
+                                             "type":  "archive_retrieve",
+                                             "value":  1
+                                         },
+                              "trigger":  "行动阶段",
+                              "strategic_direction":  "证据循环",
+                              "content_class":  "gameplay"
+                          }
+                      ]
 }

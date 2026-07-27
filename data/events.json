@@ -1,524 +1,548 @@
 {
-  "events": [
-    {
-      "id": "sandstorm",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "风沙遮路",
-      "description": "持续风沙使露天节点和交通路线承受额外磨蚀。结算时两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.1,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "两个稳定或承压节点将受到损伤。",
-      "mitigation_hint": "提前准备、降低风化压力，或优先修护已接近关闭的节点。",
-      "tags": [
-        "wind",
-        "site_damage",
-        "forecastable"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "pilgrims",
-      "scene_asset": "scene_trade_meeting.png",
-      "name": "四方来客",
-      "description": "人员往来带来新的观察、记忆与交流机会。所有玩家获得1点个人影响。",
-      "target_rule": "all_players",
-      "damage": 0,
-      "modifier": -1,
-      "difficulty_weight": 0.8,
-      "effect": {
-        "type": "all_influence",
-        "amount": 1
-      },
-      "forecast_text": "本轮是推进多来源任务的有利窗口。",
-      "mitigation_hint": "无需缓解；可利用本轮集中交换和贡献证据。",
-      "tags": [
-        "opportunity",
-        "exchange",
-        "influence"
-      ],
-      "severity": 0
-    },
-    {
-      "id": "quiet",
-      "scene_asset": "scene_yungang_night.png",
-      "name": "静夜守护",
-      "description": "巡查与维护工作得以集中开展，团队获得1点共同修护资源。",
-      "target_rule": "shared_resource",
-      "damage": 0,
-      "modifier": -1,
-      "difficulty_weight": 0.7,
-      "effect": {
-        "type": "gain_resource",
-        "amount": 1
-      },
-      "forecast_text": "团队将在回合末补充修护资源。",
-      "mitigation_hint": "可提前把现有资源用于高风险节点，避免资源闲置。",
-      "tags": [
-        "opportunity",
-        "restoration"
-      ],
-      "severity": 0
-    },
-    {
-      "id": "route_blocked",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "道路阻断",
-      "description": "一段关键通道出现阻碍。团队需要消耗修护资源缓解，或接受风化压力上升。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "回合末将出现一次团队选择。",
-      "mitigation_hint": "保留至少1点修护资源，或提前建立替代路线。",
-      "tags": [
-        "route",
-        "choice",
-        "threat"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_05",
-      "scene_asset": "scene_craft_restoration.png",
-      "name": "岩体裂隙扩展",
-      "description": "既有裂隙在环境作用下继续发展，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.1,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "高风险节点可能在结算后关闭。",
-      "mitigation_hint": "优先修护损伤达到2点的节点，材料诊断类证据可帮助团队确定顺序。",
-      "tags": [
-        "rock",
-        "site_damage",
-        "restoration"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_06",
-      "scene_asset": "scene_craft_restoration.png",
-      "name": "崖顶渗水",
-      "description": "渗水使局部材料状态恶化，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "建筑与石质节点面临水害压力。",
-      "mitigation_hint": "使用排水、材料或修护类证据，或提前准备降低事件压力。",
-      "tags": [
-        "water",
-        "site_damage",
-        "material"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_07",
-      "scene_asset": "scene_yungang_day.png",
-      "name": "表层风化加剧",
-      "description": "温湿变化与颗粒作用使表层更加脆弱，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "未修护节点将持续累积损伤。",
-      "mitigation_hint": "不要平均分配资源；集中保护核心项目所在节点。",
-      "tags": [
-        "weathering",
-        "site_damage"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_08",
-      "scene_asset": "scene_archive_cave.png",
-      "name": "表面附着扩散",
-      "description": "表面附着影响观察与记录，团队的风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 0.9,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "本轮不直接损伤节点，但会压缩后续容错。",
-      "mitigation_hint": "准备应对或使用降低压力的文化证据。",
-      "tags": [
-        "surface",
-        "threat",
-        "monitoring"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_09",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "危岩松动",
-      "description": "局部危岩使通行与巡查更困难，团队的风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 1.1,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "路线治理和节点修护都会受到时间压力。",
-      "mitigation_hint": "在结算前完成准备，或优先建立替代通道。",
-      "tags": [
-        "rock",
-        "route",
-        "threat"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_10",
-      "scene_asset": "scene_craft_restoration.png",
-      "name": "排水不畅",
-      "description": "积水和排水问题增加保护压力，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "材料场、寺观和洞窟类节点需要优先关注。",
-      "mitigation_hint": "排水与材料诊断证据可用于规划本轮修护。",
-      "tags": [
-        "water",
-        "architecture",
-        "site_damage"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_11",
-      "scene_asset": "scene_archive_cave.png",
-      "name": "监测数据异常",
-      "description": "监测记录显示多个指标偏离稳定范围，团队的风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 0.9,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "信息已经公开，但具体受影响地点仍不完全明确。",
-      "mitigation_hint": "利用档案、守望或调查节点补充信息，并保留准备行动。",
-      "tags": [
-        "monitoring",
-        "information",
-        "threat"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_12",
-      "scene_asset": "scene_craft_restoration.png",
-      "name": "巡查发现隐患",
-      "description": "及时巡查发现了可处理的问题，团队获得1点共同修护资源。",
-      "target_rule": "shared_resource",
-      "damage": 0,
-      "modifier": -1,
-      "difficulty_weight": 0.8,
-      "effect": {
-        "type": "gain_resource",
-        "amount": 1
-      },
-      "forecast_text": "本轮可以主动处理一处损伤，而不必等待危机升级。",
-      "mitigation_hint": "将新增资源用于项目节点或风险最高的路线门户。",
-      "tags": [
-        "opportunity",
-        "monitoring",
-        "restoration"
-      ],
-      "severity": 0
-    },
-    {
-      "id": "event_13",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "维护排期延误",
-      "description": "维护人员和资源调度受阻，团队的风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "本轮完成修护和项目的窗口缩短。",
-      "mitigation_hint": "减少无效移动，优先完成已经接近结束的任务。",
-      "tags": [
-        "schedule",
-        "threat",
-        "resource"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_14",
-      "scene_asset": "scene_trade_meeting.png",
-      "name": "路径承载增加",
-      "description": "人员与物资集中通行使路线承压，团队的风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "互市与边塞区域需要准备替代路线。",
-      "mitigation_hint": "建立连接、使用免费移动证据，或提前修护关键门户。",
-      "tags": [
-        "route",
-        "traffic",
-        "threat"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_15",
-      "scene_asset": "scene_archive_cave.png",
-      "name": "记录出现缺口",
-      "description": "部分记录无法相互对应，团队需要重新整理线索。风化压力上升1点。",
-      "target_rule": "threat",
-      "damage": 0,
-      "modifier": 1,
-      "difficulty_weight": 0.9,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "来源多样性和档案任务的推进会更加重要。",
-      "mitigation_hint": "完成档案编目、贡献跨来源证据或使用研究类卡牌。",
-      "tags": [
-        "archive",
-        "information",
-        "threat"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_16",
-      "scene_asset": "scene_craft_restoration.png",
-      "name": "材料病害扩展",
-      "description": "材料病害由局部向周边发展，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.1,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "受损节点之间可能形成连续风险。",
-      "mitigation_hint": "集中完成材料诊断项目，并保留至少1点修护资源。",
-      "tags": [
-        "material",
-        "site_damage",
-        "chain"
-      ],
-      "severity": 2
-    },
-    {
-      "id": "event_17",
-      "scene_asset": "scene_yungang_night.png",
-      "name": "多点告警",
-      "description": "多个地点同时发出风险信号，两个未关闭节点各增加1点损伤。",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.2,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "单点修护不足以覆盖全部风险。",
-      "mitigation_hint": "使用团队准备、守望节点或优先关闭一个事件链。",
-      "tags": [
-        "multi_site",
-        "site_damage",
-        "planning"
-      ],
-      "severity": 3
-    },
-    {
-      "id": "event_18",
-      "scene_asset": "scene_trade_meeting.png",
-      "name": "联合保护行动",
-      "description": "多方协作形成集中保护窗口，所有玩家获得1点个人影响。",
-      "target_rule": "all_players",
-      "damage": 0,
-      "modifier": -1,
-      "difficulty_weight": 0.7,
-      "effect": {
-        "type": "all_influence",
-        "amount": 1
-      },
-      "forecast_text": "本轮适合完成多人贡献和核心项目。",
-      "mitigation_hint": "无需缓解；尽量让至少两名玩家参与同一任务或项目。",
-      "tags": [
-        "opportunity",
-        "cooperation",
-        "influence"
-      ],
-      "severity": 0
-    },
-    {
-      "id": "event_19",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "????",
-      "description": "?????????????????",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "?????????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_20",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "??????",
-      "description": "??????????????",
-      "target_rule": "threat",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "??????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_21",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "????",
-      "description": "?????????????????",
-      "target_rule": "shared_resource",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "gain_resource",
-        "amount": 1
-      },
-      "forecast_text": "?????????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_22",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "??????",
-      "description": "????????????????",
-      "target_rule": "all_players",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "all_influence",
-        "amount": 1
-      },
-      "forecast_text": "????????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_23",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "??????",
-      "description": "????????????????????",
-      "target_rule": "two_open_sites",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "damage_open_sites",
-        "amount": 1
-      },
-      "forecast_text": "????????????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    },
-    {
-      "id": "event_24",
-      "scene_asset": "scene_frontier_pass.png",
-      "name": "??????",
-      "description": "????????????????????",
-      "target_rule": "threat",
-      "damage": 1,
-      "modifier": 0,
-      "difficulty_weight": 1.0,
-      "effect": {
-        "type": "threat",
-        "amount": 1
-      },
-      "forecast_text": "????????????????????",
-      "mitigation_hint": "???????????????1??????????",
-      "tags": [
-        "new_content",
-        "forecastable"
-      ],
-      "severity": 1
-    }
-  ]
+    "events":  [
+                   {
+                       "id":  "sandstorm",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "风沙遮路",
+                       "description":  "持续风沙使露天节点和交通路线承受额外磨蚀。结算时两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.1,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "两个稳定或承压节点将受到损伤。",
+                       "mitigation_hint":  "提前准备、降低风化压力，或优先修护已接近关闭的节点。",
+                       "tags":  [
+                                    "wind",
+                                    "site_damage",
+                                    "forecastable"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "pilgrims",
+                       "scene_asset":  "scene_trade_meeting.png",
+                       "name":  "四方来客",
+                       "description":  "人员往来带来新的观察、记忆与交流机会。所有玩家获得1点个人影响。",
+                       "target_rule":  "all_players",
+                       "damage":  0,
+                       "modifier":  -1,
+                       "difficulty_weight":  0.8,
+                       "effect":  {
+                                      "type":  "all_influence",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "本轮是推进多来源任务的有利窗口。",
+                       "mitigation_hint":  "无需缓解；可利用本轮集中交换和贡献证据。",
+                       "tags":  [
+                                    "opportunity",
+                                    "exchange",
+                                    "influence"
+                                ],
+                       "severity":  0,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "quiet",
+                       "scene_asset":  "scene_yungang_night.png",
+                       "name":  "静夜守护",
+                       "description":  "巡查与维护工作得以集中开展，团队获得1点共同修护资源。",
+                       "target_rule":  "shared_resource",
+                       "damage":  0,
+                       "modifier":  -1,
+                       "difficulty_weight":  0.7,
+                       "effect":  {
+                                      "type":  "gain_resource",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "团队将在回合末补充修护资源。",
+                       "mitigation_hint":  "可提前把现有资源用于高风险节点，避免资源闲置。",
+                       "tags":  [
+                                    "opportunity",
+                                    "restoration"
+                                ],
+                       "severity":  0,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "route_blocked",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "道路阻断",
+                       "description":  "一段关键通道出现阻碍。团队需要消耗修护资源缓解，或接受风化压力上升。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "回合末将出现一次团队选择。",
+                       "mitigation_hint":  "保留至少1点修护资源，或提前建立替代路线。",
+                       "tags":  [
+                                    "route",
+                                    "choice",
+                                    "threat"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_05",
+                       "scene_asset":  "scene_craft_restoration.png",
+                       "name":  "岩体裂隙扩展",
+                       "description":  "既有裂隙在环境作用下继续发展，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.1,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "高风险节点可能在结算后关闭。",
+                       "mitigation_hint":  "优先修护损伤达到2点的节点，材料诊断类证据可帮助团队确定顺序。",
+                       "tags":  [
+                                    "rock",
+                                    "site_damage",
+                                    "restoration"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_06",
+                       "scene_asset":  "scene_craft_restoration.png",
+                       "name":  "崖顶渗水",
+                       "description":  "渗水使局部材料状态恶化，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "建筑与石质节点面临水害压力。",
+                       "mitigation_hint":  "使用排水、材料或修护类证据，或提前准备降低事件压力。",
+                       "tags":  [
+                                    "water",
+                                    "site_damage",
+                                    "material"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_07",
+                       "scene_asset":  "scene_yungang_day.png",
+                       "name":  "表层风化加剧",
+                       "description":  "温湿变化与颗粒作用使表层更加脆弱，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "未修护节点将持续累积损伤。",
+                       "mitigation_hint":  "不要平均分配资源；集中保护核心项目所在节点。",
+                       "tags":  [
+                                    "weathering",
+                                    "site_damage"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_08",
+                       "scene_asset":  "scene_archive_cave.png",
+                       "name":  "表面附着扩散",
+                       "description":  "表面附着影响观察与记录，团队的风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  0.9,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "本轮不直接损伤节点，但会压缩后续容错。",
+                       "mitigation_hint":  "准备应对或使用降低压力的文化证据。",
+                       "tags":  [
+                                    "surface",
+                                    "threat",
+                                    "monitoring"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_09",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "危岩松动",
+                       "description":  "局部危岩使通行与巡查更困难，团队的风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  1.1,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "路线治理和节点修护都会受到时间压力。",
+                       "mitigation_hint":  "在结算前完成准备，或优先建立替代通道。",
+                       "tags":  [
+                                    "rock",
+                                    "route",
+                                    "threat"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_10",
+                       "scene_asset":  "scene_craft_restoration.png",
+                       "name":  "排水不畅",
+                       "description":  "积水和排水问题增加保护压力，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "材料场、寺观和洞窟类节点需要优先关注。",
+                       "mitigation_hint":  "排水与材料诊断证据可用于规划本轮修护。",
+                       "tags":  [
+                                    "water",
+                                    "architecture",
+                                    "site_damage"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_11",
+                       "scene_asset":  "scene_archive_cave.png",
+                       "name":  "监测数据异常",
+                       "description":  "监测记录显示多个指标偏离稳定范围，团队的风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  0.9,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "信息已经公开，但具体受影响地点仍不完全明确。",
+                       "mitigation_hint":  "利用档案、守望或调查节点补充信息，并保留准备行动。",
+                       "tags":  [
+                                    "monitoring",
+                                    "information",
+                                    "threat"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_12",
+                       "scene_asset":  "scene_craft_restoration.png",
+                       "name":  "巡查发现隐患",
+                       "description":  "及时巡查发现了可处理的问题，团队获得1点共同修护资源。",
+                       "target_rule":  "shared_resource",
+                       "damage":  0,
+                       "modifier":  -1,
+                       "difficulty_weight":  0.8,
+                       "effect":  {
+                                      "type":  "gain_resource",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "本轮可以主动处理一处损伤，而不必等待危机升级。",
+                       "mitigation_hint":  "将新增资源用于项目节点或风险最高的路线门户。",
+                       "tags":  [
+                                    "opportunity",
+                                    "monitoring",
+                                    "restoration"
+                                ],
+                       "severity":  0,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_13",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "维护排期延误",
+                       "description":  "维护人员和资源调度受阻，团队的风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "本轮完成修护和项目的窗口缩短。",
+                       "mitigation_hint":  "减少无效移动，优先完成已经接近结束的任务。",
+                       "tags":  [
+                                    "schedule",
+                                    "threat",
+                                    "resource"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_14",
+                       "scene_asset":  "scene_trade_meeting.png",
+                       "name":  "路径承载增加",
+                       "description":  "人员与物资集中通行使路线承压，团队的风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "互市与边塞区域需要准备替代路线。",
+                       "mitigation_hint":  "建立连接、使用免费移动证据，或提前修护关键门户。",
+                       "tags":  [
+                                    "route",
+                                    "traffic",
+                                    "threat"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_15",
+                       "scene_asset":  "scene_archive_cave.png",
+                       "name":  "记录出现缺口",
+                       "description":  "部分记录无法相互对应，团队需要重新整理线索。风化压力上升1点。",
+                       "target_rule":  "threat",
+                       "damage":  0,
+                       "modifier":  1,
+                       "difficulty_weight":  0.9,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "来源多样性和档案任务的推进会更加重要。",
+                       "mitigation_hint":  "完成档案编目、贡献跨来源证据或使用研究类卡牌。",
+                       "tags":  [
+                                    "archive",
+                                    "information",
+                                    "threat"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_16",
+                       "scene_asset":  "scene_craft_restoration.png",
+                       "name":  "材料病害扩展",
+                       "description":  "材料病害由局部向周边发展，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.1,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "受损节点之间可能形成连续风险。",
+                       "mitigation_hint":  "集中完成材料诊断项目，并保留至少1点修护资源。",
+                       "tags":  [
+                                    "material",
+                                    "site_damage",
+                                    "chain"
+                                ],
+                       "severity":  2,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_17",
+                       "scene_asset":  "scene_yungang_night.png",
+                       "name":  "多点告警",
+                       "description":  "多个地点同时发出风险信号，两个未关闭节点各增加1点损伤。",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.2,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "单点修护不足以覆盖全部风险。",
+                       "mitigation_hint":  "使用团队准备、守望节点或优先关闭一个事件链。",
+                       "tags":  [
+                                    "multi_site",
+                                    "site_damage",
+                                    "planning"
+                                ],
+                       "severity":  3,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_18",
+                       "scene_asset":  "scene_trade_meeting.png",
+                       "name":  "联合保护行动",
+                       "description":  "多方协作形成集中保护窗口，所有玩家获得1点个人影响。",
+                       "target_rule":  "all_players",
+                       "damage":  0,
+                       "modifier":  -1,
+                       "difficulty_weight":  0.7,
+                       "effect":  {
+                                      "type":  "all_influence",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "本轮适合完成多人贡献和核心项目。",
+                       "mitigation_hint":  "无需缓解；尽量让至少两名玩家参与同一任务或项目。",
+                       "tags":  [
+                                    "opportunity",
+                                    "cooperation",
+                                    "influence"
+                                ],
+                       "severity":  0,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_19",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "????",
+                       "description":  "?????????????????",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "?????????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_20",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "??????",
+                       "description":  "??????????????",
+                       "target_rule":  "threat",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "??????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_21",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "????",
+                       "description":  "?????????????????",
+                       "target_rule":  "shared_resource",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "gain_resource",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "?????????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_22",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "??????",
+                       "description":  "????????????????",
+                       "target_rule":  "all_players",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "all_influence",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "????????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_23",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "??????",
+                       "description":  "????????????????????",
+                       "target_rule":  "two_open_sites",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "damage_open_sites",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "????????????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   },
+                   {
+                       "id":  "event_24",
+                       "scene_asset":  "scene_frontier_pass.png",
+                       "name":  "??????",
+                       "description":  "????????????????????",
+                       "target_rule":  "threat",
+                       "damage":  1,
+                       "modifier":  0,
+                       "difficulty_weight":  1.0,
+                       "effect":  {
+                                      "type":  "threat",
+                                      "amount":  1
+                                  },
+                       "forecast_text":  "????????????????????",
+                       "mitigation_hint":  "???????????????1??????????",
+                       "tags":  [
+                                    "new_content",
+                                    "forecastable"
+                                ],
+                       "severity":  1,
+                       "content_class":  "gameplay"
+                   }
+               ]
 }

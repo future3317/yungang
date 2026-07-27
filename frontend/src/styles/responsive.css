@@ -16,6 +16,10 @@
   .mobile-tabs .active { color: var(--ink-primary); background: var(--surface-interactive); }
   .game-grid { display: block; padding-top: 0; }
   .mobile-hidden, .mobile-context-hidden { display: none; }
+  .game-grid { min-height: 0; }
+  .site-inspector:not(.mobile-hidden) { display: block; min-height: 0; max-height: none; }
+  .mobile-tabs { position: sticky; z-index: 25; top: 0; }
+  .mobile-tabs button { font-size: .86rem; }
   .stage-column { grid-template-rows: auto minmax(480px, 62vh) auto; }
   .command-deck { position: relative; grid-template-columns: 1fr; margin-top: 12px; }
   .featured-actions { overflow-x: auto; padding-bottom: 3px; }

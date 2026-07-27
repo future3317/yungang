@@ -26,6 +26,10 @@ function siteTypeName(type?: string) {
   return labels[type || ''] || type || '遗产节点';
 }
 
+function contentClassName(value?: string) {
+  return ({ documented: '真实遗产信息', interpretive: '研究性解释节点', gameplay: '游戏化功能节点' } as Record<string, string>)[value || ''] || '遗产节点';
+}
+
 const siteMedallionAssets: Record<string, string> = { yungang: 'heritage-medallion-1.png', huayan_temple: 'heritage-medallion-2.png', pingcheng_ruins: 'heritage-medallion-3.png', wall_pass: 'heritage-medallion-4.png', trade_post: 'heritage-medallion-5.png', northern_workshop: 'heritage-medallion-6.png' };
 
 function eventTypeName(type?: string) {
@@ -67,7 +71,7 @@ function marketOutcome(card: ContentCard | undefined) {
   return instant ? `收入手中；${instant}` : '收入手中；之后可交付给委托，或在合适时机使用。';
 }
 
-export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, eventTargetLabels = [] }: {
+export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, eventTargetLabels = [], className = '' }: {
   state: GameState;
   meta: Meta;
   site: Site;
@@ -81,6 +85,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   onExplore: (id: string) => void;
   onSelectAction: (type: ActionType) => void;
   eventTargetLabels?: string[];
+  className?: string;
 }) {
   const eventPriority = Boolean(state.pending_choice || state.shared.current_event_id);
   const initial: InspectorTab = actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task';
@@ -88,7 +93,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
 
   useEffect(() => {
     setTab(actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task');
-  }, [actionMode, eventPriority, site.id]);
+  }, [actionMode, eventPriority, site.id, event?.id]);
 
   const active = state.players[state.shared.active_player_id];
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
@@ -97,6 +102,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const eventRecord = event as unknown as CardRecord | undefined;
   const isCurrentSite = active.location === site.id;
   const action = legal.find(item => item.target_id === site.id || item.target_site_id === site.id) || legal.find(item => item.type === 'explore' && isCurrentSite);
+  const eventResponseAvailable = state.pending_choice?.kind === 'event';
   const contributions = (taskRecord?.contributions as string[] | undefined) || (taskRecord?.contributed_card_ids as string[] | undefined) || [];
   const matchingHand = active.hand.filter(id => task?.required_domains.includes(cards[id]?.domain || '')).length;
   const marketCards = state.market.map(id => cards[id]).filter(Boolean);
@@ -105,13 +111,13 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     return <aside className="inspector-rail"><button className="inspector-expand" onClick={() => onCollapsedChange(false)} aria-label="展开地点详情"><ChevronLeft size={17} /><span>地点详情</span></button></aside>;
   }
 
-  return <aside className="site-inspector" aria-label="地点详情">
+  return <aside className={`site-inspector ${className}`.trim()} aria-label="地点详情">
     <button className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
     <header className="inspector-summary">
       <span className="eyebrow">当前聚焦地点</span>
       <div className="inspector-site-mark"><img src={`/ui-assets/ornaments/${siteMedallionAssets[site.id] || 'heritage-medallion-1.png'}`} alt="" /></div>
       <h2>{site.name}</h2>
-      <div className="inspector-meta"><span>{siteType}</span><span className={site.status}>{statusName(site.status)}</span></div>
+      <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
       {action && <div className="relevant-action"><span>当前相关行动</span><b>{action.label}</b><small>{action.cost || 0} AP</small></div>}
     </header>
@@ -133,6 +139,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此映证。带回不同来处的线索，才能让联系站得住脚。</span></div>}
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainName(meta, domain)}</span>)}</div>
+          {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${requirement.missing.join('、')}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
           <div className="task-action-row"><button disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />寻访一件线索</button><button disabled={!isCurrentSite || matchingHand === 0} onClick={() => onSelectAction('contribute')}><HandHeart size={15} />交付手中线索</button></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
@@ -140,7 +147,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'event' && <section className="event-tab">
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img className="event-art-badge" src="/ui-assets/interaction/objective-badges/risk.png" alt="" /><img className="event-art-scene" src={`/ui-assets/generated/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img className="event-art-badge" src="/ui-assets/interaction/objective-badges/risk.png" alt="" /><img className="event-art-scene" src={`/ui-assets/generated/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}{eventResponseAvailable ? <button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button> : <details className="event-response-details"><summary>查看影响范围</summary><div className="task-rule-callout"><Info size={15} /><span>当前仍在事件预告阶段。回合结算时会锁定影响范围，并开放正式应对选项。</span></div></details>}</> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section className="market-tab">

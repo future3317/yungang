@@ -12,11 +12,19 @@ export class ApiError extends Error {
 }
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) } });
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 12000);
+  let response: Response;
+  try {
+    response = await fetch(url, { ...init, signal: init?.signal || controller.signal, headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) } });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') throw new ApiError(408, '连接超时，请检查本地服务后重试。', null, 'request_timeout', 'retry');
+    throw error;
+  } finally { window.clearTimeout(timeout); }
   const body = await response.json().catch(() => null);
   if (!response.ok) {
     const detail = typeof body?.detail === 'string' ? { message: body.detail } : body?.detail || {};
-    const message = detail.message || (response.status === 404 ? '找不到这段旅程。' : response.status === 409 ? '旅程已被更新，请同步后重试。' : `请求失败：${response.status}`);
+    const message = detail.message || detail.details?.message || (response.status === 404 ? '找不到这段旅程。' : response.status === 409 ? '旅程已被更新，请同步后重试。' : `请求失败：${response.status}`);
     throw new ApiError(response.status, message, body, detail.code, detail.recovery);
   }
   return body as T;

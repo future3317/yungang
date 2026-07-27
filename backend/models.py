@@ -144,6 +144,15 @@ class RouteState(BaseModel):
     connection_level: int = 0
     active_project_id: Optional[str] = None
     tags: List[str] = Field(default_factory=list)
+    waypoints: List[List[float]] = Field(default_factory=list)
+    road_class: str = "local"
+    terrain: str = "plain"
+    label_position: Optional[List[float]] = None
+    name: Optional[str] = None
+    strategic_role: Optional[str] = None
+    risk_profile: Optional[str] = None
+    ui_hint: Optional[str] = None
+    event_tags: List[str] = Field(default_factory=list)
 
 
 class ProjectState(BaseModel):

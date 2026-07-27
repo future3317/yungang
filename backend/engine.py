@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
+from datetime import datetime, timezone
 from typing import Any
 
 from .content import Content
@@ -69,7 +70,7 @@ class GameEngine:
             sites[sid] = SiteState(id=sid, damage=damage, max_damage=maximum, durability=max(0, maximum - damage), max_durability=maximum, domains=definition.get("domains", []))
 
         tasks = {tid: {**task, "contributed_cards": [], "completed": False} for tid, task in self.content.tasks.items() if task.get("site_id") in sites}
-        routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id"), tags=route.get("tags", [])) for route in self.content.routes if route["from"] in sites and route["to"] in sites}
+        routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id"), tags=route.get("tags", []), waypoints=route.get("waypoints", []), road_class=route.get("roadClass", route.get("road_class", "local")), terrain=route.get("terrain", "plain"), label_position=route.get("labelPosition", route.get("label_position")), name=route.get("name"), strategic_role=route.get("strategic_role"), risk_profile=route.get("risk_profile"), ui_hint=route.get("ui_hint"), event_tags=route.get("event_tags", [])) for route in self.content.routes if route["from"] in sites and route["to"] in sites}
         route_ids = list(routes)
         rng.shuffle(route_ids)
         for route_id in route_ids[: scenario.get("blocked_route_count", 0)]:
@@ -200,6 +201,7 @@ class GameEngine:
             raise ValueError("game_is_over")
         if state.pending_choice:
             result = self._resolve_choice(state, req)
+            self._record_journal(state, req.get("action", "choice"), req.get("player_id", state.shared.active_player_id), "共同决定已结算")
             self._remember_request(state, request_id)
             return result
         pid, action = req["player_id"], req["action"]
@@ -223,10 +225,20 @@ class GameEngine:
         elif action == ActionType.PLAN.value: self._plan(state, player, target)
         elif action == ActionType.END_PLANNING.value: self._end_planning(state, player)
         else: raise ValueError("unknown_action")
+        self._record_journal(state, action, pid, self._journal_message(action, target, req))
         state.revision += 1
         self._remember_request(state, request_id)
         self._check_outcome(state)
         return self.refresh(state)
+
+    def _journal_message(self, action: str, target: str | None, req: dict[str, Any]) -> str:
+        labels = {"move": "移动", "explore": "探索", "contribute": "贡献证据", "restore": "修护节点", "exchange": "交换证据", "use_skill": "使用角色技能", "play_card": "使用文化牌", "use_action_card": "使用策略牌", "survey_route": "勘察路线", "restore_route": "修护路线", "establish_connection": "建立区域连接", "prepare": "准备事件", "end_turn": "结束回合", "plan": "放置规划标记", "end_planning": "开始行动"}
+        return labels.get(action, "完成一项行动") + (f"（目标：{target}）" if target else "")
+
+    def _record_journal(self, state: GameState, action: str, player_id: str, message: str) -> None:
+        kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"contribute", "restore", "establish_connection"} else "action"
+        state.shared.journal.append({"id": f"journal-{state.revision + len(state.shared.journal) + 1}", "round": state.shared.turn, "type": kind, "message": message, "effects": [], "created_at": datetime.now(timezone.utc).isoformat(), "player_id": player_id})
+        del state.shared.journal[:-120]
 
     def _remember_request(self, state, request_id):
         if not request_id:

@@ -26,11 +26,14 @@ def _digest(token: str) -> str:
 class RoomRepository:
     def __init__(self, path: Path):
         self.path = Path(path)
-        with sqlite3.connect(self.path) as db:
+        with sqlite3.connect(self.path, timeout=10) as db:
+            db.execute("PRAGMA journal_mode=WAL")
+            db.execute("PRAGMA busy_timeout=10000")
             db.execute("CREATE TABLE IF NOT EXISTS rooms (room_id TEXT PRIMARY KEY, payload TEXT NOT NULL)")
 
     def get(self, room_id: str) -> Optional[dict[str, Any]]:
-        with sqlite3.connect(self.path) as db:
+        with sqlite3.connect(self.path, timeout=10) as db:
+            db.execute("PRAGMA busy_timeout=10000")
             row = db.execute("SELECT payload FROM rooms WHERE room_id=?", (room_id,)).fetchone()
         return json.loads(row[0]) if row else None
 
@@ -167,7 +170,8 @@ class RoomService:
         }
 
     def room_for_session(self, session_id: str) -> Optional[dict[str, Any]]:
-        with sqlite3.connect(self.repository.path) as db:
+        with sqlite3.connect(self.repository.path, timeout=10) as db:
+            db.execute("PRAGMA busy_timeout=10000")
             rows = db.execute("SELECT payload FROM rooms").fetchall()
         return next((room for (payload,) in rows if (room := json.loads(payload)).get("session_id") == session_id), None)
 

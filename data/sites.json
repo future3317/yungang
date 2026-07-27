@@ -1,836 +1,974 @@
 [
-  {
-    "id": "yungang",
-    "name": "云冈石窟",
-    "icon_asset": "generated/nodes/icon_node_yungang.png",
-    "scene_asset": "scene_yungang_day.png",
-    "type": "heritage",
-    "x": 50,
-    "y": 50,
-    "connections": [
-      "huayan_temple",
-      "shanhua_temple",
-      "wall_pass",
-      "trade_post",
-      "pingcheng_ruins"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_yungang_core",
-    "site_tags": [
-      "central",
-      "core",
-      "buddha"
-    ],
-    "summary": "云冈石窟开凿于五世纪中叶至六世纪初，拥有252个洞窟和龛、约5.1万尊造像，是中国佛教石窟艺术的重要代表。",
-    "region_id": "cave_network",
-    "strategic_role": "核心项目与多领域汇总",
-    "node_ability": {
-      "id": "core_synthesis",
-      "name": "核心汇证",
-      "description": "每轮第一次向云冈核心任务贡献一个尚未完成的领域时，额外获得1点共同影响。",
-      "trigger": "first_new_domain_contribution_per_round",
-      "effect": {
-        "type": "gain_influence",
-        "amount": 1
-      }
+    {
+        "id":  "yungang",
+        "name":  "云冈石窟",
+        "icon_asset":  "generated/nodes/icon_node_yungang.png",
+        "scene_asset":  "scene_yungang_day.png",
+        "type":  "heritage",
+        "x":  50,
+        "y":  50,
+        "connections":  [
+                            "huayan_temple",
+                            "shanhua_temple",
+                            "wall_pass",
+                            "trade_post",
+                            "pingcheng_ruins"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_yungang_core",
+        "site_tags":  [
+                          "central",
+                          "core",
+                          "buddha"
+                      ],
+        "summary":  "云冈石窟开凿于五世纪中叶至六世纪初，拥有252个洞窟和龛、约5.1万尊造像，是中国佛教石窟艺术的重要代表。",
+        "region_id":  "cave_network",
+        "strategic_role":  "核心项目与多领域汇总",
+        "node_ability":  {
+                             "id":  "core_synthesis",
+                             "name":  "核心汇证",
+                             "description":  "每轮第一次向云冈核心任务贡献一个尚未完成的领域时，额外获得1点共同影响。",
+                             "trigger":  "first_new_domain_contribution_per_round",
+                             "effect":  {
+                                            "type":  "gain_influence",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "中局前确定缺失领域，避免把所有证据过早消耗在支线任务。",
+        "layout":  {
+                       "x":  50,
+                       "y":  50,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "中局前确定缺失领域，避免把所有证据过早消耗在支线任务。"
-  },
-  {
-    "id": "huayan_temple",
-    "name": "华严寺",
-    "icon_asset": "generated/nodes/icon_node_huayan_temple.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "type": "heritage",
-    "x": 28,
-    "y": 20,
-    "connections": [
-      "yungang",
-      "wall_pass",
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_architecture_huayan",
-    "site_tags": [
-      "frontier",
-      "religion",
-      "lore"
-    ],
-    "summary": "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
-    "region_id": "temple_network",
-    "strategic_role": "建筑证据与修护转换",
-    "node_ability": {
-      "id": "structural_crosscheck",
-      "name": "结构互证",
-      "description": "在此贡献建筑证据后，本回合下一次节点修护少消耗1点共同修护资源。",
-      "trigger": "after_architecture_contribution",
-      "effect": {
-        "type": "restore_discount",
-        "amount": 1
-      }
+    {
+        "id":  "huayan_temple",
+        "name":  "华严寺",
+        "icon_asset":  "generated/nodes/icon_node_huayan_temple.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "type":  "heritage",
+        "x":  28,
+        "y":  20,
+        "connections":  [
+                            "yungang",
+                            "wall_pass",
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_architecture_huayan",
+        "site_tags":  [
+                          "frontier",
+                          "religion",
+                          "lore"
+                      ],
+        "summary":  "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
+        "region_id":  "temple_network",
+        "strategic_role":  "建筑证据与修护转换",
+        "node_ability":  {
+                             "id":  "structural_crosscheck",
+                             "name":  "结构互证",
+                             "description":  "在此贡献建筑证据后，本回合下一次节点修护少消耗1点共同修护资源。",
+                             "trigger":  "after_architecture_contribution",
+                             "effect":  {
+                                            "type":  "restore_discount",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "适合先贡献再修护，形成完整的建筑项目回合。",
+        "layout":  {
+                       "x":  28,
+                       "y":  20,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "适合先贡献再修护，形成完整的建筑项目回合。"
-  },
-  {
-    "id": "shanhua_temple",
-    "name": "善化寺",
-    "icon_asset": "generated/nodes/icon_node_shanhua_temple.png",
-    "scene_asset": "scene_archive_cave.png",
-    "type": "heritage",
-    "x": 72,
-    "y": 22,
-    "connections": [
-      "yungang",
-      "wall_pass",
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_architecture_shanhua",
-    "site_tags": [
-      "construction",
-      "worship",
-      "craft"
-    ],
-    "summary": "善化寺保存大雄宝殿、三圣殿、山门、普贤阁等辽金时期建筑遗存，寺院中轴布局和木构技术具有重要研究价值。",
-    "region_id": "temple_network",
-    "strategic_role": "材料调度与多人项目",
-    "node_ability": {
-      "id": "material_coordination",
-      "name": "材料调度",
-      "description": "若同一轮有两名不同玩家在此行动，团队获得1点研究线索。",
-      "trigger": "second_distinct_player_action_per_round",
-      "effect": {
-        "type": "gain_clue",
-        "amount": 1
-      }
+    {
+        "id":  "shanhua_temple",
+        "name":  "善化寺",
+        "icon_asset":  "generated/nodes/icon_node_shanhua_temple.png",
+        "scene_asset":  "scene_archive_cave.png",
+        "type":  "heritage",
+        "x":  72,
+        "y":  22,
+        "connections":  [
+                            "yungang",
+                            "wall_pass",
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_architecture_shanhua",
+        "site_tags":  [
+                          "construction",
+                          "worship",
+                          "craft"
+                      ],
+        "summary":  "善化寺保存大雄宝殿、三圣殿、山门、普贤阁等辽金时期建筑遗存，寺院中轴布局和木构技术具有重要研究价值。",
+        "region_id":  "temple_network",
+        "strategic_role":  "材料调度与多人项目",
+        "node_ability":  {
+                             "id":  "material_coordination",
+                             "name":  "材料调度",
+                             "description":  "若同一轮有两名不同玩家在此行动，团队获得1点研究线索。",
+                             "trigger":  "second_distinct_player_action_per_round",
+                             "effect":  {
+                                            "type":  "gain_clue",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "让不同角色依次到达，可把多人协作转化为研究收益。",
+        "layout":  {
+                       "x":  72,
+                       "y":  22,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "让不同角色依次到达，可把多人协作转化为研究收益。"
-  },
-  {
-    "id": "wall_pass",
-    "name": "长城关隘",
-    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
-    "scene_asset": "scene_frontier_pass.png",
-    "type": "heritage",
-    "x": 48,
-    "y": 84,
-    "connections": [
-      "yungang",
-      "huayan_temple",
-      "shanhua_temple",
-      "pingcheng_ruins"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_frontier",
-    "site_tags": [
-      "frontier",
-      "security",
-      "exchange"
-    ],
-    "summary": "以长城关隘、堡垒、烽火台和交通设施组成的防御体系为文化背景，用于表现边塞保护与区域交流。该名称不指向某一处特定遗址。",
-    "region_id": "frontier_network",
-    "strategic_role": "事件预警与路线守护",
-    "node_ability": {
-      "id": "frontier_watch",
-      "name": "关隘预警",
-      "description": "完成此处任务后，团队可以查看事件牌堆顶的一张事件。",
-      "trigger": "task_completed",
-      "effect": {
-        "type": "preview_event",
-        "amount": 1
-      }
+    {
+        "id":  "wall_pass",
+        "name":  "长城关隘",
+        "icon_asset":  "generated/nodes/icon_node_wall_pass.png",
+        "scene_asset":  "scene_frontier_pass.png",
+        "type":  "heritage",
+        "x":  48,
+        "y":  84,
+        "connections":  [
+                            "yungang",
+                            "huayan_temple",
+                            "shanhua_temple",
+                            "pingcheng_ruins"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_frontier",
+        "site_tags":  [
+                          "frontier",
+                          "security",
+                          "exchange"
+                      ],
+        "summary":  "以长城关隘、堡垒、烽火台和交通设施组成的防御体系为文化背景，用于表现边塞保护与区域交流。该名称不指向某一处特定遗址。",
+        "region_id":  "frontier_network",
+        "strategic_role":  "事件预警与路线守护",
+        "node_ability":  {
+                             "id":  "frontier_watch",
+                             "name":  "关隘预警",
+                             "description":  "完成此处任务后，团队可以查看事件牌堆顶的一张事件。",
+                             "trigger":  "task_completed",
+                             "effect":  {
+                                            "type":  "preview_event",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "在风险情景中尽早完成，可减少信息不完全。",
+        "layout":  {
+                       "x":  48,
+                       "y":  84,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "在风险情景中尽早完成，可减少信息不完全。"
-  },
-  {
-    "id": "trade_post",
-    "name": "互市驿站",
-    "icon_asset": "generated/nodes/icon_node_trade_post.png",
-    "scene_asset": "scene_trade_meeting.png",
-    "type": "heritage",
-    "x": 86,
-    "y": 72,
-    "connections": [
-      "yungang",
-      "huayan_temple",
-      "shanhua_temple",
-      "pingcheng_ruins"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_trade",
-    "site_tags": [
-      "trade",
-      "exchange",
-      "mobility"
-    ],
-    "summary": "以丝绸之路沿线商旅停留、补给和交换商品、技艺与观念的历史现象为背景。该驿站名称和位置为游戏化设置。",
-    "region_id": "frontier_network",
-    "strategic_role": "交换与来源多样性",
-    "node_ability": {
-      "id": "open_exchange",
-      "name": "互市协作",
-      "description": "同一节点的玩家每轮第一次交换证据不消耗行动点。",
-      "trigger": "first_exchange_per_round",
-      "effect": {
-        "type": "exchange_discount",
-        "amount": 1
-      }
+    {
+        "id":  "trade_post",
+        "name":  "互市驿站",
+        "icon_asset":  "generated/nodes/icon_node_trade_post.png",
+        "scene_asset":  "scene_trade_meeting.png",
+        "type":  "heritage",
+        "x":  86,
+        "y":  72,
+        "connections":  [
+                            "yungang",
+                            "huayan_temple",
+                            "shanhua_temple",
+                            "pingcheng_ruins"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_trade",
+        "site_tags":  [
+                          "trade",
+                          "exchange",
+                          "mobility"
+                      ],
+        "summary":  "以丝绸之路沿线商旅停留、补给和交换商品、技艺与观念的历史现象为背景。该驿站名称和位置为游戏化设置。",
+        "region_id":  "frontier_network",
+        "strategic_role":  "交换与来源多样性",
+        "node_ability":  {
+                             "id":  "open_exchange",
+                             "name":  "互市协作",
+                             "description":  "同一节点的玩家每轮第一次交换证据不消耗行动点。",
+                             "trigger":  "first_exchange_per_round",
+                             "effect":  {
+                                            "type":  "exchange_discount",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "把来源分散的证据带到这里，可高效完成多来源任务。",
+        "layout":  {
+                       "x":  86,
+                       "y":  72,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "把来源分散的证据带到这里，可高效完成多来源任务。"
-  },
-  {
-    "id": "pingcheng_ruins",
-    "name": "平城遗址",
-    "icon_asset": "generated/nodes/icon_node_pingcheng_ruins.png",
-    "scene_asset": "scene_silk_road_expedition.png",
-    "type": "heritage",
-    "x": 18,
-    "y": 70,
-    "connections": [
-      "yungang",
-      "wall_pass",
-      "trade_post",
-      "shanhua_temple"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_statue",
-    "site_tags": [
-      "capital",
-      "archive",
-      "route"
-    ],
-    "summary": "北魏平城遗址大体叠压在今大同老城区及周边，城垣范围仍需考古调查与文献互证，已发现城墙、建筑遗迹和北魏遗物线索。",
-    "region_id": "pingcheng_network",
-    "strategic_role": "开局调查与档案入口",
-    "node_ability": {
-      "id": "capital_archive",
-      "name": "都城索引",
-      "description": "首次探索后，可将市场中一张未选证据保留到下一轮。",
-      "trigger": "first_explore",
-      "effect": {
-        "type": "reserve_market_card",
-        "amount": 1
-      }
+    {
+        "id":  "pingcheng_ruins",
+        "name":  "平城遗址",
+        "icon_asset":  "generated/nodes/icon_node_pingcheng_ruins.png",
+        "scene_asset":  "scene_silk_road_expedition.png",
+        "type":  "heritage",
+        "x":  18,
+        "y":  70,
+        "connections":  [
+                            "yungang",
+                            "wall_pass",
+                            "trade_post",
+                            "shanhua_temple"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_statue",
+        "site_tags":  [
+                          "capital",
+                          "archive",
+                          "route"
+                      ],
+        "summary":  "北魏平城遗址大体叠压在今大同老城区及周边，城垣范围仍需考古调查与文献互证，已发现城墙、建筑遗迹和北魏遗物线索。",
+        "region_id":  "pingcheng_network",
+        "strategic_role":  "开局调查与档案入口",
+        "node_ability":  {
+                             "id":  "capital_archive",
+                             "name":  "都城索引",
+                             "description":  "首次探索后，可将市场中一张未选证据保留到下一轮。",
+                             "trigger":  "first_explore",
+                             "effect":  {
+                                            "type":  "reserve_market_card",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "适合优先锁定核心项目所需的稀缺领域。",
+        "layout":  {
+                       "x":  18,
+                       "y":  70,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "适合优先锁定核心项目所需的稀缺领域。"
-  },
-  {
-    "id": "northern_workshop",
-    "name": "北线工坊",
-    "type": "workshop",
-    "x": 13,
-    "y": 34,
-    "connections": [
-      "yungang"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_northern_workshop",
-    "site_tags": [
-      "architecture",
-      "pattern"
-    ],
-    "summary": "游戏化主题节点，以云冈大型石窟营造所需的石作、工具和工匠协作为背景；“北线工坊”不是已确认的历史遗址名称。",
-    "icon_asset": "generated/nodes/icon_node_northern_workshop.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "cave_network",
-    "strategic_role": "工艺贡献强化",
-    "node_ability": {
-      "id": "workshop_preparation",
-      "name": "工序预备",
-      "description": "完成一次探索后，下一次建筑或造像贡献额外获得1点共同影响。",
-      "trigger": "after_explore",
-      "effect": {
-        "type": "next_contribute_bonus",
-        "amount": 1
-      }
+    {
+        "id":  "northern_workshop",
+        "name":  "北线工坊",
+        "type":  "workshop",
+        "x":  13,
+        "y":  34,
+        "connections":  [
+                            "yungang"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_northern_workshop",
+        "site_tags":  [
+                          "architecture",
+                          "pattern"
+                      ],
+        "summary":  "游戏化主题节点，以云冈大型石窟营造所需的石作、工具和工匠协作为背景；“北线工坊”不是已确认的历史遗址名称。",
+        "icon_asset":  "generated/nodes/icon_node_northern_workshop.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "cave_network",
+        "strategic_role":  "工艺贡献强化",
+        "node_ability":  {
+                             "id":  "workshop_preparation",
+                             "name":  "工序预备",
+                             "description":  "完成一次探索后，下一次建筑或造像贡献额外获得1点共同影响。",
+                             "trigger":  "after_explore",
+                             "effect":  {
+                                            "type":  "next_contribute_bonus",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "先探索再贡献，可用较少行动完成工艺项目。",
+        "layout":  {
+                       "x":  13,
+                       "y":  34,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "先探索再贡献，可用较少行动完成工艺项目。"
-  },
-  {
-    "id": "archive_depot",
-    "name": "档案库",
-    "type": "workshop",
-    "x": 30,
-    "y": 43,
-    "connections": [
-      "pingcheng_ruins"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_archive_depot",
-    "site_tags": [
-      "statue",
-      "pattern"
-    ],
-    "summary": "游戏化主题节点，以平城遗址中建筑构件、瓦当、陶片等考古材料的记录、分类和比对工作为背景。",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "pingcheng_network",
-    "strategic_role": "档案循环与市场控制",
-    "node_ability": {
-      "id": "archive_retrieval",
-      "name": "档案回查",
-      "description": "每轮一次，可查看项目档案区顶部两张证据并选择一张作为任务提示。",
-      "trigger": "once_per_round",
-      "effect": {
-        "type": "inspect_archive",
-        "amount": 2
-      }
+    {
+        "id":  "archive_depot",
+        "name":  "档案库",
+        "type":  "workshop",
+        "x":  30,
+        "y":  43,
+        "connections":  [
+                            "pingcheng_ruins"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_archive_depot",
+        "site_tags":  [
+                          "statue",
+                          "pattern"
+                      ],
+        "summary":  "游戏化主题节点，以平城遗址中建筑构件、瓦当、陶片等考古材料的记录、分类和比对工作为背景。",
+        "icon_asset":  "generated/nodes/icon_node_archive_depot.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "pingcheng_network",
+        "strategic_role":  "档案循环与市场控制",
+        "node_ability":  {
+                             "id":  "archive_retrieval",
+                             "name":  "档案回查",
+                             "description":  "每轮一次，可查看项目档案区顶部两张证据并选择一张作为任务提示。",
+                             "trigger":  "once_per_round",
+                             "effect":  {
+                                            "type":  "inspect_archive",
+                                            "amount":  2
+                                        }
+                         },
+        "gameplay_hint":  "适合文明汇流情景，帮助判断还缺哪种来源。",
+        "layout":  {
+                       "x":  30,
+                       "y":  43,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "适合文明汇流情景，帮助判断还缺哪种来源。"
-  },
-  {
-    "id": "material_yard",
-    "name": "材料场",
-    "type": "workshop",
-    "x": 62,
-    "y": 40,
-    "connections": [
-      "shanhua_temple"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_material_yard",
-    "site_tags": [
-      "architecture",
-      "trade"
-    ],
-    "summary": "游戏化主题节点，用于表现古建筑保护中对材质、结构、施工工艺和修缮记录的关注，并非真实历史场址。",
-    "icon_asset": "generated/nodes/icon_node_material_yard.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "temple_network",
-    "strategic_role": "研究线索转修护资源",
-    "node_ability": {
-      "id": "material_exchange",
-      "name": "材料调配",
-      "description": "每轮一次，可将2点研究线索换成1点共同修护资源。",
-      "trigger": "once_per_round",
-      "effect": {
-        "type": "clue_to_restoration",
-        "clues": 2,
-        "restoration": 1
-      }
+    {
+        "id":  "material_yard",
+        "name":  "材料场",
+        "type":  "workshop",
+        "x":  62,
+        "y":  40,
+        "connections":  [
+                            "shanhua_temple"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_material_yard",
+        "site_tags":  [
+                          "architecture",
+                          "trade"
+                      ],
+        "summary":  "游戏化主题节点，用于表现古建筑保护中对材质、结构、施工工艺和修缮记录的关注，并非真实历史场址。",
+        "icon_asset":  "generated/nodes/icon_node_material_yard.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "temple_network",
+        "strategic_role":  "研究线索转修护资源",
+        "node_ability":  {
+                             "id":  "material_exchange",
+                             "name":  "材料调配",
+                             "description":  "每轮一次，可将2点研究线索换成1点共同修护资源。",
+                             "trigger":  "once_per_round",
+                             "effect":  {
+                                            "type":  "clue_to_restoration",
+                                            "clues":  2,
+                                            "restoration":  1
+                                        }
+                         },
+        "gameplay_hint":  "不要过早兑换；先确认路线修护是否更需要研究线索。",
+        "layout":  {
+                       "x":  62,
+                       "y":  40,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "不要过早兑换；先确认路线修护是否更需要研究线索。"
-  },
-  {
-    "id": "carving_courtyard",
-    "name": "造像院",
-    "type": "workshop",
-    "x": 39,
-    "y": 30,
-    "connections": [
-      "yungang"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_carving_courtyard",
-    "site_tags": [
-      "statue",
-      "architecture"
-    ],
-    "summary": "游戏化主题节点，以云冈石窟造像开凿、雕刻组织和图像研究为背景；“造像院”不作为历史机构名称使用。",
-    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "cave_network",
-    "strategic_role": "造像与建筑组合",
-    "node_ability": {
-      "id": "carving_alignment",
-      "name": "造作对位",
-      "description": "在此完成造像与建筑组合时，项目额外推进1格。",
-      "trigger": "statue_architecture_combo",
-      "effect": {
-        "type": "project_progress",
-        "amount": 1
-      }
+    {
+        "id":  "carving_courtyard",
+        "name":  "造像院",
+        "type":  "workshop",
+        "x":  39,
+        "y":  30,
+        "connections":  [
+                            "yungang"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_carving_courtyard",
+        "site_tags":  [
+                          "statue",
+                          "architecture"
+                      ],
+        "summary":  "游戏化主题节点，以云冈石窟造像开凿、雕刻组织和图像研究为背景；“造像院”不作为历史机构名称使用。",
+        "icon_asset":  "generated/nodes/icon_node_carving_courtyard.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "cave_network",
+        "strategic_role":  "造像与建筑组合",
+        "node_ability":  {
+                             "id":  "carving_alignment",
+                             "name":  "造作对位",
+                             "description":  "在此完成造像与建筑组合时，项目额外推进1格。",
+                             "trigger":  "statue_architecture_combo",
+                             "effect":  {
+                                            "type":  "project_progress",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "将造像比例、工具和石料证据集中到这里。",
+        "layout":  {
+                       "x":  39,
+                       "y":  30,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "将造像比例、工具和石料证据集中到这里。"
-  },
-  {
-    "id": "motif_gallery",
-    "name": "纹样廊",
-    "type": "workshop",
-    "x": 65,
-    "y": 18,
-    "connections": [
-      "huayan_temple"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_motif_gallery",
-    "site_tags": [
-      "pattern",
-      "statue"
-    ],
-    "summary": "游戏化主题节点，以丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收和再创造为背景。",
-    "icon_asset": "generated/nodes/icon_node_motif_gallery.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "cave_network",
-    "strategic_role": "纹样来源转换",
-    "node_ability": {
-      "id": "motif_translation",
-      "name": "纹样转译",
-      "description": "每轮一次，一张纹样证据可临时增加一个不同来源标签。",
-      "trigger": "once_per_round_pattern_contribution",
-      "effect": {
-        "type": "temporary_origin_tag",
-        "amount": 1
-      }
+    {
+        "id":  "motif_gallery",
+        "name":  "纹样廊",
+        "type":  "workshop",
+        "x":  65,
+        "y":  18,
+        "connections":  [
+                            "huayan_temple"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_motif_gallery",
+        "site_tags":  [
+                          "pattern",
+                          "statue"
+                      ],
+        "summary":  "游戏化主题节点，以丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收和再创造为背景。",
+        "icon_asset":  "generated/nodes/icon_node_motif_gallery.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "cave_network",
+        "strategic_role":  "纹样来源转换",
+        "node_ability":  {
+                             "id":  "motif_translation",
+                             "name":  "纹样转译",
+                             "description":  "每轮一次，一张纹样证据可临时增加一个不同来源标签。",
+                             "trigger":  "once_per_round_pattern_contribution",
+                             "effect":  {
+                                            "type":  "temporary_origin_tag",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "用于只差一种来源即可完成的任务。",
+        "layout":  {
+                       "x":  65,
+                       "y":  18,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "用于只差一种来源即可完成的任务。"
-  },
-  {
-    "id": "river_crossing",
-    "name": "河谷渡口",
-    "type": "workshop",
-    "x": 90,
-    "y": 48,
-    "connections": [
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_river_crossing",
-    "site_tags": [
-      "trade",
-      "frontier"
-    ],
-    "summary": "游戏化主题节点，以历史交通网络中的渡口、补给和人员流动为背景；未对应大同地区某一处已核定渡口遗址。",
-    "icon_asset": "generated/nodes/icon_node_river_crossing.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "路线风险与跨区移动",
-    "node_ability": {
-      "id": "crossing_window",
-      "name": "通行窗口",
-      "description": "从此节点出发的第一次移动不受承压路线额外影响。",
-      "trigger": "first_move_from_site_per_round",
-      "effect": {
-        "type": "ignore_route_risk",
-        "amount": 1
-      }
+    {
+        "id":  "river_crossing",
+        "name":  "河谷渡口",
+        "type":  "workshop",
+        "x":  90,
+        "y":  48,
+        "connections":  [
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_river_crossing",
+        "site_tags":  [
+                          "trade",
+                          "frontier"
+                      ],
+        "summary":  "游戏化主题节点，以历史交通网络中的渡口、补给和人员流动为背景；未对应大同地区某一处已核定渡口遗址。",
+        "icon_asset":  "generated/nodes/icon_node_river_crossing.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "路线风险与跨区移动",
+        "node_ability":  {
+                             "id":  "crossing_window",
+                             "name":  "通行窗口",
+                             "description":  "从此节点出发的第一次移动不受承压路线额外影响。",
+                             "trigger":  "first_move_from_site_per_round",
+                             "effect":  {
+                                            "type":  "ignore_route_risk",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "适合作为边塞与互市区域之间的中转点。",
+        "layout":  {
+                       "x":  90,
+                       "y":  48,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "适合作为边塞与互市区域之间的中转点。"
-  },
-  {
-    "id": "caravan_camp",
-    "name": "行旅营地",
-    "type": "workshop",
-    "x": 81,
-    "y": 88,
-    "connections": [
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_caravan_camp",
-    "site_tags": [
-      "trade",
-      "frontier"
-    ],
-    "summary": "游戏化主题节点，以商旅分段行进、休息补给和转运交换为背景，表现文化信息随人员和物资流动。",
-    "icon_asset": "generated/nodes/icon_node_caravan_camp.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "移动后交换",
-    "node_ability": {
-      "id": "camp_exchange",
-      "name": "营地互助",
-      "description": "玩家移动到此处后，可立即与同节点队友交换一张证据。",
-      "trigger": "on_arrival",
-      "effect": {
-        "type": "free_exchange",
-        "amount": 1
-      }
+    {
+        "id":  "caravan_camp",
+        "name":  "行旅营地",
+        "type":  "workshop",
+        "x":  81,
+        "y":  88,
+        "connections":  [
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_caravan_camp",
+        "site_tags":  [
+                          "trade",
+                          "frontier"
+                      ],
+        "summary":  "游戏化主题节点，以商旅分段行进、休息补给和转运交换为背景，表现文化信息随人员和物资流动。",
+        "icon_asset":  "generated/nodes/icon_node_caravan_camp.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "移动后交换",
+        "node_ability":  {
+                             "id":  "camp_exchange",
+                             "name":  "营地互助",
+                             "description":  "玩家移动到此处后，可立即与同节点队友交换一张证据。",
+                             "trigger":  "on_arrival",
+                             "effect":  {
+                                            "type":  "free_exchange",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "让负责机动的角色把远端证据送到协作队伍。",
+        "layout":  {
+                       "x":  81,
+                       "y":  88,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "让负责机动的角色把远端证据送到协作队伍。"
-  },
-  {
-    "id": "border_market",
-    "name": "边市前沿",
-    "type": "workshop",
-    "x": 69,
-    "y": 92,
-    "connections": [
-      "wall_pass"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_border_market",
-    "site_tags": [
-      "frontier",
-      "trade"
-    ],
-    "summary": "游戏化主题节点，以大同长城沿线关堡和多民族交往交流交融的文化展示主题为背景。",
-    "icon_asset": "generated/nodes/icon_node_border_market.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "边塞与互市组合",
-    "node_ability": {
-      "id": "border_trade",
-      "name": "边市互证",
-      "description": "边塞与互市证据在此共同贡献时，降低1点风化压力。",
-      "trigger": "frontier_trade_combo",
-      "effect": {
-        "type": "reduce_threat",
-        "amount": 1
-      }
+    {
+        "id":  "border_market",
+        "name":  "边市前沿",
+        "type":  "workshop",
+        "x":  69,
+        "y":  92,
+        "connections":  [
+                            "wall_pass"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_border_market",
+        "site_tags":  [
+                          "frontier",
+                          "trade"
+                      ],
+        "summary":  "游戏化主题节点，以大同长城沿线关堡和多民族交往交流交融的文化展示主题为背景。",
+        "icon_asset":  "generated/nodes/icon_node_border_market.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "边塞与互市组合",
+        "node_ability":  {
+                             "id":  "border_trade",
+                             "name":  "边市互证",
+                             "description":  "边塞与互市证据在此共同贡献时，降低1点风化压力。",
+                             "trigger":  "frontier_trade_combo",
+                             "effect":  {
+                                            "type":  "reduce_threat",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "适合在事件压力高时完成组合，而不是只追求影响。",
+        "layout":  {
+                       "x":  69,
+                       "y":  92,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "适合在事件压力高时完成组合，而不是只追求影响。"
-  },
-  {
-    "id": "watchtower",
-    "name": "烽火台",
-    "type": "workshop",
-    "x": 32,
-    "y": 91,
-    "connections": [
-      "wall_pass"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_watchtower",
-    "site_tags": [
-      "frontier",
-      "architecture"
-    ],
-    "summary": "游戏化主题节点，以长城防御体系中的烽火台和观察设施为背景，不指向某一处特定烽火台遗存。",
-    "icon_asset": "generated/nodes/icon_node_watchtower.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "事件目标预览",
-    "node_ability": {
-      "id": "watch_signal",
-      "name": "守望信号",
-      "description": "每轮开始时，可揭示当前事件最可能影响的节点类型。",
-      "trigger": "round_start",
-      "effect": {
-        "type": "preview_event_target",
-        "amount": 1
-      }
+    {
+        "id":  "watchtower",
+        "name":  "烽火台",
+        "type":  "workshop",
+        "x":  32,
+        "y":  91,
+        "connections":  [
+                            "wall_pass"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_watchtower",
+        "site_tags":  [
+                          "frontier",
+                          "architecture"
+                      ],
+        "summary":  "游戏化主题节点，以长城防御体系中的烽火台和观察设施为背景，不指向某一处特定烽火台遗存。",
+        "icon_asset":  "generated/nodes/icon_node_watchtower.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "事件目标预览",
+        "node_ability":  {
+                             "id":  "watch_signal",
+                             "name":  "守望信号",
+                             "description":  "每轮开始时，可揭示当前事件最可能影响的节点类型。",
+                             "trigger":  "round_start",
+                             "effect":  {
+                                            "type":  "preview_event_target",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "与准备行动配合，可降低团队讨论成本。",
+        "layout":  {
+                       "x":  32,
+                       "y":  91,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "与准备行动配合，可降低团队讨论成本。"
-  },
-  {
-    "id": "craft_school",
-    "name": "工艺学堂",
-    "type": "workshop",
-    "x": 10,
-    "y": 54,
-    "connections": [
-      "pingcheng_ruins"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_craft_school",
-    "site_tags": [
-      "architecture",
-      "statue"
-    ],
-    "summary": "游戏化主题节点，以丝绸之路上工艺、技术和知识的跨区域传播为背景；“工艺学堂”不是历史机构复原。",
-    "icon_asset": "generated/nodes/icon_node_craft_school.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "pingcheng_network",
-    "strategic_role": "角色升级与行动牌",
-    "node_ability": {
-      "id": "craft_training",
-      "name": "工艺互授",
-      "description": "完成此处任务的玩家立即触发角色升级选择。",
-      "trigger": "task_completed",
-      "effect": {
-        "type": "trigger_role_upgrade",
-        "amount": 1
-      }
+    {
+        "id":  "craft_school",
+        "name":  "工艺学堂",
+        "type":  "workshop",
+        "x":  10,
+        "y":  54,
+        "connections":  [
+                            "pingcheng_ruins"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_craft_school",
+        "site_tags":  [
+                          "architecture",
+                          "statue"
+                      ],
+        "summary":  "游戏化主题节点，以丝绸之路上工艺、技术和知识的跨区域传播为背景；“工艺学堂”不是历史机构复原。",
+        "icon_asset":  "generated/nodes/icon_node_craft_school.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "pingcheng_network",
+        "strategic_role":  "角色升级与行动牌",
+        "node_ability":  {
+                             "id":  "craft_training",
+                             "name":  "工艺互授",
+                             "description":  "完成此处任务的玩家立即触发角色升级选择。",
+                             "trigger":  "task_completed",
+                             "effect":  {
+                                            "type":  "trigger_role_upgrade",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "中局完成可让角色专长在后半局产生价值。",
+        "layout":  {
+                       "x":  10,
+                       "y":  54,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "中局完成可让角色专长在后半局产生价值。"
-  },
-  {
-    "id": "river_archive",
-    "name": "河道档案",
-    "type": "workshop",
-    "x": 94,
-    "y": 25,
-    "connections": [
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_river_archive",
-    "site_tags": [
-      "trade",
-      "pattern"
-    ],
-    "summary": "游戏化主题节点，用于表现交通网络、路线记录与文化证据整理之间的关系，未对应真实档案机构。",
-    "icon_asset": "generated/nodes/icon_node_river_archive.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "路线信息与档案",
-    "node_ability": {
-      "id": "route_records",
-      "name": "路线档案",
-      "description": "完成一次探索后，可查看相邻路线的风险和状态变化预览。",
-      "trigger": "after_explore",
-      "effect": {
-        "type": "inspect_adjacent_routes",
-        "amount": 2
-      }
+    {
+        "id":  "river_archive",
+        "name":  "河道档案",
+        "type":  "workshop",
+        "x":  94,
+        "y":  25,
+        "connections":  [
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_river_archive",
+        "site_tags":  [
+                          "trade",
+                          "pattern"
+                      ],
+        "summary":  "游戏化主题节点，用于表现交通网络、路线记录与文化证据整理之间的关系，未对应真实档案机构。",
+        "icon_asset":  "generated/nodes/icon_node_river_archive.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "路线信息与档案",
+        "node_ability":  {
+                             "id":  "route_records",
+                             "name":  "路线档案",
+                             "description":  "完成一次探索后，可查看相邻路线的风险和状态变化预览。",
+                             "trigger":  "after_explore",
+                             "effect":  {
+                                            "type":  "inspect_adjacent_routes",
+                                            "amount":  2
+                                        }
+                         },
+        "gameplay_hint":  "在互市重开情景中先到这里，可避免盲目勘察。",
+        "layout":  {
+                       "x":  94,
+                       "y":  25,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "在互市重开情景中先到这里，可避免盲目勘察。"
-  },
-  {
-    "id": "route_junction",
-    "name": "路线枢纽",
-    "type": "workshop",
-    "x": 52,
-    "y": 63,
-    "connections": [
-      "yungang"
-    ],
-    "start_damage": 0,
-    "max_damage": 3,
-    "active_task_id": "task_route_junction",
-    "site_tags": [
-      "frontier",
-      "trade"
-    ],
-    "summary": "游戏化主题节点，以丝绸之路由多条相互连接、随时间变化的路线构成这一特点为背景。",
-    "icon_asset": "generated/nodes/icon_node_route_junction.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "region_id": "frontier_network",
-    "strategic_role": "多路线治理与区域连接",
-    "node_ability": {
-      "id": "junction_coordination",
-      "name": "枢纽调度",
-      "description": "每轮第一次勘察或修护相邻路线时，行动点消耗减少1点。",
-      "trigger": "first_route_action_per_round",
-      "effect": {
-        "type": "route_action_discount",
-        "amount": 1
-      }
+    {
+        "id":  "route_junction",
+        "name":  "路线枢纽",
+        "type":  "workshop",
+        "x":  52,
+        "y":  63,
+        "connections":  [
+                            "yungang"
+                        ],
+        "start_damage":  0,
+        "max_damage":  3,
+        "active_task_id":  "task_route_junction",
+        "site_tags":  [
+                          "frontier",
+                          "trade"
+                      ],
+        "summary":  "游戏化主题节点，以丝绸之路由多条相互连接、随时间变化的路线构成这一特点为背景。",
+        "icon_asset":  "generated/nodes/icon_node_route_junction.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "region_id":  "frontier_network",
+        "strategic_role":  "多路线治理与区域连接",
+        "node_ability":  {
+                             "id":  "junction_coordination",
+                             "name":  "枢纽调度",
+                             "description":  "每轮第一次勘察或修护相邻路线时，行动点消耗减少1点。",
+                             "trigger":  "first_route_action_per_round",
+                             "effect":  {
+                                            "type":  "route_action_discount",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "优先处理区域门户，不要把资源分散到所有支路。",
+        "layout":  {
+                       "x":  52,
+                       "y":  63,
+                       "labelAnchor":  "right"
+                   },
+        "content_class":  "documented"
     },
-    "gameplay_hint": "优先处理区域门户，不要把资源分散到所有支路。"
-  },
-  {
-    "id": "eastern_cave_observatory",
-    "name": "???????",
-    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
-    "scene_asset": "scene_yungang_day.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 72,
-    "y": 30,
-    "connections": [
-      "digital_mapping_station",
-      "environmental_monitoring_station"
-    ],
-    "start_damage": 0,
-    "max_damage": 2,
-    "active_task_id": "task_eastern_survey",
-    "site_tags": [
-      "east",
-      "survey",
-      "cave"
-    ],
-    "summary": "?????????????????????????????????",
-    "region_id": "cave_network",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "eastern_observation",
-      "name": "????",
-      "description": "?????????1??????",
-      "trigger": "after_explore",
-      "effect": {
-        "type": "gain_clue",
-        "amount": 1
-      }
+    {
+        "id":  "eastern_cave_observatory",
+        "name":  "???????",
+        "icon_asset":  "generated/nodes/icon_node_carving_courtyard.png",
+        "scene_asset":  "scene_yungang_day.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  72,
+        "y":  30,
+        "connections":  [
+                            "digital_mapping_station",
+                            "environmental_monitoring_station"
+                        ],
+        "start_damage":  0,
+        "max_damage":  2,
+        "active_task_id":  "task_eastern_survey",
+        "site_tags":  [
+                          "east",
+                          "survey",
+                          "cave"
+                      ],
+        "summary":  "?????????????????????????????????",
+        "region_id":  "cave_network",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "eastern_observation",
+                             "name":  "????",
+                             "description":  "?????????1??????",
+                             "trigger":  "after_explore",
+                             "effect":  {
+                                            "type":  "gain_clue",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "??????????????????????",
+        "layout":  {
+                       "x":  72,
+                       "y":  30,
+                       "labelAnchor":  "right"
+                   }
     },
-    "gameplay_hint": "??????????????????????"
-  },
-  {
-    "id": "central_cave_observatory",
-    "name": "???????",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_yungang_day.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 58,
-    "y": 38,
-    "connections": [
-      "yungang",
-      "material_yard"
-    ],
-    "start_damage": 1,
-    "max_damage": 2,
-    "active_task_id": "task_central_sequence",
-    "site_tags": [
-      "central",
-      "survey",
-      "cave"
-    ],
-    "summary": "????????????????????????????????????",
-    "region_id": "cave_network",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "central_sequence",
-      "name": "????",
-      "description": "?????????????????1????????",
-      "trigger": "after_architecture_contribution",
-      "effect": {
-        "type": "gain_clue",
-        "amount": 1
-      }
+    {
+        "id":  "central_cave_observatory",
+        "name":  "???????",
+        "icon_asset":  "generated/nodes/icon_node_archive_depot.png",
+        "scene_asset":  "scene_yungang_day.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  58,
+        "y":  38,
+        "connections":  [
+                            "yungang",
+                            "material_yard"
+                        ],
+        "start_damage":  1,
+        "max_damage":  2,
+        "active_task_id":  "task_central_sequence",
+        "site_tags":  [
+                          "central",
+                          "survey",
+                          "cave"
+                      ],
+        "summary":  "????????????????????????????????????",
+        "region_id":  "cave_network",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "central_sequence",
+                             "name":  "????",
+                             "description":  "?????????????????1????????",
+                             "trigger":  "after_architecture_contribution",
+                             "effect":  {
+                                            "type":  "gain_clue",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "???????????????????",
+        "layout":  {
+                       "x":  58,
+                       "y":  38,
+                       "labelAnchor":  "right"
+                   }
     },
-    "gameplay_hint": "???????????????????"
-  },
-  {
-    "id": "western_cave_observatory",
-    "name": "???????",
-    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
-    "scene_asset": "scene_frontier_pass.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 25,
-    "y": 38,
-    "connections": [
-      "wall_pass",
-      "digital_mapping_station"
-    ],
-    "start_damage": 0,
-    "max_damage": 2,
-    "active_task_id": "task_western_compare",
-    "site_tags": [
-      "west",
-      "survey",
-      "frontier"
-    ],
-    "summary": "????????????????????????????????",
-    "region_id": "frontier_belt",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "western_compare",
-      "name": "????",
-      "description": "??????????1??????",
-      "trigger": "task_completed",
-      "effect": {
-        "type": "reduce_threat",
-        "amount": 1
-      }
+    {
+        "id":  "western_cave_observatory",
+        "name":  "???????",
+        "icon_asset":  "generated/nodes/icon_node_wall_pass.png",
+        "scene_asset":  "scene_frontier_pass.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  25,
+        "y":  38,
+        "connections":  [
+                            "wall_pass",
+                            "digital_mapping_station"
+                        ],
+        "start_damage":  0,
+        "max_damage":  2,
+        "active_task_id":  "task_western_compare",
+        "site_tags":  [
+                          "west",
+                          "survey",
+                          "frontier"
+                      ],
+        "summary":  "????????????????????????????????",
+        "region_id":  "frontier_belt",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "western_compare",
+                             "name":  "????",
+                             "description":  "??????????1??????",
+                             "trigger":  "task_completed",
+                             "effect":  {
+                                            "type":  "reduce_threat",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "???????????????????",
+        "layout":  {
+                       "x":  25,
+                       "y":  38,
+                       "labelAnchor":  "right"
+                   }
     },
-    "gameplay_hint": "???????????????????"
-  },
-  {
-    "id": "digital_mapping_station",
-    "name": "?????",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_archive_cave.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 48,
-    "y": 24,
-    "connections": [
-      "eastern_cave_observatory",
-      "western_cave_observatory"
-    ],
-    "start_damage": 0,
-    "max_damage": 2,
-    "active_task_id": "task_digital_mosaic",
-    "site_tags": [
-      "archive",
-      "digital",
-      "mapping"
-    ],
-    "summary": "?????????????????????????",
-    "region_id": "archive_belt",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "digital_mapping",
-      "name": "????",
-      "description": "???????????????",
-      "trigger": "after_explore",
-      "effect": {
-        "type": "preview_event",
-        "amount": 1
-      }
+    {
+        "id":  "digital_mapping_station",
+        "name":  "?????",
+        "icon_asset":  "generated/nodes/icon_node_archive_depot.png",
+        "scene_asset":  "scene_archive_cave.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  48,
+        "y":  24,
+        "connections":  [
+                            "eastern_cave_observatory",
+                            "western_cave_observatory"
+                        ],
+        "start_damage":  0,
+        "max_damage":  2,
+        "active_task_id":  "task_digital_mosaic",
+        "site_tags":  [
+                          "archive",
+                          "digital",
+                          "mapping"
+                      ],
+        "summary":  "?????????????????????????",
+        "region_id":  "archive_belt",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "digital_mapping",
+                             "name":  "????",
+                             "description":  "???????????????",
+                             "trigger":  "after_explore",
+                             "effect":  {
+                                            "type":  "preview_event",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "????????????????",
+        "layout":  {
+                       "x":  48,
+                       "y":  24,
+                       "labelAnchor":  "right"
+                   }
     },
-    "gameplay_hint": "????????????????"
-  },
-  {
-    "id": "environmental_monitoring_station",
-    "name": "?????",
-    "icon_asset": "generated/nodes/icon_node_material_yard.png",
-    "scene_asset": "scene_craft_restoration.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 76,
-    "y": 62,
-    "connections": [
-      "eastern_cave_observatory",
-      "visitor_emergency_point"
-    ],
-    "start_damage": 1,
-    "max_damage": 2,
-    "active_task_id": "task_environment_sequence",
-    "site_tags": [
-      "environment",
-      "monitoring",
-      "risk"
-    ],
-    "summary": "???????????????????????????????",
-    "region_id": "east_belt",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "environment_monitoring",
-      "name": "????",
-      "description": "??????????????1??????",
-      "trigger": "round_start",
-      "effect": {
-        "type": "reduce_threat",
-        "amount": 1
-      }
+    {
+        "id":  "environmental_monitoring_station",
+        "name":  "?????",
+        "icon_asset":  "generated/nodes/icon_node_material_yard.png",
+        "scene_asset":  "scene_craft_restoration.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  76,
+        "y":  62,
+        "connections":  [
+                            "eastern_cave_observatory",
+                            "visitor_emergency_point"
+                        ],
+        "start_damage":  1,
+        "max_damage":  2,
+        "active_task_id":  "task_environment_sequence",
+        "site_tags":  [
+                          "environment",
+                          "monitoring",
+                          "risk"
+                      ],
+        "summary":  "???????????????????????????????",
+        "region_id":  "east_belt",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "environment_monitoring",
+                             "name":  "????",
+                             "description":  "??????????????1??????",
+                             "trigger":  "round_start",
+                             "effect":  {
+                                            "type":  "reduce_threat",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "????????????????????????",
+        "layout":  {
+                       "x":  76,
+                       "y":  62,
+                       "labelAnchor":  "right"
+                   }
     },
-    "gameplay_hint": "????????????????????????"
-  },
-  {
-    "id": "visitor_emergency_point",
-    "name": "????????",
-    "icon_asset": "generated/nodes/icon_node_route_junction.png",
-    "scene_asset": "scene_trade_meeting.png",
-    "type": "support",
-    "content_class": "gameplay",
-    "x": 88,
-    "y": 74,
-    "connections": [
-      "environmental_monitoring_station",
-      "trade_post"
-    ],
-    "start_damage": 0,
-    "max_damage": 2,
-    "active_task_id": "task_visitor_dispatch",
-    "site_tags": [
-      "visitor",
-      "emergency",
-      "trade"
-    ],
-    "summary": "????????????????????????",
-    "region_id": "east_belt",
-    "strategic_role": "?????????",
-    "node_ability": {
-      "id": "visitor_dispatch",
-      "name": "????",
-      "description": "???????1??????",
-      "trigger": "task_completed",
-      "effect": {
-        "type": "gain_influence",
-        "amount": 1
-      }
-    },
-    "gameplay_hint": "????????????????"
-  }
+    {
+        "id":  "visitor_emergency_point",
+        "name":  "????????",
+        "icon_asset":  "generated/nodes/icon_node_route_junction.png",
+        "scene_asset":  "scene_trade_meeting.png",
+        "type":  "support",
+        "content_class":  "gameplay",
+        "x":  88,
+        "y":  74,
+        "connections":  [
+                            "environmental_monitoring_station",
+                            "trade_post"
+                        ],
+        "start_damage":  0,
+        "max_damage":  2,
+        "active_task_id":  "task_visitor_dispatch",
+        "site_tags":  [
+                          "visitor",
+                          "emergency",
+                          "trade"
+                      ],
+        "summary":  "????????????????????????",
+        "region_id":  "east_belt",
+        "strategic_role":  "?????????",
+        "node_ability":  {
+                             "id":  "visitor_dispatch",
+                             "name":  "????",
+                             "description":  "???????1??????",
+                             "trigger":  "task_completed",
+                             "effect":  {
+                                            "type":  "gain_influence",
+                                            "amount":  1
+                                        }
+                         },
+        "gameplay_hint":  "????????????????",
+        "layout":  {
+                       "x":  88,
+                       "y":  74,
+                       "labelAnchor":  "right"
+                   }
+    }
 ]
