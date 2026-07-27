@@ -21,6 +21,8 @@ class ActionType(StrEnum):
     SELECT_UPGRADE = "select_upgrade"
     PLAN = "plan"
     USE_ACTION_CARD = "use_action_card"
+    USE_NODE_ABILITY = "use_node_ability"
+    USE_UPGRADE = "use_upgrade"
     END_PLANNING = "end_planning"
 
 class SiteStatus(StrEnum):
@@ -42,6 +44,7 @@ class ActionRequest(BaseModel):
     recipient_id: Optional[str] = None
     route_id: Optional[str] = None
     upgrade_id: Optional[str] = None
+    target_ids: Optional[List[str]] = None
     request_id: Optional[str] = None
 
 
@@ -109,6 +112,7 @@ class RoomActionRequest(BaseModel):
     recipient_id: Optional[str] = None
     route_id: Optional[str] = None
     upgrade_id: Optional[str] = None
+    target_ids: Optional[List[str]] = None
     request_id: Optional[str] = None
 
 
@@ -128,6 +132,7 @@ class PlayerState(BaseModel):
     durability: int = 3
     hand: List[str] = Field(default_factory=list)
     action_hand: List[str] = Field(default_factory=list)
+    supplies: int = 0
     flags: Dict[str, Any] = Field(default_factory=dict)
     skill_used: bool = False
     contributions: int = 0
@@ -236,6 +241,7 @@ class SharedState(BaseModel):
     event_instance: Dict[str, Any] = Field(default_factory=dict)
     event_history: List[Dict[str, Any]] = Field(default_factory=list)
     round_summary: Dict[str, Any] = Field(default_factory=dict)
+    reserved_market_cards: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
     schema_version: int = 3

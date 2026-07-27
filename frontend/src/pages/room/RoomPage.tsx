@@ -48,7 +48,8 @@ export function RoomPage() {
   }, [activeSeatId, isManagedMode, room, viewer?.seat_id]);
 
   useEffect(() => {
-    if (room?.status === 'in_progress' || room?.status === 'paused') navigate(`/room/${roomId}/game`, { replace: true });
+    if (room?.status === 'completed') navigate(`/room/${roomId}/result`, { replace: true });
+    else if (room?.status === 'in_progress' || room?.status === 'paused') navigate(`/room/${roomId}/game`, { replace: true });
   }, [navigate, room?.status, roomId]);
 
   const update = (promise: Promise<Room>) => promise.then(next => { queryClient.setQueryData(['room', roomId, token], next); return next; });

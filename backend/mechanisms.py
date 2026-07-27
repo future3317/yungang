@@ -19,6 +19,10 @@ TRIGGER_HANDLERS = {
     "frontier_trade_combo": "node_trigger",
     "round_start": "node_trigger",
     "first_route_action_per_round": "node_trigger",
+    "after_contribute": "node_trigger",
+    "after_exchange": "node_trigger",
+    "after_route_action": "node_trigger",
+    "use_node_ability": "node_trigger",
 }
 
 CULTURE_EFFECT_HANDLERS = {
@@ -92,7 +96,7 @@ EFFECT_HANDLERS = {
 
 ACTION_TYPES = {
     "move", "explore", "restore", "contribute", "exchange", "use_skill", "play_card",
-    "use_action_card", "end_turn", "end_planning", "resolve_event", "select_market_card",
+    "use_action_card", "use_node_ability", "use_upgrade", "end_turn", "end_planning", "resolve_event", "select_market_card",
     "discard", "survey_route", "restore_route", "establish_connection", "prepare", "select_upgrade", "plan",
 }
 

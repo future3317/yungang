@@ -22,7 +22,7 @@ import '../../styles/handoff.css';
 import '../../styles/fullscreen-map.css';
 
 type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
-const actionLabels: Partial<Record<ActionType, string>> = { move: '移动', survey_route: '勘察路线', explore: '探索', contribute: '贡献', restore: '修护节点', restore_route: '修护路线', establish_connection: '建立连接', exchange: '交换', prepare: '准备', use_action_card: '使用策略牌', use_skill: '技能', end_planning: '开始行动', end_turn: '结束回合', plan: '规划' };
+const actionLabels: Partial<Record<ActionType, string>> = { move: '移动', survey_route: '勘察路线', explore: '探索', contribute: '贡献', restore: '修护节点', restore_route: '修护路线', establish_connection: '建立连接', exchange: '交换', prepare: '准备', use_action_card: '使用策略牌', use_node_ability: '地点能力', use_upgrade: '角色专长', use_skill: '技能', end_planning: '开始行动', end_turn: '结束回合', plan: '规划' };
 const previewDeltaLabels: Record<string, string> = { ap: '行动点', influence: '个人影响', restoration_resource: '修护资源', research_clues: '研究线索', threat: '风化压力', risk: '路线风险', restoration: '修护进度' };
 function previewDeltaText(delta: Record<string, unknown> | undefined, fallback: string) { const text = Object.entries(delta || {}).filter(([, value]) => typeof value === 'number').map(([key, value]) => `${previewDeltaLabels[key] || key.replaceAll('_', ' ')} ${Number(value) > 0 ? '+' : ''}${value}`).join(' · '); return text || fallback; }
 
@@ -91,7 +91,7 @@ export function GamePage() {
   }, [gameQuery.data?.session_id]);
   if (gameQuery.isLoading || metaQuery.isLoading) return <div className="state-screen"><span className="loading-orbit" /><p>正在读取遗产网络...</p></div>;
   if (gameQuery.isError || metaQuery.isError || !state || !metaQuery.data) return <div className="state-screen danger"><CircleAlert /><h1>旅程暂时无法打开</h1><p>请检查本地服务后重新进入旅程。</p><button className="ghost-button" onClick={() => { void gameQuery.refetch(); void metaQuery.refetch(); }}>重新连接</button><button className="ghost-button" onClick={() => window.location.assign('/')}>返回首页</button></div>;
-  if (state.shared.outcome) return <Navigate to={`/result/${state.session_id}`} replace />;
+  if (state.shared.outcome) return <Navigate to={roomId ? `/room/${roomId}/result` : `/result/${state.session_id}`} replace />;
 
   const meta = metaQuery.data;
   const active = state.players[state.shared.active_player_id];

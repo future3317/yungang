@@ -2,6 +2,7 @@ from pathlib import Path
 from uuid import uuid4
 import asyncio
 import json
+import os
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -17,6 +18,7 @@ repo = GameRepository()
 content = Content()
 engine = GameEngine(content)
 room_service = RoomService(RoomRepository(repo.path))
+ALLOW_LEGACY_SESSION_WRITE = os.getenv("YUNGANG_ALLOW_LEGACY_SESSION_WRITE", "1") == "1" and os.getenv("YUNGANG_ENV", "development") in {"development", "test"}
 
 @app.get("/api/meta")
 def meta():
@@ -33,6 +35,10 @@ def create_game(request: CreateGameRequest) -> GameState:
 @app.post("/api/games/{session_id}", response_model=GameState)
 def create_game_with_id(session_id: str, request: CreateGameRequest) -> GameState:
     """Stable local-session creation endpoint used by demos, tests, and recovery flows."""
+    if room_service.room_for_session(session_id):
+        raise HTTPException(403, {"code": "room_session_requires_room_write", "message": "房间旅程必须通过房间入口操作。", "details": {}, "recovery": "return_to_room"})
+    if not ALLOW_LEGACY_SESSION_WRITE:
+        raise HTTPException(404, {"code": "legacy_session_write_disabled", "message": "生产环境不接受客户端指定旅程编号。", "details": {}, "recovery": "create_new_game"})
     seed = request.seed if request.seed is not None else request.daily_seed
     state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
@@ -40,6 +46,8 @@ def create_game_with_id(session_id: str, request: CreateGameRequest) -> GameStat
 
 @app.post("/api/games/{session_id}/players", response_model=GameState)
 def join_game(session_id: str, request: JoinGameRequest) -> GameState:
+    if room_service.room_for_session(session_id):
+        raise HTTPException(403, {"code": "room_session_requires_room_write", "message": "房间旅程必须通过席位入口加入。", "details": {}, "recovery": "return_to_room"})
     state = repo.get(session_id)
     if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     if state.revision or len(state.players) >= 4: raise HTTPException(409, "game has already started")
@@ -246,7 +254,7 @@ def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     state = GameState.model_validate(state.model_dump())
     controlled_ids = [item["player_id"] for item in room["seats"]] if room["play_mode"] in {"solo", "local"} else [seat["player_id"]]
     can_act = room["status"] == "in_progress" and state.shared.active_player_id in controlled_ids
-    state.viewer = {"seat_id": seat["seat_id"], "player_id": seat["player_id"], "controlled_player_ids": controlled_ids, "can_act": can_act, "can_manage_room": seat["seat_id"] == "seat-1", "play_mode": room["play_mode"], "paused": room["status"] == "paused"}
+    state.viewer = {"seat_id": seat["seat_id"], "player_id": seat["player_id"], "controlled_player_ids": controlled_ids, "can_act": can_act, "can_manage_room": seat["seat_id"] == "seat-1", "play_mode": room["play_mode"], "paused": room["status"] == "paused", "room_id": room["room_id"], "room_status": room["status"], "seats": [{key: item.get(key) for key in ("seat_id", "player_id", "name", "role_id", "ready", "connected")} for item in room["seats"]]}
     if not can_act:
         state.legal_actions = []
         state.action_options = []

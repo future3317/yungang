@@ -303,6 +303,8 @@ export interface components {
             route_id?: string | null;
             /** Upgrade Id */
             upgrade_id?: string | null;
+            /** Target Ids */
+            target_ids?: string[] | null;
             /** Request Id */
             request_id?: string | null;
         };
@@ -310,7 +312,7 @@ export interface components {
          * ActionType
          * @enum {string}
          */
-        ActionType: "move" | "explore" | "contribute" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "end_planning";
+        ActionType: "move" | "explore" | "contribute" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "use_node_ability" | "use_upgrade" | "end_planning";
         /** CreateGameRequest */
         CreateGameRequest: {
             /** Player Ids */
@@ -584,6 +586,8 @@ export interface components {
             route_id?: string | null;
             /** Upgrade Id */
             upgrade_id?: string | null;
+            /** Target Ids */
+            target_ids?: string[] | null;
             /** Request Id */
             request_id?: string | null;
         };
