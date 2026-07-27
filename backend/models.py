@@ -42,6 +42,28 @@ class ActionRequest(BaseModel):
     recipient_id: Optional[str] = None
     route_id: Optional[str] = None
     upgrade_id: Optional[str] = None
+    request_id: Optional[str] = None
+
+
+class ActionTarget(BaseModel):
+    id: str
+    label: str
+    preview_delta: Dict[str, Any] = Field(default_factory=dict)
+    payload: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ActionOption(BaseModel):
+    id: str
+    type: str
+    label: str
+    description: str = ""
+    cost: Dict[str, int] = Field(default_factory=lambda: {"ap": 0})
+    enabled: bool = True
+    disabled_reason: Optional[str] = None
+    targets: List[ActionTarget] = Field(default_factory=list)
+    preview_delta: Dict[str, Any] = Field(default_factory=dict)
+    confirmation: str = ""
+    payload: Dict[str, Any] = Field(default_factory=dict)
 
 class CreateGameRequest(BaseModel):
     player_ids: List[str] = Field(default_factory=lambda: ["p1", "p2"])
@@ -87,6 +109,7 @@ class RoomActionRequest(BaseModel):
     recipient_id: Optional[str] = None
     route_id: Optional[str] = None
     upgrade_id: Optional[str] = None
+    request_id: Optional[str] = None
 
 
 class RoomSeatUpdateRequest(BaseModel):
@@ -219,7 +242,7 @@ class GameState(BaseModel):
     market: List[str] = Field(default_factory=list)
     pending_choice: Optional[Dict[str, Any]] = None
     legal_actions: List[Dict[str, Any]] = Field(default_factory=list)
-    action_options: List[Dict[str, Any]] = Field(default_factory=list)
+    action_options: List[ActionOption] = Field(default_factory=list)
     scenario_id: str = "sand_and_stone"
     seed: int = 0
     rng_state: int = 0
@@ -231,3 +254,4 @@ class GameState(BaseModel):
     score: ScoreState = Field(default_factory=ScoreState)
     result: Dict[str, Any] = Field(default_factory=dict)
     viewer: Dict[str, Any] = Field(default_factory=dict)
+    processed_request_ids: List[str] = Field(default_factory=list)

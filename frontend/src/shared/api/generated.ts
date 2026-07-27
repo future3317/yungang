@@ -303,6 +303,8 @@ export interface components {
             route_id?: string | null;
             /** Upgrade Id */
             upgrade_id?: string | null;
+            /** Request Id */
+            request_id?: string | null;
         };
         /**
          * ActionType
@@ -582,6 +584,8 @@ export interface components {
             route_id?: string | null;
             /** Upgrade Id */
             upgrade_id?: string | null;
+            /** Request Id */
+            request_id?: string | null;
         };
         /** RoomCreateRequest */
         RoomCreateRequest: {

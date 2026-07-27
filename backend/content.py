@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from .mechanisms import validate_content_mechanisms
 
 class Content:
     def __init__(self, root=None):
@@ -35,6 +36,7 @@ class Content:
         self.objectives = {x["id"]: x for x in self._items(self.files.get("objectives", []), "objectives")}
         self.achievements = self._items(self.files.get("achievements", []), "achievements")
         self.terminology = self.files.get("terminology", {})
+        validate_content_mechanisms(self.files)
         for index, route in enumerate(self.routes):
             route.setdefault("id", f"route_{route['from']}_{route['to']}_{index}")
             route.setdefault("status", "open")

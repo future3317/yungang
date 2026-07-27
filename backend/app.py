@@ -71,6 +71,8 @@ def game_action(session_id: str, request: ActionRequest) -> GameState:
 def _run_action(session_id: str, request: ActionRequest) -> GameState:
     state = repo.get(session_id)
     if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
+    if request.request_id and request.request_id in state.processed_request_ids:
+        return state
     if request.expected_revision != state.revision:
         raise HTTPException(status_code=409, detail={"code": "revision_conflict", "message": "旅程状态已更新，请同步后重新选择行动。", "details": {"expected_revision": request.expected_revision, "actual_revision": state.revision}, "recovery": "sync_current_state", "current_state": state.model_dump()})
     expected_revision = request.expected_revision

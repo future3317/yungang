@@ -5,7 +5,8 @@ from typing import Any
 
 from .content import Content
 from .domain.rng import DeterministicRng
-from .models import ActionType, GameOutcome, GameState, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
+from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, TRIGGER_HANDLERS
+from .models import ActionOption, ActionType, GameOutcome, GameState, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -108,6 +109,8 @@ class GameEngine:
 
     def refresh(self, state: GameState):
         self._ensure_runtime_state(state)
+        for task in state.tasks.values():
+            task["progress"] = self._task_progress(task)
         if state.shared.outcome:
             state.legal_actions = []
             state.action_options = []
@@ -126,7 +129,7 @@ class GameEngine:
             elif kind == "action_card":
                 card_id = state.pending_choice["card_id"]
                 state.legal_actions = [{"type": ActionType.USE_ACTION_CARD.value, "card_id": card_id, "target_id": option["id"], "label": option["label"]} for option in state.pending_choice["options"]]
-            state.action_options = self._build_action_options(state.legal_actions)
+            state.action_options = self._build_action_options(state.legal_actions, state)
             return state
 
         if state.shared.phase == "planning":
@@ -134,7 +137,7 @@ class GameEngine:
             actions = [{"type": ActionType.END_PLANNING.value, "label": "\u5f00\u59cb\u884c\u52a8", "cost": 0, "planning_marks": marks}]
             actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
             state.legal_actions = actions
-            state.action_options = self._build_action_options(actions)
+            state.action_options = self._build_action_options(actions, state)
             return state
         actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
         site = state.sites[active.location]
@@ -148,7 +151,7 @@ class GameEngine:
                     continue
                 route_state = state.routes.get(route["id"])
                 if route_state and self._route_open(state, route["id"]):
-                    actions.append({"type": ActionType.MOVE.value, "target_id": target, "label": f"\u524d\u5f80 {self.content.sites[route['to']]['name']}", "cost": 0 if active.flags.get("free_move") else route_state.cost, "route_id": route["id"]})
+                    actions.append({"type": ActionType.MOVE.value, "target_id": target, "label": f"\u524d\u5f80 {self.content.sites[target]['name']}", "cost": 0 if active.flags.get("free_move") else route_state.cost, "route_id": route["id"]})
             if active.flags.get("sprint_move"):
                 for target in self._reachable(state, active.location, 2):
                     if target != active.location and not any(item.get("target_id") == target for item in actions):
@@ -165,11 +168,11 @@ class GameEngine:
                 if not route_state:
                     continue
                 if route_state.status in {"strained", "blocked"}:
-                    actions.append({"type": ActionType.SURVEY_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u52d8\u5bdf\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.SURVEY_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u52d8\u5bdf\u8def\u7ebf · {self.content.sites[target]['name']}", "cost": 1})
                 if route_state.status in {"strained", "blocked"} and state.shared.research_clues > 0:
-                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u4fee\u62a4\u8def\u7ebf · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"\u4fee\u62a4\u8def\u7ebf · {self.content.sites[target]['name']}", "cost": 1})
                 if route_state.status == "restored" and route_state.connection_level < 1:
-                    actions.append({"type": ActionType.ESTABLISH_CONNECTION.value, "route_id": route["id"], "target_id": target, "label": f"\u5efa\u7acb\u8fde\u63a5 · {self.content.sites[route['to']]['name']}", "cost": 1})
+                    actions.append({"type": ActionType.ESTABLISH_CONNECTION.value, "route_id": route["id"], "target_id": target, "label": f"\u5efa\u7acb\u8fde\u63a5 · {self.content.sites[target]['name']}", "cost": 1})
             if state.shared.current_event_id and state.shared.current_event_id not in state.shared.prepared_event_ids:
                 actions.append({"type": ActionType.PREPARE.value, "label": "\u51c6\u5907\u5e94\u5bf9\u4e8b\u4ef6", "cost": 1})
             task = state.tasks.get(self.content.sites[active.location].get("active_task_id"))
@@ -185,15 +188,20 @@ class GameEngine:
             actions.append({"type": ActionType.USE_SKILL.value, "label": role["ability"]["name"], "skill": role["ability"]["action"], "cost": role["ability"].get("ap_cost", 1)})
         actions = [action for action in actions if action["type"] != ActionType.PLAN.value or action.get("target_id")]
         state.legal_actions = actions
-        state.action_options = self._build_action_options(actions)
+        state.action_options = self._build_action_options(actions, state)
         self._update_objectives(state)
         return state
 
     def apply(self, state: GameState, req: dict[str, Any]):
+        request_id = req.get("request_id")
+        if request_id and request_id in state.processed_request_ids:
+            return state
         if state.shared.outcome:
             raise ValueError("game_is_over")
         if state.pending_choice:
-            return self._resolve_choice(state, req)
+            result = self._resolve_choice(state, req)
+            self._remember_request(state, request_id)
+            return result
         pid, action = req["player_id"], req["action"]
         if pid != state.shared.active_player_id:
             raise ValueError("not_active_player")
@@ -216,17 +224,33 @@ class GameEngine:
         elif action == ActionType.END_PLANNING.value: self._end_planning(state, player)
         else: raise ValueError("unknown_action")
         state.revision += 1
+        self._remember_request(state, request_id)
         self._check_outcome(state)
         return self.refresh(state)
 
+    def _remember_request(self, state, request_id):
+        if not request_id:
+            return
+        if request_id not in state.processed_request_ids:
+            state.processed_request_ids.append(request_id)
+            del state.processed_request_ids[:-200]
+
     def _move(self, state, player, target):
         route = next((item for item in self.content.routes if {item["from"], item["to"]} == {player.location, target}), None)
-        if not route or not self._open(state, target) or not self._route_open(state, route["id"]): raise ValueError("invalid_route")
-        route_state = state.routes[route["id"]]
-        cost = 0 if player.flags.pop("free_move", False) else route_state.cost
-        if player.flags.pop("sprint_move", False): cost = 1
+        sprint = bool(player.flags.get("sprint_move"))
+        if not self._open(state, target): raise ValueError("invalid_route")
+        if not route and sprint and target in self._reachable(state, player.location, 2):
+            cost = 1
+            route_state = None
+        elif route and self._route_open(state, route["id"]):
+            route_state = state.routes[route["id"]]
+            cost = 0 if player.flags.pop("free_move", False) else route_state.cost
+            if player.flags.pop("sprint_move", False): cost = 1
+        else:
+            raise ValueError("invalid_route")
         if player.ap < cost: raise ValueError("not_enough_ap")
         origin = player.location
+        player.flags.pop("sprint_move", None)
         player.ap -= cost; player.location = target
         self._trigger_node_ability(state, player, origin, trigger="first_move_from_site_per_round")
         self._trigger_node_ability(state, player, target, trigger="on_arrival")
@@ -256,7 +280,7 @@ class GameEngine:
         if player.ap < 1 or player.location != site_id or not task or task["completed"] or card not in player.hand or not self._card_can_contribute(card, task): raise ValueError("invalid_contribution")
         player.ap -= 1; player.hand.remove(card); player.contributions += 1
         site = state.sites[site_id]; site.contributions.append({"player_id": player.id, "card_id": card, "origin_tags": self.content.cards[card].get("origin_tags", [])})
-        task["contributed_cards"].append(card); site.influence += 1; state.shared.influence += 1
+        task["contributed_cards"].append(card); task.setdefault("contributed_by_player", {})[player.id] = task.setdefault("contributed_by_player", {}).get(player.id, 0) + 1; site.influence += 1; state.shared.influence += 1
         project = state.projects.get(site.active_project_id or "")
         if project and project.status == "active": self._advance_project(state, project, player.id, "contribute", card)
         if player.flags.get("harmony_active") and self._has_upgrade_effect(player, "harmony_origin_bonus"):
@@ -367,37 +391,85 @@ class GameEngine:
         if typ == "transfer_resource" and target_id not in {item.id for item in state.players.values() if item.id != player.id and item.location == player.location}: raise ValueError("invalid_action_card_target")
         if typ == "team_prepare" and target_id not in state.players: raise ValueError("invalid_action_card_target")
         player.action_hand.remove(card); state.decks.setdefault("action_discard", []).append(card)
-        if typ in {"survey_route", "survey_and_mitigate", "survey_multiple_routes", "reduce_route_risk"} and stressed:
-            stressed.status = "strained"; stressed.risk = max(0, stressed.risk + int(effect.get("risk_delta", -1))); state.shared.research_clues += int(effect.get("clues", 1))
-        elif typ == "restore_route" and stressed:
-            stressed.status = "restored"; stressed.risk = 0; stressed.connection_level = max(1, stressed.connection_level)
-        elif typ == "establish_connection":
-            restored = next((route for route in adjacent if route.status == "restored"), None)
-            if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
-        elif typ in {"prepare_event", "team_prepare"} and state.shared.current_event_id:
-            if state.shared.current_event_id not in state.shared.prepared_event_ids: state.shared.prepared_event_ids.append(state.shared.current_event_id)
-        elif typ == "restore_and_move": state.shared.restoration_resource += 1; player.flags["free_move"] = True
-        elif typ == "remote_exchange_or_connect":
-            recipient = state.players.get(target_id or "")
-            if recipient: recipient.flags["remote_exchange"] = True
-            else:
-                restored = next((route for route in adjacent if route.id == target_id and route.status == "restored"), None)
-                if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
-        elif typ == "reserve_ap": player.ap = min(player.max_ap + 1, player.ap + 1)
-        elif typ == "transfer_resource":
-            recipient = state.players.get(target_id or "")
-            if recipient: recipient.flags["supplies"] = recipient.flags.get("supplies", 0) + int(effect.get("amount", 1))
+        self._dispatch_action_card_effect(state, player, effect, target_id, adjacent, stressed)
         self._draw_action_card(state, player)
 
+    def _dispatch_action_card_effect(self, state, player, effect, target_id, adjacent, stressed):
+        handler_name = ACTION_CARD_EFFECT_HANDLERS.get(effect.get("type", ""))
+        if not handler_name:
+            raise ValueError(f"unsupported_action_card_effect:{effect.get('type')}")
+        getattr(self, handler_name)(state, player, effect, target_id, adjacent, stressed)
+
+    def _action_card_survey_route(self, state, player, effect, target_id, adjacent, stressed): self._action_card_survey_routes(state, effect, stressed)
+    def _action_card_survey_multiple_routes(self, state, player, effect, target_id, adjacent, stressed):
+        routes = [route for route in adjacent if route.status in {"blocked", "strained"}]
+        for route in routes[: int(effect.get("count", 2))]: self._action_card_survey_routes(state, effect, route)
+    def _action_card_survey_and_mitigate(self, state, player, effect, target_id, adjacent, stressed): self._action_card_survey_routes(state, effect, stressed)
+    def _action_card_reduce_route_risk(self, state, player, effect, target_id, adjacent, stressed): self._action_card_survey_routes(state, effect, stressed)
+    def _action_card_survey_routes(self, state, effect, route):
+        if route:
+            route.status = "strained"
+            route.risk = max(0, route.risk + int(effect.get("risk_delta", -1)))
+            state.shared.research_clues += int(effect.get("clues", 1))
+    def _action_card_restore_route(self, state, player, effect, target_id, adjacent, stressed):
+        if stressed:
+            stressed.status = "restored"; stressed.risk = 0; stressed.connection_level = max(1, stressed.connection_level)
+    def _action_card_establish_connection(self, state, player, effect, target_id, adjacent, stressed):
+        restored = next((route for route in adjacent if route.id == target_id and route.status == "restored"), None) or next((route for route in adjacent if route.status == "restored"), None)
+        if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
+    def _action_card_prepare_event(self, state, player, effect, target_id, adjacent, stressed): self._action_card_team_prepare(state, player, effect, target_id, adjacent, stressed)
+    def _action_card_team_prepare(self, state, player, effect, target_id, adjacent, stressed):
+        if state.shared.current_event_id and state.shared.current_event_id not in state.shared.prepared_event_ids: state.shared.prepared_event_ids.append(state.shared.current_event_id)
+    def _action_card_restore_and_move(self, state, player, effect, target_id, adjacent, stressed): state.shared.restoration_resource += int(effect.get("resource", 1)); player.flags["free_move"] = True
+    def _action_card_remote_exchange_or_connect(self, state, player, effect, target_id, adjacent, stressed):
+        recipient = state.players.get(target_id or "")
+        if recipient: recipient.flags["remote_exchange"] = True
+        else:
+            restored = next((route for route in adjacent if route.id == target_id and route.status == "restored"), None)
+            if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
+    def _action_card_reserve_ap(self, state, player, effect, target_id, adjacent, stressed): player.ap = min(player.max_ap + 1, player.ap + 1)
+    def _action_card_transfer_resource(self, state, player, effect, target_id, adjacent, stressed):
+        recipient = state.players.get(target_id or "")
+        if recipient: recipient.flags["supplies"] = recipient.flags.get("supplies", 0) + int(effect.get("amount", 1))
+
     def _effect(self, state, player, effect):
+        self._dispatch_effect(CULTURE_EFFECT_HANDLERS, state, player, effect)
+
+    def _dispatch_effect(self, registry, state, player, effect, site_id=None):
         typ = effect.get("type")
-        if typ == "gain_ap": player.ap = min(player.max_ap, player.ap + effect.get("amount", 1))
-        elif typ == "next_contribute_bonus": player.flags["next_contribute_bonus"] = effect.get("amount", 1)
-        elif typ == "free_move": player.flags["free_move"] = True
-        elif typ == "restore_and_influence": state.shared.restoration_resource += effect.get("resource", 1); player.influence += effect.get("influence", 1)
-        elif typ == "reduce_threat": state.shared.threat = max(0, state.shared.threat - effect.get("amount", 1))
-        elif typ == "influence": state.shared.influence += effect.get("amount", 1)
-        elif typ == "gain_influence": state.shared.influence += effect.get("amount", 1)
+        handler_name = registry.get(typ or "")
+        if not handler_name:
+            raise ValueError(f"unsupported_effect:{typ}")
+        getattr(self, handler_name)(state, player, effect, site_id)
+
+    def _effect_gain_ap(self, state, player, effect, site_id=None): player.ap = min(player.max_ap, player.ap + int(effect.get("amount", 1)))
+    def _effect_next_contribute_bonus(self, state, player, effect, site_id=None): player.flags["next_contribute_bonus"] = player.flags.get("next_contribute_bonus", 0) + int(effect.get("amount", 1))
+    def _effect_free_move(self, state, player, effect, site_id=None): player.flags["free_move"] = True
+    def _effect_restore_and_influence(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("resource", 1)); player.influence += int(effect.get("influence", 1))
+    def _effect_reduce_threat(self, state, player, effect, site_id=None): state.shared.threat = max(0, state.shared.threat - int(effect.get("amount", 1))); state.shared.weathering_track = state.shared.threat
+    def _effect_influence(self, state, player, effect, site_id=None): state.shared.influence += int(effect.get("amount", 1))
+    def _effect_gain_influence(self, state, player, effect, site_id=None): state.shared.influence += int(effect.get("amount", 1)); player.influence += int(effect.get("amount", 1))
+    def _effect_restore_discount(self, state, player, effect, site_id=None): player.flags["restore_discount"] = int(effect.get("amount", 1))
+    def _effect_gain_clue(self, state, player, effect, site_id=None): state.shared.research_clues += int(effect.get("amount", 1))
+    def _effect_preview_event(self, state, player, effect, site_id=None): player.flags["event_preview"] = True
+    def _effect_exchange_discount(self, state, player, effect, site_id=None): player.flags["exchange_discount"] = int(effect.get("amount", 1))
+    def _effect_reserve_market_card(self, state, player, effect, site_id=None): player.flags["reserve_market_card"] = True
+    def _effect_inspect_archive(self, state, player, effect, site_id=None): player.flags["archive_inspect"] = True
+    def _effect_clue_to_restoration(self, state, player, effect, site_id=None):
+        if state.shared.research_clues >= 1:
+            state.shared.research_clues -= 1
+            state.shared.restoration_resource += int(effect.get("amount", 1))
+    def _effect_project_progress(self, state, player, effect, site_id=None):
+        if site_id:
+            project = state.projects.get(state.sites[site_id].active_project_id or "")
+            if project: project.progress += int(effect.get("amount", 1))
+    def _effect_temporary_origin_tag(self, state, player, effect, site_id=None): player.flags["temporary_origin_tag"] = effect.get("tag", "cross_origin")
+    def _effect_ignore_route_risk(self, state, player, effect, site_id=None): player.flags["ignore_route_risk"] = True
+    def _effect_free_exchange(self, state, player, effect, site_id=None): player.flags["free_exchange"] = True
+    def _effect_preview_event_target(self, state, player, effect, site_id=None): player.flags["event_preview_target"] = True
+    def _effect_route_action_discount(self, state, player, effect, site_id=None): player.flags["route_action_discount"] = int(effect.get("amount", 1))
+    def _effect_inspect_adjacent_routes(self, state, player, effect, site_id=None): player.flags["inspect_adjacent_routes"] = True
+    def _effect_trigger_role_upgrade(self, state, player, effect, site_id=None): self._offer_upgrade(state, player.id)
 
     def _end_turn(self, state, player):
         player.ap = player.max_ap; player.skill_used = False
@@ -516,18 +588,24 @@ class GameEngine:
         state.revision += 1; self._check_outcome(state); return self.refresh(state)
 
     def _event_effect(self, state, effect):
-        typ = effect.get("type")
-        if typ == "damage_open_sites":
-            target_ids = state.shared.event_instance.get("revealed_targets") or state.shared.event_targets
-            targets = [state.sites[item] for item in target_ids if item in state.sites]
-            for site in targets: site.damage = min(site.max_damage, site.damage + effect.get("amount", 1)); self._update_site(site)
-            state.shared.event_instance["resolved_targets"] = [site.id for site in targets]
-        elif typ == "all_influence":
-            for player in state.players.values(): player.influence += effect.get("amount", 1)
-        elif typ == "gain_resource": state.shared.restoration_resource += effect.get("amount", 1)
-        elif typ == "threat": state.shared.threat += effect.get("amount", 1)
+        handler_name = EVENT_EFFECT_HANDLERS.get(effect.get("type", ""))
+        if not handler_name:
+            raise ValueError(f"unsupported_effect:{effect.get('type')}")
+        getattr(self, handler_name)(state, None, effect)
         state.shared.weathering_track = state.shared.threat
         state.shared.event_instance["status"] = "resolved"
+
+    def _event_damage_open_sites(self, state, player, effect, site_id=None):
+        target_ids = state.shared.event_instance.get("revealed_targets") or state.shared.event_targets
+        targets = [state.sites[item] for item in target_ids if item in state.sites]
+        for site in targets:
+            site.damage = min(site.max_damage, site.damage + int(effect.get("amount", 1)))
+            self._update_site(site)
+        state.shared.event_instance["resolved_targets"] = [site.id for site in targets]
+    def _event_all_influence(self, state, player, effect, site_id=None):
+        for teammate in state.players.values(): teammate.influence += int(effect.get("amount", 1))
+    def _event_gain_resource(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("amount", 1))
+    def _event_threat(self, state, player, effect, site_id=None): state.shared.threat += int(effect.get("amount", 1))
 
     def _reveal_event(self, state):
         if not state.decks["events"]:
@@ -600,7 +678,29 @@ class GameEngine:
         cards = [self.content.cards[c] for c in task["contributed_cards"]]
         domains = {c.get("domain") for c in cards}; origins = {origin for c in cards for origin in c.get("origin_tags", [])}
         combo = task.get("combo_requirement", {}); combo_tags = {tag for card in cards for tag in card.get("combo_tags", [])}; players = set(task.get("contributing_player_ids", []))
-        return len(cards) >= task["required_card_count"] and len(origins) >= task["required_origin_diversity"] and set(task["required_domains"]).issubset(domains) and set(combo.get("required_combo_tags", [])).issubset(combo_tags) and set(combo.get("preferred_origins", [])).issubset(origins) and len(players) >= combo.get("minimum_distinct_players", 1)
+        per_player = task.get("contributed_by_player", {})
+        minimum_per_player = int(task.get("required_cards_per_player_min", 0))
+        return len(cards) >= task["required_card_count"] and len(origins) >= task["required_origin_diversity"] and set(task["required_domains"]).issubset(domains) and set(combo.get("required_combo_tags", [])).issubset(combo_tags) and set(combo.get("preferred_origins", [])).issubset(origins) and len(players) >= combo.get("minimum_distinct_players", 1) and (not minimum_per_player or all(count >= minimum_per_player for count in per_player.values()))
+
+    def _task_progress(self, task):
+        cards = [self.content.cards[c] for c in task.get("contributed_cards", []) if c in self.content.cards]
+        domains = {c.get("domain") for c in cards}; origins = {origin for c in cards for origin in c.get("origin_tags", [])}
+        combo = task.get("combo_requirement", {}); combo_tags = {tag for card in cards for tag in card.get("combo_tags", [])}; players = set(task.get("contributing_player_ids", []))
+        required_domains = set(task.get("required_domains", [])); required_origins = set(combo.get("preferred_origins", [])); required_tags = set(combo.get("required_combo_tags", []))
+        requirements = [
+            {"key": "cards", "label": "证据数量", "current": len(cards), "target": int(task.get("required_card_count", 0)), "complete": len(cards) >= int(task.get("required_card_count", 0))},
+            {"key": "domains", "label": "研究领域", "current": len(domains & required_domains), "target": len(required_domains), "complete": required_domains.issubset(domains), "missing": sorted(required_domains - domains)},
+            {"key": "origins", "label": "来源多样性", "current": len(origins), "target": int(task.get("required_origin_diversity", 0)), "complete": len(origins) >= int(task.get("required_origin_diversity", 0))},
+            {"key": "contributors", "label": "贡献者", "current": len(players), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(players) >= int(combo.get("minimum_distinct_players", 1))},
+            {"key": "combos", "label": "组合线索", "current": len(combo_tags & required_tags), "target": len(required_tags), "complete": required_tags.issubset(combo_tags), "missing": sorted(required_tags - combo_tags)},
+        ]
+        if required_origins:
+            requirements.append({"key": "preferred_origins", "label": "指定来源", "current": len(origins & required_origins), "target": len(required_origins), "complete": required_origins.issubset(origins), "missing": sorted(required_origins - origins)})
+        minimum_per_player = int(task.get("required_cards_per_player_min", 0))
+        if minimum_per_player:
+            counts = task.get("contributed_by_player", {})
+            requirements.append({"key": "cards_per_player", "label": "参与者最低贡献", "current": min(counts.values(), default=0), "target": minimum_per_player, "complete": bool(counts) and all(count >= minimum_per_player for count in counts.values())})
+        return {"requirements": requirements, "complete": self._task_complete(task)}
 
     def _reachable(self, state, start, hops):
         found = {start}; queue = deque([(start, 0)])
@@ -671,13 +771,74 @@ class GameEngine:
                 project = next((item for item in state.projects.values() if item.site_id == site.id), None)
                 site.active_project_id = project.id if project else None
 
-    def _build_action_options(self, actions):
+    def _build_action_options(self, actions, state=None):
+        descriptions = {
+            ActionType.MOVE.value: "沿已显影的路线前往另一个开放节点。",
+            ActionType.EXPLORE.value: "从公开市场取走一件文化线索，推进当前地点的研究。",
+            ActionType.CONTRIBUTE.value: "把符合委托的线索交给当前地点，完成互证。",
+            ActionType.RESTORE.value: "消耗修护资源，降低当前地点的风化损伤。",
+            ActionType.EXCHANGE.value: "把手中的线索交给同处的同行者。",
+            ActionType.USE_SKILL.value: "使用当前角色的专长，改变这一回合的行动空间。",
+            ActionType.PLAY_CARD.value: "立即使用一张文化证据牌的即时效果。",
+            ActionType.USE_ACTION_CARD.value: "使用策略牌，并在需要时选择路线或同行者。",
+            ActionType.SURVEY_ROUTE.value: "勘察受阻路线，降低风险并补充研究线索。",
+            ActionType.RESTORE_ROUTE.value: "消耗研究线索，让受阻路线恢复通行。",
+            ActionType.ESTABLISH_CONNECTION.value: "把已修护路线升级为稳定的区域连接。",
+            ActionType.PREPARE.value: "提前准备当前事件，降低结算时的风化压力。",
+            ActionType.PLAN.value: "为地点、路线或项目放置一枚协作标记。",
+            ActionType.END_TURN.value: "结束当前角色的行动，把回合交给下一位同行者。",
+            ActionType.END_PLANNING.value: "结算本轮协作标记，进入行动阶段。",
+        }
         grouped = {}
         for action in actions:
-            grouped.setdefault(action["type"], {"type": action["type"], "label": action.get("label", action["type"]), "cost": {"ap": action.get("cost", 0)}, "targets": [], "disabled_reason": None})
-            target = action.get("target_id") or action.get("card_id") or action.get("route_id")
-            if target: grouped[action["type"]]["targets"].append({"id": target, "label": action.get("label", target), "preview": {"cost": action.get("cost", 0)}})
-        return list(grouped.values())
+            action_type = action["type"]
+            cost = int(action.get("cost", 0))
+            group_key = action_type
+            if action.get("card_id") and action_type in {ActionType.PLAY_CARD.value, ActionType.USE_ACTION_CARD.value}:
+                group_key = f"{action_type}:{action['card_id']}"
+            option = grouped.setdefault(group_key, {
+                "id": f"action:{group_key}",
+                "type": action_type,
+                "label": action.get("label", action_type),
+                "description": descriptions.get(action_type, "执行一项可用行动。"),
+                "cost": {"ap": cost},
+                "enabled": True,
+                "disabled_reason": None,
+                "targets": [],
+                "preview_delta": {"ap": -cost},
+                "confirmation": f"确认{action.get('label', action_type)}？",
+                "payload": {},
+            })
+            target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
+            payload = {key: value for key, value in action.items() if value is not None}
+            if target:
+                target_key = str(target)
+                if action_type == ActionType.EXCHANGE.value:
+                    target_key = f"{target_key}:{action.get('card_id', '')}"
+                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": {"ap": -cost}, "payload": payload})
+            else:
+                option["payload"] = payload
+        if state is not None and not state.pending_choice and not state.shared.outcome:
+            present = set(grouped)
+            active = state.players.get(state.shared.active_player_id)
+            if active:
+                disabled = {}
+                if state.shared.phase == "player_action":
+                    if ActionType.MOVE.value not in present: disabled[ActionType.MOVE.value] = "当前没有可达且开放的节点。"
+                    if ActionType.EXPLORE.value not in present: disabled[ActionType.EXPLORE.value] = "当前没有可取的研究线索，或手牌已满。"
+                    if ActionType.CONTRIBUTE.value not in present: disabled[ActionType.CONTRIBUTE.value] = "当前地点没有符合委托的手牌线索。"
+                    if ActionType.RESTORE.value not in present: disabled[ActionType.RESTORE.value] = "当前地点暂时不需要修护，或修护资源不足。"
+                    if ActionType.EXCHANGE.value not in present: disabled[ActionType.EXCHANGE.value] = "当前地点没有可以交换的同行者。"
+                    role = self.content.roles.get(active.role_id, {})
+                    if ActionType.USE_SKILL.value not in present: disabled[ActionType.USE_SKILL.value] = "角色专长本回合已使用，或行动点不足。"
+                for action_type, reason in disabled.items():
+                    grouped[action_type] = {
+                        "id": f"action:{action_type}", "type": action_type, "label": action_type,
+                        "description": descriptions.get(action_type, "执行一项可用行动。"), "cost": {"ap": 0},
+                        "enabled": False, "disabled_reason": reason, "targets": [],
+                        "preview_delta": {}, "confirmation": "", "payload": {},
+                    }
+        return [ActionOption.model_validate(option) for option in grouped.values()]
 
     def _event_deck_for_scenario(self, scenario, rng):
         source = [event_id for event_id in scenario.get("event_deck", self.content.events) if event_id in self.content.events]; ordered, used = [], set()
@@ -696,7 +857,7 @@ class GameEngine:
         cards = [self.content.cards[item["card_id"]] for item in project.stage_evidence if item.get("stage_id") == stage_id and item.get("card_id") in self.content.cards]
         domains = {card.get("domain") for card in cards}; origins = {origin for card in cards for origin in card.get("origin_tags", [])}
         contributors = {item.get("player_id") for item in project.stage_evidence if item.get("stage_id") == stage_id}
-        return set(requirements.get("domains", [])).issubset(domains) and len(origins) >= requirements.get("origin_diversity", 0) and len(contributors) >= requirements.get("contributors", 0) and state.shared.research_clues >= requirements.get("clues", 0)
+        return set(requirements.get("domains", [])).issubset(domains) and len(origins) >= requirements.get("origin_diversity", 0) and len(contributors) >= requirements.get("contributors", 0) and state.shared.research_clues >= requirements.get("clues", 0) and state.shared.restoration_resource >= requirements.get("restoration_resource", 0)
 
     def _apply_reward(self, state, reward):
         state.shared.influence += int(reward.get("influence", 0)); state.shared.research_clues += int(reward.get("research_clues", 0)); state.shared.restoration_resource += int(reward.get("restoration_resource", 0))
@@ -708,6 +869,7 @@ class GameEngine:
         ability = self.content.sites.get(site_id, {}).get("node_ability")
         if not ability or (trigger and ability.get("trigger") != trigger): return
         trigger = trigger or ability.get("trigger")
+        if trigger not in TRIGGER_HANDLERS: raise ValueError(f"unsupported_trigger:{trigger}")
         frequency = ability.get("frequency", "round")
         key = f"{site_id}:{trigger}:{state.shared.turn if frequency != 'game' else 'game'}"
         if key in state.shared.node_ability_uses: return
@@ -725,28 +887,7 @@ class GameEngine:
         state.shared.node_ability_uses.append(key)
 
     def _apply_node_effect(self, state, player, site_id, effect):
-        typ = effect.get("type")
-        amount = int(effect.get("amount", effect.get("value", 1)))
-        if typ == "gain_influence": state.shared.influence += amount; player.influence += amount
-        elif typ == "restore_discount": player.flags["restore_discount"] = amount
-        elif typ == "gain_clue": state.shared.research_clues += amount
-        elif typ == "preview_event": player.flags["event_preview"] = True
-        elif typ == "exchange_discount": player.flags["exchange_discount"] = amount
-        elif typ == "reserve_market_card": player.flags["reserve_market_card"] = True
-        elif typ == "next_contribute_bonus": player.flags["next_contribute_bonus"] = player.flags.get("next_contribute_bonus", 0) + amount
-        elif typ == "inspect_archive": player.flags["archive_inspect"] = True
-        elif typ == "clue_to_restoration": state.shared.restoration_resource += amount; state.shared.research_clues = max(0, state.shared.research_clues - 1)
-        elif typ == "project_progress":
-            project = state.projects.get(state.sites[site_id].active_project_id or "")
-            if project: project.progress += amount
-        elif typ == "temporary_origin_tag": player.flags["temporary_origin_tag"] = effect.get("tag", "cross_origin")
-        elif typ == "ignore_route_risk": player.flags["ignore_route_risk"] = True
-        elif typ == "free_exchange": player.flags["free_exchange"] = True
-        elif typ == "reduce_threat": state.shared.threat = max(0, state.shared.threat - amount)
-        elif typ == "preview_event_target": player.flags["event_preview_target"] = True
-        elif typ == "route_action_discount": player.flags["route_action_discount"] = amount
-        elif typ == "inspect_adjacent_routes": player.flags["inspect_adjacent_routes"] = True
-        elif typ == "trigger_role_upgrade": self._offer_upgrade(state, player.id)
+        self._dispatch_effect(NODE_EFFECT_HANDLERS, state, player, effect, site_id)
 
     def _offer_upgrade(self, state, player_id):
         player = state.players[player_id]; options = [self.content.role_upgrades[item] for item in self.content.roles[player.role_id].get("upgrade_ids", []) if item in self.content.role_upgrades and item not in player.upgrades]
