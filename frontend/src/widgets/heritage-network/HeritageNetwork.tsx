@@ -8,6 +8,13 @@ type MapActionMode = Extract<ActionType, 'move' | 'restore' | 'survey_route' | '
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
 
+const routeRoadNames: Record<string, string> = { main: '主干道', regional: '区域道路', local: '支路' };
+const routeStatusNames: Record<string, string> = { open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮', closed: '已关闭' };
+const siteStatusNames: Record<string, string> = { stable: '稳定', at_risk: '有风险', closed: '已关闭', normal: '稳定' };
+function routeRoadName(value?: string) { return routeRoadNames[value || ''] || value?.replaceAll('_', ' ') || '支路'; }
+function routeStatusName(value?: string) { return routeStatusNames[value || ''] || value?.replaceAll('_', ' ') || '通行'; }
+function siteStatusName(value?: string) { return siteStatusNames[value || ''] || value?.replaceAll('_', ' ') || '稳定'; }
+
 function point(site: Site | undefined): Point { return { x: site?.layout?.x ?? site?.x ?? 50, y: site?.layout?.y ?? site?.y ?? 50 }; }
 function distance(a: Point, b: Point) { return Math.hypot(a.x - b.x, a.y - b.y); }
 function nodeLabelPosition(site: Site, meta: Site, allSites: Site[]) {
@@ -52,8 +59,8 @@ export function HeritageNetwork({ sites, metaSites, regions = [], routes = {}, p
         <g className="player-marker-layer">{players.map((player, index) => { const location = point(metaSites[player.location]); const companions = players.filter(item => item.location === player.location); const slot = companions.findIndex(item => item.id === player.id); const angle = companions.length > 1 ? (slot / companions.length) * Math.PI * 2 : -Math.PI / 2; const offset = companions.length > 1 ? 4.3 : 4.8; return <g key={player.id} className={`player-marker marker-${index % 4} ${player.id === active.id ? 'marker-active' : 'marker-idle'}`} transform={`translate(${location.x + Math.cos(angle) * offset} ${location.y + Math.sin(angle) * offset})`} aria-label={`${player.name}，位于${metaSites[player.location]?.name || player.location}`}><circle className="player-marker-halo" r="2.1" /><circle className="player-marker-core" r="1.15" /><text x="0" y=".38">{index + 1}</text></g>; })}</g>
       </g>
     </svg>
-    {selectedRoute && <aside className="route-inspector" aria-label="路线检查器"><button title="关闭路线检查器" aria-label="关闭路线检查器" onClick={() => setSelectedRouteId(null)}>×</button><span className="eyebrow">路线检查器</span><h3>{selectedRoute.route.name || `${metaSites[selectedRoute.from]?.name}—${metaSites[selectedRoute.to]?.name}`}</h3><p>{selectedRoute.route.ui_hint || selectedRoute.route.risk_profile || '这条路线连接两个协作节点，状态会随事件和团队治理改变。'}</p><dl><div><dt>道路</dt><dd>{selectedRoute.route.road_class || 'local'}</dd></div><div><dt>成本</dt><dd>{selectedRoute.route.cost} AP</dd></div><div><dt>风险</dt><dd>{selectedRoute.route.risk}</dd></div><div><dt>状态</dt><dd>{selectedRoute.route.status}</dd></div></dl><small>相关行动：勘察、修护或建立连接会根据当前合法行动出现。</small></aside>}
+    {selectedRoute && <aside className="route-inspector" aria-label="路线检查器"><button title="关闭路线检查器" aria-label="关闭路线检查器" onClick={() => setSelectedRouteId(null)}>×</button><span className="eyebrow">路线检查器</span><h3>{selectedRoute.route.name || `${metaSites[selectedRoute.from]?.name}—${metaSites[selectedRoute.to]?.name}`}</h3><p>{selectedRoute.route.ui_hint || selectedRoute.route.risk_profile || '这条路线连接两个协作节点，状态会随事件和团队治理改变。'}</p><dl><div><dt>道路</dt><dd>{routeRoadName(selectedRoute.route.road_class)}</dd></div><div><dt>成本</dt><dd>{selectedRoute.route.cost} AP</dd></div><div><dt>风险</dt><dd>{selectedRoute.route.risk}</dd></div><div><dt>状态</dt><dd>{routeStatusName(selectedRoute.route.status)}</dd></div></dl><small>相关行动：勘察、修护或建立连接会根据当前合法行动出现。</small></aside>}
     <details className="network-access-list"><summary>地点与路线清单</summary><div>{enabledSites.map(site => <button key={site.id} onClick={() => onFocus(site.id)}>{site.name || site.id}</button>)}{routeLines.map(line => <button key={line.id} onClick={() => setSelectedRouteId(line.id)}>{line.route.name || `${metaSites[line.from]?.name}—${metaSites[line.to]?.name}`}</button>)}</div></details>
-    <div className="network-corner">大同文化图谱<span>{hoveredRoute ? `线路：${hoveredRoute.route.status} · ${hoveredRoute.route.cost} AP · 风险 ${hoveredRoute.route.risk}` : actionMode ? `正在选择目标 · 已突出合法线路 · Escape 取消` : '滚轮缩放 · 拖动地图 · 双击适应全部节点'}</span></div>
+    <div className="network-corner">大同文化图谱<span>{hoveredRoute ? `线路：${routeStatusName(hoveredRoute.route.status)} · ${hoveredRoute.route.cost} AP · 风险 ${hoveredRoute.route.risk}` : actionMode ? `正在选择目标 · 已突出合法线路 · Escape 取消` : '滚轮缩放 · 拖动地图 · 双击适应全部节点'}</span></div>
   </div>;
 }

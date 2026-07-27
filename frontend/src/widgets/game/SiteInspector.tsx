@@ -16,6 +16,31 @@ function domainName(meta: Meta, id: string) {
   return meta.domain_meta?.[id]?.short_name || id;
 }
 
+const originNames: Record<string, string> = {
+  central: '中原',
+  western: '西域',
+  frontier: '边地',
+  craft: '工坊',
+  silk: '丝路',
+};
+
+const requirementNames: Record<string, string> = {
+  cross_origin: '跨来源互证',
+  image_reconstruction: '图像重构',
+  material_diagnosis: '材料诊断',
+  craft_coordination: '工序协同',
+  route_governance: '路线治理',
+  archive_context: '档案互证',
+};
+
+function formatRequirementValues(meta: Meta, key: string, values: string[]) {
+  return values.map(value => {
+    if (meta.domain_meta?.[value]) return domainName(meta, value);
+    if (key.includes('origin')) return originNames[value] || value.replaceAll('_', ' ');
+    return requirementNames[value] || comboNames[value] || value.replaceAll('_', ' ');
+  }).join('、');
+}
+
 function statusName(status?: string) {
   const labels: Record<string, string> = { stable: '稳定', normal: '稳定', open: '开放', at_risk: '有风险', blocked: '受阻', strained: '紧张', restored: '已修护', illuminated: '已点亮', closed: '已关闭' };
   return labels[status || ''] || status || '稳定';
@@ -139,7 +164,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此映证。带回不同来处的线索，才能让联系站得住脚。</span></div>}
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainName(meta, domain)}</span>)}</div>
-          {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${requirement.missing.join('、')}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
+          {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
           <div className="task-action-row"><button disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />寻访一件线索</button><button disabled={!isCurrentSite || matchingHand === 0} onClick={() => onSelectAction('contribute')}><HandHeart size={15} />交付手中线索</button></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
