@@ -26,6 +26,8 @@ function siteTypeName(type?: string) {
   return labels[type || ''] || type || '遗产节点';
 }
 
+const siteMedallionAssets: Record<string, string> = { yungang: 'heritage-medallion-1.png', huayan_temple: 'heritage-medallion-2.png', pingcheng_ruins: 'heritage-medallion-3.png', wall_pass: 'heritage-medallion-4.png', trade_post: 'heritage-medallion-5.png', northern_workshop: 'heritage-medallion-6.png' };
+
 function eventTypeName(type?: string) {
   const labels: Record<string, string> = { weathering: '风化压力', route: '路线变化', exchange: '交流变化', research: '研究线索' };
   return labels[type || ''] || type || '区域事件';
@@ -107,6 +109,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <button className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
     <header className="inspector-summary">
       <span className="eyebrow">当前聚焦地点</span>
+      <div className="inspector-site-mark"><img src={`/ui-assets/ornaments/${siteMedallionAssets[site.id] || 'heritage-medallion-1.png'}`} alt="" /></div>
       <h2>{site.name}</h2>
       <div className="inspector-meta"><span>{siteType}</span><span className={site.status}>{statusName(site.status)}</span></div>
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
@@ -137,7 +140,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'event' && <section className="event-tab">
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img src={`/ui-assets/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img src={`/ui-assets/generated/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section className="market-tab">

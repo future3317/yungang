@@ -11,7 +11,7 @@ function loadPreferences(): Preferences {
 
 export function AccessibilitySettings() {
   const [preferences, setPreferences] = useState<Preferences>(loadPreferences);
-  const [open, setOpen] = useState(() => localStorage.getItem(storageKey) === null);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.largeText = String(preferences.largeText);
