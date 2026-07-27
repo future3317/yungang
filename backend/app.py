@@ -1,7 +1,9 @@
 from pathlib import Path
 from uuid import uuid4
+import asyncio
+import json
 from fastapi import FastAPI, Header, HTTPException
-from fastapi.responses import FileResponse, Response
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from .actions import dispatch
 from .content import Content
@@ -250,6 +252,31 @@ def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
         state.action_options = []
         state.pending_choice = None
     return state
+
+
+async def _room_revision_stream(room_id: str):
+    last_signature = None
+    for _ in range(90):
+        room = room_service.repository.get(room_id)
+        if not room:
+            break
+        state = repo.get(room.get("session_id")) if room.get("session_id") else None
+        signature = (room.get("updated_at"), state.revision if state else None, room.get("status"))
+        if signature != last_signature:
+            yield f"event: revision\ndata: {json.dumps({'revision': state.revision if state else None, 'status': room.get('status')}, ensure_ascii=False)}\n\n"
+            last_signature = signature
+        await asyncio.sleep(1)
+    yield "event: close\ndata: {}\n\n"
+
+
+@app.get("/api/rooms/{room_id}/events", include_in_schema=False)
+async def room_events(room_id: str, seat_token: str | None = None):
+    room = _room_or_404(room_id)
+    try:
+        room_service.authenticate(room, seat_token or "")
+    except ValueError as exc:
+        raise _room_token_error(exc) from exc
+    return StreamingResponse(_room_revision_stream(room_id), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})
 
 
 @app.post("/api/rooms/{room_id}/actions", response_model=GameState)

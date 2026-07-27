@@ -17,6 +17,14 @@ export function RoomPage() {
   const [roleId, setRoleId] = useState('');
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const roomQuery = useQuery<Room>({ queryKey: ['room', roomId, token], queryFn: () => api.room(roomId, token || undefined), refetchInterval: 1800 });
+  useEffect(() => {
+    if (!roomId || !token) return;
+    const stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?seat_token=${encodeURIComponent(token)}`);
+    const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room', roomId, token] }); };
+    stream.addEventListener('revision', refresh);
+    stream.onerror = () => stream.close();
+    return () => stream.close();
+  }, [queryClient, roomId, token]);
   const room = roomQuery.data;
   const viewer = useMemo(() => room?.seats.find(seat => seat.seat_id === room.viewer_seat_id), [room]);
   const isHost = viewer?.seat_id === 'seat-1';

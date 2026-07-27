@@ -60,6 +60,14 @@ export function GamePage() {
   const [selectedOption, setSelectedOption] = useState<ActionOption | null>(null);
   const [roomToken] = useState(() => roomId ? window.localStorage.getItem(`yungang-room-token:${roomId}`) || '' : '');
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId), refetchOnWindowFocus: false, refetchInterval: roomId ? 2500 : false });
+  useEffect(() => {
+    if (!roomId || !roomToken) return;
+    const stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?seat_token=${encodeURIComponent(roomToken)}`);
+    const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); };
+    stream.addEventListener('revision', refresh);
+    stream.onerror = () => stream.close();
+    return () => stream.close();
+  }, [queryClient, roomId, roomToken]);
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const state = gameQuery.data;
   const legal = state?.legal_actions || [];
