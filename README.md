@@ -1,10 +1,25 @@
 # 石窟光谱 / Cave Light Atlas
 
-一个基于云冈文化遗产网络的合作研判游戏。玩家在有限回合内共同移动、探索证据、完成地点任务、修护节点和路线，并在信息不完全的事件压力下完成核心项目。
+《石窟光谱》是一款以云冈文化遗产网络为主题的合作研判游戏。玩家在有限回合内移动、探索文化证据、交换与贡献卡牌、修护节点和路线，并在世界事件压力下完成场景目标。
+
+## 当前产品状态
+
+运行时规则以 FastAPI 服务端和 `data/` 内容为唯一来源。前端只渲染服务端返回的合法行动、目标和预览，不复制胜负计算。
+
+已落地的核心体验：
+
+- 服务端生成 `ActionOption`，包含费用、描述、合法目标、预览变化和确认文案。
+- 目标行动统一经过目标选择、确认、请求中锁定、成功反馈或错误恢复。
+- 重复请求带 `request_id`，服务端保存最近处理过的请求 ID，避免重复扣除资源。
+- 文化牌、节点能力、事件和策略牌效果通过机制注册表执行；内容启动时校验未知效果和触发器。
+- 任务状态返回结构化进度，包括证据数、领域、来源、组合标签、贡献者和最低贡献条件。
+- 事件预告和结算使用同一组确定性目标，并返回实际影响对象、数值变化和原因。
+- 房间使用席位令牌；大厅和游戏页支持 revision SSE 推送，并保留轮询作为断线兜底。
+- 单人旅程在大厅中明确为一人轮流调度两位角色。
 
 ## 当前内容规模
 
-| 模块 | 数量 |
+| 模块 | 当前数量 |
 | --- | ---: |
 | 场景 | 4 |
 | 遗产节点 | 18 |
@@ -15,23 +30,35 @@
 | 角色 | 4 |
 | 角色升级 | 8 |
 | 策略牌 | 12 |
-| 项目 | 5 |
+| 多阶段项目 | 5 |
+| 任务 | 18 |
 
-运行时规则以 FastAPI 服务端和 `data/` 内容为唯一来源。前端只消费合法行动、目标和预览，不复制胜负计算。
+以上数量以当前 `data/` 文件和服务端加载结果为准。产品化任务书提出的扩展目标是 24 个节点、42 条路线、48 张文化证据、16 张策略牌、24 个事件、12 个项目和 6 个场景，尚未全部扩展完成，不能在设计说明中冒充已完成。
+
+## 游戏流程
+
+1. 首页选择人数、场景、难度和可复现 seed；单人控制两个角色。
+2. 事件预告锁定影响范围，回合结算沿用同一组确定性目标。
+3. 规划阶段放置地点、路线或项目标记。
+4. 行动阶段从左侧行动坞选择移动、探索、贡献、修护、勘察、路线治理、交换、策略牌或角色技能。
+5. 行动目标由后端返回。点击后显示目标、费用、预期变化和风险，再确认提交。
+6. 到达节点后才能探索、贡献证据或修护该地点；远处节点只可查看公开摘要。
+7. 结束回合后结算世界事件，展示影响对象和资源变化，再进入下一轮规划。
+8. 完成场景核心项目与公共目标后进入结算页，显示项目、路线、来源、守护和发现评分。
 
 ## 运行
 
-在 PowerShell 中：
+推荐使用本地 Conda 环境 `piepaper`。
+
+一条命令启动开发前后端：
 
 ```powershell
 conda activate piepaper
 cd E:\CODE\yungang-feitianqi-fullstack
-cd frontend
-npm install
-npm run dev
+.\run-dev.ps1
 ```
 
-另开一个终端启动后端：
+如果需要分别启动：
 
 ```powershell
 conda activate piepaper
@@ -39,81 +66,64 @@ cd E:\CODE\yungang-feitianqi-fullstack
 python -m uvicorn backend.app:app --reload --port 8000
 ```
 
-打开 `http://127.0.0.1:5173/`。如果使用后端托管构建产物，先运行 `npm run build`，再访问 `http://127.0.0.1:8000/`。
-
-## 一局流程
-
-1. 首页选择人数、场景、难度和可复现 seed；单人会自动控制两个角色。
-2. 事件预告锁定范围，回合结算使用同一组确定性目标。
-3. 规划阶段每名角色放置一个节点、路线或项目标记，然后开始行动。
-4. 行动阶段从左侧行动坞选择移动、探索、贡献、修护、勘察、路线治理或技能。
-5. 行动目标由服务端返回；点击目标后会先出现成本、影响和风险预览，再确认。
-6. 到达节点后才能探索、贡献证据或修护该地点；远处节点只可查看任务预览。
-7. 结束回合后结算事件并显示回合摘要；完成核心项目和公共目标进入结算页。
-
-## 常用验证
+另开终端：
 
 ```powershell
-conda run -n piepaper python scripts/validate_content.py
-conda run -n piepaper pytest -q
+cd E:\CODE\yungang-feitianqi-fullstack\frontend
+npm install
+npm run dev
+```
+
+打开 `http://127.0.0.1:5173/`。生产构建后也可以由 FastAPI 托管 `frontend/dist`，访问 `http://127.0.0.1:8000/`。
+
+## 验证命令
+
+```powershell
+conda activate piepaper
+cd E:\CODE\yungang-feitianqi-fullstack
+python scripts/validate_content.py
+python -m pytest -q
 cd frontend
 npm run typecheck
 npm run test
 npm run build
 ```
 
-生成当前 OpenAPI 类型：
+OpenAPI 类型生成要求后端运行在 `127.0.0.1:8000`：
 
 ```powershell
-cd frontend
 npm run api:generate
 ```
 
-该命令要求后端运行在 `127.0.0.1:8000`，输出为 `frontend/src/shared/api/generated.ts`。
+## 重要接口
+
+- `GET /api/meta`：内容与展示元数据。
+- `POST /api/games`：创建本地旅程。
+- `GET /api/games/{session_id}`：读取旅程状态。
+- `POST /api/games/{session_id}/actions`：提交带 revision 和 request ID 的行动。
+- `POST /api/rooms`：创建大厅。
+- `GET /api/rooms/{room_id}`：读取大厅与席位状态。
+- `GET /api/rooms/{room_id}/game`：读取带 viewer 权限的游戏状态。
+- `GET /api/rooms/{room_id}/events?seat_token=...`：订阅 revision SSE。
+- `POST /api/rooms/{room_id}/actions`：使用席位令牌提交多人行动。
 
 ## 文档入口
 
+- [当前玩法与机制状态](docs/PRODUCT_STATUS.md)
 - [玩家旅程](docs/PLAYER_JOURNEY.md)
 - [当前玩法规则](docs/GAMEPLAY_RULES.md)
+- [任务与项目规则](docs/TASK_AND_PROJECT_RULES.md)
+- [事件系统](docs/EVENT_SYSTEM.md)
 - [单人模式](docs/SOLO_MODE.md)
-- [无障碍说明](docs/ACCESSIBILITY.md)
+- [房间与席位模型](docs/ROOM_AND_SEAT_MODEL.md)
 - [错误与恢复](docs/ERROR_AND_RECOVERY.md)
-- [会话与存档](docs/SESSION_AND_SAVE.md)
-- [文化解释原则](docs/CULTURAL_INTERPRETATION.md)
-- [测试策略](docs/TEST_STRATEGY.md)
-- [性能报告](docs/PERFORMANCE_REPORT.md)
+- [无障碍说明](docs/ACCESSIBILITY.md)
 - [内容运行时覆盖](docs/engineering/CONTENT_RUNTIME_COVERAGE.md)
+- [测试策略](docs/TEST_STRATEGY.md)
 - [五分钟演示脚本](docs/playtest/DEMO_SCRIPT.md)
 
-## 真实状态边界
+## 交付边界
 
-后端单元/API 测试、前端 typecheck、Vitest 和 production build 已纳入本地验收。Playwright、axe、Lighthouse、真实多视口截图和真人试玩不能凭代码推断通过；它们的运行记录和待测项分别保存在 `docs/TEST_STRATEGY.md`、`docs/PERFORMANCE_REPORT.md` 和 `docs/playtest/`。
+当前后端测试、前端类型检查、Vitest 和 production build 已纳入本地验收。Playwright、axe、Lighthouse、五种分辨率视觉回归和真人试玩必须在本地服务启动后实际执行，不能仅凭代码推断通过。测试产生的 `data/games.sqlite3`、截图和 `audit_output/` 不应提交。
 
-## 回退
-
-本轮规则通过 `schema_version`、`revision` 和本地 SQLite 保存。出现不兼容存档时不要手动编辑数据库；使用首页新建旅程或从同一 seed 重开。Git 回退应回到上一条功能提交，而不是删除用户本地素材和 `data/games.sqlite3`。
-
-## Release player journey
-
-??????????? Lobby ???????????????????????????? `X-Seat-Token` ???????????? revision ????????
-
-?????
-
-- ???`/`
-- Lobby?`/room/:roomId`
-- ?????`/room/:roomId/game`
-- ?? session ???`/game/:sessionId`
-- ????`/result/:sessionId`
-
-??????
-
-```powershell
-conda run -n piepaper python scripts/validate_content.py
-conda run -n piepaper pytest -q
-cd frontend
-npm run typecheck
-npm run test
-npm run build
-```
-
-???????? [ROOM_AND_SEAT_MODEL.md](docs/ROOM_AND_SEAT_MODEL.md) ? [MULTIPLAYER_PERMISSIONS.md](docs/MULTIPLAYER_PERMISSIONS.md)?
+Git 回退应回到功能提交，不要删除用户素材和本地存档数据库。
