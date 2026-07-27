@@ -306,7 +306,7 @@ class GameEngine:
         candidates = [route for route in adjacent if route.status in ({"restored"} if typ == "establish_connection" else {"blocked", "strained"})]
         if typ in route_effects and not target_id:
             if not candidates: raise ValueError("no_valid_action_card_target")
-            state.pending_choice = {"kind": "action_card", "card_id": card, "options": [{"id": route.id, "label": f"{route.id} · {route.status}"} for route in candidates]}
+            state.pending_choice = {"kind": "action_card", "card_id": card, "options": [{"id": route.id, "label": f"{self.content.sites[route.from_site]['name']} → {self.content.sites[route.to_site]['name']} · {route.status}"} for route in candidates]}
             return
         stressed = next((route for route in candidates if route.id == target_id), None)
         if typ in route_effects and not stressed: raise ValueError("invalid_action_card_target")
@@ -366,6 +366,7 @@ class GameEngine:
                 target = affected[(state.seed + state.shared.turn) % len(affected)]
                 target.status = "blocked"
                 target.risk = max(1, target.risk)
+                state.shared.event_targets = [target.id]
             state.pending_choice = {"kind": "event", "event_id": event_id, "options": [{"id": "mitigate", "label": "\u6d88\u8017 1 \u4fee\u590d\u8d44\u6e90\uff0c\u7f13\u548c\u9053\u8def\u963b\u65ad"}, {"id": "accept", "label": "\u63a5\u53d7\u963b\u65ad\uff0c\u5a01\u80c1\u4e0a\u5347 1"}]}
             return
         self._event_effect(state, event.get("effect", {}))

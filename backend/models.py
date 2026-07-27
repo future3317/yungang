@@ -155,6 +155,7 @@ class SharedState(BaseModel):
     solo_mode: bool = False
     controlled_character_ids: List[str] = Field(default_factory=list)
     journal: List[Dict[str, Any]] = Field(default_factory=list)
+    event_targets: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
     schema_version: int = 3
