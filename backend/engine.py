@@ -118,7 +118,7 @@ class GameEngine:
             elif kind == "view_select":
                 state.legal_actions = [{"type": ActionType.SELECT_MARKET_CARD.value, "card_id": card, "label": f"\u9009\u62e9 {self.content.cards[card]['name']}"} for card in state.pending_choice["cards"]]
             elif kind == "discard":
-                state.legal_actions = [{"type": ActionType.DISCARD.value, "card_id": card, "label": f"\u5f03\u7f6e {self.content.cards[card]['name']}"} for card in active.hand]
+                state.legal_actions = [{"type": ActionType.DISCARD.value, "card_id": card, "label": f"\u653e\u4e0b {self.content.cards[card]['name']}"} for card in active.hand]
             elif kind == "role_upgrade":
                 state.legal_actions = [{"type": ActionType.SELECT_UPGRADE.value, "upgrade_id": option["id"], "label": option["name"]} for option in state.pending_choice["options"]]
             elif kind == "action_card":
@@ -151,7 +151,7 @@ class GameEngine:
                 for target in self._reachable(state, active.location, 2):
                     if target != active.location and not any(item.get("target_id") == target for item in actions):
                         actions.append({"type": ActionType.MOVE.value, "target_id": target, "label": f"\u75be\u884c\u81f3 {self.content.sites[target]['name']}", "cost": 1})
-            if active.ap >= 1 and len(active.hand) < 3:
+            if active.ap >= 1:
                 actions.extend({"type": ActionType.EXPLORE.value, "target_id": active.location, "card_id": card, "label": f"\u63a2\u7d22\u5e76\u9009\u62e9 {self.content.cards[card]['name']}", "cost": 1} for card in state.market)
             if active.ap >= 1 and state.shared.restoration_resource > 0 and site.damage > 0:
                 actions.append({"type": ActionType.RESTORE.value, "target_id": active.location, "label": "\u5171\u540c\u4fee\u62a4\u5f53\u524d\u8282\u70b9", "cost": 1})
@@ -198,7 +198,7 @@ class GameEngine:
         player = state.players[pid]
         target = req.get("target_site_id") or req.get("target_id")
         if action == ActionType.MOVE.value: self._move(state, player, target)
-        elif action == ActionType.EXPLORE.value: self._explore(state, player, req.get("card_id"))
+        elif action == ActionType.EXPLORE.value: self._request_explore(state, player, req.get("card_id"))
         elif action == ActionType.CONTRIBUTE.value: self._contribute(state, player, target, req.get("card_id"))
         elif action == ActionType.RESTORE.value: self._restore(state, player, target)
         elif action == ActionType.EXCHANGE.value: self._exchange(state, player, target, req.get("card_id"))
@@ -239,6 +239,15 @@ class GameEngine:
         self._trigger_node_ability(state, player, player.location, card_id=card, trigger="first_explore")
         self._trigger_node_ability(state, player, player.location, card_id=card, trigger="after_explore")
         state.shared.log.append(f"{player.name} \u5728 {self.content.sites[player.location]['name']} \u53d1\u73b0\u4e86 {self.content.cards[card]['name']}")
+
+    def _request_explore(self, state, player, card):
+        if player.ap < 1 or card not in state.market:
+            raise ValueError("invalid_explore")
+        if len(player.hand) >= 3:
+            state.pending_choice = {"kind": "discard", "next_card_id": card, "options": [{"id": item, "label": f"放下 {self.content.cards[item]['name']}"} for item in player.hand]}
+            state.shared.phase = "pending_choice"
+            return
+        self._explore(state, player, card)
 
     def _contribute(self, state, player, site_id, card):
         task = state.tasks.get(self.content.sites[site_id].get("active_task_id")) if site_id in self.content.sites else None
@@ -485,6 +494,15 @@ class GameEngine:
             player = state.players[state.shared.active_player_id]; card = req.get("card_id")
             if action != ActionType.SELECT_MARKET_CARD.value or card not in state.pending_choice["cards"]: raise ValueError("invalid_market_choice")
             player.hand.append(card); state.market.remove(card); self._refill_market(state); state.pending_choice = None
+        elif state.pending_choice["kind"] == "discard":
+            player = state.players[state.shared.active_player_id]
+            discard_id = req.get("card_id")
+            next_card = state.pending_choice.get("next_card_id")
+            if action != ActionType.DISCARD.value or discard_id not in player.hand or next_card not in state.market: raise ValueError("invalid_discard_choice")
+            player.hand.remove(discard_id)
+            state.pending_choice = None
+            state.shared.phase = "player_action"
+            self._explore(state, player, next_card)
         elif state.pending_choice["kind"] == "role_upgrade":
             player = state.players[state.shared.active_player_id]; upgrade_id = req.get("upgrade_id")
             if action != ActionType.SELECT_UPGRADE.value or upgrade_id not in {item["id"] for item in state.pending_choice["options"]}: raise ValueError("invalid_upgrade_choice")

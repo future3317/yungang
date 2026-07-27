@@ -54,6 +54,40 @@ class JoinGameRequest(BaseModel):
     player_id: str
     role_id: Optional[str] = None
 
+
+class RoomCreateRequest(BaseModel):
+    play_mode: str = "solo"
+    name: str = "同行者"
+    role_id: Optional[str] = None
+    scenario_id: str = "sand_and_stone"
+    difficulty_id: str = "guided"
+    seed: Optional[int] = None
+    max_players: int = Field(default=4, ge=1, le=4)
+
+
+class RoomJoinRequest(BaseModel):
+    name: str = "同行者"
+    role_id: Optional[str] = None
+
+
+class RoomRoleRequest(BaseModel):
+    role_id: str
+
+
+class RoomReadyRequest(BaseModel):
+    ready: bool = True
+
+
+class RoomActionRequest(BaseModel):
+    action: ActionType
+    expected_revision: int
+    target_id: Optional[str] = None
+    target_site_id: Optional[str] = None
+    card_id: Optional[str] = None
+    recipient_id: Optional[str] = None
+    route_id: Optional[str] = None
+    upgrade_id: Optional[str] = None
+
 class PlayerState(BaseModel):
     id: str
     name: str
