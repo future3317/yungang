@@ -529,7 +529,7 @@ class GameEngine:
             state.shared.log.append("\u548c\u5408\u534f\u4f5c\u751f\u6548\uff1a\u4e8b\u4ef6\u538b\u529b\u964d\u4f4e 1")
         instance = state.shared.event_instance
         if instance.get("event_id") != event_id:
-            instance = {"event_id": event_id, "revealed_targets": self._select_event_targets(state, event), "mitigation": [], "status": "forecast"}
+            instance = {"event_id": event_id, "revealed_targets": self._select_event_targets(state, event), "mitigation": [], "resolution": [], "status": "forecast"}
             state.shared.event_instance = instance
             state.shared.event_targets = list(instance["revealed_targets"])
         if event_id == "route_blocked" and not prepared:
@@ -557,10 +557,12 @@ class GameEngine:
                     route.status = "strained"
                     route.risk = max(0, route.risk - 1)
                 state.shared.event_instance["mitigation"] = [{"type": "route", "route_id": route_id, "result": "strained"}]
+                state.shared.event_instance["resolution"] = [{"target_id": route_id, "label": "路线风险", "changes": {"修护资源": -1, "路线状态": "承压"}, "reason": "团队选择缓和阻断"}]
             else:
                 state.shared.threat += 1
                 state.shared.weathering_track = state.shared.threat
                 state.shared.event_instance["mitigation"] = [{"type": "route", "route_id": state.shared.event_targets[0] if state.shared.event_targets else None, "result": "accepted"}]
+                state.shared.event_instance["resolution"] = [{"target_id": state.shared.event_targets[0] if state.shared.event_targets else None, "label": "风化压力", "changes": {"威胁": 1}, "reason": "团队接受道路阻断"}]
             state.shared.event_instance["status"] = "resolved"
             state.shared.event_history.append(dict(state.shared.event_instance))
             state.pending_choice = None; self._reveal_event(state); state.shared.phase = "planning"
@@ -602,10 +604,12 @@ class GameEngine:
             site.damage = min(site.max_damage, site.damage + int(effect.get("amount", 1)))
             self._update_site(site)
         state.shared.event_instance["resolved_targets"] = [site.id for site in targets]
+        state.shared.event_instance["resolution"] = [{"target_id": site.id, "label": self.content.sites[site.id]["name"], "changes": {"节点损伤": int(effect.get("amount", 1))}, "reason": "事件结算"} for site in targets]
     def _event_all_influence(self, state, player, effect, site_id=None):
         for teammate in state.players.values(): teammate.influence += int(effect.get("amount", 1))
-    def _event_gain_resource(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("amount", 1))
-    def _event_threat(self, state, player, effect, site_id=None): state.shared.threat += int(effect.get("amount", 1))
+        state.shared.event_instance["resolution"] = [{"target_id": teammate.id, "label": teammate.name, "changes": {"个人影响": int(effect.get("amount", 1))}, "reason": "事件结算"} for teammate in state.players.values()]
+    def _event_gain_resource(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("amount", 1)); state.shared.event_instance["resolution"] = [{"label": "共同修护资源", "changes": {"修护资源": int(effect.get("amount", 1))}, "reason": "事件结算"}]
+    def _event_threat(self, state, player, effect, site_id=None): state.shared.threat += int(effect.get("amount", 1)); state.shared.event_instance["resolution"] = [{"label": "风化压力", "changes": {"威胁": int(effect.get("amount", 1))}, "reason": "事件结算"}]
 
     def _reveal_event(self, state):
         if not state.decks["events"]:
@@ -618,7 +622,7 @@ class GameEngine:
         targets = self._select_event_targets(state, event)
         state.shared.current_event_id = event_id
         state.shared.event_targets = targets
-        state.shared.event_instance = {"event_id": event_id, "forecast_scope": {"target_rule": event.get("target_rule"), "hidden_target_count": len(targets)}, "revealed_targets": targets, "resolved_targets": [], "mitigation": [], "status": "forecast"}
+        state.shared.event_instance = {"event_id": event_id, "forecast_scope": {"target_rule": event.get("target_rule"), "hidden_target_count": len(targets)}, "revealed_targets": targets, "resolved_targets": [], "mitigation": [], "resolution": [], "status": "forecast"}
 
     def _select_event_targets(self, state, event):
         if event.get("id") == "route_blocked":
@@ -759,7 +763,7 @@ class GameEngine:
             state.shared.outcome = GameOutcome.DEFEAT; state.shared.outcome_reason = "round_limit_reached"
         if state.shared.outcome:
             state.shared.phase = "game_over"
-            state.result = {"outcome": state.shared.outcome, "outcome_reason": state.shared.outcome_reason, "score": state.score.model_dump(), "completed_objectives": [item.id for item in state.objectives.values() if item.completed], "completed_projects": [item.id for item in state.projects.values() if item.status == "completed"], "seed": state.seed}
+            state.result = {"outcome": state.shared.outcome, "outcome_reason": state.shared.outcome_reason, "outcome_summary": scenario.get("victory_brief") if state.shared.outcome == GameOutcome.VICTORY else scenario.get("failure_brief"), "score": state.score.model_dump(), "completed_objectives": [item.id for item in state.objectives.values() if item.completed], "completed_projects": [item.id for item in state.projects.values() if item.status == "completed"], "seed": state.seed}
 
     def _ensure_runtime_state(self, state):
         if not state.routes:
