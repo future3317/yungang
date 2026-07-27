@@ -15,6 +15,7 @@ import { ActionPreview } from '../../widgets/game/ActionPreview';
 import { TutorialGuide } from '../../widgets/game/TutorialGuide';
 import '../../styles/experience.css';
 import '../../styles/tutorial.css';
+import '../../styles/interface-scale.css';
 
 type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 const actionOrder: ActionType[] = ['move', 'plan', 'survey_route', 'explore', 'contribute', 'restore', 'restore_route', 'establish_connection', 'exchange', 'prepare', 'use_action_card', 'use_skill', 'end_planning', 'end_turn'];

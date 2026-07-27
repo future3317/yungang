@@ -1,0 +1,35 @@
+/* Game shell readability: enlarge the framing text without competing with the map. */
+.game-header { min-height: 72px; }
+.brand-mark { gap: 10px; font-size: 1.2rem; }
+.brand-mark img { width: 36px; height: 36px; }
+.header-center .eyebrow { font-size: .86rem; }
+.goal-line b { font-size: .94rem; }
+.goal-context { font-size: .78rem; }
+.section-label { font-size: .84rem; }
+.roster-row { min-height: 61px; }
+.roster-row b { font-size: .92rem; }
+.roster-row small { font-size: .76rem; }
+.current-player h2 { font-size: 1.45rem; }
+.current-player > p { font-size: .9rem; }
+.player-resources b { font-size: 1.2rem; }
+.player-resources small { font-size: .7rem; }
+.dock-hint { font-size: .8rem; }
+.action-card-copy b { font-size: .94rem; }
+.action-card-copy small { font-size: .75rem; }
+.hand-card b { font-size: .84rem; }
+.hand-card small { font-size: .7rem; }
+.inspector-summary h2 { font-size: 1.55rem; }
+.inspector-summary p { font-size: .96rem; }
+.inspector-tabs button { font-size: .88rem; }
+.inspector-content h3 { font-size: 1.16rem; }
+.inspector-content p { font-size: .95rem; }
+.market-help { font-size: .79rem; }
+
+@media (max-width: 760px) {
+  .game-header { min-height: 64px; }
+  .brand-mark { font-size: 1.08rem; }
+  .brand-mark img { width: 32px; height: 32px; }
+  .section-label { font-size: .8rem; }
+  .roster-row b { font-size: .88rem; }
+  .current-player h2 { font-size: 1.3rem; }
+}
