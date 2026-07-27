@@ -168,7 +168,7 @@
       "y": 84,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "trade_post",
@@ -211,7 +211,7 @@
       "y": 72,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "pingcheng_ruins",
@@ -254,7 +254,7 @@
       "y": 70,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "interpretive"
   },
   {
     "id": "northern_workshop",
@@ -293,7 +293,7 @@
       "y": 34,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "archive_depot",
@@ -332,7 +332,7 @@
       "y": 43,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "material_yard",
@@ -372,7 +372,7 @@
       "y": 40,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "carving_courtyard",
@@ -411,7 +411,7 @@
       "y": 30,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "motif_gallery",
@@ -450,7 +450,7 @@
       "y": 18,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "river_crossing",
@@ -489,7 +489,7 @@
       "y": 48,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "caravan_camp",
@@ -528,7 +528,7 @@
       "y": 88,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "border_market",
@@ -567,7 +567,7 @@
       "y": 92,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "watchtower",
@@ -606,7 +606,7 @@
       "y": 91,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "craft_school",
@@ -645,7 +645,7 @@
       "y": 54,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "river_archive",
@@ -684,7 +684,7 @@
       "y": 25,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "route_junction",
@@ -723,7 +723,7 @@
       "y": 63,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "gameplay"
   },
   {
     "id": "eastern_cave_observatory",
