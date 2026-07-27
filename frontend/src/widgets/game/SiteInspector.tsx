@@ -15,7 +15,7 @@ function domainName(meta: Meta, id: string) {
   return meta.domain_meta?.[id]?.short_name || id;
 }
 
-export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction }: {
+export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, eventTargetLabels = [] }: {
   state: GameState;
   meta: Meta;
   site: Site;
@@ -28,6 +28,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   onCollapsedChange: (next: boolean) => void;
   onExplore: (id: string) => void;
   onSelectAction: (type: ActionType) => void;
+  eventTargetLabels?: string[];
 }) {
   const eventPriority = Boolean(state.pending_choice || state.shared.current_event_id);
   const initial: InspectorTab = actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task';
@@ -91,7 +92,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           <div className="task-note">完成方式：先在市场探索证据，再从左侧手牌选择符合条件的卡牌投入。多人时由不同角色贡献可更快满足来源与协作条件。</div>
         </>}
       </section>}
-      {tab === 'event' && <section><div className="event-art"><img src={`/ui-assets/${event?.scene_asset || 'scene_frontier_pass.png'}`} alt="" /><div><h3>{event?.name || '本回合尚无待处理事件'}</h3><p>{event?.description || event?.summary || '结束回合后，世界事件会根据路线和节点状态结算。'}</p>{event && <div className="event-brief"><b>风险预告 · {event.severity || 1} 级</b><span>{event.forecast_text || event.mitigation_hint}</span>{event.mitigation_hint && <small>建议：{event.mitigation_hint}</small>}</div>}</div></div></section>}
+      {tab === 'event' && <section><div className="event-art"><img src={`/ui-assets/${event?.scene_asset || 'scene_frontier_pass.png'}`} alt="" /><div><h3>{event?.name || '本回合尚无待处理事件'}</h3><p>{event?.description || event?.summary || '结束回合后，世界事件会根据路线和节点状态结算。'}</p>{event && <div className="event-brief"><b>风险预告 · {event.severity || 1} 级</b><span>{event.forecast_text || event.mitigation_hint}</span>{eventTargetLabels.length > 0 && <small>已锁定影响：{eventTargetLabels.join('、')}</small>}{event.mitigation_hint && <small>建议：{event.mitigation_hint}</small>}</div>}</div></div></section>}
       {tab === 'market' && <section className="market-tab"><h3>公开文化市场 <span>{state.market.length} 张</span></h3><p className="market-help">选择一张证据探索后，它会进入你的手牌；返回任务标签即可查看是否匹配。</p>{!isCurrentSite && <div className="task-access-hint"><Compass size={15} />可提前浏览证据；抵达该地点后才能将它们探索进手牌。</div>}<div className="market-row">{state.market.map(id => { const item = cards[id]; const explore = legal.find(candidate => candidate.type === 'explore' && candidate.card_id === id); const useful = task?.required_domains.includes(item?.domain || ''); return <button key={id} className={`culture-card ${actionMode === 'explore' && explore ? 'selected' : ''} ${useful ? 'useful' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(id)}><img src={`/ui-assets/${item?.icon_asset || 'icon_card_scroll.png'}`} alt="" /><span><b>{item?.name || id}</b><small>{item?.domain ? domainName(meta, item.domain) : '文化证据'}{useful ? ' · 适合当前任务' : ''}</small></span><i>{!isCurrentSite ? '抵达后探索' : explore ? `${explore.cost || 1} AP` : '不可选'}</i></button>; })}</div></section>}
     </div>
   </aside>;

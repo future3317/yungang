@@ -21,6 +21,7 @@ class ActionType(StrEnum):
     SELECT_UPGRADE = "select_upgrade"
     PLAN = "plan"
     USE_ACTION_CARD = "use_action_card"
+    END_PLANNING = "end_planning"
 
 class SiteStatus(StrEnum):
     STABLE = "stable"
@@ -92,6 +93,10 @@ class ProjectState(BaseModel):
     status: str = "active"
     contributors: List[str] = Field(default_factory=list)
     stage_evidence: List[Dict[str, Any]] = Field(default_factory=list)
+    completed_stages: List[str] = Field(default_factory=list)
+    stage_progress: Dict[str, int] = Field(default_factory=dict)
+    stage_contributors: Dict[str, List[str]] = Field(default_factory=dict)
+    available_choices: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class ObjectiveState(BaseModel):
@@ -156,6 +161,9 @@ class SharedState(BaseModel):
     controlled_character_ids: List[str] = Field(default_factory=list)
     journal: List[Dict[str, Any]] = Field(default_factory=list)
     event_targets: List[str] = Field(default_factory=list)
+    event_instance: Dict[str, Any] = Field(default_factory=dict)
+    event_history: List[Dict[str, Any]] = Field(default_factory=list)
+    round_summary: Dict[str, Any] = Field(default_factory=dict)
 
 class GameState(BaseModel):
     schema_version: int = 3

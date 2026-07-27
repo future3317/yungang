@@ -165,3 +165,35 @@ def test_card_has_archive_and_discard_paths():
     explored = action(session, state, 'p1', 'explore', target_id='pingcheng_ruins', card_id=card).json()
     played = action(session, explored, 'p1', 'play_card', card_id=card).json()
     assert card in played['decks']['discard']
+
+def test_round_enters_planning_and_settles_marks():
+    session = 'test-planning-phase'
+    state = create(session)
+    stored = repo.get(session)
+    stored.shared.current_event_id = 'pilgrims'
+    repo.save(stored)
+    first = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'end_turn').json()
+    second = action(session, first, 'p2', 'end_turn').json()
+    assert second['shared']['phase'] == 'planning'
+    plan = action(session, second, 'p1', 'plan', target_id='pingcheng_ruins').json()
+    assert plan['shared']['planning_marks']['p1'][0]['target_id'] == 'pingcheng_ruins'
+    started = action(session, plan, 'p1', 'end_planning').json()
+    assert started['shared']['phase'] == 'player_action'
+    assert started['sites']['pingcheng_ruins']['influence'] == second['sites']['pingcheng_ruins']['influence'] + 1
+
+def test_event_targets_are_seed_deterministic():
+    first = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 91}).json()
+    second = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 91}).json()
+    assert first['shared']['event_targets'] == second['shared']['event_targets']
+    assert first['shared']['event_instance']['revealed_targets'] == second['shared']['event_instance']['revealed_targets']
+
+def test_non_route_action_card_requires_human_target():
+    session = 'test-action-card-player-target'
+    state = create(session)
+    stored = repo.get(session)
+    stored.players['p1'].action_hand = ['action_11']
+    stored.players['p2'].location = stored.players['p1'].location
+    repo.save(stored)
+    choosing = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'use_action_card', card_id='action_11').json()
+    assert choosing['pending_choice']['kind'] == 'action_card'
+    assert choosing['legal_actions'][0]['target_id'] == 'p2'
