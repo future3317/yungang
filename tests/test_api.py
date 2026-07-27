@@ -79,7 +79,7 @@ def test_join_game_before_first_action():
     assert joined['players']['p3']['role_id'] == 'grassland_rider'
 
 def test_move_is_route_driven():
-    session = 'test-move-v2'
+    session = 'test-move-route-current'
     state = create(session)
     updated = action(session, state, 'p1', 'move', target_id='yungang').json()
     assert updated['players']['p1']['location'] == 'yungang'

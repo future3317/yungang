@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, JoinGameRequest, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomRoleRequest
+from .models import ActionRequest, CreateGameRequest, GameState, JoinGameRequest, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomRoleRequest, RoomSeatUpdateRequest
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -55,12 +55,16 @@ def join_game(session_id: str, request: JoinGameRequest) -> GameState:
 
 @app.get("/api/games/{session_id}", response_model=GameState)
 def get_game(session_id: str) -> GameState:
+    if room_service.room_for_session(session_id):
+        raise HTTPException(403, {"code": "room_session_requires_seat_token", "message": "这段房间旅程需要通过房间入口访问。", "details": {}, "recovery": "return_to_room"})
     state = repo.get(session_id)
     if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     return state
 
 @app.post("/api/games/{session_id}/actions", response_model=GameState)
 def game_action(session_id: str, request: ActionRequest) -> GameState:
+    if room_service.room_for_session(session_id):
+        raise HTTPException(403, {"code": "room_session_requires_seat_token", "message": "这段房间旅程需要通过房间入口操作。", "details": {}, "recovery": "return_to_room"})
     return _run_action(session_id, request)
 
 
@@ -140,6 +144,18 @@ def role_room(room_id: str, request: RoomRoleRequest, x_seat_token: str | None =
     return room_service.public(room, x_seat_token)
 
 
+@app.post("/api/rooms/{room_id}/seats/{seat_id}")
+def update_local_seat(room_id: str, seat_id: str, request: RoomSeatUpdateRequest, x_seat_token: str | None = Header(default=None)):
+    room = _room_or_404(room_id)
+    if request.role_id is not None and request.role_id not in content.roles:
+        raise HTTPException(400, {"code": "unknown_role", "message": "找不到这个角色。", "details": {}, "recovery": "choose_another_role"})
+    try:
+        room_service.update_local_seat(room, x_seat_token or "", seat_id, request.name, request.role_id, request.ready)
+    except ValueError as exc:
+        raise _room_token_error(exc) from exc
+    return room_service.public(room, x_seat_token)
+
+
 @app.post("/api/rooms/{room_id}/leave")
 def leave_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
@@ -190,30 +206,19 @@ def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
         raise HTTPException(403, {"code": "host_required", "message": "只有房主可以点亮旅程。", "details": {}, "recovery": "wait_for_host"})
     if room["status"] != "lobby":
         return {"room": room_service.public(room, x_seat_token), "session_id": room.get("session_id")}
-    if room["play_mode"] == "solo" and len(room["seats"]) == 1:
-        available = [role_id for role_id in content.roles if role_id != room["seats"][0].get("role_id")]
-        try:
-            room, _, _ = room_service.join(room, "同行旅伴", available[0] if available else None)
-        except ValueError as exc:
-            raise _room_token_error(exc) from exc
-    if room["play_mode"] != "solo" and not all(seat.get("ready") for seat in room["seats"]):
+    if len(room["seats"]) != room["max_players"]:
+        raise HTTPException(409, {"code": "room_not_full", "message": "席位尚未全部就绪。", "details": {}, "recovery": "wait_for_seats"})
+    role_ids = [seat.get("role_id") for seat in room["seats"]]
+    if not all(role_ids):
+        raise HTTPException(409, {"code": "roles_required", "message": "请先为每个席位选择不同角色。", "details": {}, "recovery": "choose_roles"})
+    if len(set(role_ids)) != len(role_ids):
+        raise HTTPException(409, {"code": "role_already_taken", "message": "每个角色只能由一个席位选择。", "details": {}, "recovery": "choose_roles"})
+    if not all(seat.get("ready") for seat in room["seats"]):
         raise HTTPException(409, {"code": "seats_not_ready", "message": "还有同行者没有准备好。", "details": {}, "recovery": "wait_for_seats"})
-    role_ids = list(content.roles)
-    used = set()
-    for index, seat in enumerate(room["seats"]):
-        if not seat.get("role_id") or seat["role_id"] in used:
-            seat["role_id"] = next(role for role in role_ids if role not in used)
-        used.add(seat["role_id"])
     session_id = f"game-{uuid4().hex[:10]}"
     player_ids = [seat["player_id"] for seat in room["seats"]]
-    if room["play_mode"] == "solo":
-        player_ids = [room["seats"][0]["player_id"]]
-    state = engine.new_game(session_id, player_ids, room["difficulty_id"], room["scenario_id"], room.get("seed"))
-    for seat in room["seats"]:
-        player = state.players.get(seat["player_id"])
-        if player:
-            player.name = seat["name"]
-            player.role_id = seat["role_id"]
+    player_configs = [{"player_id": seat["player_id"], "name": seat["name"], "role_id": seat["role_id"], "start_site_id": content.roles[seat["role_id"]].get("start_site_id", "yungang")} for seat in room["seats"]]
+    state = engine.new_game(session_id, player_ids, room["difficulty_id"], room["scenario_id"], room.get("seed"), player_configs=player_configs, solo_mode=room["play_mode"] == "solo")
     room["session_id"] = session_id
     room["status"] = "in_progress"
     room["updated_at"] = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
@@ -234,12 +239,14 @@ def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     state = repo.get(room["session_id"])
     if not state:
         raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {}, "recovery": "return_home"})
-    if room["play_mode"] == "multi_device":
-        state = GameState.model_validate(state.model_dump())
-        for player_id, player in state.players.items():
-            if player_id != seat["player_id"]:
-                player.hand = []
-                player.action_hand = []
+    state = GameState.model_validate(state.model_dump())
+    controlled_ids = [item["player_id"] for item in room["seats"]] if room["play_mode"] in {"solo", "local"} else [seat["player_id"]]
+    can_act = room["status"] == "in_progress" and state.shared.active_player_id in controlled_ids
+    state.viewer = {"seat_id": seat["seat_id"], "player_id": seat["player_id"], "controlled_player_ids": controlled_ids, "can_act": can_act, "can_manage_room": seat["seat_id"] == "seat-1", "play_mode": room["play_mode"], "paused": room["status"] == "paused"}
+    if not can_act:
+        state.legal_actions = []
+        state.action_options = []
+        state.pending_choice = None
     return state
 
 
@@ -254,11 +261,13 @@ def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | No
         raise HTTPException(409, {"code": "room_paused", "message": "旅舍暂时歇息中，等待房主重新点亮。", "details": {}, "recovery": "wait_for_host"})
     if not room.get("session_id"):
         raise HTTPException(409, {"code": "room_not_started", "message": "旅程还没有点亮。", "details": {}, "recovery": "return_to_room"})
-    player_id = seat["player_id"]
-    if room["play_mode"] in {"solo", "local"}:
-        current = repo.get(room["session_id"])
-        if current:
-            player_id = current.shared.active_player_id
+    current = repo.get(room["session_id"])
+    if not current:
+        raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {}, "recovery": "return_home"})
+    controlled_ids = {item["player_id"] for item in room["seats"]} if room["play_mode"] in {"solo", "local"} else {seat["player_id"]}
+    if current.shared.active_player_id not in controlled_ids:
+        raise HTTPException(403, {"code": "not_active_player", "message": "当前由另一位同行者行动。", "details": {}, "recovery": "wait_for_active_player"})
+    player_id = current.shared.active_player_id
     legacy = ActionRequest(player_id=player_id, **request.model_dump())
     result = _run_action(room["session_id"], legacy)
     if result.shared.outcome:

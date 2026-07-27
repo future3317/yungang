@@ -2,3 +2,13 @@
 @media (max-width: 680px) { .play-mode-options { grid-template-columns: 1fr; }.play-mode-options button { min-height: 62px; grid-template-columns: auto 1fr; align-items: center; }.play-mode-options button > span { grid-row: span 2; }.room-screen { padding: 12px; }.room-card { padding: 22px 16px; }.room-card-heading { display: grid; }.room-code { width: 100%; }.room-seats { grid-template-columns: 1fr; }.seat-control-row { display: grid; }.seat-buttons { display: grid; grid-template-columns: 1fr 1fr; }.seat-buttons select { min-width: 0; }.room-actions { display: grid; }.room-actions button { width: 100%; } }
 .help-card { max-width: 850px; }.help-card > p { max-width: 58ch; color: #d4c8ad; line-height: 1.7; }.help-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }.help-grid article { display: grid; gap: 7px; padding: 15px; color: #d6c9af; background: rgba(14, 24, 18, .35); border: 1px solid rgba(214, 190, 133, .18); border-radius: 8px; }.help-grid svg { color: #d5b56b; }.help-grid h2 { margin: 0; color: #f4e6c9; font-size: 1rem; }.help-grid p { margin: 0; font-size: .8rem; line-height: 1.55; }.help-card .primary-cta { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; color: #fff8e8; background: #b8563d; border: 0; border-radius: 7px; }.help-card kbd { padding: 2px 5px; color: #f4e3bd; background: #1a291f; border: 1px solid rgba(214, 187, 119, .35); border-radius: 4px; font: .75rem var(--font-data); }
 @media (max-width: 680px) { .help-grid { grid-template-columns: 1fr; } }
+
+/* Local seat editors must remain part of the dark stone-paper surface. */
+.room-seat .seat-person input, .join-panel input, .join-panel select, .seat-buttons select { color-scheme: dark; outline: none; }
+.room-seat .seat-person input { width: 100%; min-height: 42px; padding: 0 10px; color: #f2e8d5; background: rgba(20, 39, 29, .94); border: 1px solid rgba(213, 190, 128, .3); border-radius: 6px; font: 600 .92rem var(--font-body); }
+.room-seat .seat-person input::placeholder { color: #a99d83; opacity: 1; }
+.room-seat .seat-person input:hover, .join-panel input:hover, .join-panel select:hover, .seat-buttons select:hover { border-color: rgba(225, 194, 112, .58); background-color: #29402f; }
+.room-seat .seat-person input:focus-visible, .join-panel input:focus-visible, .join-panel select:focus-visible, .seat-buttons select:focus-visible { border-color: #d7b866; box-shadow: 0 0 0 3px rgba(215, 184, 102, .16); }
+.room-seat.occupied { grid-template-columns: 30px minmax(0, 1fr) auto; }
+.room-seat .seat-person input { box-sizing: border-box; min-width: 0; max-width: 100%; }
+.room-seat .seat-buttons { flex: 0 0 auto; }

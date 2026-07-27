@@ -88,6 +88,12 @@ class RoomActionRequest(BaseModel):
     route_id: Optional[str] = None
     upgrade_id: Optional[str] = None
 
+
+class RoomSeatUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    role_id: Optional[str] = None
+    ready: Optional[bool] = None
+
 class PlayerState(BaseModel):
     id: str
     name: str
@@ -224,3 +230,4 @@ class GameState(BaseModel):
     objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
     score: ScoreState = Field(default_factory=ScoreState)
     result: Dict[str, Any] = Field(default_factory=dict)
+    viewer: Dict[str, Any] = Field(default_factory=dict)

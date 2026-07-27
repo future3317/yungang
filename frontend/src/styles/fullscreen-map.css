@@ -1,0 +1,121 @@
+/* The map is the world. HUD surfaces sit on top of it without consuming layout width. */
+@media (min-width: 1101px) {
+  .game-shell {
+    --map-left-clearance: clamp(248px, 19vw, 302px);
+    --map-right-clearance: clamp(310px, 24vw, 366px);
+    position: relative;
+    isolation: isolate;
+    min-height: 100dvh;
+    padding: 12px;
+    overflow-x: clip;
+    background: #09140f;
+  }
+
+  .game-shell::before,
+  .game-shell::after {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    content: '';
+  }
+
+  .game-shell::before { background: linear-gradient(90deg, rgba(2, 8, 5, .76), transparent 21%, transparent 79%, rgba(2, 8, 5, .76)), linear-gradient(180deg, rgba(2, 8, 5, .52), transparent 18%, transparent 82%, rgba(2, 8, 5, .68)); }
+  .game-shell::after { background: radial-gradient(ellipse 74% 76% at 50% 49%, transparent 44%, rgba(2, 8, 5, .2) 74%, rgba(2, 8, 5, .68) 100%); }
+  .game-shell > * { position: relative; z-index: 2; }
+
+  .game-header {
+    z-index: 12;
+    width: min(100%, 1840px);
+    margin: 0 auto;
+    background: rgba(13, 26, 19, .7) !important;
+    border-color: rgba(213, 190, 133, .2) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(12px);
+  }
+
+  .game-grid { position: relative; display: block !important; min-height: calc(100dvh - 84px); margin: 0; padding: 0 !important; }
+  .stage-column { position: relative; display: block !important; min-height: calc(100dvh - 84px) !important; padding: 0 !important; }
+  .network-stage { position: fixed !important; inset: 0; width: 100vw; height: 100dvh; min-height: 0 !important; overflow: hidden; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+  .network-stage > * { position: relative; z-index: 2; }
+  .network-frame, .network-stage .network-frame { position: absolute !important; inset: 0; min-height: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+  .network-frame::before { position: fixed; z-index: -1; inset: 0; pointer-events: none; background: radial-gradient(ellipse 28% 34% at 50% 48%, rgba(228, 193, 111, .14), transparent 72%), radial-gradient(ellipse 70% 70% at 50% 50%, rgba(57, 89, 64, .28), transparent 74%); content: ''; }
+  .network-frame::after { display: none; }
+
+  .roster-column, .site-inspector {
+    position: fixed !important;
+    z-index: 10;
+    top: 92px;
+    bottom: 14px;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 188, 105, .45) transparent;
+  }
+
+  .roster-column { left: 0; width: var(--map-left-clearance); display: flex !important; flex-direction: column; gap: 10px; padding: 0 0 12px; background: linear-gradient(90deg, rgba(11, 24, 17, .9), rgba(11, 24, 17, .68) 76%, transparent); border: 0 !important; border-radius: 0; box-shadow: none; backdrop-filter: blur(10px); }
+  .site-inspector { right: 0; width: var(--map-right-clearance); color: #f1e6cb; background: linear-gradient(270deg, rgba(48, 49, 39, .9), rgba(48, 49, 39, .74) 78%, transparent) !important; border: 0 !important; border-radius: 0; box-shadow: none; backdrop-filter: blur(12px); }
+
+  .roster-column .roster, .roster-column .current-player, .roster-column .command-deck { flex: 0 0 auto; margin: 0 8px !important; padding: 12px !important; background: rgba(14, 29, 21, .76) !important; border: 1px solid rgba(219, 192, 126, .18) !important; border-radius: 12px !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .16); backdrop-filter: blur(10px); }
+  .roster-column .command-deck { display: flex !important; flex-direction: column; grid-template-columns: none !important; gap: 10px; }
+  .roster-column .featured-actions, .roster-column .hand-cards { display: grid !important; gap: 7px; }
+  .roster-column .hand-tray { padding: 10px 0 0 !important; border-top: 1px solid rgba(219, 192, 126, .17); border-left: 0 !important; }
+  .roster-column .hand-tray:has(.hand-empty) { display: none; }
+  .solo-mode-note, .hand-empty { min-width: 0; margin: 6px 0 0; color: var(--ink-secondary); font-size: .72rem; line-height: 1.48; overflow-wrap: anywhere; }
+
+  .site-inspector .inspector-summary, .site-inspector .inspector-tabs, .site-inspector .inspector-content { background: transparent !important; }
+  .game-grid.inspector-collapsed .site-inspector { display: none; }
+  .inspector-rail { position: fixed !important; z-index: 12; top: 108px; right: 0; background: rgba(18, 31, 23, .82); border-radius: 12px 0 0 12px; }
+
+  .stage-heading { position: fixed; z-index: 5; top: 100px; right: calc(var(--map-right-clearance) + 30px); left: calc(var(--map-left-clearance) + 30px); pointer-events: none; }
+  .stage-heading > * { pointer-events: auto; }
+  .stage-heading h1 { margin-top: 3px; color: #f3e6ca; font-size: clamp(1.2rem, 1.6vw, 1.65rem); text-shadow: 0 2px 18px rgba(2, 8, 5, .78); }
+  .stage-heading .eyebrow { opacity: .74; }
+  .stage-heading .turn-badge { background: rgba(14, 28, 20, .7) !important; border-color: rgba(220, 190, 113, .34) !important; backdrop-filter: blur(8px); }
+  .round-summary { position: fixed !important; z-index: 5; top: 156px; right: calc(var(--map-right-clearance) + 30px); left: calc(var(--map-left-clearance) + 30px); pointer-events: none; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+  .round-summary > * { pointer-events: auto; }
+
+  .network-tools { position: fixed !important; z-index: 8 !important; top: 104px !important; right: calc(var(--map-right-clearance) + 28px) !important; }
+  .network-corner { position: fixed !important; z-index: 6 !important; bottom: 18px !important; left: calc(var(--map-left-clearance) + 28px) !important; }
+  .network-stage .mode-strip { position: fixed !important; z-index: 30 !important; top: 196px; right: calc(var(--map-right-clearance) + 30px); left: calc(var(--map-left-clearance) + 30px); }
+  .action-target-guide { position: fixed !important; z-index: 30 !important; right: calc(var(--map-right-clearance) + 30px); bottom: 22px; left: calc(var(--map-left-clearance) + 30px); width: min(470px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 60px)); margin: 0 auto; }
+
+  .timeline-drawer { position: fixed !important; z-index: 20 !important; right: 16px; bottom: 16px; left: auto; width: min(290px, calc(var(--map-right-clearance) - 26px)); max-height: min(230px, calc(100dvh - 150px)); margin: 0 !important; padding: 8px 10px; color: var(--ink-secondary); background: rgba(14, 28, 20, .88); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; backdrop-filter: blur(12px); }
+  .timeline-drawer > div { max-height: 160px; overflow-y: auto; }
+  .timeline-drawer summary { padding: 2px 0; }
+  .room-state-notice { position: fixed; z-index: 40; top: 50%; left: 50%; width: min(380px, calc(100vw - 40px)); transform: translate(-50%, -50%); padding: 22px; color: #f4e7c8; text-align: center; background: rgba(11, 25, 17, .94); border: 1px solid rgba(220, 190, 113, .42); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, .38); backdrop-filter: blur(14px); }
+  .room-state-notice p { margin: 8px 0 16px; color: rgba(244, 231, 200, .76); }
+
+  .route-layer path { stroke: rgba(213, 215, 190, .34); stroke-width: .58; }
+  .route-layer path.is-neighbor { stroke: rgba(222, 210, 164, .66); stroke-width: .82; }
+  .route-layer path.is-muted { opacity: .13; }
+  .route-layer path.is-target { stroke: var(--connection); stroke-width: 1.45; }
+  .map-focus-layer { pointer-events: none; }
+  .map-player-focus, .map-selection-focus { vector-effect: none; }
+  .map-player-focus { fill: rgba(224, 185, 83, .1); stroke: rgba(238, 204, 115, .4); stroke-width: .7; filter: blur(1.2px); animation: map-focus-breathe 2.8s ease-in-out infinite; }
+  .map-selection-focus { fill: rgba(213, 178, 93, .08); stroke: rgba(226, 201, 145, .58); stroke-width: .48; stroke-dasharray: 1.1 1.5; filter: blur(.45px); animation: map-selection-reveal .4s ease-out both; }
+  @keyframes map-focus-breathe { 0%, 100% { opacity: .62; } 50% { opacity: 1; } }
+  @keyframes map-selection-reveal { from { opacity: 0; stroke-dashoffset: 8; } to { opacity: 1; stroke-dashoffset: 0; } }
+  .player-marker { pointer-events: none; }.player-marker-halo { fill: rgba(9, 20, 13, .78); stroke: rgba(240, 226, 184, .62); stroke-width: .34; }.player-marker-core { stroke: rgba(255, 246, 220, .88); stroke-width: .25; }.player-marker text { fill: #15271b; text-anchor: middle; font: 700 1.15px var(--font-data); }.marker-0 .player-marker-core { fill: #d7b866; }.marker-1 .player-marker-core { fill: #7fb4a0; }.marker-2 .player-marker-core { fill: #c98a66; }.marker-3 .player-marker-core { fill: #8ca7c5; }.marker-idle { opacity: .48; filter: saturate(.56); }.marker-active { opacity: 1; filter: saturate(1.24); }.marker-active .player-marker-halo { stroke: #f2d787; stroke-width: .52; }.marker-active .player-marker-core { filter: drop-shadow(0 0 1px rgba(238, 200, 96, .7)); }
+  .route-layer path.is-blocked, .route-layer path.is-closed { stroke: var(--closed); stroke-dasharray: 1.2 1.4; }
+  .route-layer path.is-strained { stroke: var(--risk); stroke-dasharray: 3 1; }
+  .route-layer path.is-restored, .route-layer path.is-illuminated { stroke: var(--repair); stroke-width: .9; }
+  .region-layer.lod-detail text { opacity: .12; }
+  .region-shape text { fill: rgba(235, 225, 194, .33); font-size: 1.5px; stroke: none; }
+  .map-node .node-label { fill: #eee6d3; font-size: 1.92px; stroke: rgba(14, 24, 18, .76); stroke-width: .58px; paint-order: stroke; }
+  .map-node .node-status { font-size: 1.35px; }
+}
+
+@media (min-width: 1101px) and (max-height: 780px) {
+  .roster-column, .site-inspector { top: 72px; bottom: 8px; }
+  .stage-heading { top: 78px; }
+  .round-summary { top: 126px; }
+  .network-stage .mode-strip { top: 164px; }
+}
+
+@media (max-width: 1100px) {
+  .game-shell { background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, .12), transparent 42%), #0c1711; }
+  .network-stage { background: radial-gradient(ellipse at 50% 46%, rgba(188, 155, 82, .12), transparent 66%) !important; }
+}

@@ -32,6 +32,7 @@ export const api = {
   joinRoom: (roomId: string, name: string, role_id?: string) => request<RoomCredentials>(`/api/rooms/${encodeURIComponent(roomId)}/join`, { method: 'POST', body: JSON.stringify({ name, role_id }) }),
   roomReady: (roomId: string, token: string, ready: boolean) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/ready`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ ready }) }),
   roomRole: (roomId: string, token: string, role_id: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/role`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ role_id }) }),
+  roomSeat: (roomId: string, token: string, seatId: string, update: { name?: string; role_id?: string; ready?: boolean }) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/seats/${encodeURIComponent(seatId)}`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify(update) }),
   roomStart: (roomId: string, token: string) => request<{ room: Room; session_id: string }>(`/api/rooms/${encodeURIComponent(roomId)}/start`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
   roomPause: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/pause`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
   roomResume: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/resume`, { method: 'POST', headers: { 'X-Seat-Token': token } }),

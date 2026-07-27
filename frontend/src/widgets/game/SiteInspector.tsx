@@ -16,6 +16,21 @@ function domainName(meta: Meta, id: string) {
   return meta.domain_meta?.[id]?.short_name || id;
 }
 
+function statusName(status?: string) {
+  const labels: Record<string, string> = { stable: '稳定', normal: '稳定', open: '开放', at_risk: '有风险', blocked: '受阻', strained: '紧张', restored: '已修护', illuminated: '已点亮', closed: '已关闭' };
+  return labels[status || ''] || status || '稳定';
+}
+
+function siteTypeName(type?: string) {
+  const labels: Record<string, string> = { heritage: '遗产节点', workshop: '协作节点', event: '事件节点', route: '路线节点' };
+  return labels[type || ''] || type || '遗产节点';
+}
+
+function eventTypeName(type?: string) {
+  const labels: Record<string, string> = { weathering: '风化压力', route: '路线变化', exchange: '交流变化', research: '研究线索' };
+  return labels[type || ''] || type || '区域事件';
+}
+
 function cardRecord(card?: ContentCard): CardRecord {
   return (card || {}) as unknown as CardRecord;
 }
@@ -74,7 +89,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   }, [actionMode, eventPriority, site.id]);
 
   const active = state.players[state.shared.active_player_id];
-  const siteType = recordText(site, 'type', 'kind') || '遗产节点';
+  const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
   const taskRecord = task as unknown as CardRecord | undefined;
   const eventRecord = event as unknown as CardRecord | undefined;
@@ -93,7 +108,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <header className="inspector-summary">
       <span className="eyebrow">当前聚焦地点</span>
       <h2>{site.name}</h2>
-      <div className="inspector-meta"><span>{siteType}</span><span className={site.status}>{site.status || '稳定'}</span></div>
+      <div className="inspector-meta"><span>{siteType}</span><span className={site.status}>{statusName(site.status)}</span></div>
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
       {action && <div className="relevant-action"><span>当前相关行动</span><b>{action.label}</b><small>{action.cost || 0} AP</small></div>}
     </header>
@@ -122,7 +137,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'event' && <section className="event-tab">
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img src={`/ui-assets/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{recordText(event, 'type') || '区域事件'}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img src={`/ui-assets/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section className="market-tab">
@@ -135,9 +150,9 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           const useful = Boolean(task?.required_domains.includes(item.domain || ''));
           const description = textField(item, 'description', 'summary') || '一条等待被放入更大文化脉络的线索。';
           const combo = textField(item, 'combo_name');
-          return <button key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}：${marketReason(item, task, useful)}`}>
+          return <button key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}：${marketReason({ ...item, domain: item.domain ? domainName(meta, item.domain) : item.domain }, task, useful)}`}>
             <img src={`/ui-assets/${item.icon_asset || 'icon_card_scroll.png'}`} alt="" />
-            <span className="culture-card-copy"><b>{item.name}</b><small>{item.domain ? domainName(meta, item.domain) : '文化证据'} · {marketReason(item, task, useful)}</small><em>{description}</em>{combo && <i>{comboNames[combo] || combo} · 组合后获得额外影响</i>}</span>
+            <span className="culture-card-copy"><b>{item.name}</b><small>{item.domain ? domainName(meta, item.domain) : '文化证据'} · {marketReason({ ...item, domain: item.domain ? domainName(meta, item.domain) : item.domain }, task, useful)}</small><em>{description}</em>{combo && <i>{comboNames[combo] || combo} · 组合后获得额外影响</i>}</span>
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这张' : '不可选'}<small>{explore ? `${explore.cost || 1} AP` : ''}</small></strong>
           </button>;
         })}</div>

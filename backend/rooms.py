@@ -48,6 +48,11 @@ class RoomService:
         host_token = _token()
         seat_token = _token()
         mode = request.play_mode if request.play_mode in {"solo", "local", "multi_device"} else "solo"
+        seats = [self._seat("seat-1", request.name, request.role_id, seat_token, True)]
+        if mode in {"solo", "local"}:
+            for index in range(2, (2 if mode == "solo" else request.max_players) + 1):
+                name = "协作角色" if mode == "solo" else f"本地同行者 {index}"
+                seats.append(self._seat(f"seat-{index}", name, None, _token(), True))
         room = {
             "room_id": room_id,
             "status": "lobby",
@@ -55,12 +60,12 @@ class RoomService:
             "scenario_id": request.scenario_id,
             "difficulty_id": request.difficulty_id,
             "seed": request.seed,
-            "max_players": 2 if mode == "solo" else request.max_players,
+            "max_players": 2 if mode == "solo" else max(2, request.max_players) if mode == "local" else request.max_players,
             "host_token_hash": _digest(host_token),
             "session_id": None,
             "created_at": _now(),
             "updated_at": _now(),
-            "seats": [self._seat("seat-1", request.name, request.role_id, seat_token, True)],
+            "seats": seats,
         }
         self.repository.save(room)
         return room, host_token, seat_token
@@ -94,6 +99,28 @@ class RoomService:
     def set_ready(self, room: dict[str, Any], token: str, ready: bool) -> dict[str, Any]:
         seat = self.authenticate(room, token)
         seat["ready"] = ready
+        room["updated_at"] = _now()
+        self.repository.save(room)
+        return room
+
+    def update_local_seat(self, room: dict[str, Any], token: str, seat_id: str, name: Optional[str], role_id: Optional[str], ready: Optional[bool]) -> dict[str, Any]:
+        host = self.authenticate(room, token)
+        if host["seat_id"] != "seat-1" or room["play_mode"] not in {"solo", "local"}:
+            raise ValueError("host_required")
+        seat = next((item for item in room["seats"] if item["seat_id"] == seat_id), None)
+        if not seat:
+            raise ValueError("seat_not_found")
+        if role_id is not None:
+            if any(item is not seat and item.get("role_id") == role_id for item in room["seats"]):
+                raise ValueError("role_already_taken")
+            seat["role_id"] = role_id
+            seat["ready"] = False
+        if name is not None:
+            seat["name"] = name.strip()[:24] or "同行者"
+        if ready is not None:
+            if ready and not seat.get("role_id"):
+                raise ValueError("role_required")
+            seat["ready"] = ready
         room["updated_at"] = _now()
         self.repository.save(room)
         return room
@@ -133,12 +160,16 @@ class RoomService:
             "scenario_id": room["scenario_id"],
             "difficulty_id": room["difficulty_id"],
             "max_players": room["max_players"],
-            "session_id": room.get("session_id"),
             "created_at": room["created_at"],
             "updated_at": room["updated_at"],
             "viewer_seat_id": viewer,
             "seats": [{key: seat.get(key) for key in ("seat_id", "name", "role_id", "ready", "connected", "role_locked")} for seat in room["seats"]],
         }
+
+    def room_for_session(self, session_id: str) -> Optional[dict[str, Any]]:
+        with sqlite3.connect(self.repository.path) as db:
+            rows = db.execute("SELECT payload FROM rooms").fetchall()
+        return next((room for (payload,) in rows if (room := json.loads(payload)).get("session_id") == session_id), None)
 
     @staticmethod
     def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, connected: bool) -> dict[str, Any]:

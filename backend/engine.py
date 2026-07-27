@@ -33,7 +33,7 @@ class GameEngine:
             rules["route_action_discount"] = int(solo_rules.get("route_action_discount", 0))
         return rules
 
-    def new_game(self, session_id="demo", player_ids=None, difficulty_id="normal", scenario_id="sand_and_stone", seed=None):
+    def new_game(self, session_id="demo", player_ids=None, difficulty_id="normal", scenario_id="sand_and_stone", seed=None, player_configs=None, solo_mode=None):
         ids = player_ids or ["p1", "p2"]
         if not 1 <= len(ids) <= 4:
             raise ValueError("game_needs_one_to_four_players")
@@ -41,18 +41,20 @@ class GameEngine:
         scenario = self.content.scenarios.get(scenario_id, next(iter(self.content.scenarios.values()), {}))
         scenario_id = scenario.get("id", scenario_id)
         rng = DeterministicRng(seed)
-        solo = len(ids) == 1
+        solo = len(ids) == 1 if solo_mode is None else solo_mode
         effective_rules = self._effective_rules(scenario, difficulty, solo)
-        if solo:
+        if solo and not player_configs and len(ids) == 1:
             controlled_roles = int(scenario.get("solo_rules", {}).get("controlled_roles", 2))
             ids = [ids[0], *[f"{ids[0]}-ally-{index}" for index in range(2, controlled_roles + 1)]]
+        configs = {item["player_id"]: item for item in (player_configs or [])}
         role_ids = list(self.content.roles)
         players = {}
         for index, pid in enumerate(ids):
-            role_id = role_ids[index % len(role_ids)]
+            config = configs.get(pid, {})
+            role_id = config.get("role_id") or role_ids[index % len(role_ids)]
             role = self.content.roles[role_id]
             bonus = effective_rules["solo_ap_bonus"]
-            players[pid] = PlayerState(id=pid, name=role["name"], role_id=role_id, location=role.get("start_site_id", "yungang"), ap=3 + bonus, max_ap=3 + bonus)
+            players[pid] = PlayerState(id=pid, name=config.get("name") or role["name"], role_id=role_id, location=config.get("start_site_id") or role.get("start_site_id", "yungang"), ap=3 + bonus, max_ap=3 + bonus)
 
         enabled_site_ids = set(scenario.get("enabled_site_ids", self.content.sites))
         enabled_site_ids.update(role.get("start_site_id", "yungang") for role in self.content.roles.values())
