@@ -274,6 +274,42 @@
   background: #27362d !important;
 }
 
+/* Keep the inspector header and tabs fixed while only the selected panel scrolls. */
+.site-inspector {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch;
+  min-width: 0;
+}
+.site-inspector .inspector-summary {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+.site-inspector .inspector-tabs {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  min-height: 44px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+.site-inspector .inspector-tabs button {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+.site-inspector .inspector-content {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 @media (min-width: 1101px) {
   .network-access-list { display: none !important; }
   .stage-heading { right: calc(var(--map-right-clearance) + 110px); }
