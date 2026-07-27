@@ -40,14 +40,14 @@ function recordText(value: unknown, ...keys: string[]) {
 
 function marketReason(card: ContentCard | undefined, task?: Task, useful = false) {
   const domain = card?.domain;
-  if (useful && domain) return `匹配当前任务的「${domain}」线索，优先用于完成任务。`;
-  if (task?.required_origin_diversity && task.required_origin_diversity > 1) return '当前任务重视来源差异，可用它补足互证来源。';
-  return domain ? `属于「${domain}」线索，适合作为备用证据或后续组合。` : '可作为备用文化线索，先记入手牌再决定用途。';
+  if (useful && domain) return `回应此处委托的「${domain}」线索，适合优先交付。`;
+  if (task?.required_origin_diversity && task.required_origin_diversity > 1) return '来自另一条脉络，可补足这段故事的互证。';
+  return domain ? `属于「${domain}」线索，也许会在后续节点显出意义。` : '先收入手中，等待合适的节点召唤它。';
 }
 
 function marketOutcome(card: ContentCard | undefined) {
   const instant = textField(card, 'instant_use_text', 'combo_reward_text');
-  return instant ? `获得手牌；${instant}` : '获得手牌；之后可投入任务，或在合适时机使用。';
+  return instant ? `收入手中；${instant}` : '收入手中；之后可交付给委托，或在合适时机使用。';
 }
 
 export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, eventTargetLabels = [] }: {
@@ -105,18 +105,18 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <div className="inspector-content">
       {tab === 'task' && <section className="task-tab">
         {task ? <>
-          <div className="tab-kicker"><Target size={14} />这个地点要完成什么</div>
+          <div className="tab-kicker"><Target size={14} />节点委托</div>
           <h3>{task.name}</h3>
           <p>{recordText(task, 'description') || task.culture_explanation || '把相互印证的文化证据投入地点任务，推动共同目标。'}</p>
           <div className="task-workflow" aria-label="任务完成步骤">
-            <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达任务地点</b><small>{isCurrentSite ? '你已经在这里，可以开始行动。' : `先移动到${site.name}，当前只能浏览信息。`}</small></div></div>
-            <div className="task-step"><span className={matchingHand > 0 ? 'complete' : ''}>{matchingHand > 0 ? <Check size={13} /> : '2'}</span><div><b>从市场探索证据</b><small>消耗 1 AP，将选中的证据加入手牌，上限 3 张。</small></div></div>
-            <div className="task-step"><span className={contributions.length >= (task.required_card_count || 1) ? 'complete' : ''}>{contributions.length >= (task.required_card_count || 1) ? <Check size={13} /> : '3'}</span><div><b>投入手牌并完成互证</b><small>{contributions.length} / {task.required_card_count || 1} 张；需要 {task.required_domains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
+            <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达此处</b><small>{isCurrentSite ? '你已来到节点，可以开始寻访。' : `沿路线前往${site.name}，那里正在等待你的脚步。`}</small></div></div>
+            <div className="task-step"><span className={matchingHand > 0 ? 'complete' : ''}>{matchingHand > 0 ? <Check size={13} /> : '2'}</span><div><b>寻访文化线索</b><small>消耗 1 AP 从公开市场取走一件线索，手牌最多收纳 3 张。</small></div></div>
+            <div className="task-step"><span className={contributions.length >= (task.required_card_count || 1) ? 'complete' : ''}>{contributions.length >= (task.required_card_count || 1) ? <Check size={13} /> : '3'}</span><div><b>交付并完成互证</b><small>{contributions.length} / {task.required_card_count || 1} 件线索；需要 {task.required_domains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
           </div>
-          {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>至少需要 {task.required_origin_diversity} 种来源。不要只拿同一类证据，跨来源组合才能形成可信解释。</span></div>}
+          {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此映证。带回不同来处的线索，才能让联系站得住脚。</span></div>}
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainName(meta, domain)}</span>)}</div>
-          <div className="task-action-row"><button disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />去市场挑证据</button><button disabled={!isCurrentSite || matchingHand === 0} onClick={() => onSelectAction('contribute')}><HandHeart size={15} />投入手牌</button></div>
-          {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />可以提前规划，但必须抵达后才能探索和完成任务。</div>}
+          <div className="task-action-row"><button disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />寻访一件线索</button><button disabled={!isCurrentSite || matchingHand === 0} onClick={() => onSelectAction('contribute')}><HandHeart size={15} />交付手中线索</button></div>
+          {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
         </> : <div className="empty-tab"><Target size={22} /><h3>这里暂时没有开放任务</h3><p>先查看地图上其他节点，或等待事件目标出现。</p></div>}
       </section>}
@@ -127,9 +127,9 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
 
       {tab === 'market' && <section className="market-tab">
         <div className="market-heading"><div><div className="tab-kicker"><Library size={14} />行动前先比较</div><h3>公开文化市场</h3></div><span>{marketCards.length} 张候选</span></div>
-        <p className="market-help">市场不是随机抽签：每张卡会占用 1 AP，加入手牌后再投入任务。先选能补齐当前任务的证据，再考虑来源和备用线索。</p>
-        <div className="market-legend"><span className="legend-match">金边 · 匹配任务</span><span>灰边 · 备用线索</span><span>手牌上限 3 张</span></div>
-        {!isCurrentSite && <div className="task-access-hint"><Compass size={15} />现在可以比较市场，但抵达{site.name}后才能真正探索；不会提前消耗 AP。</div>}
+        <p className="market-help">三件线索各自指向不同的文化脉络。金边线索能回应眼前的委托，其他线索或许会在下一处节点派上用场；取走一件消耗 1 AP。</p>
+        <div className="market-legend"><span className="legend-match">金边 · 回应此处委托</span><span>灰边 · 留作后用</span><span>手牌最多 3 件</span></div>
+        {!isCurrentSite && <div className="task-access-hint"><Compass size={15} />你可以先辨认市场中的线索；抵达{site.name}后，才能将它带走，不会提前消耗 AP。</div>}
         <div className="market-row">{marketCards.map(item => {
           const explore = legal.find(candidate => candidate.type === 'explore' && candidate.card_id === item.id);
           const useful = Boolean(task?.required_domains.includes(item.domain || ''));
@@ -141,7 +141,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这张' : '不可选'}<small>{explore ? `${explore.cost || 1} AP` : ''}</small></strong>
           </button>;
         })}</div>
-        {marketCards.length > 0 && <div className="market-outcome"><b>选中后会发生什么</b><span>{marketOutcome(marketCards[0])}</span><small>想比较另一张时可以先点开查看；确认前不会扣除 AP。</small></div>}
+        {marketCards.length > 0 && <div className="market-outcome"><b>带走线索后</b><span>{marketOutcome(marketCards[0])}</span><small>确认之前不会消耗 AP；交付时再回到“节点委托”查看它是否合用。</small></div>}
       </section>}
     </div>
   </aside>;
