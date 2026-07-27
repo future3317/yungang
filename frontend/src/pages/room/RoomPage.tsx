@@ -23,7 +23,7 @@ export function RoomPage() {
   const { roomId = '' } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [token, setToken] = useState(() => window.localStorage.getItem(tokenKey(roomId)) || '');
+  const [token, setToken] = useState(() => window.sessionStorage.getItem(tokenKey(roomId)) || '');
   const [name, setName] = useState('同行者');
   const [roleId, setRoleId] = useState('');
   const [activeSeatId, setActiveSeatId] = useState('seat-1');
@@ -31,11 +31,16 @@ export function RoomPage() {
   const roomQuery = useQuery<Room>({ queryKey: ['room', roomId, token], queryFn: () => api.room(roomId, token || undefined), refetchInterval: 1800 });
   useEffect(() => {
     if (!roomId || !token) return;
-    const stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?seat_token=${encodeURIComponent(token)}`);
-    const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room', roomId, token] }); };
-    stream.addEventListener('revision', refresh);
-    stream.onerror = () => stream.close();
-    return () => stream.close();
+    let stream: EventSource | undefined;
+    let cancelled = false;
+    void api.roomEventTicket(roomId, token).then(({ ticket }) => {
+      if (cancelled) return;
+      stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?ticket=${encodeURIComponent(ticket)}`);
+      const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room', roomId, token] }); };
+      stream.addEventListener('revision', refresh);
+      stream.onerror = () => stream?.close();
+    });
+    return () => { cancelled = true; stream?.close(); };
   }, [queryClient, roomId, token]);
   const room = roomQuery.data;
   const viewer = useMemo(() => room?.seats.find(seat => seat.seat_id === room.viewer_seat_id), [room]);
@@ -53,12 +58,12 @@ export function RoomPage() {
   }, [navigate, room?.status, roomId]);
 
   const update = (promise: Promise<Room>) => promise.then(next => { queryClient.setQueryData(['room', roomId, token], next); return next; });
-  const join = useMutation({ mutationFn: () => api.joinRoom(roomId, name, roleId || undefined), onSuccess: result => { window.localStorage.setItem(tokenKey(roomId), result.seat_token); setToken(result.seat_token); queryClient.setQueryData(['room', roomId, result.seat_token], result.room); } });
+  const join = useMutation({ mutationFn: () => api.joinRoom(roomId, name, roleId || undefined), onSuccess: result => { window.sessionStorage.setItem(tokenKey(roomId), result.seat_token); setToken(result.seat_token); queryClient.setQueryData(['room', roomId, result.seat_token], result.room); } });
   const start = useMutation({ mutationFn: () => api.roomStart(roomId, token), onSuccess: () => navigate(`/room/${roomId}/game`, { replace: true }) });
   const ready = useMutation({ mutationFn: (next: boolean) => update(api.roomReady(roomId, token, next)) });
   const role = useMutation({ mutationFn: (next: string) => update(api.roomRole(roomId, token, next)) });
   const seat = useMutation({ mutationFn: ({ seatId, update: next }: { seatId: string; update: { name?: string; role_id?: string; ready?: boolean } }) => update(api.roomSeat(roomId, token, seatId, next)) });
-  const leave = useMutation({ mutationFn: () => update(api.roomLeave(roomId, token)), onSuccess: () => { window.localStorage.removeItem(tokenKey(roomId)); navigate('/'); } });
+  const leave = useMutation({ mutationFn: () => update(api.roomLeave(roomId, token)), onSuccess: () => { window.sessionStorage.removeItem(tokenKey(roomId)); navigate('/'); } });
 
   if (roomQuery.isLoading || metaQuery.isLoading) return <main className="room-screen"><LoaderCircle className="spin" /><p>正在整理同行席位…</p></main>;
   if (roomQuery.isError || !room || !metaQuery.data) return <main className="room-screen"><section className="room-card"><h1>旅舍暂时找不到</h1><p>请确认房间码仍然有效，或回到首页点亮新的旅程。</p><button className="primary-cta" onClick={() => navigate('/')}>返回首页</button></section></main>;

@@ -145,3 +145,13 @@ cd ..; pytest -q
 当前后端测试、前端类型检查、Vitest 和 production build 已纳入本地验收。Playwright、axe、Lighthouse、五种分辨率视觉回归和真人试玩必须在本地服务启动后实际执行，不能仅凭代码推断通过。测试产生的 `data/games.sqlite3`、截图和 `audit_output/` 不应提交。
 
 Git 回退应回到功能提交，不要删除用户素材和本地存档数据库。
+
+## 机制与安全基线
+
+当前版本包含六个可选场景，场景牌池严格按 `data/scenarios.json` 的 `card_pool` 构建，场景规则使用结构化 `trigger` 与 `effect` 并由引擎执行。规划阶段支持地点、路线和项目三类目标；房间结果通过房间专用接口读取。
+
+房间 SSE 使用短时一次性订阅票据，长期席位令牌只通过 `X-Seat-Token` 请求头传输，并仅保存在当前浏览器会话。房间码是访问标识而非强私密凭证，不应当公开分享。
+
+旧的指定 session 创建接口和旧玩家加入接口已删除。运行数据库、审计截图、Playwright 报告、覆盖率和日志均为本地产物，已在 `.gitignore` 中排除。
+
+详细机制基线见 [`docs/IMPLEMENTATION_STATUS_8_14.md`](docs/IMPLEMENTATION_STATUS_8_14.md)。

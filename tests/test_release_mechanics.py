@@ -5,10 +5,19 @@ from backend.app import app, engine, repo
 
 client = TestClient(app)
 
+def create_for_test(session, **options):
+    created = client.post('/api/games', json={'player_ids': ['p1'], 'difficulty_id': 'normal', **options})
+    assert created.status_code == 200
+    source = repo.get(created.json()['session_id'])
+    source.session_id = session
+    repo.save(source)
+    return client.get(f'/api/games/{session}').json()
+
+
 
 def test_full_hand_requires_discard_before_exploration():
     session = "release-discard-test"
-    state = client.post(f"/api/games/{session}", json={"player_ids": ["p1"], "difficulty_id": "guided"}).json()
+    state = create_for_test(session, difficulty_id="guided")
     stored = repo.get(session)
     player = stored.players[stored.shared.active_player_id]
     player.hand = stored.market[:3]
@@ -28,7 +37,7 @@ def test_full_hand_requires_discard_before_exploration():
 
 
 def test_action_card_costs_ap_and_applies_declared_route_effect():
-    state = client.post("/api/games/action-card-cost", json={"player_ids": ["p1"]}).json()
+    state = create_for_test("action-card-cost")
     stored = repo.get("action-card-cost")
     player = stored.players[stored.shared.active_player_id]
     player.action_hand = ["action_01"]

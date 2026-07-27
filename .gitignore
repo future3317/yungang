@@ -16,3 +16,14 @@ ChatGPT Image*.png
 
 # Generated temporary assets
 frontend/static/ui-assets/generated/
+
+# Runtime databases and local QA artifacts
+data/*.sqlite3
+data/*.sqlite3-*
+frontend/playwright-report/
+frontend/test-results/
+frontend/audit_output/
+audit_output/
+coverage/
+*.log
+data.zip

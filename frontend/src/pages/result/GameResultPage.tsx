@@ -15,7 +15,7 @@ const outcomeCopy: Record<string, { title: string; body: string }> = {
 export function GameResultPage() {
   const { sessionId = '', roomId = '' } = useParams();
   const navigate = useNavigate();
-  const roomToken = roomId ? window.localStorage.getItem(`yungang-room-token:${roomId}`) || '' : '';
+  const roomToken = roomId ? window.sessionStorage.getItem(`yungang-room-token:${roomId}`) || '' : '';
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-result' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId) });
   const replay = useMutation({ mutationFn: (sameSeed: boolean) => {
     if (roomId) throw new Error('房间旅程请从房间入口重新开始。');

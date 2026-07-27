@@ -6,7 +6,7 @@ from typing import Any
 
 from .content import Content
 from .domain.rng import DeterministicRng
-from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, TRIGGER_HANDLERS
+from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
 from .models import ActionOption, ActionType, GameOutcome, GameState, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
 
 
@@ -34,6 +34,57 @@ class GameEngine:
             rules["planning_marks_per_round"] = int(solo_rules.get("planning_marks_per_round", 1))
             rules["route_action_discount"] = int(solo_rules.get("route_action_discount", 0))
         return rules
+
+    def _emit_scenario_rule(self, state, trigger, context=None):
+        scenario = self.content.scenarios.get(state.scenario_id or state.shared.scenario_id, {})
+        rule = scenario.get("scenario_rule") or {}
+        entries = [{"trigger": rule.get("trigger"), "effect": rule.get("effect")}]
+        entries.extend(rule.get("additional_effects", []))
+        for index, entry in enumerate(entries):
+            if entry.get("trigger") != trigger:
+                continue
+            use_key = f"{state.shared.turn}:{index}:{trigger}"
+            if use_key in state.shared.scenario_rule_uses:
+                continue
+            state.shared.scenario_rule_uses.append(use_key)
+            effect = entry.get("effect") or {}
+            handler = getattr(self, SCENARIO_RULE_EFFECT_HANDLERS.get(effect.get("type"), ""), None)
+            if handler:
+                handler(state, context or {}, effect)
+
+    def _scenario_move_planning_mark_adjacent(self, state, context, effect):
+        player_id = context.get("player_id") or state.shared.active_player_id
+        marks = state.shared.planning_marks.setdefault(player_id, [])
+        if len(marks) < int(state.shared.effective_rules.get("planning_marks_per_round", 1)):
+            marks.append({"target_id": context.get("site_id") or state.players[player_id].location, "turn": str(state.shared.turn)})
+
+    def _scenario_gain_clue_if_distinct_players(self, state, context, effect):
+        task = context.get("task") or {}
+        if len(task.get("contributing_player_ids", [])) >= 2:
+            state.shared.research_clues += int(effect.get("amount", 1))
+
+    def _scenario_next_player_move_discount(self, state, context, effect):
+        order = state.shared.player_order
+        player_id = context.get("player_id") or state.shared.active_player_id
+        if player_id in order:
+            next_player = state.players[order[(order.index(player_id) + 1) % len(order)]]
+            next_player.flags["next_move_discount"] = int(effect.get("amount", 1))
+
+    def _scenario_reduce_weathering_if_stage_and_route(self, state, context, effect):
+        if any(project.completed_stages for project in state.projects.values()) and any(route.status in {"restored", "illuminated"} for route in state.routes.values()):
+            state.shared.weathering_track = max(0, state.shared.weathering_track - int(effect.get("amount", 1)))
+
+    def _scenario_increase_weathering(self, state, context, effect):
+        state.shared.weathering_track += int(effect.get("amount", 1))
+        state.shared.threat += int(effect.get("threat_amount", 0))
+
+    def _scenario_gain_clue(self, state, context, effect):
+        state.shared.research_clues += int(effect.get("amount", 1))
+
+    def _scenario_event_diversity_pressure(self, state, context, effect):
+        event_ids = {item.get("event_id") for item in state.shared.event_history[-3:]}
+        if len(event_ids) >= int(effect.get("minimum_events", 2)):
+            state.shared.threat += int(effect.get("amount", 1))
 
     def new_game(self, session_id="demo", player_ids=None, difficulty_id="normal", scenario_id="sand_and_stone", seed=None, player_configs=None, solo_mode=None):
         ids = player_ids or ["p1", "p2"]
@@ -87,7 +138,7 @@ class GameEngine:
         projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items() if project_id in enabled_project_ids and project.get("site_id") in sites}
         objectives = {objective_id: ObjectiveState(id=objective_id, name=objective["name"], type=objective["type"], target=objective.get("target", 1)) for objective_id, objective in self.content.objectives.items() if not scenario.get("objective_ids") or objective_id in scenario["objective_ids"]}
         card_pool = scenario.get("card_pool", {})
-        culture_deck = [card_id for card_id in self.content.cards for _ in range(int(card_pool.get(card_id, 1)))] if card_pool else list(self.content.cards)
+        culture_deck = [card_id for card_id, copies in card_pool.items() for _ in range(int(copies))] if card_pool else list(self.content.cards)
         event_deck = self._event_deck_for_scenario(scenario, rng)
         rng.shuffle(culture_deck)
         state = GameState(
@@ -149,12 +200,16 @@ class GameEngine:
             marks = sum(len(items) for items in state.shared.planning_marks.values())
             actions = [{"type": ActionType.END_PLANNING.value, "label": "\u5f00\u59cb\u884c\u52a8", "cost": 0, "planning_marks": marks}]
             actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
             state.legal_actions = actions
             state.action_options = self._build_action_options(actions, state)
             return state
         actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
         site = state.sites[active.location]
         actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
+        actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
+        actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
         if site.status != SiteStatus.CLOSED and active.ap > 0:
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
@@ -278,7 +333,8 @@ class GameEngine:
             route_state = None
         elif route and self._route_open(state, route["id"]):
             route_state = state.routes[route["id"]]
-            cost = 0 if player.flags.pop("free_move", False) else route_state.cost
+            discount = int(player.flags.pop("next_move_discount", 0))
+            cost = max(0, (0 if player.flags.pop("free_move", False) else route_state.cost) - discount)
             if player.flags.pop("ignore_route_risk", False): cost = max(0, cost - min(route_state.risk, 1))
             if player.flags.pop("sprint_move", False): cost = 1
         else:
@@ -302,6 +358,7 @@ class GameEngine:
         self._advance_project(state, project, player.id, "explore", card)
         self._trigger_node_ability(state, player, player.location, card_id=card, trigger="first_explore")
         self._trigger_node_ability(state, player, player.location, card_id=card, trigger="after_explore")
+        self._emit_scenario_rule(state, "after_explore", {"player_id": player.id, "site_id": player.location, "card_id": card})
         state.shared.log.append(f"{player.name} \u5728 {self.content.sites[player.location]['name']} \u53d1\u73b0\u4e86 {self.content.cards[card]['name']}")
 
     def _request_explore(self, state, player, card):
@@ -335,6 +392,7 @@ class GameEngine:
         state.decks.setdefault("archive", []).append(card)
         if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
         self._trigger_node_ability(state, player, site_id, card_id=card, trigger="after_contribute")
+        self._emit_scenario_rule(state, "after_contribute", {"player_id": player.id, "site_id": site_id, "task": task})
         if player.flags.pop("post_contribution_clue", False): state.shared.research_clues += 1
         if self._has_upgrade_effect(player, "post_contribution_clue"):
             task_origins = {origin for item in site.contributions if item.get("card_id") in task["contributed_cards"] for origin in item.get("origin_tags", [])}
@@ -362,6 +420,7 @@ class GameEngine:
         elif player.flags.get("restore_discount", 0): player.flags["restore_discount"] -= 1
         site.damage -= 1; self._update_site(site)
         self._advance_project(state, state.projects.get(site.active_project_id or ""), player.id, "restore")
+        self._emit_scenario_rule(state, "after_restore", {"player_id": player.id, "site_id": site_id})
 
     def _survey_route(self, state, player, route_id):
         route = state.routes.get(route_id)
@@ -383,6 +442,7 @@ class GameEngine:
         route = state.routes.get(route_id)
         if player.ap < 1 or not route or player.location not in {route.from_site, route.to_site} or route.status != "restored": raise ValueError("invalid_connection")
         player.ap -= 1; route.status = "illuminated"; route.connection_level = 2; state.shared.route_connection_score += 1
+        self._emit_scenario_rule(state, "after_establish_connection", {"player_id": player.id, "route_id": route_id})
 
     def _prepare(self, state, player):
         if player.ap < 1 or not state.shared.current_event_id: raise ValueError("invalid_prepare")
@@ -595,6 +655,14 @@ class GameEngine:
         state.shared.active_player_id = order[0] if last else order[index + 1]
         self._apply_round_start_upgrades(state, state.players[state.shared.active_player_id])
         if last:
+            snapshot = {
+                "round": state.shared.turn,
+                "event_id": state.shared.current_event_id,
+                "event_targets": list(state.shared.event_targets),
+                "planning_marks": {key: [dict(item) for item in items] for key, items in state.shared.planning_marks.items()},
+                "weathering_track": state.shared.weathering_track,
+                "restoration_resource": state.shared.restoration_resource,
+            }
             state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
             if not state.pending_choice:
                 if state.shared.event_instance.get("status") == "resolved": state.shared.event_history.append(dict(state.shared.event_instance))
@@ -603,10 +671,11 @@ class GameEngine:
                     self._trigger_node_ability(state, state.players[state.shared.active_player_id], site_id, trigger="round_start")
                 for teammate in state.players.values(): self._draw_action_card(state, teammate)
                 self._release_reserved_market_cards(state)
+                self._emit_scenario_rule(state, "round_end", snapshot)
             if not state.pending_choice:
                 state.shared.phase = "planning"
+                state.shared.round_summary = self._build_round_summary(state, snapshot)
                 state.shared.planning_marks = {}
-                state.shared.round_summary = self._build_round_summary(state)
 
     def _end_planning(self, state, player):
         if state.shared.phase != "planning":
@@ -619,16 +688,17 @@ class GameEngine:
             elif target_id in state.routes:
                 state.routes[target_id].risk = max(0, state.routes[target_id].risk - 1)
             elif target_id in state.projects:
-                state.projects[target_id].progress += 1
+                self._advance_project(state, state.projects[target_id], player.id, "plan")
         state.shared.phase = "player_action"
         state.shared.log.append(f"\u89c4\u5212\u7ed3\u7b97\uff1a{len(marks)} \u679a\u6807\u8bb0\u8f6c\u4e3a\u534f\u4f5c\u52a0\u6210")
 
-    def _build_round_summary(self, state):
+    def _build_round_summary(self, state, snapshot=None):
+        snapshot = snapshot or {}
         return {
-            "round": state.shared.turn - 1,
-            "event_id": state.shared.current_event_id,
-            "event_targets": list(state.shared.event_targets),
-            "planning_marks": sum(len(items) for items in state.shared.planning_marks.values()),
+            "round": snapshot.get("round", state.shared.turn - 1),
+            "event_id": snapshot.get("event_id", state.shared.current_event_id),
+            "event_targets": list(snapshot.get("event_targets", state.shared.event_targets)),
+            "planning_marks": sum(len(items) for items in snapshot.get("planning_marks", state.shared.planning_marks).values()),
             "weathering_track": state.shared.weathering_track,
             "restoration_resource": state.shared.restoration_resource,
         }

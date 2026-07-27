@@ -79,6 +79,17 @@ ACTION_CARD_EFFECT_HANDLERS = {
     "team_prepare": "_action_card_team_prepare",
 }
 
+SCENARIO_RULE_TRIGGERS = {"after_restore", "after_contribute", "after_establish_connection", "after_explore", "round_end"}
+SCENARIO_RULE_EFFECT_HANDLERS = {
+    "move_planning_mark_adjacent": "_scenario_move_planning_mark_adjacent",
+    "gain_clue_if_distinct_players": "_scenario_gain_clue_if_distinct_players",
+    "next_player_move_discount": "_scenario_next_player_move_discount",
+    "reduce_weathering_if_stage_and_route": "_scenario_reduce_weathering_if_stage_and_route",
+    "increase_weathering": "_scenario_increase_weathering",
+    "gain_clue": "_scenario_gain_clue",
+    "event_diversity_pressure": "_scenario_event_diversity_pressure",
+}
+
 EFFECT_HANDLERS = {
     **CULTURE_EFFECT_HANDLERS,
     **NODE_EFFECT_HANDLERS,
@@ -137,6 +148,19 @@ def validate_content_mechanisms(files: dict[str, Any]) -> None:
             action_type = stage.get("action_type")
             if action_type and action_type not in ACTION_TYPES:
                 unknown_actions.add(str(action_type))
+    for scenario in items(files.get("scenarios", []), "scenarios"):
+        rule = scenario.get("scenario_rule") or {}
+        if not isinstance(rule, dict):
+            unknown_triggers.add(f"scenario_rule:{scenario.get('id')}:not_object")
+            continue
+        entries = [{"trigger": rule.get("trigger"), "effect": rule.get("effect")}]
+        entries.extend(rule.get("additional_effects", []))
+        for entry in entries:
+            if entry.get("trigger") not in SCENARIO_RULE_TRIGGERS:
+                unknown_triggers.add(str(entry.get("trigger")))
+            effect_type = (entry.get("effect") or {}).get("type")
+            if effect_type not in SCENARIO_RULE_EFFECT_HANDLERS:
+                unknown_effects.add(str(effect_type))
     if unknown_effects or unknown_triggers or unknown_actions:
         parts = []
         if unknown_effects:

@@ -75,10 +75,6 @@ class CreateGameRequest(BaseModel):
     seed: Optional[int] = None
     daily_seed: Optional[str] = None
 
-class JoinGameRequest(BaseModel):
-    player_id: str
-    role_id: Optional[str] = None
-
 
 class RoomCreateRequest(BaseModel):
     play_mode: str = "solo"
@@ -242,6 +238,7 @@ class SharedState(BaseModel):
     event_history: List[Dict[str, Any]] = Field(default_factory=list)
     round_summary: Dict[str, Any] = Field(default_factory=dict)
     reserved_market_cards: List[str] = Field(default_factory=list)
+    scenario_rule_uses: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
     schema_version: int = 3

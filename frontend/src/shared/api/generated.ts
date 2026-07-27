@@ -48,28 +48,6 @@ export interface paths {
         /** Get Game */
         get: operations["get_game_api_games__session_id__get"];
         put?: never;
-        /**
-         * Create Game With Id
-         * @description Stable local-session creation endpoint used by demos, tests, and recovery flows.
-         */
-        post: operations["create_game_with_id_api_games__session_id__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/games/{session_id}/players": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Join Game */
-        post: operations["join_game_api_games__session_id__players_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -438,13 +416,6 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
-        };
-        /** JoinGameRequest */
-        JoinGameRequest: {
-            /** Player Id */
-            player_id: string;
-            /** Role Id */
-            role_id?: string | null;
         };
         /** ObjectiveState */
         ObjectiveState: {
@@ -975,76 +946,6 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameState"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    create_game_with_id_api_games__session_id__post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                session_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateGameRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameState"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    join_game_api_games__session_id__players_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                session_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["JoinGameRequest"];
-            };
-        };
         responses: {
             /** @description Successful Response */
             200: {

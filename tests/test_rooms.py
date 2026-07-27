@@ -72,7 +72,7 @@ def test_local_host_configures_all_seats_without_joining_from_another_device():
     assert client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": token}).status_code == 200
 
 
-def test_room_session_rejects_legacy_create_and_join_writes():
+def test_legacy_game_write_routes_are_removed():
     created = client.post("/api/rooms", json={"play_mode": "local", "name": "房主", "max_players": 2})
     payload = created.json()
     room_id = payload["room"]["room_id"]
@@ -81,5 +81,5 @@ def test_room_session_rejects_legacy_create_and_join_writes():
     configure_local_seat(room_id, token, "seat-2", "grassland_rider")
     started = client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": token})
     session_id = started.json()["session_id"]
-    assert client.post(f"/api/games/{session_id}", json={"player_ids": ["intruder"]}).status_code == 403
-    assert client.post(f"/api/games/{session_id}/players", json={"player_id": "intruder"}).status_code == 403
+    assert client.post(f"/api/games/{session_id}", json={"player_ids": ["intruder"]}).status_code == 405
+    assert client.post(f"/api/games/{session_id}/players", json={"player_id": "intruder"}).status_code == 405

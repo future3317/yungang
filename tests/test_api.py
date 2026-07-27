@@ -9,7 +9,12 @@ from backend.engine import GameEngine
 client = TestClient(app)
 
 def create(session, players=None):
-    return client.post(f'/api/games/{session}', json={'player_ids': players or ['p1', 'p2'], 'difficulty_id':'normal'}).json()
+    created = client.post('/api/games', json={'player_ids': players or ['p1', 'p2'], 'difficulty_id': 'normal'})
+    assert created.status_code == 200
+    source = repo.get(created.json()['session_id'])
+    source.session_id = session
+    repo.save(source)
+    return client.get(f'/api/games/{session}').json()
 
 def action(session, state, player, kind, **extra):
     payload = {'player_id':player, 'action':kind, 'expected_revision':state['revision'], **extra}
@@ -70,13 +75,6 @@ def test_event_choice_is_server_driven():
     resolved = action(session, ended, 'p1', 'resolve_event', target_id='mitigate').json()
     assert resolved['pending_choice'] is None
     assert resolved['shared']['restoration_resource'] == resources_before - 1
-
-def test_join_game_before_first_action():
-    session = 'test-join'
-    create(session, ['p1', 'p2'])
-    joined = client.post(f'/api/games/{session}/players', json={'player_id':'p3','role_id':'grassland_rider'}).json()
-    assert 'p3' in joined['players']
-    assert joined['players']['p3']['role_id'] == 'grassland_rider'
 
 def test_move_is_route_driven():
     session = 'test-move-route-current'

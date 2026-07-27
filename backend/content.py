@@ -70,3 +70,28 @@ class Content:
             raise ValueError("task references unknown site")
         if self.schema_version >= 3 and len(self.sites) < 18:
             raise ValueError("phase 2 content requires at least 18 sites")
+        for scenario in self.scenarios.values():
+            card_pool = scenario.get("card_pool")
+            if not isinstance(card_pool, dict) or not card_pool:
+                raise ValueError(f"scenario card_pool required: {scenario.get('id')}")
+            unknown_cards = set(card_pool) - set(self.cards)
+            if unknown_cards:
+                raise ValueError(f"scenario card_pool references unknown cards: {scenario.get('id')} {sorted(unknown_cards)}")
+            enabled_sites = set(scenario.get("enabled_site_ids", self.sites))
+            copies = {card_id: int(amount) for card_id, amount in card_pool.items()}
+            for task in self.tasks.values():
+                if task.get("site_id") not in enabled_sites:
+                    continue
+                if sum(copies.values()) < int(task.get("required_card_count", 0)):
+                    raise ValueError(f"scenario task lacks cards: {scenario.get('id')} {task.get('id')}")
+                available = [self.cards[card_id] for card_id in copies for _ in range(copies[card_id])]
+                domains = {card.get("domain") for card in available}
+                origins = {origin for card in available for origin in card.get("origin_tags", [])}
+                combos = {tag for card in available for tag in card.get("combo_tags", [])}
+                if not set(task.get("required_domains", [])).issubset(domains):
+                    raise ValueError(f"scenario task lacks domain: {scenario.get('id')} {task.get('id')}")
+                if len(origins) < int(task.get("required_origin_diversity", 0)):
+                    raise ValueError(f"scenario task lacks origins: {scenario.get('id')} {task.get('id')}")
+                requirement = task.get("combo_requirement", {})
+                if not set(requirement.get("required_combo_tags", [])).issubset(combos):
+                    raise ValueError(f"scenario task lacks combo: {scenario.get('id')} {task.get('id')}")

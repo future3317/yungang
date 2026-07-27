@@ -97,7 +97,14 @@
         "chain_02",
         "chain_05"
       ],
-      "scenario_rule": "每轮首次完成节点修护后，团队可将一个计划标记移动到相邻节点。",
+      "scenario_rule": {
+        "description": "每轮首次完成节点修护后，团队可将一个计划标记移动到相邻节点。",
+        "trigger": "after_restore",
+        "effect": {
+          "type": "move_planning_mark_adjacent",
+          "amount": 1
+        }
+      },
       "starting_threat": 1,
       "starting_clues": 0,
       "solo_rules": {
@@ -205,7 +212,14 @@
         "chain_06",
         "chain_08"
       ],
-      "scenario_rule": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究线索。",
+      "scenario_rule": {
+        "description": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究线索。",
+        "trigger": "after_contribute",
+        "effect": {
+          "type": "gain_clue_if_distinct_players",
+          "amount": 1
+        }
+      },
       "starting_threat": 0,
       "starting_clues": 1,
       "solo_rules": {
@@ -313,7 +327,14 @@
         "chain_05",
         "chain_08"
       ],
-      "scenario_rule": "每完成一条已连接路线，下一名玩家的第一次移动减少1点行动消耗。",
+      "scenario_rule": {
+        "description": "每完成一条已连接路线，下一名玩家的第一次移动减少1点行动消耗。",
+        "trigger": "after_establish_connection",
+        "effect": {
+          "type": "next_player_move_discount",
+          "amount": 1
+        }
+      },
       "starting_threat": 1,
       "starting_clues": 2,
       "solo_rules": {
@@ -454,7 +475,14 @@
         "chain_06",
         "chain_08"
       ],
-      "scenario_rule": "每轮结束时，若团队完成了一个项目阶段且至少修复一条路线，风化压力降低1点。",
+      "scenario_rule": {
+        "description": "每轮结束时，若团队完成了一个项目阶段且至少修复一条路线，风化压力降低1点。",
+        "trigger": "after_restore",
+        "effect": {
+          "type": "reduce_weathering_if_stage_and_route",
+          "amount": 1
+        }
+      },
       "starting_threat": 1,
       "starting_clues": 1,
       "solo_rules": {
@@ -521,7 +549,14 @@
       ],
       "recommended_minutes": "25–35 分钟",
       "core_project_id": "project_10",
-      "scenario_rule": "回合结束时环境压力增加 1；完成两项修护可显著降低连锁风险。",
+      "scenario_rule": {
+        "description": "回合结束时环境压力增加 1；完成两项修护可显著降低连锁风险。",
+        "trigger": "round_end",
+        "effect": {
+          "type": "increase_weathering",
+          "amount": 1
+        }
+      },
       "event_chain_ids": [],
       "starting_threat": 1,
       "starting_clues": 1,
@@ -530,7 +565,33 @@
         "planning_marks_per_round": 2
       },
       "victory_brief": "在压力失控前完成共同目标并保持关键节点开放。",
-      "failure_brief": "风化压力达到上限，或关键节点关闭过多。"
+      "failure_brief": "风化压力达到上限，或关键节点关闭过多。",
+      "card_pool": {
+        "craft": 1,
+        "archive": 1,
+        "motif": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_17": 1,
+        "culture_18": 1,
+        "culture_19": 1,
+        "culture_21": 1,
+        "culture_22": 1,
+        "culture_23": 1,
+        "culture_24": 1,
+        "culture_25": 1,
+        "culture_27": 1,
+        "culture_28": 1,
+        "culture_29": 1,
+        "culture_30": 1,
+        "culture_32": 1,
+        "culture_33": 1
+      }
     },
     {
       "id": "digital_archive",
@@ -587,7 +648,14 @@
       ],
       "recommended_minutes": "20–30 分钟",
       "core_project_id": "project_09",
-      "scenario_rule": "研究线索更容易获得，但每轮事件会考验团队的来源多样性。",
+      "scenario_rule": {
+        "description": "研究线索更容易获得，但每轮事件会考验团队的来源多样性。",
+        "trigger": "after_explore",
+        "effect": {
+          "type": "gain_clue",
+          "amount": 1
+        }
+      },
       "event_chain_ids": [],
       "starting_threat": 0,
       "starting_clues": 1,
@@ -596,7 +664,33 @@
         "planning_marks_per_round": 2
       },
       "victory_brief": "完成档案项目并让至少三类文化领域进入共同图卷。",
-      "failure_brief": "回合耗尽仍未完成档案目标。"
+      "failure_brief": "回合耗尽仍未完成档案目标。",
+      "card_pool": {
+        "craft": 1,
+        "archive": 1,
+        "motif": 1,
+        "culture_07": 1,
+        "culture_08": 1,
+        "culture_09": 1,
+        "culture_10": 1,
+        "culture_13": 1,
+        "culture_14": 1,
+        "culture_15": 1,
+        "culture_17": 1,
+        "culture_18": 1,
+        "culture_19": 1,
+        "culture_21": 1,
+        "culture_22": 1,
+        "culture_23": 1,
+        "culture_24": 1,
+        "culture_25": 1,
+        "culture_27": 1,
+        "culture_28": 1,
+        "culture_29": 1,
+        "culture_30": 1,
+        "culture_32": 1,
+        "culture_33": 1
+      }
     }
   ]
 }

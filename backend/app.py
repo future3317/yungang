@@ -3,13 +3,13 @@ from uuid import uuid4
 import asyncio
 import json
 import os
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, JoinGameRequest, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomRoleRequest, RoomSeatUpdateRequest
+from .models import ActionRequest, CreateGameRequest, GameState, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomRoleRequest, RoomSeatUpdateRequest
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -18,7 +18,24 @@ repo = GameRepository()
 content = Content()
 engine = GameEngine(content)
 room_service = RoomService(RoomRepository(repo.path))
-ALLOW_LEGACY_SESSION_WRITE = os.getenv("YUNGANG_ALLOW_LEGACY_SESSION_WRITE", "1") == "1" and os.getenv("YUNGANG_ENV", "development") in {"development", "test"}
+_rate_buckets: dict[tuple[str, str], list[float]] = {}
+
+@app.middleware("http")
+async def security_and_rate_limit(request: Request, call_next):
+    now = __import__("time").monotonic()
+    key = (request.client.host if request.client else "unknown", request.url.path)
+    if request.method in {"POST", "PUT", "PATCH"} and (request.url.path == "/api/rooms" or request.url.path.endswith("/join") or request.url.path.endswith("/actions")):
+        bucket = [stamp for stamp in _rate_buckets.get(key, []) if now - stamp < 60]
+        if len(bucket) >= 30:
+            return Response(content=json.dumps({"detail": {"code": "rate_limited", "message": "请求过于频繁，请稍后再试。"}}, ensure_ascii=False), status_code=429, media_type="application/json")
+        bucket.append(now)
+        _rate_buckets[key] = bucket
+    response = await call_next(request)
+    response.headers["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["X-Frame-Options"] = "DENY"
+    return response
 
 @app.get("/api/meta")
 def meta():
@@ -31,37 +48,6 @@ def create_game(request: CreateGameRequest) -> GameState:
     state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
-
-@app.post("/api/games/{session_id}", response_model=GameState)
-def create_game_with_id(session_id: str, request: CreateGameRequest) -> GameState:
-    """Stable local-session creation endpoint used by demos, tests, and recovery flows."""
-    if room_service.room_for_session(session_id):
-        raise HTTPException(403, {"code": "room_session_requires_room_write", "message": "房间旅程必须通过房间入口操作。", "details": {}, "recovery": "return_to_room"})
-    if not ALLOW_LEGACY_SESSION_WRITE:
-        raise HTTPException(404, {"code": "legacy_session_write_disabled", "message": "生产环境不接受客户端指定旅程编号。", "details": {}, "recovery": "create_new_game"})
-    seed = request.seed if request.seed is not None else request.daily_seed
-    state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
-    repo.save(state)
-    return state
-
-@app.post("/api/games/{session_id}/players", response_model=GameState)
-def join_game(session_id: str, request: JoinGameRequest) -> GameState:
-    if room_service.room_for_session(session_id):
-        raise HTTPException(403, {"code": "room_session_requires_room_write", "message": "房间旅程必须通过席位入口加入。", "details": {}, "recovery": "return_to_room"})
-    state = repo.get(session_id)
-    if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
-    if state.revision or len(state.players) >= 4: raise HTTPException(409, "game has already started")
-    if request.player_id in state.players: return state
-    role_id = request.role_id or next(role for role in content.roles if role not in {player.role_id for player in state.players.values()})
-    role = content.roles.get(role_id)
-    if not role: raise HTTPException(400, "unknown role")
-    state.players[request.player_id] = engine.new_game("role-preview", [request.player_id, "p2"]).players[request.player_id]
-    state.players[request.player_id].role_id = role_id
-    state.players[request.player_id].name = role["name"]
-    state.players[request.player_id].location = role.get("start_site_id", "yungang")
-    state.shared.player_order.append(request.player_id)
-    repo.save(state)
-    return engine.refresh(state)
 
 @app.get("/api/games/{session_id}", response_model=GameState)
 def get_game(session_id: str) -> GameState:
@@ -114,7 +100,7 @@ def _room_token_error(exc: ValueError) -> HTTPException:
 
 @app.post("/api/rooms")
 def create_room(request: RoomCreateRequest):
-    room, host_token, seat_token = room_service.create(f"room-{uuid4().hex[:8]}", request)
+    room, host_token, seat_token = room_service.create(f"room-{uuid4().hex[:16]}", request)
     return {"room": room_service.public(room, seat_token), "host_token": host_token, "seat_token": seat_token}
 
 
@@ -239,6 +225,16 @@ def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     return {"room": room_service.public(room, x_seat_token), "session_id": session_id}
 
 
+@app.get("/api/rooms/{room_id}/events-ticket")
+def room_events_ticket(room_id: str, x_seat_token: str | None = Header(default=None)):
+    room = _room_or_404(room_id)
+    try:
+        ticket = room_service.issue_event_ticket(room, x_seat_token or "")
+    except ValueError as exc:
+        raise _room_token_error(exc) from exc
+    return {"ticket": ticket, "expires_in": 60}
+
+
 @app.get("/api/rooms/{room_id}/game", response_model=GameState)
 def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
@@ -278,10 +274,10 @@ async def _room_revision_stream(room_id: str):
 
 
 @app.get("/api/rooms/{room_id}/events", include_in_schema=False)
-async def room_events(room_id: str, seat_token: str | None = None):
+async def room_events(room_id: str, ticket: str | None = None):
     room = _room_or_404(room_id)
     try:
-        room_service.authenticate(room, seat_token or "")
+        room_service.consume_event_ticket(room_id, ticket or "")
     except ValueError as exc:
         raise _room_token_error(exc) from exc
     return StreamingResponse(_room_revision_stream(room_id), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})

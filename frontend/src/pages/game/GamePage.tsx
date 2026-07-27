@@ -60,16 +60,21 @@ export function GamePage() {
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [handoffName, setHandoffName] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<ActionOption | null>(null);
-  const [roomToken] = useState(() => roomId ? window.localStorage.getItem(`yungang-room-token:${roomId}`) || '' : '');
+  const [roomToken] = useState(() => roomId ? window.sessionStorage.getItem(`yungang-room-token:${roomId}`) || '' : '');
   const enqueueToast = (text: string) => { const id = crypto.randomUUID(); setToasts(items => [...items.slice(-3), { id, text }]); window.setTimeout(() => setToasts(items => items.filter(item => item.id !== id)), 4800); };
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId), refetchOnWindowFocus: false, refetchInterval: roomId ? 2500 : false });
   useEffect(() => {
     if (!roomId || !roomToken) return;
-    const stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?seat_token=${encodeURIComponent(roomToken)}`);
-    const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); };
-    stream.addEventListener('revision', refresh);
-    stream.onerror = () => stream.close();
-    return () => stream.close();
+    let stream: EventSource | undefined;
+    let cancelled = false;
+    void api.roomEventTicket(roomId, roomToken).then(({ ticket }) => {
+      if (cancelled) return;
+      stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?ticket=${encodeURIComponent(ticket)}`);
+      const refresh = () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); };
+      stream.addEventListener('revision', refresh);
+      stream.onerror = () => stream?.close();
+    });
+    return () => { cancelled = true; stream?.close(); };
   }, [queryClient, roomId, roomToken]);
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const state = gameQuery.data;
@@ -84,7 +89,7 @@ export function GamePage() {
   useEffect(() => {
     if (!gameQuery.data) return;
     try {
-      if (!window.localStorage.getItem('yungang-journey-tutorial-v1')) setTutorialOpen(true);
+      if (!window.sessionStorage.getItem('yungang-journey-tutorial-v1')) setTutorialOpen(true);
     } catch {
       setTutorialOpen(true);
     }

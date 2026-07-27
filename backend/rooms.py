@@ -6,6 +6,7 @@ import hashlib
 import json
 import secrets
 import sqlite3
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
@@ -46,6 +47,7 @@ class RoomRepository:
 class RoomService:
     def __init__(self, repository: RoomRepository):
         self.repository = repository
+        self._event_tickets: dict[str, tuple[str, float]] = {}
 
     def create(self, room_id: str, request: Any) -> tuple[dict[str, Any], str, str]:
         host_token = _token()
@@ -98,6 +100,19 @@ class RoomService:
         if secrets.compare_digest(room["host_token_hash"], token_hash):
             return room["seats"][0]
         raise ValueError("invalid_seat_token")
+
+    def issue_event_ticket(self, room: dict[str, Any], seat_token: str) -> str:
+        self.authenticate(room, seat_token)
+        ticket = _token()
+        self._event_tickets[_digest(ticket)] = (room["room_id"], time.monotonic() + 60)
+        return ticket
+
+    def consume_event_ticket(self, room_id: str, ticket: str) -> None:
+        if not ticket:
+            raise ValueError("seat_token_required")
+        record = self._event_tickets.pop(_digest(ticket), None)
+        if not record or record[0] != room_id or record[1] < time.monotonic():
+            raise ValueError("invalid_seat_token")
 
     def set_ready(self, room: dict[str, Any], token: str, ready: bool) -> dict[str, Any]:
         seat = self.authenticate(room, token)
