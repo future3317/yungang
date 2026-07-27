@@ -119,6 +119,9 @@ class GameEngine:
                 state.legal_actions = [{"type": ActionType.DISCARD.value, "card_id": card, "label": f"\u5f03\u7f6e {self.content.cards[card]['name']}"} for card in active.hand]
             elif kind == "role_upgrade":
                 state.legal_actions = [{"type": ActionType.SELECT_UPGRADE.value, "upgrade_id": option["id"], "label": option["name"]} for option in state.pending_choice["options"]]
+            elif kind == "action_card":
+                card_id = state.pending_choice["card_id"]
+                state.legal_actions = [{"type": ActionType.USE_ACTION_CARD.value, "card_id": card_id, "target_id": option["id"], "label": option["label"]} for option in state.pending_choice["options"]]
             state.action_options = self._build_action_options(state.legal_actions)
             return state
 
@@ -192,7 +195,7 @@ class GameEngine:
         elif action == ActionType.EXCHANGE.value: self._exchange(state, player, target, req.get("card_id"))
         elif action == ActionType.USE_SKILL.value: self._skill(state, player)
         elif action == ActionType.PLAY_CARD.value: self._play_card(state, player, req.get("card_id"))
-        elif action == ActionType.USE_ACTION_CARD.value: self._use_action_card(state, player, req.get("card_id"))
+        elif action == ActionType.USE_ACTION_CARD.value: self._use_action_card(state, player, req.get("card_id"), req.get("target_id") or req.get("route_id"))
         elif action == ActionType.SURVEY_ROUTE.value: self._survey_route(state, player, req.get("route_id"))
         elif action == ActionType.RESTORE_ROUTE.value: self._restore_route(state, player, req.get("route_id"))
         elif action == ActionType.ESTABLISH_CONNECTION.value: self._establish_connection(state, player, req.get("route_id"))
@@ -295,12 +298,19 @@ class GameEngine:
         if card not in player.hand: raise ValueError("card_not_in_hand")
         player.hand.remove(card); state.decks.setdefault("discard", []).append(card); self._effect(state, player, self.content.cards[card].get("effect", {}))
 
-    def _use_action_card(self, state, player, card):
+    def _use_action_card(self, state, player, card, target_id=None):
         if card not in player.action_hand or card not in self.content.action_cards: raise ValueError("action_card_unavailable")
-        player.action_hand.remove(card); state.decks.setdefault("action_discard", []).append(card)
         effect = self.content.action_cards[card].get("effect", {}); typ = effect.get("type")
         adjacent = [route for route in state.routes.values() if player.location in {route.from_site, route.to_site}]
-        stressed = next((route for route in adjacent if route.status in {"blocked", "strained"}), None)
+        route_effects = {"survey_route", "survey_and_mitigate", "survey_multiple_routes", "reduce_route_risk", "restore_route", "establish_connection", "restore_and_move"}
+        candidates = [route for route in adjacent if route.status in ({"restored"} if typ == "establish_connection" else {"blocked", "strained"})]
+        if typ in route_effects and not target_id:
+            if not candidates: raise ValueError("no_valid_action_card_target")
+            state.pending_choice = {"kind": "action_card", "card_id": card, "options": [{"id": route.id, "label": f"{route.id} · {route.status}"} for route in candidates]}
+            return
+        stressed = next((route for route in candidates if route.id == target_id), None)
+        if typ in route_effects and not stressed: raise ValueError("invalid_action_card_target")
+        player.action_hand.remove(card); state.decks.setdefault("action_discard", []).append(card)
         if typ in {"survey_route", "survey_and_mitigate", "survey_multiple_routes", "reduce_route_risk"} and stressed:
             stressed.status = "strained"; stressed.risk = max(0, stressed.risk + int(effect.get("risk_delta", -1))); state.shared.research_clues += int(effect.get("clues", 1))
         elif typ == "restore_route" and stressed:
@@ -351,6 +361,11 @@ class GameEngine:
             state.shared.log.append("\u548c\u5408\u534f\u4f5c\u751f\u6548\uff1a\u4e8b\u4ef6\u538b\u529b\u964d\u4f4e 1")
         if event_id == "route_blocked" and not prepared:
             state.shared.phase = "pending_choice"
+            affected = sorted((route for route in state.routes.values() if route.status in {"open", "strained"}), key=lambda route: route.id)
+            if affected:
+                target = affected[(state.seed + state.shared.turn) % len(affected)]
+                target.status = "blocked"
+                target.risk = max(1, target.risk)
             state.pending_choice = {"kind": "event", "event_id": event_id, "options": [{"id": "mitigate", "label": "\u6d88\u8017 1 \u4fee\u590d\u8d44\u6e90\uff0c\u7f13\u548c\u9053\u8def\u963b\u65ad"}, {"id": "accept", "label": "\u63a5\u53d7\u963b\u65ad\uff0c\u5a01\u80c1\u4e0a\u5347 1"}]}
             return
         self._event_effect(state, event.get("effect", {}))
@@ -373,6 +388,10 @@ class GameEngine:
             player = state.players[state.shared.active_player_id]; upgrade_id = req.get("upgrade_id")
             if action != ActionType.SELECT_UPGRADE.value or upgrade_id not in {item["id"] for item in state.pending_choice["options"]}: raise ValueError("invalid_upgrade_choice")
             player.upgrades.append(upgrade_id); self._upgrade_effect(state, player, self.content.role_upgrades.get(upgrade_id, {}).get("effect", {})); state.pending_choice = None
+        elif state.pending_choice["kind"] == "action_card":
+            player = state.players[state.shared.active_player_id]; card = state.pending_choice["card_id"]; target_id = req.get("target_id")
+            if action != ActionType.USE_ACTION_CARD.value or target_id not in {item["id"] for item in state.pending_choice["options"]}: raise ValueError("invalid_action_card_target")
+            state.pending_choice = None; self._use_action_card(state, player, card, target_id)
         state.revision += 1; self._check_outcome(state); return self.refresh(state)
 
     def _event_effect(self, state, effect):

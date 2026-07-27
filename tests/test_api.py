@@ -128,6 +128,35 @@ def test_prepare_event_consumes_flag_and_prevents_event_choice():
     assert ended['pending_choice'] is None
     assert ended['shared']['prepared_event_ids'] == []
 
+def test_route_blocked_event_changes_a_real_route_state():
+    session = 'test-route-blocked-target'
+    state = create(session)
+    stored = repo.get(session)
+    stored.shared.current_event_id = 'route_blocked'
+    stored.shared.player_order = ['p1']
+    stored.players.pop('p2')
+    open_before = sum(route.status in {'open', 'strained'} for route in stored.routes.values())
+    repo.save(stored)
+    ended = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'end_turn').json()
+    open_after = sum(route['status'] in {'open', 'strained'} for route in ended['routes'].values())
+    assert open_after == open_before - 1
+    assert ended['pending_choice']['kind'] == 'event'
+
+def test_action_card_requires_a_route_target_before_resolution():
+    session = 'test-action-card-target'
+    state = create(session)
+    stored = repo.get(session)
+    stored.players['p1'].action_hand = ['action_01']
+    route = next(route for route in stored.routes.values() if stored.players['p1'].location in {route.from_site, route.to_site})
+    route.status = 'strained'
+    repo.save(stored)
+    choosing = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'use_action_card', card_id='action_01').json()
+    assert choosing['pending_choice']['kind'] == 'action_card'
+    target = choosing['legal_actions'][0]['target_id']
+    resolved = action(session, choosing, 'p1', 'use_action_card', card_id='action_01', target_id=target).json()
+    assert resolved['pending_choice'] is None
+    assert 'action_01' not in resolved['players']['p1']['action_hand']
+
 def test_card_has_archive_and_discard_paths():
     session = 'test-card-dual-use'
     state = create(session)
