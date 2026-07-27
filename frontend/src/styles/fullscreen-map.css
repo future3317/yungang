@@ -74,7 +74,7 @@
   .stage-heading h1 { margin-top: 3px; color: #f3e6ca; font-size: clamp(1.2rem, 1.6vw, 1.65rem); text-shadow: 0 2px 18px rgba(2, 8, 5, .78); }
   .stage-heading .eyebrow { opacity: .74; }
   .stage-heading .turn-badge { background: rgba(14, 28, 20, .7) !important; border-color: rgba(220, 190, 113, .34) !important; backdrop-filter: blur(8px); }
-  .round-summary { position: fixed !important; z-index: 5; top: 156px; right: calc(var(--map-right-clearance) + 30px); left: calc(var(--map-left-clearance) + 30px); pointer-events: none; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+  .round-summary { position: fixed !important; z-index: 5; top: 156px; right: calc(var(--map-right-clearance) + 30px); left: calc(var(--map-left-clearance) + 30px); width: min(620px, 100%); margin: 0 auto; pointer-events: auto; background: rgba(20, 34, 25, .88) !important; border: 1px solid rgba(219, 192, 126, .25) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .18) !important; }
   .round-summary > * { pointer-events: auto; }
 
   .network-tools { position: fixed !important; z-index: 8 !important; top: 104px !important; right: calc(var(--map-right-clearance) + 28px) !important; }
@@ -224,4 +224,21 @@
   .accessibility-panel { max-height: min(620px, calc(100dvh - 96px)); overflow-y: auto; }
   .network-tools { pointer-events: auto; }
   .network-tools button { overflow: visible; }
+}
+
+@media (min-width: 1101px) {
+  .round-summary { width: auto; max-width: 620px; margin: 0 auto; }
+  .round-summary-main, .round-summary-metrics, .round-summary button { pointer-events: auto; }
+  .network-tools button { display: grid !important; place-items: center; color: #f1e5c9 !important; background: rgba(23, 31, 26, .9) !important; }
+  .network-tools button svg, .network-tools button svg * { display: block !important; width: 19px !important; height: 19px !important; color: #f1e5c9 !important; fill: none !important; stroke: #f1e5c9 !important; stroke-width: 2 !important; visibility: visible !important; opacity: 1 !important; }
+}
+
+@media (max-width: 760px) {
+  .game-header .header-center { display: block !important; width: 100%; min-width: 0; }
+  .game-header .goal-hud { width: 100%; }
+  .game-header .brand-mark { min-width: 0; gap: 4px; font-size: .96rem; white-space: nowrap; }
+  .game-header .brand-mark img { width: 28px; height: 28px; }
+  .game-header .goal-hud { overflow: hidden; }
+  .game-header .goal-line { grid-template-columns: minmax(0, 1fr) minmax(96px, auto); }
+  .game-header .goal-line b { overflow: hidden; font-size: .68rem; text-overflow: ellipsis; }
 }

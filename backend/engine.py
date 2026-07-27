@@ -73,7 +73,15 @@ class GameEngine:
         routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id"), tags=route.get("tags", []), waypoints=route.get("waypoints", []), road_class=route.get("roadClass", route.get("road_class", "local")), terrain=route.get("terrain", "plain"), label_position=route.get("labelPosition", route.get("label_position")), name=route.get("name"), strategic_role=route.get("strategic_role"), risk_profile=route.get("risk_profile"), ui_hint=route.get("ui_hint"), event_tags=route.get("event_tags", [])) for route in self.content.routes if route["from"] in sites and route["to"] in sites}
         route_ids = list(routes)
         rng.shuffle(route_ids)
-        for route_id in route_ids[: scenario.get("blocked_route_count", 0)]:
+        starting_sites = {player.location for player in players.values()}
+        protected_route_ids = {
+            route_id for route_id, route in routes.items()
+            if "yungang" in {route.from_site, route.to_site}
+            and (route.from_site in starting_sites or route.to_site in starting_sites)
+        }
+        blockable_route_ids = [route_id for route_id in route_ids if route_id not in protected_route_ids]
+        blockable_route_ids.extend(route_id for route_id in route_ids if route_id in protected_route_ids)
+        for route_id in blockable_route_ids[: scenario.get("blocked_route_count", 0)]:
             routes[route_id].status = "blocked"
         enabled_project_ids = set(scenario.get("enabled_project_ids", self.content.projects))
         projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items() if project_id in enabled_project_ids and project.get("site_id") in sites}
