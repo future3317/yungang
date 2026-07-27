@@ -1,0 +1,55 @@
+from backend.app import app, engine, repo
+from fastapi.testclient import TestClient
+
+
+client = TestClient(app)
+
+
+def test_discarded_evidence_enters_discard_pile_before_explore():
+    state = engine.new_game("discard-semantics", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    discarded = state.decks["culture"].pop(0)
+    player.hand = [discarded]
+    next_card = state.market[0]
+    state.pending_choice = {"kind": "discard", "next_card_id": next_card}
+    engine._resolve_choice(state, {"action": "discard", "card_id": discarded})
+    assert discarded not in player.hand
+    assert discarded in state.decks["discard"]
+    assert next_card in player.hand
+
+
+def test_event_response_action_card_keeps_timing_and_declared_mitigation():
+    state = engine.new_game("event-card-semantics", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    route = next(route for route in state.routes.values() if player.location in {route.from_site, route.to_site})
+    route.status = "blocked"
+    route.risk = 2
+    player.action_hand = ["action_09"]
+    state.decks["action"] = ["action_10"]
+    state.shared.phase = "pending_choice"
+    state.shared.threat = 2
+    state.pending_choice = {"kind": "event", "event_id": "route_blocked", "options": []}
+    engine._use_action_card(state, player, "action_09", target_id=route.id, force_event_response=True)
+    assert player.ap == 2
+    assert route.status == "strained"
+    assert route.risk == 1
+    assert state.shared.threat == 1
+    assert "action_09" in state.decks["action_discard"]
+    assert player.action_hand
+
+
+def test_room_session_cannot_be_read_through_legacy_game_endpoint():
+    created = client.post("/api/rooms", json={"play_mode": "multi_device", "name": "测试者", "role_id": "pingcheng_artisan", "scenario_id": "sand_and_stone", "difficulty_id": "normal", "max_players": 2})
+    assert created.status_code == 200
+    room = created.json()["room"]
+    token = created.json()["seat_token"]
+    joined = client.post(f"/api/rooms/{room['room_id']}/join", json={"name": "同行者", "role_id": "western_dancer"})
+    assert joined.status_code == 200
+    assert client.post(f"/api/rooms/{room['room_id']}/ready", headers={"X-Seat-Token": token}, json={"ready": True}).status_code == 200
+    other_token = joined.json()["seat_token"]
+    assert client.post(f"/api/rooms/{room['room_id']}/ready", headers={"X-Seat-Token": other_token}, json={"ready": True}).status_code == 200
+    started = client.post(f"/api/rooms/{room['room_id']}/start", headers={"X-Seat-Token": token})
+    assert started.status_code == 200
+    session_id = started.json()["session_id"]
+    assert client.get(f"/api/games/{session_id}").status_code == 403
+    assert repo.get(session_id) is not None

@@ -490,10 +490,10 @@ class GameEngine:
         if "事件预告" in timing: return state.shared.phase == "player_action" and bool(state.shared.current_event_id)
         return state.shared.phase == "player_action" and not state.pending_choice
 
-    def _use_action_card(self, state, player, card, target_id=None, target_ids=None):
+    def _use_action_card(self, state, player, card, target_id=None, target_ids=None, force_event_response=False):
         if card not in player.action_hand or card not in self.content.action_cards: raise ValueError("action_card_unavailable")
         definition = self.content.action_cards[card]; effect = definition.get("effect", {}); typ = effect.get("type")
-        if not self._action_card_timing_allowed(state, definition) and not (state.pending_choice and state.pending_choice.get("kind") == "event" and "事件响应" in str(definition.get("timing", ""))): raise ValueError("action_card_wrong_timing")
+        if not self._action_card_timing_allowed(state, definition) and not (force_event_response and "事件响应" in str(definition.get("timing", ""))): raise ValueError("action_card_wrong_timing")
         cost = int(definition.get("cost", 1))
         if player.ap < cost: raise ValueError("not_enough_ap")
         adjacent = [route for route in state.routes.values() if player.location in {route.from_site, route.to_site}]
@@ -544,7 +544,10 @@ class GameEngine:
         routes = [route for route in adjacent if route.status in {"blocked", "strained"}]
         ordered = [stressed, *[route for route in routes if route is not stressed]] if stressed else routes
         for route in ordered[: int(effect.get("max_targets", effect.get("count", 2)))]: self._action_card_survey_routes(state, effect, route)
-    def _action_card_survey_and_mitigate(self, state, player, effect, target_id, adjacent, stressed): self._action_card_survey_routes(state, effect, stressed)
+    def _action_card_survey_and_mitigate(self, state, player, effect, target_id, adjacent, stressed):
+        if not stressed:
+            raise ValueError("invalid_action_card_target")
+        self._action_card_survey_routes(state, effect, stressed)
     def _action_card_reduce_route_risk(self, state, player, effect, target_id, adjacent, stressed):
         stressed.risk = max(0, stressed.risk + int(effect.get("risk_delta", -int(effect.get("amount", 1)))))
     def _action_card_survey_routes(self, state, effect, route):
@@ -780,6 +783,7 @@ class GameEngine:
             next_card = state.pending_choice.get("next_card_id")
             if action != ActionType.DISCARD.value or discard_id not in player.hand or next_card not in state.market: raise ValueError("invalid_discard_choice")
             player.hand.remove(discard_id)
+            state.decks.setdefault("discard", []).append(discard_id)
             state.pending_choice = None
             state.shared.phase = "player_action"
             self._explore(state, player, next_card)
@@ -791,7 +795,7 @@ class GameEngine:
             player = state.players[state.shared.active_player_id]; card = state.pending_choice["card_id"]; target_id = req.get("target_id")
             if action != ActionType.USE_ACTION_CARD.value or target_id not in {item["id"] for item in state.pending_choice["options"]}: raise ValueError("invalid_action_card_target")
             resume_choice = state.pending_choice.get("resume_choice")
-            state.pending_choice = None; self._use_action_card(state, player, card, target_id, req.get("target_ids"))
+            state.pending_choice = None; self._use_action_card(state, player, card, target_id, req.get("target_ids"), force_event_response=bool(resume_choice))
             if resume_choice and state.pending_choice is None: state.pending_choice = resume_choice
         elif state.pending_choice["kind"] == "archive_select":
             player = state.players[state.shared.active_player_id]; card = req.get("card_id")

@@ -14,11 +14,22 @@ from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
 app = FastAPI(title="Yungang Heritage Network", version="3.0")
-repo = GameRepository()
+repo = GameRepository(os.getenv("YUNGANG_DATABASE_PATH"))
 content = Content()
 engine = GameEngine(content)
 room_service = RoomService(RoomRepository(repo.path))
 _rate_buckets: dict[tuple[str, str], list[float]] = {}
+
+
+def create_app(database_path: str | Path | None = None) -> FastAPI:
+    """Return the API app, optionally pointing its runtime repository at an isolated database."""
+    global repo, room_service
+    if database_path is not None:
+        isolated = GameRepository(database_path)
+        repo.path = isolated.path
+        room_service.repository = RoomRepository(repo.path)
+        _rate_buckets.clear()
+    return app
 
 @app.middleware("http")
 async def security_and_rate_limit(request: Request, call_next):
@@ -35,7 +46,12 @@ async def security_and_rate_limit(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     return response
+
+@app.get("/healthz", include_in_schema=False)
+def healthz():
+    return {"status": "ok", "service": "yungang-heritage-network", "database": "ready" if repo.path.exists() else "initializing"}
 
 @app.get("/api/meta")
 def meta():

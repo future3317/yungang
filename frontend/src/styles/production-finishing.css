@@ -1,0 +1,22 @@
+@layer components {
+  .game-grid, .site-inspector, .command-deck, .hand-tray { container-type: inline-size; }
+  .game-shell { width: 100%; max-width: 100vw; overflow-x: clip; }
+  .tutorial-backdrop { overflow-x: hidden; }
+  .stage-caption { min-width: 0; max-width: 100%; overflow: hidden; }
+  .stage-caption > div { min-width: 0; }
+  @media (max-width: 760px) {
+    .game-grid, .stage-column, .network-stage, .network-frame { width: 100%; min-width: 0; max-width: 100%; overflow-x: hidden; }
+    .network-frame > svg { max-width: 100%; }
+  }
+  .room-feedback { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 10px 12px; color: #f4dfb5; background: rgba(119, 55, 38, .34); border: 1px solid rgba(224, 154, 104, .42); border-radius: 10px; }
+  .room-feedback .ghost-button { min-height: 32px; }
+  .result-explanation { padding: 13px 15px; color: #e4d7b9; text-align: left; background: rgba(14, 23, 17, .34); border: 1px solid rgba(222, 201, 153, .18); border-radius: 10px; }
+  .result-explanation p { margin: 5px 0 0; color: #c9bda5; font-size: .82rem; line-height: 1.55; }
+  @container (max-width: 360px) {
+    .hand-cards { grid-template-columns: 1fr; }
+    .site-inspector .inspector-tabs button { min-width: 0; padding-inline: 6px; font-size: .82rem; }
+  }
+  @container (min-width: 700px) {
+    .command-deck .hand-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+}

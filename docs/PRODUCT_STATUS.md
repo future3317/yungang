@@ -10,17 +10,17 @@
 
 | 模块 | 数量 | 数据来源 |
 | --- | ---: | --- |
-| 场景 | 4 | `data/scenarios.json` |
-| 节点 | 18 | `data/sites.json` |
-| 路线 | 30 | `data/routes.json` |
+| 场景 | 6 | `data/scenarios.json` |
+| 节点 | 24 | `data/sites.json` |
+| 路线 | 42 | `data/routes.json` |
 | 区域 | 4 | `data/regions.json` |
-| 文化证据 | 36 | `data/culture_cards.json` |
-| 事件 | 18 | `data/events.json` |
+| 文化证据 | 48 | `data/culture_cards.json` |
+| 事件 | 24 | `data/events.json` |
 | 角色 | 4 | `data/roles.json` |
 | 角色升级 | 8 | `data/role_upgrades.json` |
-| 策略牌 | 12 | `data/action_cards.json` |
+| 策略牌 | 16 | `data/action_cards.json` |
 | 项目 | 12 | `data/projects.json` |
-| 任务 | 18 | `data/tasks.json` |
+| 任务 | 24 | `data/tasks.json` |
 
 本轮内容扩展已经达到任务书提出的 24 节点、42 路线、48 证据、16 策略牌、24 事件、12 项目和 6 场景目标。新增内容使用现有已校验 UI 资产作为安全回退，后续可以替换为专门绘制的独立节点图标。
 
