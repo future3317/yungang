@@ -124,7 +124,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       {tab === 'task' && <section className="task-tab">
         {task ? <>
           <div className="tab-kicker"><Target size={14} />节点委托</div>
-          <h3>{task.name}</h3>
+          <div className="inspector-title-row"><img className="task-badge-art" src={contributions.length >= (task.required_card_count || 1) ? '/ui-assets/interaction/objective-badges/restored.png' : '/ui-assets/interaction/objective-badges/evidence.png'} alt="" /><h3>{task.name}</h3></div>
           <p>{recordText(task, 'description') || task.culture_explanation || '把相互印证的文化证据投入地点任务，推动共同目标。'}</p>
           <div className="task-workflow" aria-label="任务完成步骤">
             <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达此处</b><small>{isCurrentSite ? '你已来到节点，可以开始寻访。' : `沿路线前往${site.name}，那里正在等待你的脚步。`}</small></div></div>
@@ -140,7 +140,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'event' && <section className="event-tab">
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img src={`/ui-assets/generated/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img className="event-art-badge" src="/ui-assets/interaction/objective-badges/risk.png" alt="" /><img className="event-art-scene" src={`/ui-assets/generated/${recordText(event, 'art_asset') || 'scene_yungang_day.png'}`} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}<button className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button></> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section className="market-tab">

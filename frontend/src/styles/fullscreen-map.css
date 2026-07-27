@@ -121,3 +121,95 @@
   .game-shell { background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, .12), transparent 42%), #0c1711; }
   .network-stage { background: radial-gradient(ellipse at 50% 46%, rgba(188, 155, 82, .12), transparent 66%) !important; }
 }
+/* New interaction art is a restrained map layer, not a second background. */
+.network-atmosphere-layer,
+.map-focus-layer,
+.node-surface,
+.node-frame,
+.node-image,
+.map-player-focus-art,
+.map-selection-focus-art {
+  pointer-events: none;
+}
+
+.network-atmosphere {
+  opacity: .045;
+  mix-blend-mode: screen;
+}
+
+.network-atmosphere-lit {
+  opacity: .075;
+}
+
+.node-surface {
+  opacity: .18;
+  mix-blend-mode: screen;
+}
+
+.node-frame {
+  opacity: .28;
+  mix-blend-mode: screen;
+}
+
+.node-current .node-surface,
+.node-focused .node-surface {
+  opacity: .48;
+}
+
+.node-current .node-frame,
+.node-focused .node-frame {
+  opacity: .66;
+}
+
+.map-player-focus-art {
+  opacity: .34;
+  mix-blend-mode: screen;
+}
+
+.map-selection-focus-art {
+  opacity: .62;
+  mix-blend-mode: screen;
+}
+
+.action-card-icon img {
+  width: 38px;
+  height: 30px;
+  object-fit: contain;
+  opacity: .82;
+  mix-blend-mode: screen;
+}
+
+.action-card.selected .action-card-icon img,
+.action-card:hover .action-card-icon img {
+  opacity: 1;
+}
+
+.inspector-title-row {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+}
+
+.task-badge-art {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  opacity: .78;
+  mix-blend-mode: screen;
+}
+
+.event-art {
+  position: relative;
+}
+
+.event-art-badge {
+  position: absolute;
+  z-index: 1;
+  left: .35rem;
+  bottom: .35rem;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: .9;
+  mix-blend-mode: screen;
+}
