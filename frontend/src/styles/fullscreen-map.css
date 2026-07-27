@@ -274,6 +274,27 @@
   background: #27362d !important;
 }
 
+/* Floating controls share the same persisted drag offset. */
+.tutorial-trigger {
+  transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
+  cursor: grab;
+  touch-action: none;
+}
+.tutorial-trigger:active { cursor: grabbing; }
+.tutorial-trigger:hover,
+.tutorial-trigger:focus-visible {
+  transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)) translateY(-1px);
+}
+.timeline-drawer {
+  transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
+}
+.timeline-drawer summary {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.timeline-drawer summary:active { cursor: grabbing; }
+
 /* Keep the inspector header and tabs fixed while only the selected panel scrolls. */
 .site-inspector {
   display: flex !important;
