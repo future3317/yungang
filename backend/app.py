@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, JoinGameRequest
+from .models import ActionRequest, CreateGameRequest, GameState, JoinGameRequest
 from .repository import GameRepository
 
 app = FastAPI(title="Yungang Heritage Network", version="3.0")
@@ -18,26 +18,26 @@ engine = GameEngine(content)
 def meta():
     return {"schema_version": 3, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "terminology": content.terminology, "regions": content.regions, "scenarios": list(content.scenarios.values()), "roles": list(content.roles.values()), "sites": list(content.sites.values()), "facets": content.site_facets, "cards": list(content.cards.values()), "action_cards": list(content.action_cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "projects": list(content.projects.values()), "objectives": list(content.objectives.values()), "difficulty": list(content.difficulty.values())}
 
-@app.post("/api/games")
-def create_game(request: CreateGameRequest):
+@app.post("/api/games", response_model=GameState)
+def create_game(request: CreateGameRequest) -> GameState:
     session_id = f"game-{uuid4().hex[:10]}"
     seed = request.seed if request.seed is not None else request.daily_seed
     state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
 
-@app.post("/api/games/{session_id}")
-def create_game_with_id(session_id: str, request: CreateGameRequest):
+@app.post("/api/games/{session_id}", response_model=GameState)
+def create_game_with_id(session_id: str, request: CreateGameRequest) -> GameState:
     """Stable local-session creation endpoint used by demos, tests, and recovery flows."""
     seed = request.seed if request.seed is not None else request.daily_seed
     state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
 
-@app.post("/api/games/{session_id}/players")
-def join_game(session_id: str, request: JoinGameRequest):
+@app.post("/api/games/{session_id}/players", response_model=GameState)
+def join_game(session_id: str, request: JoinGameRequest) -> GameState:
     state = repo.get(session_id)
-    if not state: raise HTTPException(404, "game not found")
+    if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     if state.revision or len(state.players) >= 4: raise HTTPException(409, "game has already started")
     if request.player_id in state.players: return state
     role_id = request.role_id or next(role for role in content.roles if role not in {player.role_id for player in state.players.values()})
@@ -51,16 +51,16 @@ def join_game(session_id: str, request: JoinGameRequest):
     repo.save(state)
     return engine.refresh(state)
 
-@app.get("/api/games/{session_id}")
-def get_game(session_id: str):
+@app.get("/api/games/{session_id}", response_model=GameState)
+def get_game(session_id: str) -> GameState:
     state = repo.get(session_id)
-    if not state: raise HTTPException(404, "game not found")
+    if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     return state
 
-@app.post("/api/games/{session_id}/actions")
-def game_action(session_id: str, request: ActionRequest):
+@app.post("/api/games/{session_id}/actions", response_model=GameState)
+def game_action(session_id: str, request: ActionRequest) -> GameState:
     state = repo.get(session_id)
-    if not state: raise HTTPException(404, "game not found")
+    if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     if request.expected_revision != state.revision:
         raise HTTPException(status_code=409, detail={"code": "revision_conflict", "message": "旅程状态已更新，请同步后重新选择行动。", "details": {"expected_revision": request.expected_revision, "actual_revision": state.revision}, "recovery": "sync_current_state", "current_state": state.model_dump()})
     expected_revision = request.expected_revision

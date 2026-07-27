@@ -369,7 +369,9 @@ class GameEngine:
         elif typ == "remote_exchange_or_connect":
             recipient = state.players.get(target_id or "")
             if recipient: recipient.flags["remote_exchange"] = True
-            elif stressed: stressed.status = "illuminated"; stressed.connection_level = 2; state.shared.route_connection_score += 1
+            else:
+                restored = next((route for route in adjacent if route.id == target_id and route.status == "restored"), None)
+                if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
         elif typ == "reserve_ap": player.ap = min(player.max_ap + 1, player.ap + 1)
         elif typ == "transfer_resource":
             recipient = state.players.get(target_id or "")
@@ -678,6 +680,9 @@ class GameEngine:
 
     def _apply_reward(self, state, reward):
         state.shared.influence += int(reward.get("influence", 0)); state.shared.research_clues += int(reward.get("research_clues", 0)); state.shared.restoration_resource += int(reward.get("restoration_resource", 0))
+        state.shared.route_connection_score += int(reward.get("route_connection", 0))
+        state.shared.threat = max(0, state.shared.threat - int(reward.get("threat_reduction", 0)))
+        state.shared.weathering_track = state.shared.threat
 
     def _trigger_node_ability(self, state, player, site_id, card_id=None, trigger=None):
         ability = self.content.sites.get(site_id, {}).get("node_ability")

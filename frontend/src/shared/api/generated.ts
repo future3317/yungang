@@ -141,6 +141,108 @@ export interface components {
             /** Daily Seed */
             daily_seed?: string | null;
         };
+        /**
+         * GameOutcome
+         * @enum {string}
+         */
+        GameOutcome: "victory" | "defeat";
+        /** GameState */
+        GameState: {
+            /**
+             * Schema Version
+             * @default 3
+             */
+            schema_version: number;
+            /**
+             * Revision
+             * @default 0
+             */
+            revision: number;
+            /** Session Id */
+            session_id: string;
+            /**
+             * Mode
+             * @default heritage_network
+             */
+            mode: string;
+            /**
+             * Difficulty Id
+             * @default normal
+             */
+            difficulty_id: string;
+            /** Players */
+            players: {
+                [key: string]: components["schemas"]["PlayerState"];
+            };
+            /** Sites */
+            sites: {
+                [key: string]: components["schemas"]["SiteState"];
+            };
+            /** Tasks */
+            tasks?: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            };
+            shared?: components["schemas"]["SharedState"];
+            /** Decks */
+            decks?: {
+                [key: string]: string[];
+            };
+            /** Market */
+            market?: string[];
+            /** Pending Choice */
+            pending_choice?: {
+                [key: string]: unknown;
+            } | null;
+            /** Legal Actions */
+            legal_actions?: {
+                [key: string]: unknown;
+            }[];
+            /** Action Options */
+            action_options?: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Scenario Id
+             * @default sand_and_stone
+             */
+            scenario_id: string;
+            /**
+             * Seed
+             * @default 0
+             */
+            seed: number;
+            /**
+             * Rng State
+             * @default 0
+             */
+            rng_state: number;
+            /**
+             * Rng Position
+             * @default 0
+             */
+            rng_position: number;
+            /** Migrated From Schema Version */
+            migrated_from_schema_version?: number | null;
+            /** Routes */
+            routes?: {
+                [key: string]: components["schemas"]["RouteState"];
+            };
+            /** Projects */
+            projects?: {
+                [key: string]: components["schemas"]["ProjectState"];
+            };
+            /** Objectives */
+            objectives?: {
+                [key: string]: components["schemas"]["ObjectiveState"];
+            };
+            score?: components["schemas"]["ScoreState"];
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            };
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -153,6 +255,373 @@ export interface components {
             /** Role Id */
             role_id?: string | null;
         };
+        /** ObjectiveState */
+        ObjectiveState: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Type */
+            type: string;
+            /**
+             * Target
+             * @default 1
+             */
+            target: number;
+            /**
+             * Progress
+             * @default 0
+             */
+            progress: number;
+            /**
+             * Completed
+             * @default false
+             */
+            completed: boolean;
+        };
+        /** PlayerState */
+        PlayerState: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Role Id */
+            role_id: string;
+            /** Location */
+            location: string;
+            /**
+             * Ap
+             * @default 3
+             */
+            ap: number;
+            /**
+             * Max Ap
+             * @default 3
+             */
+            max_ap: number;
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Durability
+             * @default 3
+             */
+            durability: number;
+            /** Hand */
+            hand?: string[];
+            /** Action Hand */
+            action_hand?: string[];
+            /** Flags */
+            flags?: {
+                [key: string]: unknown;
+            };
+            /**
+             * Skill Used
+             * @default false
+             */
+            skill_used: boolean;
+            /**
+             * Contributions
+             * @default 0
+             */
+            contributions: number;
+            /** Upgrades */
+            upgrades?: string[];
+        };
+        /** ProjectState */
+        ProjectState: {
+            /** Id */
+            id: string;
+            /** Site Id */
+            site_id: string;
+            /** Name */
+            name: string;
+            /** Stages */
+            stages?: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Stage Index
+             * @default 0
+             */
+            stage_index: number;
+            /**
+             * Progress
+             * @default 0
+             */
+            progress: number;
+            /**
+             * Status
+             * @default active
+             */
+            status: string;
+            /** Contributors */
+            contributors?: string[];
+            /** Stage Evidence */
+            stage_evidence?: {
+                [key: string]: unknown;
+            }[];
+            /** Completed Stages */
+            completed_stages?: string[];
+            /** Stage Progress */
+            stage_progress?: {
+                [key: string]: number;
+            };
+            /** Stage Contributors */
+            stage_contributors?: {
+                [key: string]: string[];
+            };
+            /** Available Choices */
+            available_choices?: {
+                [key: string]: unknown;
+            }[];
+        };
+        /** RouteState */
+        RouteState: {
+            /** Id */
+            id: string;
+            /** From Site */
+            from_site: string;
+            /** To Site */
+            to_site: string;
+            /**
+             * Cost
+             * @default 1
+             */
+            cost: number;
+            /**
+             * Status
+             * @default open
+             */
+            status: string;
+            /**
+             * Risk
+             * @default 0
+             */
+            risk: number;
+            /**
+             * Connection Level
+             * @default 0
+             */
+            connection_level: number;
+            /** Active Project Id */
+            active_project_id?: string | null;
+            /** Tags */
+            tags?: string[];
+        };
+        /** ScoreState */
+        ScoreState: {
+            /**
+             * Tasks
+             * @default 0
+             */
+            tasks: number;
+            /**
+             * Routes
+             * @default 0
+             */
+            routes: number;
+            /**
+             * Diversity
+             * @default 0
+             */
+            diversity: number;
+            /**
+             * Protection
+             * @default 0
+             */
+            protection: number;
+            /**
+             * Resources
+             * @default 0
+             */
+            resources: number;
+            /**
+             * Efficiency
+             * @default 0
+             */
+            efficiency: number;
+            /**
+             * Discovery
+             * @default 0
+             */
+            discovery: number;
+            /**
+             * Total
+             * @default 0
+             */
+            total: number;
+            /**
+             * Grade
+             * @default stone
+             */
+            grade: string;
+        };
+        /** SharedState */
+        SharedState: {
+            /**
+             * Turn
+             * @default 1
+             */
+            turn: number;
+            /**
+             * Max Rounds
+             * @default 8
+             */
+            max_rounds: number;
+            /**
+             * Active Player Id
+             * @default p1
+             */
+            active_player_id: string;
+            /** Player Order */
+            player_order?: string[];
+            /**
+             * Threat
+             * @default 0
+             */
+            threat: number;
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Restoration Resource
+             * @default 6
+             */
+            restoration_resource: number;
+            /** Completed Domains */
+            completed_domains?: string[];
+            /** Current Event Id */
+            current_event_id?: string | null;
+            outcome?: components["schemas"]["GameOutcome"] | null;
+            /** Outcome Reason */
+            outcome_reason?: string | null;
+            /**
+             * Scenario Id
+             * @default sand_and_stone
+             */
+            scenario_id: string;
+            /**
+             * Research Clues
+             * @default 0
+             */
+            research_clues: number;
+            /** Prepared Event Ids */
+            prepared_event_ids?: string[];
+            /**
+             * Route Connection Score
+             * @default 0
+             */
+            route_connection_score: number;
+            /** Log */
+            log?: string[];
+            /** Planning Marks */
+            planning_marks?: {
+                [key: string]: {
+                    [key: string]: string;
+                }[];
+            };
+            /** Node Ability Uses */
+            node_ability_uses?: string[];
+            /**
+             * Phase
+             * @default player_action
+             */
+            phase: string;
+            /**
+             * Weathering Track
+             * @default 0
+             */
+            weathering_track: number;
+            /**
+             * Weathering Limit
+             * @default 5
+             */
+            weathering_limit: number;
+            /** Effective Rules */
+            effective_rules?: {
+                [key: string]: unknown;
+            };
+            /**
+             * Solo Mode
+             * @default false
+             */
+            solo_mode: boolean;
+            /** Controlled Character Ids */
+            controlled_character_ids?: string[];
+            /** Journal */
+            journal?: {
+                [key: string]: unknown;
+            }[];
+            /** Event Targets */
+            event_targets?: string[];
+            /** Event Instance */
+            event_instance?: {
+                [key: string]: unknown;
+            };
+            /** Event History */
+            event_history?: {
+                [key: string]: unknown;
+            }[];
+            /** Round Summary */
+            round_summary?: {
+                [key: string]: unknown;
+            };
+        };
+        /** SiteState */
+        SiteState: {
+            /** Id */
+            id: string;
+            /**
+             * Damage
+             * @default 0
+             */
+            damage: number;
+            /**
+             * Max Damage
+             * @default 3
+             */
+            max_damage: number;
+            /**
+             * Durability
+             * @default 3
+             */
+            durability: number;
+            /**
+             * Max Durability
+             * @default 3
+             */
+            max_durability: number;
+            /** @default stable */
+            status: components["schemas"]["SiteStatus"];
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Discovered
+             * @default false
+             */
+            discovered: boolean;
+            /** Domains */
+            domains?: string[];
+            /** Contributions */
+            contributions?: {
+                [key: string]: unknown;
+            }[];
+            /** Active Project Id */
+            active_project_id?: string | null;
+        };
+        /**
+         * SiteStatus
+         * @enum {string}
+         */
+        SiteStatus: "stable" | "at_risk" | "closed";
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -214,7 +683,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["GameState"];
                 };
             };
             /** @description Validation Error */
@@ -245,7 +714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["GameState"];
                 };
             };
             /** @description Validation Error */
@@ -280,7 +749,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["GameState"];
                 };
             };
             /** @description Validation Error */
@@ -315,7 +784,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["GameState"];
                 };
             };
             /** @description Validation Error */
@@ -350,7 +819,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["GameState"];
                 };
             };
             /** @description Validation Error */
