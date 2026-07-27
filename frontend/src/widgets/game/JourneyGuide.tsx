@@ -14,8 +14,9 @@ function displayTag(tag: string) {
   return comboTagNames[tag] || readableTag(tag);
 }
 
-function domainName(meta: Meta, id: string) { return meta.domain_meta?.[id]?.short_name || id; }
-function readableTag(tag: string) { const labels: Record<string, string> = { architecture: '建筑', statue: '造像', pattern: '纹样', frontier: '边地', trade: '交流', archive: '档案', material: '材料', religion: '信仰' }; return labels[tag] || tag.replaceAll('_', ' '); }
+const domainLabels: Record<string, string> = { architecture: '建筑', statue: '造像', pattern: '纹样', frontier: '边地', trade: '交流', archive: '档案', material: '材料', religion: '信仰' };
+function domainName(meta: Meta, id: string) { return meta.domain_meta?.[id]?.short_name || domainLabels[id] || '未标注领域'; }
+function readableTag(tag: string) { const labels: Record<string, string> = { architecture: '建筑', statue: '造像', pattern: '纹样', frontier: '边地', trade: '交流', archive: '档案', material: '材料', religion: '信仰' }; return labels[tag] || '未标注组合'; }
 
 export function JourneyGuide({ task, cards, active, legal, meta, actionMode, onChoose }: { task?: Task; cards: Record<string, ContentCard>; active: Player; legal: Action[]; meta: Meta; actionMode: ActionType | null; onChoose: (type: ActionType) => void }) {
   const contributions = task?.contributed_cards || [];

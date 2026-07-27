@@ -13,7 +13,8 @@ const comboNames: Record<string, string> = {
 };
 
 function domainName(meta: Meta, id: string) {
-  return meta.domain_meta?.[id]?.short_name || id;
+  const labels: Record<string, string> = { architecture: '建筑', statue: '造像', pattern: '纹样', frontier: '边地', trade: '交流', archive: '档案', material: '材料', religion: '信仰' };
+  return meta.domain_meta?.[id]?.short_name || labels[id] || '未标注领域';
 }
 
 const originNames: Record<string, string> = {
@@ -36,19 +37,19 @@ const requirementNames: Record<string, string> = {
 function formatRequirementValues(meta: Meta, key: string, values: string[]) {
   return values.map(value => {
     if (meta.domain_meta?.[value]) return domainName(meta, value);
-    if (key.includes('origin')) return originNames[value] || value.replaceAll('_', ' ');
-    return requirementNames[value] || comboNames[value] || value.replaceAll('_', ' ');
+    if (key.includes('origin')) return originNames[value] || '未标注来源';
+    return requirementNames[value] || comboNames[value] || '未标注条件';
   }).join('、');
 }
 
 function statusName(status?: string) {
   const labels: Record<string, string> = { stable: '稳定', normal: '稳定', open: '开放', at_risk: '有风险', blocked: '受阻', strained: '紧张', restored: '已修护', illuminated: '已点亮', closed: '已关闭' };
-  return labels[status || ''] || status || '稳定';
+  return labels[status || ''] || '稳定';
 }
 
 function siteTypeName(type?: string) {
   const labels: Record<string, string> = { heritage: '遗产节点', workshop: '协作节点', event: '事件节点', route: '路线节点' };
-  return labels[type || ''] || type || '遗产节点';
+  return labels[type || ''] || '遗产节点';
 }
 
 function contentClassName(value?: string) {
@@ -59,7 +60,7 @@ const siteMedallionAssets: Record<string, string> = { yungang: 'heritage-medalli
 
 function eventTypeName(type?: string) {
   const labels: Record<string, string> = { weathering: '风化压力', route: '路线变化', exchange: '交流变化', research: '研究线索' };
-  return labels[type || ''] || type || '区域事件';
+  return labels[type || ''] || '区域事件';
 }
 
 function cardRecord(card?: ContentCard): CardRecord {

@@ -11,9 +11,9 @@ type RouteLine = { id: string; from: string; to: string; route: RouteState };
 const routeRoadNames: Record<string, string> = { main: '主干道', regional: '区域道路', local: '支路' };
 const routeStatusNames: Record<string, string> = { open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮', closed: '已关闭' };
 const siteStatusNames: Record<string, string> = { stable: '稳定', at_risk: '有风险', closed: '已关闭', normal: '稳定' };
-function routeRoadName(value?: string) { return routeRoadNames[value || ''] || value?.replaceAll('_', ' ') || '支路'; }
-function routeStatusName(value?: string) { return routeStatusNames[value || ''] || value?.replaceAll('_', ' ') || '通行'; }
-function siteStatusName(value?: string) { return siteStatusNames[value || ''] || value?.replaceAll('_', ' ') || '稳定'; }
+function routeRoadName(value?: string) { return routeRoadNames[value || ''] || '支路'; }
+function routeStatusName(value?: string) { return routeStatusNames[value || ''] || '通行'; }
+function siteStatusName(value?: string) { return siteStatusNames[value || ''] || '稳定'; }
 
 function point(site: Site | undefined): Point { return { x: site?.layout?.x ?? site?.x ?? 50, y: site?.layout?.y ?? site?.y ?? 50 }; }
 function distance(a: Point, b: Point) { return Math.hypot(a.x - b.x, a.y - b.y); }

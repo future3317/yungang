@@ -1,4 +1,4 @@
-/* The map is the world. HUD surfaces sit on top of it without consuming layout width. */
+﻿/* The map is the world. HUD surfaces sit on top of it without consuming layout width. */
 @media (min-width: 1101px) {
   .game-shell {
     --map-left-clearance: clamp(248px, 19vw, 302px);
@@ -231,6 +231,11 @@
   .round-summary-main, .round-summary-metrics, .round-summary button { pointer-events: auto; }
   .network-tools button { display: grid !important; place-items: center; color: #f1e5c9 !important; background: rgba(23, 31, 26, .9) !important; }
   .network-tools button svg, .network-tools button svg * { display: block !important; width: 19px !important; height: 19px !important; color: #f1e5c9 !important; fill: none !important; stroke: #f1e5c9 !important; stroke-width: 2 !important; visibility: visible !important; opacity: 1 !important; }
+  .network-access-list { position: fixed; z-index: 6; top: 154px; left: calc(var(--map-left-clearance) + 28px); width: min(230px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 56px)); max-height: 184px; overflow: hidden; color: #ded3b9; background: rgba(14, 28, 20, .9); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; box-shadow: 0 10px 24px rgba(0, 0, 0, .18); backdrop-filter: blur(12px); }
+  .network-access-list > div { max-height: 138px; overflow-y: auto; }
+  .route-inspector { top: 154px; right: calc(var(--map-right-clearance) + 28px); max-height: calc(100dvh - 220px); overflow-y: auto; }
+  .roster-row > strong small, .player-resources small, .sync-state { font-size: .6875rem; }
+  .network-access-list summary, .network-access-list button, .route-inspector dt { font-size: .75rem; }
 }
 
 @media (max-width: 760px) {
@@ -241,4 +246,52 @@
   .game-header .goal-hud { overflow: hidden; }
   .game-header .goal-line { grid-template-columns: minmax(0, 1fr) minmax(96px, auto); }
   .game-header .goal-line b { overflow: hidden; font-size: .68rem; text-overflow: ellipsis; }
+}
+
+/* Desktop HUD collision and feedback reset: action results are compact dark toasts, never paper panels. */
+.toast.toast-queue {
+  box-sizing: border-box;
+  width: min(430px, calc(100vw - 48px));
+  min-height: 0 !important;
+  max-height: 92px;
+  overflow: hidden;
+  padding: 12px 16px;
+  color: #f7ecd4 !important;
+  background: linear-gradient(145deg, rgba(48, 67, 53, .98), rgba(23, 38, 28, .98)) !important;
+  border: 1px solid rgba(220, 190, 112, .52) !important;
+  border-radius: 11px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .36) !important;
+  font-size: .92rem;
+  line-height: 1.45;
+}
+.accessibility-control { width: 44px; height: 44px; }
+.accessibility-panel {
+  box-sizing: border-box;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: min(620px, calc(100dvh - 96px));
+  overflow-y: auto;
+  background: #27362d !important;
+}
+
+@media (min-width: 1101px) {
+  .network-access-list { display: none !important; }
+  .stage-heading { right: calc(var(--map-right-clearance) + 110px); }
+  .roster-column, .site-inspector {
+    height: calc(100dvh - 106px);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+  .tutorial-trigger {
+    position: fixed !important;
+    z-index: 45 !important;
+    right: calc(var(--map-right-clearance) + 22px);
+    bottom: 18px;
+  }
+  .tutorial-backdrop {
+    position: fixed !important;
+    z-index: 80 !important;
+    inset: 0;
+  }
 }
