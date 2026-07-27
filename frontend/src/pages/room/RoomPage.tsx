@@ -1,12 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Check, Copy, DoorOpen, Flag, LoaderCircle, Play, Shield, Users, Wifi } from 'lucide-react';
+import { ArrowLeft, Check, ChevronRight, Copy, DoorOpen, Flag, LoaderCircle, MapPin, Play, Shield, Sparkles, Users, Wifi } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../shared/api/client';
-import type { Meta, Room, RoomSeat } from '../../types/game';
+import type { ContentRole, Meta, Room, RoomSeat } from '../../types/game';
 import '../../styles/lobby.css';
 
 const tokenKey = (roomId: string) => `yungang-room-token:${roomId}`;
+
+const roleArt: Record<string, { portrait: string; badge: string; accent: string }> = {
+  pingcheng_artisan: { portrait: 'icon_role_craftsman.png', badge: 'role-badge-artisan.png', accent: 'cinnabar' },
+  western_dancer: { portrait: 'icon_role_diplomat.png', badge: 'role-badge-dancer.png', accent: 'teal' },
+  grassland_rider: { portrait: 'icon_role_diplomat.png', badge: 'role-badge-rider.png', accent: 'green' },
+  central_scribe: { portrait: 'icon_role_scribe.png', badge: 'role-badge-scribe.png', accent: 'blue' },
+};
+
+function roleAsset(role: ContentRole | undefined) {
+  return roleArt[role?.id || ''] || roleArt.central_scribe;
+}
 
 export function RoomPage() {
   const { roomId = '' } = useParams();
@@ -15,6 +26,7 @@ export function RoomPage() {
   const [token, setToken] = useState(() => window.localStorage.getItem(tokenKey(roomId)) || '');
   const [name, setName] = useState('同行者');
   const [roleId, setRoleId] = useState('');
+  const [activeSeatId, setActiveSeatId] = useState('seat-1');
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const roomQuery = useQuery<Room>({ queryKey: ['room', roomId, token], queryFn: () => api.room(roomId, token || undefined), refetchInterval: 1800 });
   useEffect(() => {
@@ -29,6 +41,11 @@ export function RoomPage() {
   const viewer = useMemo(() => room?.seats.find(seat => seat.seat_id === room.viewer_seat_id), [room]);
   const isHost = viewer?.seat_id === 'seat-1';
   const isManagedMode = room?.play_mode === 'solo' || room?.play_mode === 'local';
+  useEffect(() => {
+    if (!room) return;
+    const fallback = !isManagedMode && viewer?.seat_id ? viewer.seat_id : room.seats[0]?.seat_id;
+    if (fallback && !room.seats.some(seat => seat.seat_id === activeSeatId)) setActiveSeatId(fallback);
+  }, [activeSeatId, isManagedMode, room, viewer?.seat_id]);
 
   useEffect(() => {
     if (room?.status === 'in_progress' || room?.status === 'paused') navigate(`/room/${roomId}/game`, { replace: true });
@@ -47,13 +64,32 @@ export function RoomPage() {
 
   const roles = metaQuery.data.roles;
   const takenRoles = new Set(room.seats.map(item => item.role_id).filter(Boolean));
+  const activeSeat = room.seats.find(item => item.seat_id === activeSeatId) || viewer;
+  const galleryRoleId = room.play_mode === 'multi_device' && !token ? roleId : activeSeat?.role_id || '';
+  const canPickRole = Boolean((isManagedMode && isHost) || (!isManagedMode && token) || (room.play_mode === 'multi_device' && !token));
   const allConfigured = room.seats.length === room.max_players && room.seats.every(item => Boolean(item.role_id) && item.ready);
   const canStart = isHost && allConfigured;
+  const selectRole = (nextRoleId: string) => {
+    if (room.play_mode === 'multi_device' && !token) { setRoleId(nextRoleId); return; }
+    if (!activeSeat || takenRoles.has(nextRoleId) && activeSeat.role_id !== nextRoleId) return;
+    if (!isManagedMode && viewer?.seat_id === activeSeat.seat_id) { role.mutate(nextRoleId); return; }
+    if (isManagedMode && isHost) seat.mutate({ seatId: activeSeat.seat_id, update: { role_id: nextRoleId, ready: false } });
+  };
   const modeLabel = room.play_mode === 'solo' ? '单人旅程' : room.play_mode === 'local' ? '本地协作' : '多设备房间';
   const title = room.play_mode === 'solo' ? '配置两位同行角色' : room.play_mode === 'local' ? '配置本地同行席位' : '等待同行者入席';
   const description = room.play_mode === 'solo' ? '你将轮流调度两位角色。为两席选择不同角色并准备后，即可开始。' : room.play_mode === 'local' ? '在同一设备完成全部席位配置；行动回合会在席位之间交接。' : '每位同行者在自己的设备上选择角色并准备；全部就绪后由房主开始。';
 
-  return <main className="room-screen"><header className="room-topbar"><button className="room-back" onClick={() => navigate('/')}><ArrowLeft size={17} />返回首页</button><span><Wifi size={15} />旅舍开放中</span></header><section className="room-card" aria-labelledby="room-title"><div className="room-card-heading"><div><span className="eyebrow">{modeLabel}</span><h1 id="room-title">{title}</h1><p>{description}</p></div>{room.play_mode === 'multi_device' && <div className="room-code"><small>房间码</small><b>{room.room_id}</b><button onClick={() => void navigator.clipboard?.writeText(room.room_id)} aria-label="复制房间码"><Copy size={15} /></button></div>}</div><div className="room-seats">{Array.from({ length: room.max_players }, (_, index) => { const item = room.seats[index]; return <SeatCard key={item?.seat_id || index} seat={item} index={index} roles={roles} takenRoles={takenRoles} editable={Boolean(isManagedMode && isHost && item)} onUpdate={next => item && seat.mutate({ seatId: item.seat_id, update: next })} />; })}</div>{room.play_mode === 'multi_device' && !token ? <section className="join-panel"><div className="tab-kicker"><Users size={15} />加入这段旅程</div><label>你的名字<input value={name} maxLength={24} onChange={event => setName(event.target.value)} /></label><label>选择角色<select value={roleId} onChange={event => setRoleId(event.target.value)}><option value="">选择角色</option>{roles.map(item => <option key={item.id} value={item.id} disabled={takenRoles.has(item.id)}>{item.name}</option>)}</select></label><button className="primary-cta" disabled={join.isPending || room.seats.length >= room.max_players || !roleId} onClick={() => join.mutate()}><DoorOpen size={16} />加入席位</button></section> : !isManagedMode && token ? <section className="seat-control"><div className="tab-kicker"><Shield size={15} />你的席位</div><div className="seat-control-row"><div><b>{viewer?.name || '同行者'}</b><small>{roles.find(item => item.id === viewer?.role_id)?.name || '尚未选择角色'}</small></div><div className="seat-buttons"><select value={viewer?.role_id || ''} onChange={event => role.mutate(event.target.value)} aria-label="选择角色"><option value="">选择角色</option>{roles.map(item => <option key={item.id} value={item.id} disabled={takenRoles.has(item.id) && item.id !== viewer?.role_id}>{item.name}</option>)}</select><button className={viewer?.ready ? 'ready-button' : 'primary-action'} disabled={!viewer?.role_id} onClick={() => ready.mutate(!viewer?.ready)}>{viewer?.ready ? <><Check size={15} />取消准备</> : '准备好了'}</button></div></div></section> : null}<div className="room-actions">{isHost && <button className="primary-cta" disabled={!canStart || start.isPending} onClick={() => start.mutate()}><Play size={16} />开始旅程</button>}<button className="ghost-button" onClick={() => leave.mutate()}><ArrowLeft size={15} />离开旅舍</button></div>{isHost && !canStart && <p className="room-hint"><Flag size={14} />需要全部席位已选择不同角色并准备，才能开始。</p>}</section></main>;
+  return <main className="room-screen"><header className="room-topbar"><button className="room-back" onClick={() => navigate('/')}><ArrowLeft size={17} />返回首页</button><span><Wifi size={15} />旅舍开放中</span></header><section className="room-card" aria-labelledby="room-title"><div className="room-card-heading"><div><span className="eyebrow">{modeLabel}</span><h1 id="room-title">{title}</h1><p>{description}</p></div>{room.play_mode === 'multi_device' && <div className="room-code"><small>房间码</small><b>{room.room_id}</b><button onClick={() => void navigator.clipboard?.writeText(room.room_id)} aria-label="复制房间码"><Copy size={15} /></button></div>}</div><div className="room-seats">{Array.from({ length: room.max_players }, (_, index) => { const item = room.seats[index]; return <SeatCard key={item?.seat_id || index} seat={item} index={index} roles={roles} takenRoles={takenRoles} editable={Boolean(isManagedMode && isHost && item)} onUpdate={next => item && seat.mutate({ seatId: item.seat_id, update: next })} />; })}</div>{canPickRole && <RoleGallery roles={roles} seats={room.seats} activeSeatId={activeSeat?.seat_id} selectedRoleId={galleryRoleId} takenRoles={takenRoles} managed={isManagedMode && isHost} onSeatChange={setActiveSeatId} onSelect={selectRole} />}{room.play_mode === 'multi_device' && !token ? <section className="join-panel"><div className="tab-kicker"><Users size={15} />加入这段旅程</div><label>你的名字<input value={name} maxLength={24} onChange={event => setName(event.target.value)} /></label><label className="role-join-select">选择角色<select value={roleId} onChange={event => setRoleId(event.target.value)}><option value="">选择角色</option>{roles.map(item => <option key={item.id} value={item.id} disabled={takenRoles.has(item.id)}>{item.name}</option>)}</select></label><p className="role-join-note">先在上方选择一位角色，再加入空闲席位。</p><button className="primary-cta" disabled={join.isPending || room.seats.length >= room.max_players || !roleId} onClick={() => join.mutate()}><DoorOpen size={16} />加入席位</button></section> : !isManagedMode && token ? <section className="seat-control"><div className="tab-kicker"><Shield size={15} />你的席位</div><div className="seat-control-row"><div><b>{viewer?.name || '同行者'}</b><small>{roles.find(item => item.id === viewer?.role_id)?.name || '尚未选择角色'}</small></div><div className="seat-buttons"><label className="seat-role-select">&#x9009;&#x62E9;&#x89D2;&#x8272;<select value={viewer?.role_id || ''} onChange={event => role.mutate(event.target.value)} aria-label="选择角色"><option value="">选择角色</option>{roles.map(item => <option key={item.id} value={item.id} disabled={takenRoles.has(item.id) && item.id !== viewer?.role_id}>{item.name}</option>)}</select></label><button className={viewer?.ready ? 'ready-button' : 'primary-action'} disabled={!viewer?.role_id} onClick={() => ready.mutate(!viewer?.ready)}>{viewer?.ready ? <><Check size={15} />取消准备</> : '准备好了'}</button></div></div></section> : null}<div className="room-actions">{isHost && <button className="primary-cta" disabled={!canStart || start.isPending} onClick={() => start.mutate()}><Play size={16} />开始旅程</button>}<button className="ghost-button" onClick={() => leave.mutate()}><ArrowLeft size={15} />离开旅舍</button></div>{isHost && !canStart && <p className="room-hint"><Flag size={14} />需要全部席位已选择不同角色并准备，才能开始。</p>}</section></main>;
+}
+
+function RoleGallery({ roles, seats, activeSeatId, selectedRoleId, takenRoles, managed, onSeatChange, onSelect }: { roles: Meta['roles']; seats: RoomSeat[]; activeSeatId?: string; selectedRoleId: string; takenRoles: Set<string | null | undefined>; managed: boolean; onSeatChange: (seatId: string) => void; onSelect: (roleId: string) => void }) {
+  const selected = roles.find(role => role.id === selectedRoleId) || roles[0];
+  const selectedAsset = roleAsset(selected);
+  return <section className="role-selection-panel" aria-labelledby="role-selection-title">
+    <div className="role-selection-heading"><div><span className="eyebrow">角色展台</span><h2 id="role-selection-title">选择你的同行者</h2><p>每位角色都有不同的行动节奏。查看专长和起手建议，再决定谁守护哪一段线索。</p></div><span className="role-selection-count">{roles.filter(role => !takenRoles.has(role.id) || role.id === selectedRoleId).length} 位可选</span></div>
+    {managed && <div className="role-seat-switcher" role="tablist" aria-label="选择要配置的席位">{seats.map((seat, index) => <button key={seat.seat_id} role="tab" aria-selected={seat.seat_id === activeSeatId} className={seat.seat_id === activeSeatId ? 'active' : ''} onClick={() => onSeatChange(seat.seat_id)}><span>席位 {index + 1}</span><b>{seat.name}</b><small>{roles.find(role => role.id === seat.role_id)?.name || '等待角色'}</small></button>)}</div>}
+    <div className="role-selection-layout"><div className="role-card-grid">{roles.map(role => { const asset = roleAsset(role); const unavailable = takenRoles.has(role.id) && role.id !== selectedRoleId; return <button key={role.id} className={`role-choice-card ${role.id === selectedRoleId ? 'selected' : ''} ${unavailable ? 'unavailable' : ''} role-accent-${asset.accent}`} disabled={unavailable} onClick={() => onSelect(role.id)} aria-pressed={role.id === selectedRoleId}><span className="role-choice-portrait"><img src={`/ui-assets/generated/${asset.portrait}`} alt="" /><img className="role-choice-badge" src={`/ui-assets/ornaments/${asset.badge}`} alt="" /></span><span className="role-choice-copy"><b>{role.name}</b><small>{role.origin || '同行角色'} · {role.team_role || '协作专长'}</small><em>{role.ability?.name || '角色专长'} · {role.ability?.ap_cost || 0} AP</em></span><ChevronRight className="role-choice-arrow" size={17} /></button>; })}</div><aside className={`role-detail-card role-accent-${selectedAsset.accent}`}><div className="role-detail-art"><img src={`/ui-assets/generated/${selectedAsset.portrait}`} alt="" /><img className="role-detail-badge" src={`/ui-assets/ornaments/${selectedAsset.badge}`} alt="" /></div><div className="role-detail-heading"><span>{selected?.origin || '同行角色'}</span><h3>{selected?.name || '选择一位角色'}</h3><p>{selected?.team_role || '为团队补上关键的一束光'}</p></div><div className="role-detail-section"><span><Sparkles size={14} />专长</span><b>{selected?.ability?.name || '等待选择'}</b><p>{selected?.ability?.description || '选择角色后，这里会显示专长的实际效果。'}</p></div><div className="role-detail-section"><span><MapPin size={14} />行动风格</span><p>{selected?.play_style || selected?.meaning || '在地图上寻找最适合自己的协作位置。'}</p></div>{selected?.solo_rule && <div className="role-solo-note"><b>单人提示</b><span>{selected.solo_rule}</span></div>}{selected?.starting_hint && <div className="role-start-note">{selected.starting_hint}</div>}</aside></div>
+  </section>;
 }
 
 function SeatCard({ seat, index, roles, takenRoles, editable, onUpdate }: { seat?: RoomSeat; index: number; roles: Meta['roles']; takenRoles: Set<string | null | undefined>; editable: boolean; onUpdate: (update: { name?: string; role_id?: string; ready?: boolean }) => void }) {
