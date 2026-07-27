@@ -277,6 +277,55 @@
 @media (min-width: 1101px) {
   .network-access-list { display: none !important; }
   .stage-heading { right: calc(var(--map-right-clearance) + 110px); }
+  .site-inspector {
+    min-width: 0;
+    grid-template-rows: auto auto minmax(0, 1fr);
+  }
+  .site-inspector .inspector-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 8px;
+    overflow: hidden;
+  }
+  .site-inspector .inspector-tabs button {
+    min-width: 0 !important;
+    width: 100%;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    flex: 1 1 0;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding-inline: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .site-inspector .inspector-tabs button svg {
+    flex: 0 0 15px;
+    width: 15px !important;
+    height: 15px !important;
+  }
+  .site-inspector .inspector-content {
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .site-inspector .inspector-content > section,
+  .site-inspector .inspector-title-row {
+    min-width: 0;
+  }
+  .site-inspector .inspector-title-row h3 {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .game-header {
     position: fixed !important;
     z-index: 40 !important;
