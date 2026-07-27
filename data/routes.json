@@ -1,1602 +1,1518 @@
 [
-    {
-        "from":  "huayan_temple",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_huayan_temple_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "华严寺—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "frontier",
-                              "religion",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          36.580785012432884,
-                          36.774090990882556
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              39,
-                              35
-                          ]
-    },
-    {
-        "from":  "shanhua_temple",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_shanhua_temple_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "善化寺—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "construction",
-                              "worship",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          58.64104498353273,
-                          34.146535344204288
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              61,
-                              36
-                          ]
-    },
-    {
-        "from":  "wall_pass",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_wall_pass_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "长城关隘—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "frontier",
-                              "security",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          51.994823119524987,
-                          67.176166065854417
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              49,
-                              67
-                          ]
-    },
-    {
-        "from":  "trade_post",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_trade_post_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "互市驿站—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "trade",
-                              "exchange",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          69.564350028361929,
-                          58.440154499044127
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              68,
-                              61
-                          ]
-    },
-    {
-        "from":  "pingcheng_ruins",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_pingcheng_ruins_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "平城遗址—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "capital",
-                              "archive",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          35.589996820009539,
-                          62.543994912015265
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              34,
-                              60
-                          ]
-    },
-    {
-        "from":  "huayan_temple",
-        "to":  "trade_post",
-        "cost":  2,
-        "id":  "route_huayan_temple_trade_post",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main",
-                     "gate"
-                 ],
-        "name":  "华严寺—互市驿站",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "frontier",
-                              "religion",
-                              "trade",
-                              "exchange"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          53.66227492123987,
-                          49.722847203232455
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              57,
-                              46
-                          ]
-    },
-    {
-        "from":  "shanhua_temple",
-        "to":  "wall_pass",
-        "cost":  2,
-        "id":  "route_shanhua_temple_wall_pass",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "善化寺—长城关隘",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "construction",
-                              "worship",
-                              "frontier",
-                              "security"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          55.337159508629554,
-                          51.195029487211443
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              60,
-                              53
-                          ]
-    },
-    {
-        "id":  "route_northern_workshop_yungang",
-        "from":  "northern_workshop",
-        "to":  "yungang",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main"
-                 ],
-        "name":  "北线工坊—云冈石窟",
-        "strategic_role":  "区域主干",
-        "risk_profile":  "中等影响：连接主要遗产节点或核心项目。",
-        "evidence_tags":  [
-                              "architecture",
-                              "pattern",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          30.309266547943597,
-                          44.753571107880425
-                      ],
-        "roadClass":  "main",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              31.5,
-                              42
-                          ]
-    },
-    {
-        "id":  "route_archive_depot_pingcheng_ruins",
-        "from":  "archive_depot",
-        "to":  "pingcheng_ruins",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "档案库—平城遗址",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "statue",
-                              "pattern",
-                              "capital",
-                              "archive"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          22.172376902759485,
-                          55.6877230678931
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              24,
-                              56.5
-                          ]
-    },
-    {
-        "id":  "route_material_yard_shanhua_temple",
-        "from":  "material_yard",
-        "to":  "shanhua_temple",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "材料场—善化寺",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "architecture",
-                              "trade",
-                              "construction",
-                              "worship"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          68.748314552243073,
-                          31.971285862357263
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              67,
-                              31
-                          ]
-    },
-    {
-        "id":  "route_carving_courtyard_yungang",
-        "from":  "carving_courtyard",
-        "to":  "yungang",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "main"
-                 ],
-        "name":  "造像院—云冈石窟",
-        "strategic_role":  "区域主干",
-        "risk_profile":  "中等影响：连接主要遗产节点或核心项目。",
-        "evidence_tags":  [
-                              "statue",
-                              "architecture",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          42.7475681826467,
-                          40.963837499544312
-                      ],
-        "roadClass":  "main",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              44.5,
-                              40
-                          ]
-    },
-    {
-        "id":  "route_huayan_temple_motif_gallery",
-        "from":  "huayan_temple",
-        "to":  "motif_gallery",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "华严寺—纹样廊",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "frontier",
-                              "religion",
-                              "pattern",
-                              "statue"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          46.661925774045,
-                          21.995626819832523
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              46.5,
-                              19
-                          ]
-    },
-    {
-        "id":  "route_river_crossing_trade_post",
-        "from":  "river_crossing",
-        "to":  "trade_post",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "河谷渡口—互市驿站",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "trade",
-                              "frontier",
-                              "exchange"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          86.027212152335707,
-                          59.671202025389285
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              88,
-                              60
-                          ]
-    },
-    {
-        "id":  "route_caravan_camp_trade_post",
-        "from":  "caravan_camp",
-        "to":  "trade_post",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "行旅营地—互市驿站",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "trade",
-                              "frontier",
-                              "exchange"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          85.408959956070063,
-                          80.5965499862719
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              83.5,
-                              80
-                          ]
-    },
-    {
-        "id":  "route_border_market_wall_pass",
-        "from":  "border_market",
-        "to":  "wall_pass",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "边市前沿—长城关隘",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade",
-                              "security"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          59.211990655183975,
-                          86.131024530142071
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              58.5,
-                              88
-                          ]
-    },
-    {
-        "id":  "route_wall_pass_watchtower",
-        "from":  "wall_pass",
-        "to":  "watchtower",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "长城关隘—烽火台",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "security",
-                              "architecture"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          39.198362331960581,
-                          85.667685330195624
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              40,
-                              87.5
-                          ]
-    },
-    {
-        "id":  "route_craft_school_pingcheng_ruins",
-        "from":  "craft_school",
-        "to":  "pingcheng_ruins",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "工艺学堂—平城遗址",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "architecture",
-                              "statue",
-                              "capital",
-                              "archive"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          12.211145618000169,
-                          62.894427190999913
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              14,
-                              62
-                          ]
-    },
-    {
-        "id":  "route_river_archive_trade_post",
-        "from":  "river_archive",
-        "to":  "trade_post",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "河道档案—互市驿站",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "trade",
-                              "pattern",
-                              "exchange"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          86.056715320863489,
-                          47.828802607806551
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              90,
-                              48.5
-                          ]
-    },
-    {
-        "id":  "route_route_junction_yungang",
-        "from":  "route_junction",
-        "to":  "yungang",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "路线枢纽—云冈石窟",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade",
-                              "central",
-                              "core"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          52.976743395301234,
-                          56.195885631492118
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              51,
-                              56.5
-                          ]
-    },
-    {
-        "id":  "route_carving_courtyard_northern_workshop",
-        "from":  "carving_courtyard",
-        "to":  "northern_workshop",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "造像院—北线工坊",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "statue",
-                              "architecture",
-                              "pattern"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          25.695885631492118,
-                          30.023256604698766
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              26,
-                              32
-                          ]
-    },
-    {
-        "id":  "route_carving_courtyard_motif_gallery",
-        "from":  "carving_courtyard",
-        "to":  "motif_gallery",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "造像院—纹样廊",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "statue",
-                              "architecture",
-                              "pattern"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          52.838116354923493,
-                          25.815918769000902
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              52,
-                              24
-                          ]
-    },
-    {
-        "id":  "route_material_yard_river_crossing",
-        "from":  "material_yard",
-        "to":  "river_crossing",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "材料场—河谷渡口",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "architecture",
-                              "trade",
-                              "frontier"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          75.450557744205241,
-                          45.923047895281648
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              76,
-                              44
-                          ]
-    },
-    {
-        "id":  "route_river_archive_river_crossing",
-        "from":  "river_archive",
-        "to":  "river_crossing",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "河道档案—河谷渡口",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "trade",
-                              "pattern",
-                              "frontier"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          90.029576490360654,
-                          36.157317650497504
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              92,
-                              36.5
-                          ]
-    },
-    {
-        "id":  "route_border_market_caravan_camp",
-        "from":  "border_market",
-        "to":  "caravan_camp",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "边市前沿—行旅营地",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          75.632455532033674,
-                          91.897366596101023
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              75,
-                              90
-                          ]
-    },
-    {
-        "id":  "route_border_market_watchtower",
-        "from":  "border_market",
-        "to":  "watchtower",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "边市前沿—烽火台",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade",
-                              "architecture"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          50.581051484043748,
-                          88.50109509038144
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              50.5,
-                              91.5
-                          ]
-    },
-    {
-        "id":  "route_craft_school_watchtower",
-        "from":  "craft_school",
-        "to":  "watchtower",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "工艺学堂—烽火台",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "architecture",
-                              "statue",
-                              "frontier"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          18.421392335938016,
-                          74.033226178631452
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              21,
-                              72.5
-                          ]
-    },
-    {
-        "id":  "route_archive_depot_craft_school",
-        "from":  "archive_depot",
-        "to":  "craft_school",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "档案库—工艺学堂",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "statue",
-                              "pattern",
-                              "architecture"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          19.036162500455688,
-                          46.7475681826467
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              20,
-                              48.5
-                          ]
-    },
-    {
-        "id":  "route_archive_depot_route_junction",
-        "from":  "archive_depot",
-        "to":  "route_junction",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "gate",
-                     "main"
-                 ],
-        "name":  "档案库—路线枢纽",
-        "strategic_role":  "区域门户",
-        "risk_profile":  "高影响：阻断后会改变区域间移动与目标推进。",
-        "evidence_tags":  [
-                              "statue",
-                              "pattern",
-                              "frontier",
-                              "trade"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic",
-                           "regional_connection"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          39.654654412007375,
-                          54.479880146791885
-                      ],
-        "roadClass":  "main",
-        "terrain":  "valley",
-        "labelPosition":  [
-                              41,
-                              53
-                          ]
-    },
-    {
-        "id":  "route_route_junction_trade_post",
-        "from":  "route_junction",
-        "to":  "trade_post",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "路线枢纽—互市驿站",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade",
-                              "exchange"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          68.23232231905115,
-                          70.400115683584531
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              69,
-                              67.5
-                          ]
-    },
-    {
-        "id":  "route_route_junction_wall_pass",
-        "from":  "route_junction",
-        "to":  "wall_pass",
-        "cost":  1,
-        "status":  "open",
-        "risk":  0,
-        "connection_level":  0,
-        "active_project_id":  null,
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "local"
-                 ],
-        "name":  "路线枢纽—长城关隘",
-        "strategic_role":  "区域支路",
-        "risk_profile":  "局部影响：主要服务单个任务、项目或节点能力。",
-        "evidence_tags":  [
-                              "frontier",
-                              "trade",
-                              "security"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "traffic"
-                       ],
-        "ui_hint":  "勘察可获得研究线索；修护后可进一步建立稳定连接。",
-        "waypoints":  [
-                          48.035322867155053,
-                          73.125775784220011
-                      ],
-        "roadClass":  "local",
-        "terrain":  "plain",
-        "labelPosition":  [
-                              50,
-                              73.5
-                          ]
-    },
-    {
-        "from":  "eastern_cave_observatory",
-        "to":  "digital_mapping_station",
-        "cost":  1,
-        "id":  "route_eastern_cave_observatory_digital_mapping_station",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "?????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          60.485071250072664,
-                          25.059714999709335
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              60,
-                              27
-                          ]
-    },
-    {
-        "from":  "eastern_cave_observatory",
-        "to":  "environmental_monitoring_station",
-        "cost":  2,
-        "id":  "route_eastern_cave_observatory_environmental_monitoring_station",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "?????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          71.023166369859,
-                          46.372104203767627
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              74,
-                              46
-                          ]
-    },
-    {
-        "from":  "central_cave_observatory",
-        "to":  "yungang",
-        "cost":  1,
-        "id":  "route_central_cave_observatory_yungang",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "?????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          52.335899411324313,
-                          42.890599607549539
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              54,
-                              44
-                          ]
-    },
-    {
-        "from":  "central_cave_observatory",
-        "to":  "material_yard",
-        "cost":  1,
-        "id":  "route_central_cave_observatory_material_yard",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          59.105572809000087,
-                          40.788854381999833
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              60,
-                              39
-                          ]
-    },
-    {
-        "from":  "western_cave_observatory",
-        "to":  "wall_pass",
-        "cost":  2,
-        "id":  "route_western_cave_observatory_wall_pass",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "???????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          32.922291236000333,
-                          62.788854381999833
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              36.5,
-                              61
-                          ]
-    },
-    {
-        "from":  "western_cave_observatory",
-        "to":  "digital_mapping_station",
-        "cost":  1,
-        "id":  "route_western_cave_observatory_digital_mapping_station",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "?????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          37.539893893791493,
-                          32.708397111228876
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              36.5,
-                              31
-                          ]
-    },
-    {
-        "from":  "digital_mapping_station",
-        "to":  "archive_depot",
-        "cost":  1,
-        "id":  "route_digital_mapping_station_archive_depot",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          37.548094632188345,
-                          32.124510704178434
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              39,
-                              33.5
-                          ]
-    },
-    {
-        "from":  "digital_mapping_station",
-        "to":  "pingcheng_ruins",
-        "cost":  2,
-        "id":  "route_digital_mapping_station_pingcheng_ruins",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "?????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          29.649557612645545,
-                          44.814928877812314
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              33,
-                              47
-                          ]
-    },
-    {
-        "from":  "environmental_monitoring_station",
-        "to":  "visitor_emergency_point",
-        "cost":  1,
-        "id":  "route_environmental_monitoring_station_visitor_emergency_point",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          80.585786437626908,
-                          69.414213562373092
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              82,
-                              68
-                          ]
-    },
-    {
-        "from":  "environmental_monitoring_station",
-        "to":  "shanhua_temple",
-        "cost":  2,
-        "id":  "route_environmental_monitoring_station_shanhua_temple",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          76.985111570629968,
-                          41.701488842937
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              74,
-                              42
-                          ]
-    },
-    {
-        "from":  "visitor_emergency_point",
-        "to":  "trade_post",
-        "cost":  1,
-        "id":  "route_visitor_emergency_point_trade_post",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "??????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          88.414213562373092,
-                          71.585786437626908
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              87,
-                              73
-                          ]
-    },
-    {
-        "from":  "visitor_emergency_point",
-        "to":  "route_junction",
-        "cost":  1,
-        "id":  "route_visitor_emergency_point_route_junction",
-        "directional_rules":  {
-
-                              },
-        "tags":  [
-                     "support",
-                     "new_content"
-                 ],
-        "name":  "????????",
-        "strategic_role":  "????????",
-        "risk_profile":  "????????????????????????",
-        "evidence_tags":  [
-                              "support",
-                              "new_content"
-                          ],
-        "event_tags":  [
-                           "route",
-                           "support"
-                       ],
-        "ui_hint":  "??????????????????",
-        "waypoints":  [
-                          70.876655606797058,
-                          65.630945286845986
-                      ],
-        "roadClass":  "regional",
-        "terrain":  "slope",
-        "labelPosition":  [
-                              70,
-                              68.5
-                          ]
-    }
+  {
+    "from": "huayan_temple",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_huayan_temple_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "华严寺—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      36.580785012432884,
+      36.774090990882556
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      39,
+      35
+    ]
+  },
+  {
+    "from": "shanhua_temple",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_shanhua_temple_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "善化寺—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "construction",
+      "worship",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      58.64104498353273,
+      34.14653534420429
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      61,
+      36
+    ]
+  },
+  {
+    "from": "wall_pass",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_wall_pass_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "长城关隘—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "security",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      51.99482311952499,
+      67.17616606585442
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      49,
+      67
+    ]
+  },
+  {
+    "from": "trade_post",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_trade_post_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "互市驿站—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "trade",
+      "exchange",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      69.56435002836193,
+      58.44015449904413
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      68,
+      61
+    ]
+  },
+  {
+    "from": "pingcheng_ruins",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_pingcheng_ruins_yungang",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "平城遗址—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "capital",
+      "archive",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      35.58999682000954,
+      62.543994912015265
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      34,
+      60
+    ]
+  },
+  {
+    "from": "huayan_temple",
+    "to": "trade_post",
+    "cost": 2,
+    "id": "route_huayan_temple_trade_post",
+    "directional_rules": {},
+    "tags": [
+      "main",
+      "gate"
+    ],
+    "name": "华严寺—互市驿站",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "trade",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      53.66227492123987,
+      49.722847203232455
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      57,
+      46
+    ]
+  },
+  {
+    "from": "shanhua_temple",
+    "to": "wall_pass",
+    "cost": 2,
+    "id": "route_shanhua_temple_wall_pass",
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "善化寺—长城关隘",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "construction",
+      "worship",
+      "frontier",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      55.337159508629554,
+      51.19502948721144
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      60,
+      53
+    ]
+  },
+  {
+    "id": "route_northern_workshop_yungang",
+    "from": "northern_workshop",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "name": "北线工坊—云冈石窟",
+    "strategic_role": "区域主干",
+    "risk_profile": "中等影响：连接主要遗产节点或核心项目。",
+    "evidence_tags": [
+      "architecture",
+      "pattern",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      30.309266547943597,
+      44.753571107880425
+    ],
+    "roadClass": "main",
+    "terrain": "plain",
+    "labelPosition": [
+      31.5,
+      42
+    ]
+  },
+  {
+    "id": "route_archive_depot_pingcheng_ruins",
+    "from": "archive_depot",
+    "to": "pingcheng_ruins",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "档案库—平城遗址",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "capital",
+      "archive"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      22.172376902759485,
+      55.6877230678931
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      24,
+      56.5
+    ]
+  },
+  {
+    "id": "route_material_yard_shanhua_temple",
+    "from": "material_yard",
+    "to": "shanhua_temple",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "材料场—善化寺",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "architecture",
+      "trade",
+      "construction",
+      "worship"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      68.74831455224307,
+      31.971285862357263
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      67,
+      31
+    ]
+  },
+  {
+    "id": "route_carving_courtyard_yungang",
+    "from": "carving_courtyard",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "main"
+    ],
+    "name": "造像院—云冈石窟",
+    "strategic_role": "区域主干",
+    "risk_profile": "中等影响：连接主要遗产节点或核心项目。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      42.7475681826467,
+      40.96383749954431
+    ],
+    "roadClass": "main",
+    "terrain": "plain",
+    "labelPosition": [
+      44.5,
+      40
+    ]
+  },
+  {
+    "id": "route_huayan_temple_motif_gallery",
+    "from": "huayan_temple",
+    "to": "motif_gallery",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "华严寺—纹样廊",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "religion",
+      "pattern",
+      "statue"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      46.661925774045,
+      21.995626819832523
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      46.5,
+      19
+    ]
+  },
+  {
+    "id": "route_river_crossing_trade_post",
+    "from": "river_crossing",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "河谷渡口—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "frontier",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      86.02721215233571,
+      59.671202025389285
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      88,
+      60
+    ]
+  },
+  {
+    "id": "route_caravan_camp_trade_post",
+    "from": "caravan_camp",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "行旅营地—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "frontier",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      85.40895995607006,
+      80.5965499862719
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      83.5,
+      80
+    ]
+  },
+  {
+    "id": "route_border_market_wall_pass",
+    "from": "border_market",
+    "to": "wall_pass",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—长城关隘",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      59.211990655183975,
+      86.13102453014207
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      58.5,
+      88
+    ]
+  },
+  {
+    "id": "route_wall_pass_watchtower",
+    "from": "wall_pass",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "长城关隘—烽火台",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "security",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      39.19836233196058,
+      85.66768533019562
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      40,
+      87.5
+    ]
+  },
+  {
+    "id": "route_craft_school_pingcheng_ruins",
+    "from": "craft_school",
+    "to": "pingcheng_ruins",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "工艺学堂—平城遗址",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "architecture",
+      "statue",
+      "capital",
+      "archive"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      12.211145618000169,
+      62.89442719099991
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      14,
+      62
+    ]
+  },
+  {
+    "id": "route_river_archive_trade_post",
+    "from": "river_archive",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "河道档案—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "pattern",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      86.05671532086349,
+      47.82880260780655
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      90,
+      48.5
+    ]
+  },
+  {
+    "id": "route_route_junction_yungang",
+    "from": "route_junction",
+    "to": "yungang",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "路线枢纽—云冈石窟",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "central",
+      "core"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      52.976743395301234,
+      56.19588563149212
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      51,
+      56.5
+    ]
+  },
+  {
+    "id": "route_carving_courtyard_northern_workshop",
+    "from": "carving_courtyard",
+    "to": "northern_workshop",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "造像院—北线工坊",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "pattern"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      25.695885631492118,
+      30.023256604698766
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      26,
+      32
+    ]
+  },
+  {
+    "id": "route_carving_courtyard_motif_gallery",
+    "from": "carving_courtyard",
+    "to": "motif_gallery",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "造像院—纹样廊",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "architecture",
+      "pattern"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      52.83811635492349,
+      25.815918769000902
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      52,
+      24
+    ]
+  },
+  {
+    "id": "route_material_yard_river_crossing",
+    "from": "material_yard",
+    "to": "river_crossing",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "材料场—河谷渡口",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "architecture",
+      "trade",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      75.45055774420524,
+      45.92304789528165
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      76,
+      44
+    ]
+  },
+  {
+    "id": "route_river_archive_river_crossing",
+    "from": "river_archive",
+    "to": "river_crossing",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "河道档案—河谷渡口",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "trade",
+      "pattern",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      90.02957649036065,
+      36.157317650497504
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      92,
+      36.5
+    ]
+  },
+  {
+    "id": "route_border_market_caravan_camp",
+    "from": "border_market",
+    "to": "caravan_camp",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—行旅营地",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      75.63245553203367,
+      91.89736659610102
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      75,
+      90
+    ]
+  },
+  {
+    "id": "route_border_market_watchtower",
+    "from": "border_market",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "边市前沿—烽火台",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      50.58105148404375,
+      88.50109509038144
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      50.5,
+      91.5
+    ]
+  },
+  {
+    "id": "route_craft_school_watchtower",
+    "from": "craft_school",
+    "to": "watchtower",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "工艺学堂—烽火台",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "architecture",
+      "statue",
+      "frontier"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      18.421392335938016,
+      74.03322617863145
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      21,
+      72.5
+    ]
+  },
+  {
+    "id": "route_archive_depot_craft_school",
+    "from": "archive_depot",
+    "to": "craft_school",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "档案库—工艺学堂",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "architecture"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      19.03616250045569,
+      46.7475681826467
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      20,
+      48.5
+    ]
+  },
+  {
+    "id": "route_archive_depot_route_junction",
+    "from": "archive_depot",
+    "to": "route_junction",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "gate",
+      "main"
+    ],
+    "name": "档案库—路线枢纽",
+    "strategic_role": "区域门户",
+    "risk_profile": "高影响：阻断后会改变区域间移动与目标推进。",
+    "evidence_tags": [
+      "statue",
+      "pattern",
+      "frontier",
+      "trade"
+    ],
+    "event_tags": [
+      "route",
+      "traffic",
+      "regional_connection"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      39.654654412007375,
+      54.479880146791885
+    ],
+    "roadClass": "main",
+    "terrain": "valley",
+    "labelPosition": [
+      41,
+      53
+    ]
+  },
+  {
+    "id": "route_route_junction_trade_post",
+    "from": "route_junction",
+    "to": "trade_post",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "路线枢纽—互市驿站",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "exchange"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      68.23232231905115,
+      70.40011568358453
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      69,
+      67.5
+    ]
+  },
+  {
+    "id": "route_route_junction_wall_pass",
+    "from": "route_junction",
+    "to": "wall_pass",
+    "cost": 1,
+    "status": "open",
+    "risk": 0,
+    "connection_level": 0,
+    "active_project_id": null,
+    "directional_rules": {},
+    "tags": [
+      "local"
+    ],
+    "name": "路线枢纽—长城关隘",
+    "strategic_role": "区域支路",
+    "risk_profile": "局部影响：主要服务单个任务、项目或节点能力。",
+    "evidence_tags": [
+      "frontier",
+      "trade",
+      "security"
+    ],
+    "event_tags": [
+      "route",
+      "traffic"
+    ],
+    "ui_hint": "勘察可获得研究线索；修护后可进一步建立稳定连接。",
+    "waypoints": [
+      48.03532286715505,
+      73.12577578422001
+    ],
+    "roadClass": "local",
+    "terrain": "plain",
+    "labelPosition": [
+      50,
+      73.5
+    ]
+  },
+  {
+    "from": "eastern_cave_observatory",
+    "to": "digital_mapping_station",
+    "cost": 1,
+    "id": "route_eastern_cave_observatory_digital_mapping_station",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "东窟—测绘站线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      60.485071250072664,
+      25.059714999709335
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      60,
+      27
+    ]
+  },
+  {
+    "from": "eastern_cave_observatory",
+    "to": "environmental_monitoring_station",
+    "cost": 2,
+    "id": "route_eastern_cave_observatory_environmental_monitoring_station",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "东窟—环境线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      71.023166369859,
+      46.37210420376763
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      74,
+      46
+    ]
+  },
+  {
+    "from": "central_cave_observatory",
+    "to": "yungang",
+    "cost": 1,
+    "id": "route_central_cave_observatory_yungang",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "中窟—云冈线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      52.33589941132431,
+      42.89059960754954
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      54,
+      44
+    ]
+  },
+  {
+    "from": "central_cave_observatory",
+    "to": "material_yard",
+    "cost": 1,
+    "id": "route_central_cave_observatory_material_yard",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "中窟—材料场线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      59.10557280900009,
+      40.78885438199983
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      60,
+      39
+    ]
+  },
+  {
+    "from": "western_cave_observatory",
+    "to": "wall_pass",
+    "cost": 2,
+    "id": "route_western_cave_observatory_wall_pass",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "西窟—壁道线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      32.92229123600033,
+      62.78885438199983
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      36.5,
+      61
+    ]
+  },
+  {
+    "from": "western_cave_observatory",
+    "to": "digital_mapping_station",
+    "cost": 1,
+    "id": "route_western_cave_observatory_digital_mapping_station",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "西窟—测绘站线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      37.53989389379149,
+      32.70839711122888
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      36.5,
+      31
+    ]
+  },
+  {
+    "from": "digital_mapping_station",
+    "to": "archive_depot",
+    "cost": 1,
+    "id": "route_digital_mapping_station_archive_depot",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "测绘站—档案库线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      37.548094632188345,
+      32.124510704178434
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      39,
+      33.5
+    ]
+  },
+  {
+    "from": "digital_mapping_station",
+    "to": "pingcheng_ruins",
+    "cost": 2,
+    "id": "route_digital_mapping_station_pingcheng_ruins",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "测绘站—平城遗址线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      29.649557612645545,
+      44.814928877812314
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      33,
+      47
+    ]
+  },
+  {
+    "from": "environmental_monitoring_station",
+    "to": "visitor_emergency_point",
+    "cost": 1,
+    "id": "route_environmental_monitoring_station_visitor_emergency_point",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "环境站—访客点线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      80.58578643762691,
+      69.41421356237309
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      82,
+      68
+    ]
+  },
+  {
+    "from": "environmental_monitoring_station",
+    "to": "shanhua_temple",
+    "cost": 2,
+    "id": "route_environmental_monitoring_station_shanhua_temple",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "环境站—善化寺线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      76.98511157062997,
+      41.701488842937
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      74,
+      42
+    ]
+  },
+  {
+    "from": "visitor_emergency_point",
+    "to": "trade_post",
+    "cost": 1,
+    "id": "route_visitor_emergency_point_trade_post",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "访客点—互市线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      88.41421356237309,
+      71.58578643762691
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      87,
+      73
+    ]
+  },
+  {
+    "from": "visitor_emergency_point",
+    "to": "route_junction",
+    "cost": 1,
+    "id": "route_visitor_emergency_point_route_junction",
+    "directional_rules": {},
+    "tags": [
+      "support",
+      "new_content"
+    ],
+    "name": "访客点—路线枢纽线",
+    "strategic_role": "连接相邻地点并传递证据与行动资源。",
+    "risk_profile": "路线状态会随事件、勘察和修护变化。",
+    "evidence_tags": [
+      "support",
+      "new_content"
+    ],
+    "event_tags": [
+      "route",
+      "support"
+    ],
+    "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
+    "waypoints": [
+      70.87665560679706,
+      65.63094528684599
+    ],
+    "roadClass": "regional",
+    "terrain": "slope",
+    "labelPosition": [
+      70,
+      68.5
+    ]
+  }
 ]

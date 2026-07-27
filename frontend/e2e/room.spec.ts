@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('two devices can join, ready, and start a room', async ({ browser }) => {
   const hostContext = await browser.newContext();
@@ -8,7 +8,7 @@ test('two devices can join, ready, and start a room', async ({ browser }) => {
   await host.goto('/');
   await host.getByRole('button', { name: '多设备房间' }).click();
   await host.getByLabel('你的名字').fill('房主');
-  await host.getByRole('button', { name: '进入 Lobby' }).click();
+  await host.getByRole('button', { name: '进入准备厅' }).click();
   await expect(host).toHaveURL(/\/room\/room-/);
   const roomUrl = host.url();
   await guest.goto(roomUrl);
@@ -31,3 +31,4 @@ test('two devices can join, ready, and start a room', async ({ browser }) => {
   await hostContext.close();
   await guestContext.close();
 });
+

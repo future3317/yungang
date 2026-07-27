@@ -1,9 +1,9 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('new player creates a lobby and starts a solo journey', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: '从一束光开始' })).toBeVisible();
-  await page.getByRole('button', { name: '进入 Lobby' }).click();
+  await page.getByRole('button', { name: '进入准备厅' }).click();
   await expect(page).toHaveURL(/\/room\/room-/);
   await expect(page.getByRole('heading', { name: '配置两位同行角色' })).toBeVisible();
   await page.getByLabel('席位 1 角色').selectOption('pingcheng_artisan');
@@ -26,3 +26,4 @@ test('mobile landing does not overflow horizontally', async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
 });
+

@@ -213,3 +213,15 @@
   opacity: .9;
   mix-blend-mode: screen;
 }
+
+/* HUD collision guards for the full-screen world view. */
+@media (min-width: 1101px) {
+  .roster-column, .site-inspector { box-sizing: border-box; }
+  .roster-column { padding-top: 4px; }
+  .roster-column > .roster, .roster-column > .current-player, .roster-column > .command-deck { position: relative; z-index: 1; }
+  .stage-caption { position: fixed !important; z-index: 7 !important; right: calc(var(--map-right-clearance) + 30px); bottom: 20px; left: calc(var(--map-left-clearance) + 30px); padding: 8px 12px; color: #eee3c9; background: rgba(14, 28, 20, .76); border: 1px solid rgba(219, 192, 126, .2); border-radius: 10px; backdrop-filter: blur(10px); }
+  .stage-caption p { color: rgba(238, 227, 201, .76); }
+  .accessibility-panel { max-height: min(620px, calc(100dvh - 96px)); overflow-y: auto; }
+  .network-tools { pointer-events: auto; }
+  .network-tools button { overflow: visible; }
+}

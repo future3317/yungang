@@ -1,813 +1,813 @@
 [
-    {
-        "id":  "task_statue",
-        "site_id":  "pingcheng_ruins",
-        "name":  "平城—云冈造像线索对照",
-        "required_domains":  [
-                                 "statue",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  1,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  1,
-                       "domain":  "statue"
-                   },
-        "learning_objective":  "比较造像构图与装饰证据，建立平城环境、造像表达和文化交流之间的解释链。",
-        "culture_explanation":  "团队需要同时投入造像与纹样证据，并保证至少两种来源。单一图像不能直接说明文化联系，只有相互对照的证据才能完成解释。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "image_reconstruction",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "western"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "开局核心证据任务",
-        "route_synergy":  "完成后适合向云冈核心项目汇集证据。",
-        "ui_instruction":  "提交3张证据，覆盖造像、纹样，并包含至少2种来源。",
-        "content_class":  "gameplay"
+  {
+    "id": "task_statue",
+    "site_id": "pingcheng_ruins",
+    "name": "平城—云冈造像线索对照",
+    "required_domains": [
+      "statue",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "statue"
     },
-    {
-        "id":  "task_architecture_huayan",
-        "site_id":  "huayan_temple",
-        "name":  "华严寺结构与装饰互证",
-        "required_domains":  [
-                                 "architecture",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  1,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  1,
-                       "domain":  "architecture"
-                   },
-        "learning_objective":  "把结构、材料与装饰证据放在同一空间关系中比较。",
-        "culture_explanation":  "建筑保护不仅需要识别构件，也要理解装饰与空间的关系。任务要求建筑和纹样证据共同出现，避免只靠单一材料完成判断。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "material_diagnosis",
-                                                              "craft_coordination"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "northern"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "修护与建筑任务",
-        "route_synergy":  "完成后可优先处理寺观区域的路线风险。",
-        "ui_instruction":  "提交3张证据，覆盖建筑、纹样，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "比较造像构图与装饰证据，建立平城环境、造像表达和文化交流之间的解释链。",
+    "culture_explanation": "团队需要同时投入造像与纹样证据，并保证至少两种来源。单一图像不能直接说明文化联系，只有相互对照的证据才能完成解释。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "image_reconstruction",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_architecture_shanhua",
-        "site_id":  "shanhua_temple",
-        "name":  "善化寺木构与流通协同",
-        "required_domains":  [
-                                 "architecture",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  1,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  1,
-                       "domain":  "architecture"
-                   },
-        "learning_objective":  "将建筑材料、施工信息和运输协作纳入同一修护计划。",
-        "culture_explanation":  "大型木构的保护需要结构判断，也需要材料、运输和记录协作。任务通过建筑与互市证据的组合表现这种跨环节合作。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "material_diagnosis",
-                                                              "route_governance"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "资源调度任务",
-        "route_synergy":  "完成后适合建立材料场与寺观节点之间的稳定连接。",
-        "ui_instruction":  "提交3张证据，覆盖建筑、互市，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "开局核心证据任务",
+    "route_synergy": "完成后适合向云冈核心项目汇集证据。",
+    "ui_instruction": "提交3张证据，覆盖造像、纹样，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_architecture_huayan",
+    "site_id": "huayan_temple",
+    "name": "华严寺结构与装饰互证",
+    "required_domains": [
+      "architecture",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "architecture"
     },
-    {
-        "id":  "task_frontier",
-        "site_id":  "wall_pass",
-        "name":  "关隘守望与通行治理",
-        "required_domains":  [
-                                 "frontier",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  1,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  1,
-                       "domain":  "frontier"
-                   },
-        "learning_objective":  "在安全、通行和交流之间建立可持续的路线方案。",
-        "culture_explanation":  "边塞节点既承担守望，也连接人员与物资流动。任务要求边塞和互市证据共同投入，避免把关隘只理解为封闭防线。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "frontier",
-                                                            "silk"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "路线风险任务",
-        "route_synergy":  "完成后优先计入路线恢复与区域连通目标。",
-        "ui_instruction":  "提交3张证据，覆盖边塞、互市，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "把结构、材料与装饰证据放在同一空间关系中比较。",
+    "culture_explanation": "建筑保护不仅需要识别构件，也要理解装饰与空间的关系。任务要求建筑和纹样证据共同出现，避免只靠单一材料完成判断。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis",
+        "craft_coordination"
+      ],
+      "preferred_origins": [
+        "craft",
+        "northern"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_trade",
-        "site_id":  "trade_post",
-        "name":  "互市证据与交换秩序",
-        "required_domains":  [
-                                 "trade",
-                                 "frontier"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  1,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  1,
-                       "domain":  "trade"
-                   },
-        "learning_objective":  "通过不同来源的通行、交换和守护证据建立协作秩序。",
-        "culture_explanation":  "交换需要路线、凭信和安全条件共同支撑。任务要求三种来源，鼓励玩家跨节点交换手牌，而不是由一名玩家独立完成。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "archive_context",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "western",
-                                                            "frontier",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "多人协作任务",
-        "route_synergy":  "完成后适合推进互市重开或文明汇流情景。",
-        "ui_instruction":  "提交3张证据，覆盖互市、边塞，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "修护与建筑任务",
+    "route_synergy": "完成后可优先处理寺观区域的路线风险。",
+    "ui_instruction": "提交3张证据，覆盖建筑、纹样，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_architecture_shanhua",
+    "site_id": "shanhua_temple",
+    "name": "善化寺木构与流通协同",
+    "required_domains": [
+      "architecture",
+      "trade"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "architecture"
     },
-    {
-        "id":  "task_yungang_core",
-        "site_id":  "yungang",
-        "name":  "云冈多域证据总汇",
-        "required_domains":  [
-                                 "statue",
-                                 "pattern",
-                                 "architecture",
-                                 "frontier",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  5,
-        "required_cards_per_player_min":  2,
-        "reward":  {
-                       "scroll_delta":  2,
-                       "restoration_delta":  2,
-                       "domain":  "statue"
-                   },
-        "learning_objective":  "把图像、装饰、营造、路线与交流证据整合为一张可解释的文化网络。",
-        "culture_explanation":  "核心任务需要五个领域共同参与。它不是收集五种图标，而是要求团队把不同地点获得的证据带回核心节点，形成完整的解释和守护方案。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "image_reconstruction",
-                                                              "material_diagnosis",
-                                                              "route_governance",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "western",
-                                                            "craft"
-                                                        ],
-                                  "minimum_distinct_players":  2
-                              },
-        "strategic_role":  "终局核心任务",
-        "route_synergy":  "完成后满足标准局核心胜利条件。",
-        "ui_instruction":  "提交5张证据，覆盖造像、纹样、建筑、边塞、互市，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "将建筑材料、施工信息和运输协作纳入同一修护计划。",
+    "culture_explanation": "大型木构的保护需要结构判断，也需要材料、运输和记录协作。任务通过建筑与互市证据的组合表现这种跨环节合作。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "craft",
+        "central"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_northern_workshop",
-        "site_id":  "northern_workshop",
-        "name":  "石作工序协同",
-        "required_domains":  [
-                                 "architecture",
-                                 "statue"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "architecture",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "用工具、石料与造像证据解释工序之间的配合。",
-        "culture_explanation":  "工坊任务强调工序先后和多人协作。建筑证据说明材料与工具，造像证据说明工作目标，两者缺一不可。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "craft_coordination",
-                                                              "material_diagnosis"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "项目加速任务",
-        "route_synergy":  "完成后可为相邻核心节点补充修护资源。",
-        "ui_instruction":  "提交2张证据，覆盖建筑、造像，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "资源调度任务",
+    "route_synergy": "完成后适合建立材料场与寺观节点之间的稳定连接。",
+    "ui_instruction": "提交3张证据，覆盖建筑、互市，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_frontier",
+    "site_id": "wall_pass",
+    "name": "关隘守望与通行治理",
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "frontier"
     },
-    {
-        "id":  "task_archive_depot",
-        "site_id":  "archive_depot",
-        "name":  "跨来源档案编目",
-        "required_domains":  [
-                                 "statue",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "statue",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "用不同来源的图像与纹样证据建立可检索的档案关系。",
-        "culture_explanation":  "档案编目不是简单存放卡牌，而是让不同来源的记录能够相互检索。任务强调来源多样性和证据分类。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "archive_context",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "western",
-                                                            "northern"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "证据整理任务",
-        "route_synergy":  "完成后适合改善市场选择或回收档案。",
-        "ui_instruction":  "提交3张证据，覆盖造像、纹样，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "在安全、通行和交流之间建立可持续的路线方案。",
+    "culture_explanation": "边塞节点既承担守望，也连接人员与物资流动。任务要求边塞和互市证据共同投入，避免把关隘只理解为封闭防线。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "silk"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_material_yard",
-        "site_id":  "material_yard",
-        "name":  "材料风险诊断",
-        "required_domains":  [
-                                 "architecture",
-                                 "frontier"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "architecture",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "结合材料状态和环境风险确定修护优先级。",
-        "culture_explanation":  "材料问题需要与风沙、渗水和通行压力共同判断。任务要求建筑与边塞证据组合，支持风险管理而非单纯加分。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "material_diagnosis"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "frontier"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "风险缓解任务",
-        "route_synergy":  "完成后可支援相邻节点的修护行动。",
-        "ui_instruction":  "提交2张证据，覆盖建筑、边塞，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "路线风险任务",
+    "route_synergy": "完成后优先计入路线恢复与区域连通目标。",
+    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_trade",
+    "site_id": "trade_post",
+    "name": "互市证据与交换秩序",
+    "required_domains": [
+      "trade",
+      "frontier"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 1,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 1,
+      "domain": "trade"
     },
-    {
-        "id":  "task_carving_courtyard",
-        "site_id":  "carving_courtyard",
-        "name":  "造像工序复原",
-        "required_domains":  [
-                                 "statue",
-                                 "architecture"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "statue",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "把造像比例、工具和壁面工痕组合为可理解的工序线索。",
-        "culture_explanation":  "造像的形成需要图像目标与石作过程共同解释。任务通过造像和建筑证据的组合推进工序复原。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "image_reconstruction",
-                                                              "craft_coordination"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "造像项目任务",
-        "route_synergy":  "完成后可强化云冈核心项目的造像阶段。",
-        "ui_instruction":  "提交3张证据，覆盖造像、建筑，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "通过不同来源的通行、交换和守护证据建立协作秩序。",
+    "culture_explanation": "交换需要路线、凭信和安全条件共同支撑。任务要求三种来源，鼓励玩家跨节点交换手牌，而不是由一名玩家独立完成。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "archive_context",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "western",
+        "frontier",
+        "central"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_motif_gallery",
-        "site_id":  "motif_gallery",
-        "name":  "纹样传播对照",
-        "required_domains":  [
-                                 "pattern",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "pattern",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "比较纹样在不同来源和传播环境中的变化。",
-        "culture_explanation":  "纹样不是固定符号。任务需要纹样与互市证据，并要求三种来源，以表现装饰单元在流动中的选择和重组。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "cross_origin",
-                                                              "image_reconstruction"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "western",
-                                                            "central",
-                                                            "silk"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "互鉴组合任务",
-        "route_synergy":  "完成后提高来源多样性目标进度。",
-        "ui_instruction":  "提交3张证据，覆盖纹样、互市，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "多人协作任务",
+    "route_synergy": "完成后适合推进互市重开或文明汇流情景。",
+    "ui_instruction": "提交3张证据，覆盖互市、边塞，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_yungang_core",
+    "site_id": "yungang",
+    "name": "云冈多域证据总汇",
+    "required_domains": [
+      "statue",
+      "pattern",
+      "architecture",
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 5,
+    "required_cards_per_player_min": 2,
+    "reward": {
+      "scroll_delta": 2,
+      "restoration_delta": 2,
+      "domain": "statue"
     },
-    {
-        "id":  "task_river_crossing",
-        "site_id":  "river_crossing",
-        "name":  "渡口通行与风险记录",
-        "required_domains":  [
-                                 "trade",
-                                 "frontier"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "trade",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "把路线通行和环境风险记录结合起来。",
-        "culture_explanation":  "渡口节点强调行旅与风险的同时存在。任务要求交通和边塞证据，适合在路线承压时完成。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "silk",
-                                                            "frontier"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "路线调查任务",
-        "route_synergy":  "完成后可降低相邻路线的风险说明门槛。",
-        "ui_instruction":  "提交2张证据，覆盖互市、边塞，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "把图像、装饰、营造、路线与交流证据整合为一张可解释的文化网络。",
+    "culture_explanation": "核心任务需要五个领域共同参与。它不是收集五种图标，而是要求团队把不同地点获得的证据带回核心节点，形成完整的解释和守护方案。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "image_reconstruction",
+        "material_diagnosis",
+        "route_governance",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "central",
+        "western",
+        "craft"
+      ],
+      "minimum_distinct_players": 2
     },
-    {
-        "id":  "task_caravan_camp",
-        "site_id":  "caravan_camp",
-        "name":  "行旅补给协作",
-        "required_domains":  [
-                                 "trade",
-                                 "architecture"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "trade",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "用补给、设施和行旅证据安排跨区域行动。",
-        "culture_explanation":  "长距离移动依赖临时设施、补给和信息交换。任务要求互市和建筑证据，强调移动之前的准备。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "craft_coordination"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "silk",
-                                                            "craft"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "机动支援任务",
-        "route_synergy":  "完成后适合降低下一次跨区移动成本。",
-        "ui_instruction":  "提交2张证据，覆盖互市、建筑，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "终局核心任务",
+    "route_synergy": "完成后满足标准局核心胜利条件。",
+    "ui_instruction": "提交5张证据，覆盖造像、纹样、建筑、边塞、互市，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_northern_workshop",
+    "site_id": "northern_workshop",
+    "name": "石作工序协同",
+    "required_domains": [
+      "architecture",
+      "statue"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_border_market",
-        "site_id":  "border_market",
-        "name":  "边市交换与守望",
-        "required_domains":  [
-                                 "frontier",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "frontier",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "在交流机会和区域风险之间建立平衡。",
-        "culture_explanation":  "边市任务要求三种来源，迫使团队在交换、守望和路线安全之间分配行动。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "frontier",
-                                                            "western",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "高协作任务",
-        "route_synergy":  "完成后适合缓解边塞区域事件。",
-        "ui_instruction":  "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "用工具、石料与造像证据解释工序之间的配合。",
+    "culture_explanation": "工坊任务强调工序先后和多人协作。建筑证据说明材料与工具，造像证据说明工作目标，两者缺一不可。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "craft_coordination",
+        "material_diagnosis"
+      ],
+      "preferred_origins": [
+        "craft",
+        "central"
+      ],
+      "minimum_distinct_players": 1
     },
-    {
-        "id":  "task_watchtower",
-        "site_id":  "watchtower",
-        "name":  "守望预警网络",
-        "required_domains":  [
-                                 "frontier",
-                                 "architecture"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "frontier",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "用空间位置、设施和风险证据建立事件预警。",
-        "culture_explanation":  "守望设施的价值来自位置、通行和信息传递。任务把边塞与建筑证据结合，用于提前理解事件目标。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "material_diagnosis"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "frontier",
-                                                            "craft"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "事件预警任务",
-        "route_synergy":  "完成后适合预览或缓解下一轮事件。",
-        "ui_instruction":  "提交2张证据，覆盖边塞、建筑，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "项目加速任务",
+    "route_synergy": "完成后可为相邻核心节点补充修护资源。",
+    "ui_instruction": "提交2张证据，覆盖建筑、造像，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_archive_depot",
+    "site_id": "archive_depot",
+    "name": "跨来源档案编目",
+    "required_domains": [
+      "statue",
+      "pattern"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_craft_school",
-        "site_id":  "craft_school",
-        "name":  "工艺知识互授",
-        "required_domains":  [
-                                 "architecture",
-                                 "statue"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "architecture",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "通过不同来源的工艺与图像证据建立协作学习。",
-        "culture_explanation":  "工艺知识通过观察、记录和实践交流。任务要求建筑与造像证据，并强调不同来源的互补。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "craft_coordination",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "central",
-                                                            "western"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "角色强化任务",
-        "route_synergy":  "完成后适合触发角色升级选择。",
-        "ui_instruction":  "提交3张证据，覆盖建筑、造像，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "用不同来源的图像与纹样证据建立可检索的档案关系。",
+    "culture_explanation": "档案编目不是简单存放卡牌，而是让不同来源的记录能够相互检索。任务强调来源多样性和证据分类。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "archive_context",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "central",
+        "western",
+        "northern"
+      ],
+      "minimum_distinct_players": 1
     },
-    {
-        "id":  "task_river_archive",
-        "site_id":  "river_archive",
-        "name":  "路线档案互证",
-        "required_domains":  [
-                                 "trade",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "trade",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "将路线记录与可识别的视觉线索对应起来。",
-        "culture_explanation":  "路线档案需要文字、图形和地点信息互相校验。任务把互市与纹样证据结合，强调信息识别和传播。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "archive_context",
-                                                              "route_governance"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "silk",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "信息整理任务",
-        "route_synergy":  "完成后适合改善事件或市场信息。",
-        "ui_instruction":  "提交2张证据，覆盖互市、纹样，并包含至少2种来源。",
-        "content_class":  "gameplay"
+    "strategic_role": "证据整理任务",
+    "route_synergy": "完成后适合改善市场选择或回收档案。",
+    "ui_instruction": "提交3张证据，覆盖造像、纹样，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_material_yard",
+    "site_id": "material_yard",
+    "name": "材料风险诊断",
+    "required_domains": [
+      "architecture",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_route_junction",
-        "site_id":  "route_junction",
-        "name":  "多路线协同治理",
-        "required_domains":  [
-                                 "frontier",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  3,
-        "required_card_count":  3,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "frontier",
-                       "scroll_delta":  1
-                   },
-        "learning_objective":  "在多条路线之间分配修护、通行和联络资源。",
-        "culture_explanation":  "路线枢纽不是单纯的移动捷径。任务要求多来源的边塞和互市证据，用于判断先修哪条路线、如何保持替代通道。",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance",
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "frontier",
-                                                            "silk",
-                                                            "central"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "区域连接任务",
-        "route_synergy":  "完成后计入连通区域和路线恢复目标。",
-        "ui_instruction":  "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
-        "content_class":  "gameplay"
+    "learning_objective": "结合材料状态和环境风险确定修护优先级。",
+    "culture_explanation": "材料问题需要与风沙、渗水和通行压力共同判断。任务要求建筑与边塞证据组合，支持风险管理而非单纯加分。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis"
+      ],
+      "preferred_origins": [
+        "craft",
+        "frontier"
+      ],
+      "minimum_distinct_players": 1
     },
-    {
-        "id":  "task_eastern_survey",
-        "site_id":  "eastern_cave_observatory",
-        "name":  "????????",
-        "required_domains":  [
-                                 "statue",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "statue"
-                   },
-        "learning_objective":  "????????????????????",
-        "culture_explanation":  "????????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "image_reconstruction"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "western"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
+    "strategic_role": "风险缓解任务",
+    "route_synergy": "完成后可支援相邻节点的修护行动。",
+    "ui_instruction": "提交2张证据，覆盖建筑、边塞，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_carving_courtyard",
+    "site_id": "carving_courtyard",
+    "name": "造像工序复原",
+    "required_domains": [
+      "statue",
+      "architecture"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_central_sequence",
-        "site_id":  "central_cave_observatory",
-        "name":  "????????",
-        "required_domains":  [
-                                 "architecture",
-                                 "statue"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "research_clues":  1,
-                       "domain":  "architecture"
-                   },
-        "learning_objective":  "????????????????????????",
-        "culture_explanation":  "??????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "material_diagnosis"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "craft"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
+    "learning_objective": "把造像比例、工具和壁面工痕组合为可理解的工序线索。",
+    "culture_explanation": "造像的形成需要图像目标与石作过程共同解释。任务通过造像和建筑证据的组合推进工序复原。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "image_reconstruction",
+        "craft_coordination"
+      ],
+      "preferred_origins": [
+        "craft",
+        "central"
+      ],
+      "minimum_distinct_players": 1
     },
-    {
-        "id":  "task_western_compare",
-        "site_id":  "western_cave_observatory",
-        "name":  "??????",
-        "required_domains":  [
-                                 "frontier",
-                                 "trade"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "threat_reduction":  1,
-                       "domain":  "frontier"
-                   },
-        "learning_objective":  "???????????????????????",
-        "culture_explanation":  "?????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "cross_origin"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "frontier",
-                                                            "silk"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
+    "strategic_role": "造像项目任务",
+    "route_synergy": "完成后可强化云冈核心项目的造像阶段。",
+    "ui_instruction": "提交3张证据，覆盖造像、建筑，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_motif_gallery",
+    "site_id": "motif_gallery",
+    "name": "纹样传播对照",
+    "required_domains": [
+      "pattern",
+      "trade"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "pattern",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_digital_mosaic",
-        "site_id":  "digital_mapping_station",
-        "name":  "??????",
-        "required_domains":  [
-                                 "architecture",
-                                 "pattern"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "research_clues":  2,
-                       "domain":  "architecture"
-                   },
-        "learning_objective":  "?????????????????????????",
-        "culture_explanation":  "?????????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "archive_context",
-                                                              "image_reconstruction"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "western"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
+    "learning_objective": "比较纹样在不同来源和传播环境中的变化。",
+    "culture_explanation": "纹样不是固定符号。任务需要纹样与互市证据，并要求三种来源，以表现装饰单元在流动中的选择和重组。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "cross_origin",
+        "image_reconstruction"
+      ],
+      "preferred_origins": [
+        "western",
+        "central",
+        "silk"
+      ],
+      "minimum_distinct_players": 1
     },
-    {
-        "id":  "task_environment_sequence",
-        "site_id":  "environmental_monitoring_station",
-        "name":  "??????",
-        "required_domains":  [
-                                 "architecture",
-                                 "frontier"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "restoration_delta":  1,
-                       "domain":  "architecture"
-                   },
-        "learning_objective":  "????????????????????",
-        "culture_explanation":  "???????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "material_diagnosis",
-                                                              "route_governance"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "craft",
-                                                            "frontier"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
+    "strategic_role": "互鉴组合任务",
+    "route_synergy": "完成后提高来源多样性目标进度。",
+    "ui_instruction": "提交3张证据，覆盖纹样、互市，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_river_crossing",
+    "site_id": "river_crossing",
+    "name": "渡口通行与风险记录",
+    "required_domains": [
+      "trade",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "trade",
+      "scroll_delta": 1
     },
-    {
-        "id":  "task_visitor_dispatch",
-        "site_id":  "visitor_emergency_point",
-        "name":  "??????",
-        "required_domains":  [
-                                 "trade",
-                                 "frontier"
-                             ],
-        "required_origin_diversity":  2,
-        "required_card_count":  2,
-        "required_cards_per_player_min":  0,
-        "reward":  {
-                       "influence":  1,
-                       "domain":  "trade"
-                   },
-        "learning_objective":  "??????????????????????????",
-        "culture_explanation":  "??????????????????????????????",
-        "combo_requirement":  {
-                                  "required_combo_tags":  [
-                                                              "route_governance"
-                                                          ],
-                                  "preferred_origins":  [
-                                                            "central",
-                                                            "silk"
-                                                        ],
-                                  "minimum_distinct_players":  1
-                              },
-        "strategic_role":  "??????",
-        "ui_instruction":  "??2????????????",
-        "content_class":  "gameplay"
-    }
+    "learning_objective": "把路线通行和环境风险记录结合起来。",
+    "culture_explanation": "渡口节点强调行旅与风险的同时存在。任务要求交通和边塞证据，适合在路线承压时完成。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "silk",
+        "frontier"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "路线调查任务",
+    "route_synergy": "完成后可降低相邻路线的风险说明门槛。",
+    "ui_instruction": "提交2张证据，覆盖互市、边塞，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_caravan_camp",
+    "site_id": "caravan_camp",
+    "name": "行旅补给协作",
+    "required_domains": [
+      "trade",
+      "architecture"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "trade",
+      "scroll_delta": 1
+    },
+    "learning_objective": "用补给、设施和行旅证据安排跨区域行动。",
+    "culture_explanation": "长距离移动依赖临时设施、补给和信息交换。任务要求互市和建筑证据，强调移动之前的准备。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "craft_coordination"
+      ],
+      "preferred_origins": [
+        "silk",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "机动支援任务",
+    "route_synergy": "完成后适合降低下一次跨区移动成本。",
+    "ui_instruction": "提交2张证据，覆盖互市、建筑，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_border_market",
+    "site_id": "border_market",
+    "name": "边市交换与守望",
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "frontier",
+      "scroll_delta": 1
+    },
+    "learning_objective": "在交流机会和区域风险之间建立平衡。",
+    "culture_explanation": "边市任务要求三种来源，迫使团队在交换、守望和路线安全之间分配行动。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "western",
+        "central"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "高协作任务",
+    "route_synergy": "完成后适合缓解边塞区域事件。",
+    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_watchtower",
+    "site_id": "watchtower",
+    "name": "守望预警网络",
+    "required_domains": [
+      "frontier",
+      "architecture"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "frontier",
+      "scroll_delta": 1
+    },
+    "learning_objective": "用空间位置、设施和风险证据建立事件预警。",
+    "culture_explanation": "守望设施的价值来自位置、通行和信息传递。任务把边塞与建筑证据结合，用于提前理解事件目标。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "material_diagnosis"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "事件预警任务",
+    "route_synergy": "完成后适合预览或缓解下一轮事件。",
+    "ui_instruction": "提交2张证据，覆盖边塞、建筑，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_craft_school",
+    "site_id": "craft_school",
+    "name": "工艺知识互授",
+    "required_domains": [
+      "architecture",
+      "statue"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture",
+      "scroll_delta": 1
+    },
+    "learning_objective": "通过不同来源的工艺与图像证据建立协作学习。",
+    "culture_explanation": "工艺知识通过观察、记录和实践交流。任务要求建筑与造像证据，并强调不同来源的互补。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "craft_coordination",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "craft",
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "角色强化任务",
+    "route_synergy": "完成后适合触发角色升级选择。",
+    "ui_instruction": "提交3张证据，覆盖建筑、造像，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_river_archive",
+    "site_id": "river_archive",
+    "name": "路线档案互证",
+    "required_domains": [
+      "trade",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "trade",
+      "scroll_delta": 1
+    },
+    "learning_objective": "将路线记录与可识别的视觉线索对应起来。",
+    "culture_explanation": "路线档案需要文字、图形和地点信息互相校验。任务把互市与纹样证据结合，强调信息识别和传播。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "archive_context",
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "silk",
+        "central"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "信息整理任务",
+    "route_synergy": "完成后适合改善事件或市场信息。",
+    "ui_instruction": "提交2张证据，覆盖互市、纹样，并包含至少2种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_route_junction",
+    "site_id": "route_junction",
+    "name": "多路线协同治理",
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 3,
+    "required_card_count": 3,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "frontier",
+      "scroll_delta": 1
+    },
+    "learning_objective": "在多条路线之间分配修护、通行和联络资源。",
+    "culture_explanation": "路线枢纽不是单纯的移动捷径。任务要求多来源的边塞和互市证据，用于判断先修哪条路线、如何保持替代通道。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance",
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "silk",
+        "central"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "区域连接任务",
+    "route_synergy": "完成后计入连通区域和路线恢复目标。",
+    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_eastern_survey",
+    "site_id": "eastern_cave_observatory",
+    "name": "东窟图像对读",
+    "required_domains": [
+      "statue",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "收集造像与纹样两类证据，并确保至少来自两个来源。",
+    "culture_explanation": "单件图像只能提出线索；把造像细节与纹样结构放在不同来源中对读，才能形成可靠解释。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "image_reconstruction"
+      ],
+      "preferred_origins": [
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "来源对照任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，覆盖造像、纹样与至少 2 个来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_central_sequence",
+    "site_id": "central_cave_observatory",
+    "name": "中窟工序复原",
+    "required_domains": [
+      "architecture",
+      "statue"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "research_clues": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "用建筑与造像证据还原石作、营造与图像完成之间的顺序。",
+    "culture_explanation": "建筑证据说明材料和工序，造像证据说明目标与结果；两者结合才能推进工序复原。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis"
+      ],
+      "preferred_origins": [
+        "central",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "工序推演任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，完成建筑与造像的交叉验证。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_western_compare",
+    "site_id": "western_cave_observatory",
+    "name": "西窟传播比较",
+    "required_domains": [
+      "frontier",
+      "trade"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "threat_reduction": 1,
+      "domain": "frontier"
+    },
+    "learning_objective": "将边地与交流证据放在一起，判断图像和人员如何沿路线传播。",
+    "culture_explanation": "传播不是一条单向路线；比较不同来源，才能分辨相遇、借鉴与再创造。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "cross_origin"
+      ],
+      "preferred_origins": [
+        "frontier",
+        "silk"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "传播判断任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，覆盖边地、交流与至少 2 个来源。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_digital_mosaic",
+    "site_id": "digital_mapping_station",
+    "name": "数字图卷拼合",
+    "required_domains": [
+      "architecture",
+      "pattern"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "research_clues": 2,
+      "domain": "architecture"
+    },
+    "learning_objective": "把建筑、造像和档案线索拼成一张可复核的数字图卷。",
+    "culture_explanation": "图卷不是把资料堆在一起，而是让每条关系都能回到地点、路线和来源。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "archive_context",
+        "image_reconstruction"
+      ],
+      "preferred_origins": [
+        "central",
+        "western"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "档案拼合任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，覆盖建筑、纹样并完成跨来源拼合。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_environment_sequence",
+    "site_id": "environmental_monitoring_station",
+    "name": "环境修护序列",
+    "required_domains": [
+      "architecture",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "结合建筑与边地证据，决定先处理哪一处环境和路线压力。",
+    "culture_explanation": "修护顺序应由风险、路线和现场证据共同决定，而不是只看最近的节点。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "material_diagnosis",
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "craft",
+        "frontier"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "风险排序任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，覆盖建筑、边地并完成材料诊断。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_visitor_dispatch",
+    "site_id": "visitor_emergency_point",
+    "name": "访客路径回应",
+    "required_domains": [
+      "trade",
+      "frontier"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "influence": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "用交流与边地证据组织访客路径，让开放、解释与安全彼此照应。",
+    "culture_explanation": "访客体验依赖清晰的路径和可追溯的解释；交流证据让回应不止停留在提示语。",
+    "combo_requirement": {
+      "required_combo_tags": [
+        "route_governance"
+      ],
+      "preferred_origins": [
+        "central",
+        "silk"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "现场回应任务",
+    "ui_instruction": "在节点委托中提交 2 张证据，覆盖交流、边地并完成路线治理。",
+    "content_class": "gameplay"
+  }
 ]
