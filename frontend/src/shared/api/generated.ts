@@ -290,7 +290,7 @@ export interface components {
          * ActionType
          * @enum {string}
          */
-        ActionType: "move" | "explore" | "contribute" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "use_node_ability" | "use_upgrade" | "end_planning";
+        ActionType: "move" | "explore" | "interpret_evidence" | "form_interpretation" | "choose_intervention" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "use_node_ability" | "use_upgrade" | "end_planning";
         /** CreateGameRequest */
         CreateGameRequest: {
             /** Player Ids */

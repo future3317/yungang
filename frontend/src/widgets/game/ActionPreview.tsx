@@ -1,13 +1,19 @@
 import { AlertTriangle, Check, X } from 'lucide-react';
-import type { Action, ContentCard, Site } from '../../types/game';
+import type { Action, ContentCard, RouteState, Site } from '../../types/game';
 import { actionLabels, localizeActionText, previewDeltaText } from './gameUi';
 
-export function ActionPreview({ action, sites, cards, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; cards: Record<string, ContentCard>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
-  const target = action.target_id || action.target_site_id;
-  const targetName = target ? sites[target]?.name || (action.route_id ? '选中的路线' : target) : '当前地点';
+export function resolveActionTargetName(action: Action, sites: Record<string, Site>, routes: Record<string, RouteState> = {}) {
+  const target = action.target_id || action.target_site_id || action.route_id;
+  if (!target) return '当前地点';
+  return routes[target]?.name || sites[target]?.name || '已选目标';
+}
+
+export function ActionPreview({ action, sites, routes, cards, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; routes?: Record<string, RouteState>; cards: Record<string, ContentCard>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
+  const targetName = resolveActionTargetName(action, sites, routes);
   const cardName = action.card_id ? cards[action.card_id]?.name : undefined;
   const heading = action.type === 'move' && targetName !== '当前地点' ? `移动到${targetName}` : actionLabels[action.type] || localizeActionText(action.label);
   return <div className="dialog-backdrop"><section className="dialog action-preview" role="dialog" aria-modal="true" aria-labelledby="action-preview-title">
+    <button className="dialog-close" disabled={isPending} onClick={onCancel} aria-label="取消行动"><X /></button>
     <span className="eyebrow"><AlertTriangle size={14} />行动确认</span><h2 id="action-preview-title">{heading}</h2>
     <div className="preview-grid"><span><small>目标</small><b>{targetName}</b></span><span><small>消耗</small><b>{action.cost || 0} AP</b></span>{cardName && <span><small>证据</small><b>{cardName}</b></span>}</div>
     <p>{action.preview_delta && Object.keys(action.preview_delta).length ? `预计变化：${previewDeltaText(action.preview_delta, '状态会在结算后更新')}` : '确认后将立即结算这次行动，并更新地图上的路线、资源或地点状态。'}</p>

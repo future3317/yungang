@@ -1,0 +1,60 @@
+@layer utilities {
+  .layout-tuner-trigger {
+    position: fixed;
+    z-index: 70;
+    right: 10px;
+    bottom: 10px;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    color: #f5e4b9;
+    background: rgba(13, 27, 19, .94);
+    border: 1px solid rgba(219, 192, 126, .42);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .28);
+    font-size: .72rem;
+  }
+
+  .layout-tuner {
+    position: fixed;
+    z-index: 70;
+    right: 12px;
+    bottom: 12px;
+    width: min(310px, calc(100vw - 24px));
+    padding: 12px;
+    color: #ecdfc5;
+    background: rgba(12, 25, 18, .97);
+    border: 1px solid rgba(219, 192, 126, .42);
+    border-radius: 12px;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .42);
+    backdrop-filter: blur(14px);
+  }
+
+  .layout-tuner header,
+  .layout-tuner footer,
+  .layout-tuner label > span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .layout-tuner header div { display: grid; gap: 2px; }
+  .layout-tuner header span { color: #c9a85d; font: 700 .62rem var(--font-data); letter-spacing: .1em; }
+  .layout-tuner header b { font-size: .92rem; }
+  .layout-tuner header button { width: 30px; height: 30px; display: grid; place-items: center; color: inherit; background: transparent; border: 1px solid rgba(219, 192, 126, .22); border-radius: 50%; }
+  .layout-tuner > p { margin: 8px 0 10px; color: #b8bbaa; font-size: .7rem; line-height: 1.45; }
+  .layout-tuner-controls { display: grid; gap: 8px; }
+  .layout-tuner label { display: grid; gap: 3px; font-size: .72rem; }
+  .layout-tuner output { color: #d8ba72; font: 700 .68rem var(--font-data); }
+  .layout-tuner input { width: 100%; accent-color: #c9a85d; }
+  .layout-tuner footer { margin-top: 11px; }
+  .layout-tuner footer button { min-height: 32px; display: inline-flex; align-items: center; gap: 5px; padding: 6px 9px; color: #eadcbe; background: rgba(255, 255, 255, .04); border: 1px solid rgba(219, 192, 126, .22); border-radius: 7px; font-size: .7rem; }
+
+  @media (max-width: 1100px) {
+    .layout-tuner-trigger,
+    .layout-tuner { display: none; }
+  }
+}

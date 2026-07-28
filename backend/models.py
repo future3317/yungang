@@ -5,7 +5,10 @@ from pydantic import BaseModel, ConfigDict, Field
 class ActionType(StrEnum):
     MOVE = "move"
     EXPLORE = "explore"
-    CONTRIBUTE = "contribute"
+    CONTRIBUTE = "contribute"  # 内部项目阶段兼容值；玩家不再获得直接交付行动。
+    INTERPRET_EVIDENCE = "interpret_evidence"
+    FORM_INTERPRETATION = "form_interpretation"
+    CHOOSE_INTERVENTION = "choose_intervention"
     RESTORE = "restore"
     EXCHANGE = "exchange"
     USE_SKILL = "use_skill"

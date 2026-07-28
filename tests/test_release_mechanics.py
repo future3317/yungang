@@ -93,10 +93,67 @@ def test_western_dancer_upgrade_adds_origin_and_combo_tags():
     player.hand = [card]
     player.flags["harmony_active"] = True
     engine._upgrade_effect(state, player, {"type": "harmony_origin_bonus", "value": 1})
-    engine._contribute(state, player, player.location, card)
+    engine._interpret_evidence(state, player, player.location, card, "support")
     record = state.sites[player.location].contributions[-1]
     assert "harmony_origin" in record["origin_tags"]
     assert "cross_origin" in record["combo_tags"]
+
+
+def test_contribution_closes_a_satisfied_task_and_updates_heritage_state():
+    """The vertical slice ends in a real state transition, not only a UI message."""
+    state = engine.new_game("task-closure", ["p1"])
+    player = state.players["p1"]
+    site = state.sites[player.location]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+    site.damage = 1
+    before_influence = state.shared.influence
+    before_resource = state.shared.restoration_resource
+
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "act_now"})
+
+    assert task["completed"] is True
+    assert task["contributed_cards"] == [card]
+    assert state.shared.influence == before_influence + 2
+    assert state.shared.restoration_resource == before_resource + task["reward"].get("restoration_delta", 0)
+    assert site.damage == 0
+
+
+def test_interpretation_path_requires_a_judgement_before_intervention():
+    state = engine.new_game("interpretation-path", ["p1"])
+    player = state.players["p1"]
+    site = state.sites[player.location]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+    player.ap = 2
+
+    state = engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card})
+    assert task["interpretation"]["formed"] is False
+    assert task["interpretation"]["placements"][0]["relation"] == "support"
+    assert engine._interpretation_ready(task) is True
+
+    state = engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    state = engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "record"})
+
+    assert task["completed"] is True
+    assert task["interpretation"]["intervention"] == "record"
+    assert state.shared.research_clues >= 2
+
+
+def test_direct_contribution_path_is_not_available():
+    assert not hasattr(engine, "_contribute")
 
 
 def test_western_dancer_upgrade_rewards_cross_origin_contribution_with_clue():
@@ -109,7 +166,7 @@ def test_western_dancer_upgrade_rewards_cross_origin_contribution_with_clue():
     player.hand = [card]
     engine._upgrade_effect(state, player, {"type": "post_contribution_clue", "value": 1})
     before = state.shared.research_clues
-    engine._contribute(state, player, player.location, card)
+    engine._interpret_evidence(state, player, player.location, card, "support")
     assert state.shared.research_clues == before + 1
 
 
