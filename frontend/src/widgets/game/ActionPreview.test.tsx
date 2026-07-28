@@ -12,4 +12,10 @@ describe('ActionPreview', () => {
     fireEvent.click(screen.getByRole('button', { name: /踏上这一步/ }));
     expect(onConfirm).toHaveBeenCalledOnce();
   });
+
+  it('uses the route name instead of exposing an internal route id', () => {
+    render(<ActionPreview action={{ type: 'use_action_card', label: '使用策略牌', target_id: 'route_shanhua_temple_yungang', cost: 1 }} sites={{}} routes={{ route_shanhua_temple_yungang: { id: 'route_shanhua_temple_yungang', name: '善化寺—云冈石窟' } as never }} cards={{}} onConfirm={vi.fn()} onCancel={vi.fn()} />);
+    expect(screen.getByText('善化寺—云冈石窟')).toBeInTheDocument();
+    expect(screen.queryByText('route_shanhua_temple_yungang')).not.toBeInTheDocument();
+  });
 });

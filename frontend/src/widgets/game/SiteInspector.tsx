@@ -14,7 +14,12 @@ const siteMedallionAssets: Record<string, string> = {
   northern_workshop: 'heritage-medallion-6.png',
 };
 
-export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, eventTargetLabels = [], className = '' }: {
+const domainAssets: Partial<Record<string, string>> = {
+  architecture: '/ui-assets/game-ui/domains/ui_yungang_domain_architecture_01.png',
+  pattern: '/ui-assets/game-ui/domains/ui_yungang_domain_pattern_01.png',
+};
+
+export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], className = '' }: {
   state: GameState;
   meta: Meta;
   site: Site;
@@ -27,6 +32,9 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   onCollapsedChange: (next: boolean) => void;
   onExplore: (id: string) => void;
   onSelectAction: (type: ActionType) => void;
+  onInterpret: (cardId: string, relation: 'support' | 'conflict' | 'pending') => void;
+  onFormInterpretation: () => void;
+  onChooseIntervention: (choice: 'act_now' | 'minimal' | 'record') => void;
   eventTargetLabels?: string[];
   className?: string;
 }) {
@@ -41,12 +49,11 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const active = state.players[state.shared.active_player_id];
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
-  const taskRecord = task as unknown as Record<string, unknown> | undefined;
   const eventRecord = event as unknown as Record<string, unknown> | undefined;
   const isCurrentSite = active.location === site.id;
   const action = legal.find(item => item.target_id === site.id || item.target_site_id === site.id) || legal.find(item => item.type === 'explore' && isCurrentSite);
   const eventResponseAvailable = state.pending_choice?.kind === 'event';
-  const contributions = (taskRecord?.contributions as string[] | undefined) || (taskRecord?.contributed_card_ids as string[] | undefined) || [];
+  const contributions = task?.contributed_cards || [];
   const matchingHand = active.hand.filter(id => task?.required_domains.includes(cards[id]?.domain || '')).length;
   const marketCards = state.market.map(id => cards[id]).filter(Boolean);
   const tabId = (name: InspectorTab) => `inspector-tab-${site.id}-${name}`;
@@ -75,17 +82,19 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       {tab === 'task' && <section id={panelId('task')} className="task-tab" role="tabpanel" aria-labelledby={tabId('task')}>
         {task ? <>
           <div className="tab-kicker"><Target size={14} />节点委托</div>
-          <div className="inspector-title-row"><img className="task-badge-art" src={contributions.length >= (task.required_card_count || 1) ? '/ui-assets/interaction/objective-badges/restored.png' : '/ui-assets/interaction/objective-badges/evidence.png'} alt="" /><h3>{task.name}</h3></div>
+          <div className="inspector-title-row"><img className="task-badge-art task-seal-art" src={task.completed ? '/ui-assets/game-ui/seals/ui_yungang_task_seal_complete_01.png' : '/ui-assets/game-ui/seals/ui_yungang_task_seal_idle_01.png'} alt="" /><h3>{task.name}</h3></div>
           <p>{recordText(task, 'description') || task.culture_explanation || '把相互印证的文化证据投入节点任务，推动共同目标。'}</p>
           <div className="task-workflow" aria-label="任务完成步骤">
             <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达此处</b><small>{isCurrentSite ? '你已来到节点，可以开始寻访。' : `沿路线前往${site.name}，那里正在等待你的脚步。`}</small></div></div>
             <div className="task-step"><span className={matchingHand > 0 ? 'complete' : ''}>{matchingHand > 0 ? <Check size={13} /> : '2'}</span><div><b>寻访文化线索</b><small>消耗 1 AP 从公开市场取走一件线索，手牌最多收纳 3 张。</small></div></div>
-            <div className="task-step"><span className={contributions.length >= (task.required_card_count || 1) ? 'complete' : ''}>{contributions.length >= (task.required_card_count || 1) ? <Check size={13} /> : '3'}</span><div><b>交付并完成互证</b><small>{contributions.length} / {task.required_card_count || 1} 件线索；需要 {task.required_domains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
+            <div className="task-step"><span className={contributions.length >= (task.required_card_count || 1) ? 'complete' : ''}>{contributions.length >= (task.required_card_count || 1) ? <Check size={13} /> : '3'}</span><div><b>在研究台归类证据</b><small>{contributions.length} / {task.required_card_count || 1} 件已归类；需要 {task.required_domains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
+            <div className="task-step"><span className={task.completed ? 'complete' : ''}>{task.completed ? <Check size={13} /> : '4'}</span><div><b>形成解释并选择干预</b><small>{task.interpretation?.formed ? '解释已形成，请选择如何回应这段文化关系。' : '支持、冲突与待确认会共同决定解释的可信度。'}</small></div></div>
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此印证。带回不同来处的线索，才能让联系站得住脚。</span></div>}
-          <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainName(meta, domain)}</span>)}</div>
+          <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
+          <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!isCurrentSite} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
           {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
-          <div className="task-action-row"><button type="button" disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />寻访一件线索</button><button type="button" disabled={!isCurrentSite || matchingHand === 0} onClick={() => onSelectAction('contribute')}><HandHeart size={15} />交付手中线索</button></div>
+          <div className="task-action-row"><button type="button" disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />寻访一件线索</button><span className="task-action-status">{matchingHand ? '手牌里已有可研判证据' : '寻找与委托相关的证据'}</span></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
         </> : <div className="empty-tab"><Target size={22} /><h3>这里暂时没有开放任务</h3><p>先查看地图上其他节点，或等待事件目标出现。</p></div>}
@@ -107,14 +116,38 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           const combo = textField(item, 'combo_name');
           const displayDomain = item.domain ? domainName(meta, item.domain) : '文化证据';
           const reason = marketReason({ ...item, domain: displayDomain }, task, useful);
-          return <button type="button" key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`} title={`${item.name}：${description}${combo ? `；${comboNames[combo] || combo}，组合后获得额外影响。` : ''}`}>
+          return <button type="button" key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`}>
             <img src={`/ui-assets/${item.icon_asset || 'icon_card_scroll.png'}`} alt="" />
             <span className="culture-card-copy"><b>{item.name}</b><small>{displayDomain} · {reason}</small><em>{description}</em>{combo && <i>{comboNames[combo] || combo} · 组合后获得额外影响</i>}</span>
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这件' : '不可选'}<small>{explore ? `${explore.cost || 1} AP` : ''}</small></strong>
+            <span className="market-card-tooltip" role="tooltip"><b>{item.name}</b><span>{description}</span>{combo && <small>{comboNames[combo] || combo} · 组合后获得额外影响。</small>}</span>
           </button>;
         })}</div>
         {marketCards.length > 0 && <div className="market-outcome"><b>带走线索后</b><span>{marketOutcome(marketCards[0])}</span><small>确认之前不会消耗 AP；交付时再回到“节点委托”查看它是否合用。</small></div>}
       </section>}
     </div>
   </aside>;
+}
+
+function EvidenceLedger({ task, cards, hand, meta, disabled, onInterpret, onForm, onIntervene }: { task: Task; cards: Record<string, ContentCard>; hand: string[]; meta: Meta; disabled: boolean; onInterpret: (cardId: string, relation: 'support' | 'conflict' | 'pending') => void; onForm: () => void; onIntervene: (choice: 'act_now' | 'minimal' | 'record') => void }) {
+  const placements = task.interpretation?.placements || [];
+  const contributed = placements.map(item => item.card_id);
+  const requiredTags = task.combo_requirement?.required_combo_tags || [];
+  const contributedCards = contributed.map(id => cards[id]).filter(Boolean);
+  const contributedTags = new Set(contributedCards.flatMap(item => item.combo_tags || []));
+  const candidates = hand.map(id => cards[id]).filter((item): item is ContentCard => Boolean(item)).filter(item => !contributed.includes(item.id) && (task.required_domains.includes(item.domain || '') || (item.combo_tags || []).some(tag => requiredTags.includes(tag))));
+  const missingTags = requiredTags.filter(tag => !contributedTags.has(tag));
+
+  const relationLabel = { support: '支持', conflict: '冲突', pending: '待确认' } as const;
+  const formed = Boolean(task.interpretation?.formed);
+  return <section className="evidence-ledger" aria-label="当前互证台">
+    <div className="evidence-ledger-head"><b>研究台 · 不是配对，而是判断</b><small>{contributed.length} 件已归位 · {candidates.length} 件手中可用</small></div>
+    <div className="evidence-ledger-track">
+      {contributedCards.length ? placements.map(placement => { const item = cards[placement.card_id]; return item ? <span key={placement.card_id} className={`evidence-chip placed ${placement.relation}`}><img src={`/ui-assets/${item.icon_asset || 'icon_card_scroll.png'}`} alt="" />{relationLabel[placement.relation]} · {item.name}</span> : null; }) : <span className="evidence-empty">先把一件证据归入支持、冲突或待确认</span>}
+    </div>
+    {requiredTags.length > 0 && <div className="evidence-combo"><img src="/ui-assets/game-ui/ribbons/ui_yungang_combo_ribbon_01.png" alt="" /><b>本委托的关键互证</b><span>{missingTags.length ? `还差：${formatRequirementValues(meta, 'combos', missingTags)}` : '关键互证已经成立'}</span></div>}
+    {!formed && candidates.length > 0 && <div className="evidence-next"><b>选择证据关系</b>{candidates.map(item => <div className="evidence-choice" key={item.id}><span><img src={`/ui-assets/${item.icon_asset || 'icon_card_scroll.png'}`} alt="" />{item.name}</span><div><button disabled={disabled} onClick={() => onInterpret(item.id, 'support')}>支持</button><button disabled={disabled} onClick={() => onInterpret(item.id, 'conflict')}>冲突</button><button disabled={disabled} onClick={() => onInterpret(item.id, 'pending')}>待确认</button></div></div>)}</div>}
+    {!formed && contributed.length > 0 && <button className="interpretation-primary" disabled={disabled} onClick={onForm}>形成当前解释</button>}
+    {formed && <div className="intervention-choice"><b>解释已形成 · 可信度 {task.interpretation?.confidence || 0}</b><span>现在决定如何对待这处遗产。每种选择都会真实改变资源、风险或项目。</span><div><button disabled={disabled} onClick={() => onIntervene('act_now')}>立即处理<small>推进最强；存在冲突时会提高风险</small></button><button disabled={disabled} onClick={() => onIntervene('minimal')}>最小干预<small>修护节点并降低压力</small></button><button disabled={disabled} onClick={() => onIntervene('record')}>先记录<small>保留现场，获得研究线索</small></button></div></div>}
+  </section>;
 }

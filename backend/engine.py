@@ -120,7 +120,7 @@ class GameEngine:
             damage = min(maximum, damage)
             sites[sid] = SiteState(id=sid, damage=damage, max_damage=maximum, durability=max(0, maximum - damage), max_durability=maximum, domains=definition.get("domains", []))
 
-        tasks = {tid: {**task, "contributed_cards": [], "contribution_records": [], "completed": False} for tid, task in self.content.tasks.items() if task.get("site_id") in sites}
+        tasks = {tid: {**task, "contributed_cards": [], "contribution_records": [], "interpretation": {"placements": [], "formed": False, "intervention": None, "confidence": 0}, "completed": False} for tid, task in self.content.tasks.items() if task.get("site_id") in sites}
         routes = {route["id"]: RouteState(id=route["id"], from_site=route["from"], to_site=route["to"], cost=route.get("cost", 1), status=route.get("status", "open"), risk=route.get("risk", 0), connection_level=route.get("connection_level", 0), active_project_id=route.get("active_project_id"), tags=route.get("tags", []), waypoints=route.get("waypoints", []), road_class=route.get("roadClass", route.get("road_class", "local")), terrain=route.get("terrain", "plain"), label_position=route.get("labelPosition", route.get("label_position")), name=route.get("name"), strategic_role=route.get("strategic_role"), risk_profile=route.get("risk_profile"), ui_hint=route.get("ui_hint"), event_tags=route.get("event_tags", [])) for route in self.content.routes if route["from"] in sites and route["to"] in sites}
         route_ids = list(routes)
         rng.shuffle(route_ids)
@@ -170,6 +170,7 @@ class GameEngine:
     def refresh(self, state: GameState):
         self._ensure_runtime_state(state)
         for task in state.tasks.values():
+            self._ensure_interpretation(task)
             task["progress"] = self._task_progress(task)
         if state.shared.outcome:
             state.legal_actions = []
@@ -244,8 +245,18 @@ class GameEngine:
             if state.shared.current_event_id and state.shared.current_event_id not in state.shared.prepared_event_ids:
                 actions.append({"type": ActionType.PREPARE.value, "label": "\u51c6\u5907\u5e94\u5bf9\u4e8b\u4ef6", "cost": 1})
             task = state.tasks.get(self.content.sites[active.location].get("active_task_id"))
-            if active.ap >= 1 and task and not task["completed"]:
-                actions.extend({"type": ActionType.CONTRIBUTE.value, "target_id": active.location, "card_id": card, "label": f"\u8d21\u732e {self.content.cards[card]['name']}", "cost": 1} for card in active.hand if self._card_can_contribute(card, task))
+            if task and not task["completed"]:
+                interpretation = self._ensure_interpretation(task)
+                placed = {item["card_id"] for item in interpretation["placements"]}
+                if not interpretation["formed"] and active.ap >= 1:
+                    for card in active.hand:
+                        if card not in placed and self._card_can_contribute(card, task):
+                            for relation, label in (("support", "支持"), ("conflict", "冲突"), ("pending", "待确认")):
+                                actions.append({"type": ActionType.INTERPRET_EVIDENCE.value, "target_id": relation, "target_site_id": active.location, "card_id": card, "label": f"将 {self.content.cards[card]['name']} 归入{label}", "cost": 1})
+                elif not interpretation["formed"] and self._interpretation_ready(task):
+                    actions.append({"type": ActionType.FORM_INTERPRETATION.value, "target_id": active.location, "label": "形成当前解释", "cost": 0})
+                elif interpretation["formed"] and not interpretation["intervention"]:
+                    actions.extend({"type": ActionType.CHOOSE_INTERVENTION.value, "target_id": choice, "target_site_id": active.location, "label": label, "cost": 0} for choice, label in (("act_now", "立即处理"), ("minimal", "最小干预"), ("record", "先记录")))
             actions.extend({"type": ActionType.PLAY_CARD.value, "card_id": card, "label": f"\u4f7f\u7528 {self.content.cards[card]['name']}"} for card in active.hand)
             actions.extend({"type": ActionType.USE_ACTION_CARD.value, "card_id": card, "label": f"\u4f7f\u7528\u7b56\u7565\uff1a{self.content.action_cards[card]['name']}", "cost": int(self.content.action_cards[card].get("cost", 1))} for card in active.action_hand if self._action_card_timing_allowed(state, self.content.action_cards[card]))
             ability = self.content.sites[active.location].get("node_ability", {})
@@ -286,7 +297,9 @@ class GameEngine:
         target = req.get("target_site_id") or req.get("target_id")
         if action == ActionType.MOVE.value: self._move(state, player, target)
         elif action == ActionType.EXPLORE.value: self._request_explore(state, player, req.get("card_id"))
-        elif action == ActionType.CONTRIBUTE.value: self._contribute(state, player, target, req.get("card_id"))
+        elif action == ActionType.INTERPRET_EVIDENCE.value: self._interpret_evidence(state, player, req.get("target_site_id") or player.location, req.get("card_id"), req.get("target_id"))
+        elif action == ActionType.FORM_INTERPRETATION.value: self._form_interpretation(state, player, target or player.location)
+        elif action == ActionType.CHOOSE_INTERVENTION.value: self._choose_intervention(state, player, req.get("target_site_id") or player.location, req.get("target_id"))
         elif action == ActionType.RESTORE.value: self._restore(state, player, target)
         elif action == ActionType.EXCHANGE.value: self._exchange(state, player, target, req.get("card_id"))
         elif action == ActionType.USE_SKILL.value: self._skill(state, player)
@@ -370,39 +383,85 @@ class GameEngine:
             return
         self._explore(state, player, card)
 
-    def _contribute(self, state, player, site_id, card):
-        task = state.tasks.get(self.content.sites[site_id].get("active_task_id")) if site_id in self.content.sites else None
-        if player.ap < 1 or player.location != site_id or not task or task["completed"] or card not in player.hand or not self._card_can_contribute(card, task): raise ValueError("invalid_contribution")
+    def _ensure_interpretation(self, task):
+        interpretation = task.setdefault("interpretation", {})
+        interpretation.setdefault("placements", [])
+        interpretation.setdefault("formed", False)
+        interpretation.setdefault("intervention", None)
+        interpretation.setdefault("confidence", 0)
+        return interpretation
+
+    def _interpret_evidence(self, state, player, site_id, card, relation):
+        task_id = self.content.sites.get(site_id, {}).get("active_task_id")
+        task = state.tasks.get(task_id)
+        if relation not in {"support", "conflict", "pending"} or player.ap < 1 or player.location != site_id or not task or task["completed"] or card not in player.hand or not self._card_can_contribute(card, task): raise ValueError("invalid_interpretation_evidence")
+        interpretation = self._ensure_interpretation(task)
+        if interpretation["formed"] or any(item["card_id"] == card for item in interpretation["placements"]): raise ValueError("evidence_already_placed")
         player.ap -= 1; player.hand.remove(card); player.contributions += 1
-        self._trigger_node_ability(state, player, site_id, card_id=card, trigger="after_contribute")
         definition = self.content.cards[card]
-        origin_tags = list(definition.get("origin_tags", []))
-        combo_tags = list(definition.get("combo_tags", []))
+        origin_tags, combo_tags = list(definition.get("origin_tags", [])), list(definition.get("combo_tags", []))
         if player.flags.pop("temporary_origin_tag", None): origin_tags.append("temporary_cross_origin")
         if player.flags.get("harmony_active") and self._has_upgrade_effect(player, "harmony_origin_bonus"):
             origin_tags.append("harmony_origin"); combo_tags.append("cross_origin")
-        site = state.sites[site_id]; site.contributions.append({"player_id": player.id, "card_id": card, "origin_tags": origin_tags, "combo_tags": combo_tags})
-        task["contributed_cards"].append(card); task.setdefault("contribution_records", []).append({"origin_tags": origin_tags, "combo_tags": combo_tags, "player_id": player.id}); task.setdefault("contributed_by_player", {})[player.id] = task.setdefault("contributed_by_player", {}).get(player.id, 0) + 1; site.influence += 1; state.shared.influence += 1
+        placement = {"player_id": player.id, "card_id": card, "relation": relation, "origin_tags": origin_tags, "combo_tags": combo_tags}
+        interpretation["placements"].append(placement)
+        task["contributed_cards"].append(card); task.setdefault("contribution_records", []).append(placement)
+        task.setdefault("contributed_by_player", {})[player.id] = task.setdefault("contributed_by_player", {}).get(player.id, 0) + 1
+        if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
+        site = state.sites[site_id]; site.contributions.append(placement); site.influence += 1
         project = state.projects.get(site.active_project_id or "")
-        if project and project.status == "active": self._advance_project(state, project, player.id, "contribute", card)
+        if project and project.status == "active" and relation != "conflict": self._advance_project(state, project, player.id, "contribute", card)
+        state.decks.setdefault("archive", []).append(card)
         bonus = player.flags.pop("next_contribute_bonus", 0)
         if bonus:
             player.influence += bonus; state.shared.influence += bonus
             state.shared.log.append(f"{player.name} \u7684\u534f\u4f5c\u52a0\u6210\u751f\u6548\uff1a\u5f71\u54cd\u529b +{bonus}")
-        state.decks.setdefault("archive", []).append(card)
-        if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
         self._trigger_node_ability(state, player, site_id, card_id=card, trigger="after_contribute")
         self._emit_scenario_rule(state, "after_contribute", {"player_id": player.id, "site_id": site_id, "task": task})
         if player.flags.pop("post_contribution_clue", False): state.shared.research_clues += 1
         if self._has_upgrade_effect(player, "post_contribution_clue"):
             task_origins = {origin for item in site.contributions if item.get("card_id") in task["contributed_cards"] for origin in item.get("origin_tags", [])}
             if len(task_origins) >= 2: state.shared.research_clues += 1
-        if self._task_complete(task):
-            task["completed"] = True; domain = task["reward"]["domain"]
-            if domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
-            state.shared.influence += 1; state.shared.restoration_resource += task["reward"].get("restoration_delta", 0); site.damage = max(0, site.damage - task["reward"].get("restoration_delta", 1)); self._update_site(site)
-            self._trigger_node_ability(state, player, site_id, trigger="task_completed")
-        state.shared.log.append(f"{player.name} \u4e3a {task['name']} \u8d21\u732e\u4e86\u8bc1\u636e")
+
+    def _interpretation_ready(self, task):
+        interpretation = self._ensure_interpretation(task)
+        usable = [item for item in interpretation["placements"] if item.get("relation") != "conflict"]
+        if not any(item.get("relation") == "support" for item in usable): return False
+        cards = [self.content.cards[item["card_id"]] for item in usable if item.get("card_id") in self.content.cards]
+        origins = {origin for item in usable for origin in item.get("origin_tags", [])}
+        tags = {tag for item in usable for tag in item.get("combo_tags", [])}
+        combo = task.get("combo_requirement", {})
+        return len(cards) >= task["required_card_count"] and len(origins) >= task["required_origin_diversity"] and set(task["required_domains"]).issubset({item.get("domain") for item in cards}) and set(combo.get("required_combo_tags", [])).issubset(tags)
+
+    def _form_interpretation(self, state, player, site_id):
+        task = state.tasks.get(self.content.sites.get(site_id, {}).get("active_task_id"))
+        if player.location != site_id or not task or task["completed"] or not self._interpretation_ready(task): raise ValueError("interpretation_not_ready")
+        interpretation = self._ensure_interpretation(task)
+        if interpretation["formed"]: raise ValueError("interpretation_already_formed")
+        support = sum(item.get("relation") == "support" for item in interpretation["placements"])
+        conflict = sum(item.get("relation") == "conflict" for item in interpretation["placements"])
+        pending = sum(item.get("relation") == "pending" for item in interpretation["placements"])
+        interpretation["formed"] = True; interpretation["confidence"] = max(1, support * 2 + pending - conflict)
+
+    def _choose_intervention(self, state, player, site_id, intervention):
+        task = state.tasks.get(self.content.sites.get(site_id, {}).get("active_task_id"))
+        if intervention not in {"act_now", "minimal", "record"} or player.location != site_id or not task or task["completed"]: raise ValueError("invalid_intervention")
+        interpretation = self._ensure_interpretation(task)
+        if not interpretation["formed"] or interpretation["intervention"]: raise ValueError("intervention_not_available")
+        site = state.sites[site_id]; reward = task.get("reward", {})
+        interpretation["intervention"] = intervention; task["completed"] = True
+        domain = reward.get("domain")
+        if domain and domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
+        if intervention == "act_now":
+            state.shared.influence += 2; state.shared.restoration_resource += int(reward.get("restoration_delta", 0)); site.damage = max(0, site.damage - 1)
+            if any(item.get("relation") == "conflict" for item in interpretation["placements"]): state.shared.threat += 1
+        elif intervention == "minimal":
+            state.shared.influence += 1; state.shared.threat = max(0, state.shared.threat - 1); site.damage = max(0, site.damage - 1)
+        else:
+            state.shared.research_clues += 2; state.shared.threat = max(0, state.shared.threat - 1)
+        project = state.projects.get(site.active_project_id or "")
+        if project and project.status == "active" and intervention != "record": project.progress += 1
+        self._update_site(site); self._trigger_node_ability(state, player, site_id, trigger="task_completed")
 
     def _restore(self, state, player, site_id):
         if player.ap < 1 or player.location != site_id: raise ValueError("invalid_restore")
@@ -1007,7 +1066,9 @@ class GameEngine:
         descriptions = {
             ActionType.MOVE.value: "沿已显影的路线前往另一个开放节点。",
             ActionType.EXPLORE.value: "从公开市场取走一件文化线索，推进当前地点的研究。",
-            ActionType.CONTRIBUTE.value: "把符合委托的线索交给当前地点，完成互证。",
+            ActionType.INTERPRET_EVIDENCE.value: "将一张证据归入支持、冲突或待确认，公开你的判断。",
+            ActionType.FORM_INTERPRETATION.value: "根据已归位的证据形成当前解释，再决定如何行动。",
+            ActionType.CHOOSE_INTERVENTION.value: "选择立即处理、最小干预或先记录，让解释真正改变现场。",
             ActionType.RESTORE.value: "消耗修护资源，降低当前地点的风化损伤。",
             ActionType.EXCHANGE.value: "把手中的线索交给同处的同行者。",
             ActionType.USE_SKILL.value: "使用当前角色的专长，改变这一回合的行动空间。",
@@ -1058,7 +1119,7 @@ class GameEngine:
                 if state.shared.phase == "player_action":
                     if ActionType.MOVE.value not in present: disabled[ActionType.MOVE.value] = "当前没有可达且开放的节点。"
                     if ActionType.EXPLORE.value not in present: disabled[ActionType.EXPLORE.value] = "当前没有可取的研究线索，或手牌已满。"
-                    if ActionType.CONTRIBUTE.value not in present: disabled[ActionType.CONTRIBUTE.value] = "当前地点没有符合委托的手牌线索。"
+                    if ActionType.INTERPRET_EVIDENCE.value not in present and ActionType.FORM_INTERPRETATION.value not in present and ActionType.CHOOSE_INTERVENTION.value not in present: disabled[ActionType.INTERPRET_EVIDENCE.value] = "先寻访一张适合当前问题的证据，再开始研判。"
                     if ActionType.RESTORE.value not in present: disabled[ActionType.RESTORE.value] = "当前地点暂时不需要修护，或修护资源不足。"
                     if ActionType.EXCHANGE.value not in present: disabled[ActionType.EXCHANGE.value] = "当前地点没有可以交换的同行者。"
                     role = self.content.roles.get(active.role_id, {})

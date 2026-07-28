@@ -1,12 +1,14 @@
 import type { Action, ActionOption, ActionType, GameState } from '../../types/game';
 
-export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'contribute' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
+export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 
 export const actionLabels: Partial<Record<ActionType, string>> = {
   move: '移动',
   survey_route: '勘察路线',
   explore: '探索',
-  contribute: '贡献',
+  interpret_evidence: '研判证据',
+  form_interpretation: '形成解释',
+  choose_intervention: '选择干预',
   restore: '修护节点',
   restore_route: '修护路线',
   establish_connection: '建立连接',
@@ -112,7 +114,9 @@ export function actionFeedback(action: Action, before: GameState | undefined, af
   const copy: Partial<Record<ActionType, string>> = {
     move: '已抵达新地点。新的线索与风险已经显影。',
     explore: '文化证据已进入手牌，可用于当前地点的互证。',
-    contribute: '证据已投入委托，节点会按完整条件推进。',
+    interpret_evidence: '证据已归入研究台；它的关系会影响解释的可信度与后续风险。',
+    form_interpretation: '当前解释已形成。现在需要决定如何在不确定中行动。',
+    choose_intervention: '干预已写入遗产网络，项目、风险与档案将随之改变。',
     restore: '节点损伤已降低，可以继续推进当前项目。',
     restore_route: '路线已恢复通行，新的协作路径已经打开。',
     survey_route: '路线状况已记录，可以据此决定修护或绕行。',

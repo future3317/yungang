@@ -106,7 +106,7 @@ EFFECT_HANDLERS = {
 }
 
 ACTION_TYPES = {
-    "move", "explore", "restore", "contribute", "exchange", "use_skill", "play_card",
+    "move", "explore", "restore", "contribute", "interpret_evidence", "form_interpretation", "choose_intervention", "exchange", "use_skill", "play_card",
     "use_action_card", "use_node_ability", "use_upgrade", "end_turn", "end_planning", "resolve_event", "select_market_card",
     "discard", "survey_route", "restore_route", "establish_connection", "prepare", "select_upgrade", "plan",
 }
