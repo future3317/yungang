@@ -456,3 +456,8 @@
     inset: 0;
   }
 }
+
+.stage-caption[data-focused="false"] { display: none !important; }
+@media (min-width: 761px) {
+  .network-stage .action-target-guide { bottom: 112px !important; z-index: 38 !important; }
+}

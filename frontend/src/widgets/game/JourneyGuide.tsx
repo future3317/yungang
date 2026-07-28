@@ -1,6 +1,7 @@
 import { Compass, HandHeart, MapPinned, Target } from 'lucide-react';
 import type { Action, ActionType, ContentCard, Meta, Player, Site, Task } from '../../types/game';
 import { contentTagName, domainName } from './contentLabels';
+import { actionLabels, localizeActionText } from './gameUi';
 
 export function JourneyGuide({ task, cards, active, legal, meta, actionMode, onChoose }: { task?: Task; cards: Record<string, ContentCard>; active: Player; legal: Action[]; meta: Meta; actionMode: ActionType | null; onChoose: (type: ActionType) => void }) {
   const contributions = task?.contributed_cards || [];
@@ -14,5 +15,5 @@ export function ActionTargetGuide({ mode, actions, sites, cards, onRun, onCancel
   if (!mode) return null;
   const title = mode === 'explore' ? '从市场中取一件线索' : mode === 'contribute' ? '选择一件线索交付' : '选择下一处落脚点';
   const name = (action: Action) => action.card_id ? cards[action.card_id]?.name || action.card_id : action.target_id ? sites[action.target_id]?.name || action.target_id : action.label;
-  return <section className="action-target-guide" role="status" aria-live="polite"><div><span>{title}</span><button type="button" onClick={onCancel}>收回脚步</button></div><p>金色标记已经显出路径，选择一处，便可启程。</p><div>{actions.map((action, index) => <button type="button" key={`${action.type}-${action.card_id || action.target_id || index}`} onClick={() => onRun(action)}><b>{name(action)}</b><small>{action.cost || 0} AP · {action.label}</small></button>)}</div></section>;
+  return <section className="action-target-guide" role="status" aria-live="polite"><div><span>{title}</span><button type="button" onClick={onCancel}>收回脚步</button></div><p>金色标记已经显出路径，选择一处，便可启程。</p><div>{actions.map((action, index) => <button type="button" key={`${action.type}-${action.card_id || action.target_id || index}`} onClick={() => onRun(action)}><b>{localizeActionText(name(action))}</b><small>{action.cost || 0} AP · {actionLabels[action.type] || localizeActionText(action.label)}</small></button>)}</div></section>;
 }

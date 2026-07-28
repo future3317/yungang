@@ -31,6 +31,16 @@ const previewDeltaLabels: Record<string, string> = {
   restoration: '修护进度',
 };
 
+const actionErrorMessages: Record<string, string> = {
+  action_card_wrong_timing: '当前时机不能使用这张策略牌。',
+  action_card_unavailable: '手中没有这张策略牌。',
+  invalid_action_card_target: '请选择一个合法的策略牌目标。',
+  no_valid_action_card_target: '当前没有可用的策略牌目标。',
+  not_enough_ap: '行动点不足。',
+  not_enough_research_clues: '研究线索不足。',
+  unsupported_action_card_effect: '这张策略牌暂时无法结算。',
+};
+
 const roleBadgeAssets: Record<string, string> = {
   pingcheng_artisan: 'role-badge-artisan.png',
   western_dancer: 'role-badge-dancer.png',
@@ -44,6 +54,23 @@ export function previewDeltaText(delta: Record<string, unknown> | undefined, fal
     .map(([key, value]) => `${previewDeltaLabels[key] || '状态变化'} ${Number(value) > 0 ? '+' : ''}${value}`)
     .join(' · ');
   return text || fallback;
+}
+
+export function localizeActionText(value?: string) {
+  return (value || '').replace(/\s+/g, ' ').trim()
+    .replace(/\b(open|blocked|strained|restored|illuminated)\b/gi, match => ({ open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮' }[match.toLowerCase()] || match))
+    .replace(/Use Action Card/gi, '使用策略牌')
+    .replace(/use_action_card/gi, '使用策略牌');
+}
+
+export function localizeActionError(error: unknown) {
+  const candidate = error as { code?: unknown; message?: unknown } | null;
+  const code = typeof candidate?.code === 'string' ? candidate.code : '';
+  if (code && actionErrorMessages[code]) return actionErrorMessages[code];
+  const message = typeof candidate?.message === 'string' ? candidate.message : '';
+  const embeddedCode = Object.keys(actionErrorMessages).find(key => message.includes(key));
+  if (embeddedCode) return actionErrorMessages[embeddedCode];
+  return actionErrorMessages[message] || localizeActionText(message) || '行动暂时无法完成，请重新选择。';
 }
 
 export function findCardAction(actions: Action[], type: ActionType, cardId: string) {

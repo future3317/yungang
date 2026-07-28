@@ -107,7 +107,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           const combo = textField(item, 'combo_name');
           const displayDomain = item.domain ? domainName(meta, item.domain) : '文化证据';
           const reason = marketReason({ ...item, domain: displayDomain }, task, useful);
-          return <button type="button" key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`}>
+          return <button type="button" key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`} title={`${item.name}：${description}${combo ? `；${comboNames[combo] || combo}，组合后获得额外影响。` : ''}`}>
             <img src={`/ui-assets/${item.icon_asset || 'icon_card_scroll.png'}`} alt="" />
             <span className="culture-card-copy"><b>{item.name}</b><small>{displayDomain} · {reason}</small><em>{description}</em>{combo && <i>{comboNames[combo] || combo} · 组合后获得额外影响</i>}</span>
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这件' : '不可选'}<small>{explore ? `${explore.cost || 1} AP` : ''}</small></strong>
