@@ -52,7 +52,7 @@
     "name": "草原骑行使者",
     "origin": "草原",
     "icon": "骑",
-    "icon_asset": "icon_role_diplomat.png",
+    "icon_asset": "icon_role_rider.png",
     "color": "green",
     "start_site_id": "wall_pass",
     "ability": {
