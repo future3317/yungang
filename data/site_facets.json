@@ -221,7 +221,7 @@
       "site_id": "northern_workshop",
       "kind": "image",
       "name": "北线工坊·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 北线工坊承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -233,7 +233,7 @@
       "site_id": "northern_workshop",
       "kind": "material",
       "name": "北线工坊·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 北线工坊承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -245,7 +245,7 @@
       "site_id": "northern_workshop",
       "kind": "route",
       "name": "北线工坊·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 北线工坊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 北线工坊承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -257,7 +257,7 @@
       "site_id": "archive_depot",
       "kind": "image",
       "name": "档案库·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 档案库承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -269,7 +269,7 @@
       "site_id": "archive_depot",
       "kind": "material",
       "name": "档案库·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 档案库承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -281,7 +281,7 @@
       "site_id": "archive_depot",
       "kind": "route",
       "name": "档案库·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 档案库是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 档案库承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -293,7 +293,7 @@
       "site_id": "material_yard",
       "kind": "image",
       "name": "材料场·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 材料场承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -305,7 +305,7 @@
       "site_id": "material_yard",
       "kind": "material",
       "name": "材料场·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 材料场承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -317,7 +317,7 @@
       "site_id": "material_yard",
       "kind": "route",
       "name": "材料场·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 材料场是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 材料场承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -329,7 +329,7 @@
       "site_id": "carving_courtyard",
       "kind": "image",
       "name": "造像院·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 造像院承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -341,7 +341,7 @@
       "site_id": "carving_courtyard",
       "kind": "material",
       "name": "造像院·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 造像院承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -353,7 +353,7 @@
       "site_id": "carving_courtyard",
       "kind": "route",
       "name": "造像院·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 造像院是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 造像院承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -365,7 +365,7 @@
       "site_id": "motif_gallery",
       "kind": "image",
       "name": "纹样廊·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 纹样廊承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -377,7 +377,7 @@
       "site_id": "motif_gallery",
       "kind": "material",
       "name": "纹样廊·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 纹样廊承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -389,7 +389,7 @@
       "site_id": "motif_gallery",
       "kind": "route",
       "name": "纹样廊·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 纹样廊是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 纹样廊承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -401,7 +401,7 @@
       "site_id": "river_crossing",
       "kind": "image",
       "name": "河谷渡口·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河谷渡口承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -413,7 +413,7 @@
       "site_id": "river_crossing",
       "kind": "material",
       "name": "河谷渡口·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河谷渡口承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -425,7 +425,7 @@
       "site_id": "river_crossing",
       "kind": "route",
       "name": "河谷渡口·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河谷渡口是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河谷渡口承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -437,7 +437,7 @@
       "site_id": "caravan_camp",
       "kind": "image",
       "name": "行旅营地·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 行旅营地承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -449,7 +449,7 @@
       "site_id": "caravan_camp",
       "kind": "material",
       "name": "行旅营地·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 行旅营地承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -461,7 +461,7 @@
       "site_id": "caravan_camp",
       "kind": "route",
       "name": "行旅营地·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 行旅营地是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 行旅营地承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -473,7 +473,7 @@
       "site_id": "border_market",
       "kind": "image",
       "name": "边市前沿·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 边市前沿承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -485,7 +485,7 @@
       "site_id": "border_market",
       "kind": "material",
       "name": "边市前沿·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 边市前沿承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -497,7 +497,7 @@
       "site_id": "border_market",
       "kind": "route",
       "name": "边市前沿·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 边市前沿是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 边市前沿承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -509,7 +509,7 @@
       "site_id": "watchtower",
       "kind": "image",
       "name": "烽火台·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 烽火台承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -521,7 +521,7 @@
       "site_id": "watchtower",
       "kind": "material",
       "name": "烽火台·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 烽火台承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -533,7 +533,7 @@
       "site_id": "watchtower",
       "kind": "route",
       "name": "烽火台·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 烽火台是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 烽火台承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -545,7 +545,7 @@
       "site_id": "craft_school",
       "kind": "image",
       "name": "工艺学堂·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 工艺学堂承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -557,7 +557,7 @@
       "site_id": "craft_school",
       "kind": "material",
       "name": "工艺学堂·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 工艺学堂承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -569,7 +569,7 @@
       "site_id": "craft_school",
       "kind": "route",
       "name": "工艺学堂·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 工艺学堂是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 工艺学堂承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -581,7 +581,7 @@
       "site_id": "river_archive",
       "kind": "image",
       "name": "河道档案·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 河道档案承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -593,7 +593,7 @@
       "site_id": "river_archive",
       "kind": "material",
       "name": "河道档案·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 河道档案承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -605,7 +605,7 @@
       "site_id": "river_archive",
       "kind": "route",
       "name": "河道档案·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河道档案是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 河道档案承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"
@@ -617,7 +617,7 @@
       "site_id": "route_junction",
       "kind": "image",
       "name": "路线枢纽·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 路线枢纽承担本局的协作与决策。",
       "evidence_domains": [
         "statue",
         "pattern"
@@ -629,7 +629,7 @@
       "site_id": "route_junction",
       "kind": "material",
       "name": "路线枢纽·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 路线枢纽承担本局的协作与决策。",
       "evidence_domains": [
         "architecture",
         "frontier"
@@ -641,7 +641,7 @@
       "site_id": "route_junction",
       "kind": "route",
       "name": "路线枢纽·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 路线枢纽是游戏化功能节点，用于组织协作与决策。",
+      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 路线枢纽承担本局的协作与决策。",
       "evidence_domains": [
         "trade",
         "frontier"

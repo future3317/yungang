@@ -966,7 +966,7 @@
         "cross_cultural_evidence"
       ],
       "rarity": "common",
-      "description": "用于确认身份、货物或约定的记录，可作为交换秩序的游戏化证据。",
+      "description": "用于确认身份、货物或约定的记录，可作为交换秩序的佐证。",
       "culture_note": "与关塞证据组合时，适合解锁事件协商选项。",
       "effect": {
         "type": "next_contribute_bonus",

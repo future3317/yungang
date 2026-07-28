@@ -56,9 +56,9 @@ export function siteTypeName(type?: string) {
 
 export function contentClassName(value?: string) {
   return ({
-    documented: '真实遗产信息',
-    interpretive: '研究性解释节点',
-    gameplay: '游戏化功能节点',
+    documented: '遗产实景',
+    interpretive: '研究性解读',
+    gameplay: '协作场景',
   } as Record<string, string>)[value || ''] || '遗产节点';
 }
 
