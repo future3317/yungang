@@ -8,7 +8,9 @@ Rules are merged as: baseline rules, scenario rules, difficulty modifiers, then 
 
 ## Evidence and tasks
 
-A task completes only after its required card count, domains, origin diversity, combination tags, preferred origins, and minimum contributor count are satisfied. Completed evidence enters the archive and contributes to diversity objectives.
+A task follows one explicit research loop: the player places eligible evidence into `support`, `conflict`, or `pending`; when the required evidence, domains, origins and combination tags are satisfied, the player forms an interpretation; finally, the player chooses `act_now`, `minimal`, or `record`. The intervention completes the task and applies its distinct changes to influence, damage, threat, research clues, projects and the final archive. There is no separate direct-contribution action path.
+
+Evidence placement is not a claim that the represented history is proven. It is the players' current interpretation of the available sources, and conflict/pending placements are intentionally valid states rather than automatic failures.
 
 ## Routes, events, and pressure
 
