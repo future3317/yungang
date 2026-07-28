@@ -6,6 +6,7 @@ import os
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
@@ -350,7 +351,7 @@ class SPAStaticFiles(StaticFiles):
             return await super().get_response(path, scope)
         try:
             response = await super().get_response(path, scope)
-        except HTTPException as exc:
+        except StarletteHTTPException as exc:
             if exc.status_code != 404:
                 raise
             return await super().get_response("index.html", scope)
