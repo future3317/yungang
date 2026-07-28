@@ -47,7 +47,7 @@
     "id": "huayan_temple",
     "name": "华严寺",
     "icon_asset": "generated/nodes/icon_node_huayan_temple.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_yungang_day.png",
     "type": "heritage",
     "x": 28,
     "y": 20,
@@ -89,7 +89,7 @@
     "id": "shanhua_temple",
     "name": "善化寺",
     "icon_asset": "generated/nodes/icon_node_shanhua_temple.png",
-    "scene_asset": "scene_archive_cave.png",
+    "scene_asset": "scene_yungang_day.png",
     "type": "heritage",
     "x": 72,
     "y": 22,
@@ -313,7 +313,7 @@
     ],
     "summary": "游戏化主题节点，以平城遗址中建筑构件、瓦当、陶片等考古材料的记录、分类和比对工作为背景。",
     "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_archive_cave.png",
     "region_id": "pingcheng_network",
     "strategic_role": "档案循环与市场控制",
     "node_ability": {
@@ -431,7 +431,7 @@
     ],
     "summary": "游戏化主题节点，以丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收和再创造为背景。",
     "icon_asset": "generated/nodes/icon_node_motif_gallery.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_silk_road_expedition.png",
     "region_id": "cave_network",
     "strategic_role": "纹样来源转换",
     "node_ability": {
@@ -470,7 +470,7 @@
     ],
     "summary": "游戏化主题节点，以历史交通网络中的渡口、补给和人员流动为背景；未对应大同地区某一处已核定渡口遗址。",
     "icon_asset": "generated/nodes/icon_node_river_crossing.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_frontier_pass.png",
     "region_id": "frontier_network",
     "strategic_role": "路线风险与跨区移动",
     "node_ability": {
@@ -509,7 +509,7 @@
     ],
     "summary": "游戏化主题节点，以商旅分段行进、休息补给和转运交换为背景，表现文化信息随人员和物资流动。",
     "icon_asset": "generated/nodes/icon_node_caravan_camp.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_silk_road_expedition.png",
     "region_id": "frontier_network",
     "strategic_role": "移动后交换",
     "node_ability": {
@@ -548,7 +548,7 @@
     ],
     "summary": "游戏化主题节点，以大同长城沿线关堡和多民族交往交流交融的文化展示主题为背景。",
     "icon_asset": "generated/nodes/icon_node_border_market.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_trade_meeting.png",
     "region_id": "frontier_network",
     "strategic_role": "边塞与互市组合",
     "node_ability": {
@@ -587,7 +587,7 @@
     ],
     "summary": "游戏化主题节点，以长城防御体系中的烽火台和观察设施为背景，不指向某一处特定烽火台遗存。",
     "icon_asset": "generated/nodes/icon_node_watchtower.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_frontier_pass.png",
     "region_id": "frontier_network",
     "strategic_role": "事件目标预览",
     "node_ability": {
@@ -665,7 +665,7 @@
     ],
     "summary": "游戏化主题节点，用于表现交通网络、路线记录与文化证据整理之间的关系，未对应真实档案机构。",
     "icon_asset": "generated/nodes/icon_node_river_archive.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_archive_cave.png",
     "region_id": "frontier_network",
     "strategic_role": "路线信息与档案",
     "node_ability": {
@@ -704,7 +704,7 @@
     ],
     "summary": "游戏化主题节点，以丝绸之路由多条相互连接、随时间变化的路线构成这一特点为背景。",
     "icon_asset": "generated/nodes/icon_node_route_junction.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_frontier_pass.png",
     "region_id": "frontier_network",
     "strategic_role": "多路线治理与区域连接",
     "node_ability": {
@@ -893,7 +893,7 @@
     "id": "environmental_monitoring_station",
     "name": "环境监测站",
     "icon_asset": "generated/nodes/icon_node_material_yard.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "scene_asset": "scene_archive_cave.png",
     "type": "support",
     "content_class": "gameplay",
     "x": 76,
