@@ -109,19 +109,17 @@ npm run api:generate
 
 ## 文档入口
 
-- [当前玩法与机制状态](docs/PRODUCT_STATUS.md)
-- [内容与机制评审说明](docs/SUPERVISOR_REVIEW_BRIEF.md)
-- [玩家旅程](docs/PLAYER_JOURNEY.md)
-- [当前玩法规则](docs/GAMEPLAY_RULES.md)
-- [任务与项目规则](docs/TASK_AND_PROJECT_RULES.md)
-- [事件系统](docs/EVENT_SYSTEM.md)
-- [单人模式](docs/SOLO_MODE.md)
-- [房间与席位模型](docs/ROOM_AND_SEAT_MODEL.md)
-- [错误与恢复](docs/ERROR_AND_RECOVERY.md)
-- [无障碍说明](docs/ACCESSIBILITY.md)
-- [内容运行时覆盖](docs/engineering/CONTENT_RUNTIME_COVERAGE.md)
-- [测试策略](docs/TEST_STRATEGY.md)
-- [五分钟演示脚本](docs/playtest/DEMO_SCRIPT.md)
+给内容评审、试玩和项目介绍使用的完整说明只有一份：
+
+- [项目内容、玩法与试玩评审说明](docs/SUPERVISOR_REVIEW_BRIEF.md)
+
+以下文档仅供项目维护者使用：
+
+- [Render 部署说明](docs/DEPLOY_RENDER.md)
+- [工程架构](docs/engineering/BACKEND_ARCHITECTURE.md)
+- [接口契约](docs/engineering/API_CONTRACT.md)
+- [测试策略](docs/engineering/TEST_STRATEGY.md)
+- [无障碍实现说明](docs/accessibility/ACCESSIBILITY_FEATURES.md)
 
 ## 生产化补充
 
