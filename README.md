@@ -109,8 +109,9 @@ npm run api:generate
 
 ## 文档入口
 
-给内容评审、试玩和项目介绍使用的完整说明只有一份：
+给外部读者使用的说明分成两份：先用手把手教程完成第一次试玩，再用评审说明了解项目内容与讨论方向：
 
+- [第一次试玩手把手教程](docs/FIRST_PLAYTHROUGH_GUIDE.md)
 - [项目内容、玩法与试玩评审说明](docs/SUPERVISOR_REVIEW_BRIEF.md)
 
 以下文档仅供项目维护者使用：
