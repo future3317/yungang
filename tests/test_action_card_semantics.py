@@ -102,6 +102,24 @@ def test_reserve_ap_is_available_on_this_player_next_turn():
     assert player.ap == player.max_ap + 1
 
 
+@pytest.mark.parametrize("card_id", [f"action_{index:02d}" for index in range(1, 17)])
+def test_every_strategy_card_rejects_wrong_timing(card_id):
+    engine, state, player = _state_with_card(card_id)
+    state.shared.phase = "planning"
+    with pytest.raises(ValueError, match="action_card_wrong_timing"):
+        engine._use_action_card(state, player, card_id)
+
+
+@pytest.mark.parametrize("card_id", ["action_01", "action_02", "action_03", "action_05", "action_06", "action_09", "action_10", "action_13", "action_14"])
+def test_route_strategy_cards_reject_invalid_target(card_id):
+    engine, state, player = _state_with_card(card_id)
+    state.shared.phase = "pending_choice" if card_id == "action_09" else "player_action"
+    if card_id == "action_09":
+        state.pending_choice = {"kind": "event", "event_id": "sandstorm", "options": []}
+    with pytest.raises(ValueError, match="(no_valid_action_card_target|invalid_action_card_target)"):
+        engine._use_action_card(state, player, card_id, target_id="not-a-route", force_event_response=card_id == "action_09")
+
+
 def test_project_progress_effect_advances_stage_state_consistently():
     engine = GameEngine()
     state = engine.new_game("project-effect", ["p1"])
