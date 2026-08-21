@@ -81,3 +81,5 @@
 @media (max-width: 760px) { .stage-caption { grid-template-columns: 50px minmax(0, 1fr) 36px; width: 100%; overflow: hidden; }.stage-caption > div { min-width: 0; max-width: 100%; overflow: hidden; }.stage-caption h2, .stage-caption p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
 
 .inspector-scene-art { height: 92px; margin: 10px 0 12px; overflow: hidden; border: 1px solid rgba(220, 190, 112, .28); border-radius: 9px; background: rgba(13, 25, 17, .48); }.inspector-scene-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.hud-overlay-layer { position: fixed; z-index: 100; inset: 0; pointer-events: none; isolation: isolate; }.hud-overlay-layer > * { pointer-events: auto; }
