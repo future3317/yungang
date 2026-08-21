@@ -3,7 +3,9 @@ import type { Action, ContentCard, Player, RouteState, Site } from '../../types/
 import { actionLabels, localizeActionText, previewDeltaText, resolveTargetName } from './gameUi';
 
 export function resolveActionTargetName(action: Action, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, players: Record<string, Player> = {}) {
-  const target = action.target_id || action.target_site_id || action.route_id;
+  const locationFirst = action.type === 'interpret_evidence' || action.type === 'form_interpretation' || action.type === 'choose_intervention';
+  const target = locationFirst ? action.target_site_id || action.target_id || action.route_id : action.target_id || action.target_site_id || action.route_id;
+  if (locationFirst && (!target || !sites[target])) return '当前地点';
   if (!target) return '当前地点';
   return resolveTargetName(target, sites, routes, {}, players);
 }
