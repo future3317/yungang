@@ -1,8 +1,19 @@
 import { ChevronDown, Clock3 } from 'lucide-react';
 import { useState } from 'react';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
+import { StateChangeList } from './StateChangeList';
 
-type TimelineEntry = { id: string; round: number; type: string; message: string; player_name?: string };
+type TimelineChange = { label?: string; before?: string | number | null; after?: string | number | null; delta?: number | null };
+type TimelineEntry = { id: string; round: number; type: string; message: string; player_name?: string; effects?: unknown[] };
+
+function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
+  return (effects || []).filter((effect): effect is Record<string, unknown> => Boolean(effect) && typeof effect === 'object').map(effect => ({
+    label: typeof effect.label === 'string' ? effect.label : undefined,
+    before: typeof effect.before === 'string' || typeof effect.before === 'number' ? effect.before : null,
+    after: typeof effect.after === 'string' || typeof effect.after === 'number' ? effect.after : null,
+    delta: typeof effect.delta === 'number' ? effect.delta : null,
+  })).filter(effect => effect.label || effect.before !== null || effect.after !== null || effect.delta !== null);
+}
 type TimelineFilter = 'all' | 'action' | 'event' | 'project';
 
 const filters: Array<{ id: TimelineFilter; label: string }> = [
@@ -24,7 +35,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         {filters.map(item => <button key={item.id} type="button" role="tab" aria-selected={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}
       </div>
       <div className="timeline-events" aria-live="polite">
-        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}</b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}</span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
+        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}</b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}<StateChangeList compact changes={structuredEffects(entry.effects)} /></span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
       </div>
     </div>
   </details>;
