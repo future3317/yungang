@@ -140,9 +140,9 @@ class ActionOption(BaseModel):
     requirements: List[str] = Field(default_factory=list)
     recommendation_score: int = 0
     reason: str = ""
-    preview_delta: Dict[str, object] = Field(default_factory=dict)
+    preview_delta: JsonObject = Field(default_factory=dict)
     confirmation: str = ""
-    payload: Dict[str, object] = Field(default_factory=dict)
+    payload: JsonObject = Field(default_factory=dict)
 
 class CreateGameRequest(BaseModel):
     player_ids: List[str] = Field(default_factory=lambda: ["p1", "p2"])
