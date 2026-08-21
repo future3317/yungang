@@ -17,7 +17,6 @@ import { useDialogFocus } from '../../widgets/game/useDialogFocus';
 import { actionFeedback, actionLabels, actionModeLabel, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
 import { useRoomEvents } from '../../shared/useRoomEvents';
 import { getRoomToken } from '../../shared/roomToken';
-import { useTutorialProgress } from '../../shared/useTutorialProgress';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
 import { GameViewport } from '../../widgets/game/GameViewport';
 import '../../styles/experience.css';
@@ -44,7 +43,6 @@ export function GamePage() {
   const [lastActionType, setLastActionType] = useState<ActionType | null>(null);
   const [roomToken] = useState(() => roomId ? getRoomToken(roomId) : '');
   const [roomEventState, setRoomEventState] = useState<'connected' | 'retrying' | 'ended' | 'unauthorized'>('connected');
-  const tutorialProgress = useTutorialProgress();
   const enqueueToast = (text: string) => { const id = crypto.randomUUID(); setToasts(items => [...items.slice(-3), { id, text }]); window.setTimeout(() => setToasts(items => items.filter(item => item.id !== id)), 4800); };
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId), refetchOnWindowFocus: false, refetchInterval: roomId ? 2500 : false });
   useRoomEvents({ roomId, token: roomToken, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); }, onState: setRoomEventState });
@@ -59,10 +57,6 @@ export function GamePage() {
     onError: error => { if (error instanceof ApiError && error.status === 409) { const current = (error.payload as { detail?: { current_state?: GameState } })?.detail?.current_state; if (current) { queryClient.setQueryData([roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], current); setActionMode(null); setSelectedOption(null); setPreview(null); enqueueToast('状态已同步，请重新选择行动。'); return; } } setActionMode(null); setSelectedOption(null); setPreview(null); enqueueToast(localizeActionError(error)); }
   });
   useEffect(() => { const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') { setActionMode(null); setSelectedOption(null); setCard(null); setPreview(null); } }; window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, []);
-  useEffect(() => {
-    if (!gameQuery.data || tutorialProgress.hasSeenManual) return;
-    setTutorialOpen(true);
-  }, [gameQuery.data?.session_id, tutorialProgress]);
   if (gameQuery.isLoading || metaQuery.isLoading) return <div className="state-screen"><span className="loading-orbit" /><p>正在读取遗产网络…</p></div>;
   if (gameQuery.isError || metaQuery.isError || !state || !metaQuery.data) return <div className="state-screen danger"><CircleAlert /><h1>旅程暂时无法打开</h1><p>请检查本地服务后重新进入旅程。</p><button className="ghost-button" onClick={() => { void gameQuery.refetch(); void metaQuery.refetch(); }}>重新连接</button><button className="ghost-button" onClick={() => window.location.assign('/')}>返回首页</button></div>;
   if (state.shared.outcome) return <Navigate to={roomId ? `/room/${roomId}/result` : `/result/${state.session_id}`} replace />;
