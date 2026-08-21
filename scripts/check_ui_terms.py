@@ -5,9 +5,9 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1] / "frontend" / "src"
 FORBIDDEN = (
-    re.compile(r"\bUse Action Card\b", re.I),
-    re.compile(r"\bRoute:\s*", re.I),
-    re.compile(r"\bProject:\s*", re.I),
+    re.compile(r">\s*Use Action Card", re.I),
+    re.compile(r">\s*Route:\s*", re.I),
+    re.compile(r">\s*Project:\s*", re.I),
     re.compile(r"（目标：(?:project_|route_)", re.I),
 )
 
@@ -15,7 +15,7 @@ FORBIDDEN = (
 def main() -> int:
     failures: list[str] = []
     for path in ROOT.rglob("*"):
-        if path.suffix not in {".ts", ".tsx"} or path.name in {"gameUi.ts", "generated.ts", "inspectorFormatters.ts", "HeritageNetwork.tsx"} or path.name.endswith(".test.ts") or path.name.endswith(".test.tsx"):
+        if path.suffix not in {".ts", ".tsx"} or path.name == "generated.ts" or path.name.endswith(".test.ts") or path.name.endswith(".test.tsx"):
             continue
         text = path.read_text(encoding="utf-8")
         for pattern in FORBIDDEN:

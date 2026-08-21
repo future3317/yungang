@@ -34,6 +34,50 @@ class SiteStatus(StrEnum):
     AT_RISK = "at_risk"
     CLOSED = "closed"
 
+
+class RouteStatus(StrEnum):
+    OPEN = "open"
+    STRAINED = "strained"
+    BLOCKED = "blocked"
+    RESTORED = "restored"
+    ILLUMINATED = "illuminated"
+
+
+class ProjectStatus(StrEnum):
+    ACTIVE = "active"
+    COMPLETED = "completed"
+
+
+class Phase(StrEnum):
+    ROUND_FORECAST = "round_forecast"
+    PLANNING = "planning"
+    PLAYER_ACTION = "player_action"
+    PENDING_CHOICE = "pending_choice"
+    EVENT_RESOLUTION = "event_resolution"
+    ROUND_SUMMARY = "round_summary"
+    GAME_OVER = "game_over"
+
+
+class ChoiceKind(StrEnum):
+    EVENT = "event"
+    VIEW_SELECT = "view_select"
+    DISCARD = "discard"
+    ACTION_CARD = "action_card"
+    ARCHIVE_SELECT = "archive_select"
+    ARCHIVE_RETRIEVE = "archive_retrieve"
+    ROLE_UPGRADE = "role_upgrade"
+
+
+class EventStatus(StrEnum):
+    FORECAST = "forecast"
+    RESOLVED = "resolved"
+
+
+class PlayMode(StrEnum):
+    SOLO = "solo"
+    LOCAL = "local"
+    MULTI_DEVICE = "multi_device"
+
 class GameOutcome(StrEnum):
     VICTORY = "victory"
     DEFEAT = "defeat"
@@ -47,7 +91,7 @@ class FeedbackEvent(BaseModel):
 
 class EventInstance(BaseModel):
     event_id: Optional[str] = None
-    status: str = "forecast"
+    status: EventStatus = EventStatus.FORECAST
     forecast_scope: JsonObject = Field(default_factory=dict)
     revealed_targets: List[str] = Field(default_factory=list)
     resolved_targets: List[str] = Field(default_factory=list)
@@ -56,7 +100,7 @@ class EventInstance(BaseModel):
 
 
 class PendingChoice(BaseModel):
-    kind: str
+    kind: ChoiceKind
     options: List[JsonObject] = Field(default_factory=list)
     cards: List[str] = Field(default_factory=list)
     event_id: Optional[str] = None
@@ -94,7 +138,7 @@ class ViewerState(BaseModel):
     controlled_player_ids: List[str] = Field(default_factory=list)
     can_act: bool = False
     can_manage_room: bool = False
-    play_mode: str = "solo"
+    play_mode: PlayMode = PlayMode.SOLO
     paused: bool = False
     room_id: Optional[str] = None
     room_status: Optional[str] = None
@@ -189,7 +233,7 @@ class ActionTarget(BaseModel):
 
 class ActionOption(BaseModel):
     id: str
-    type: str
+    type: ActionType
     label: str
     description: str = ""
     cost: Dict[str, int] = Field(default_factory=lambda: {"ap": 0})
@@ -275,11 +319,12 @@ class PlayerState(BaseModel):
 
 
 class RouteState(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
     id: str
     from_site: str
     to_site: str
     cost: int = 1
-    status: str = "open"
+    status: RouteStatus = RouteStatus.OPEN
     risk: int = 0
     connection_level: int = 0
     active_project_id: Optional[str] = None
@@ -296,13 +341,14 @@ class RouteState(BaseModel):
 
 
 class ProjectState(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
     id: str
     site_id: str
     name: str
     stages: List[JsonObject] = Field(default_factory=list)
     stage_index: int = 0
     progress: int = 0
-    status: str = "active"
+    status: ProjectStatus = ProjectStatus.ACTIVE
     contributors: List[str] = Field(default_factory=list)
     stage_evidence: List[JsonObject] = Field(default_factory=list)
     completed_stages: List[str] = Field(default_factory=list)
@@ -365,7 +411,7 @@ class SharedState(BaseModel):
     log: List[str] = Field(default_factory=list)
     planning_marks: Dict[str, List[Dict[str, str]]] = Field(default_factory=dict)
     node_ability_uses: List[str] = Field(default_factory=list)
-    phase: str = "player_action"
+    phase: Phase = Phase.PLAYER_ACTION
     weathering_track: int = 0
     weathering_limit: int = 5
     effective_rules: JsonObject = Field(default_factory=dict)
