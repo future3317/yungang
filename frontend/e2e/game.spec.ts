@@ -15,6 +15,8 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
   await expect(page.getByRole('heading', { name: '遗产节点网络' })).toBeVisible();
+  const tutorialSkip = page.getByRole('button', { name: '跳过，自己探索' });
+  if (await tutorialSkip.isVisible()) await tutorialSkip.click();
 }
 
 test('game HUD and map have no serious axe findings', async ({ page }) => {
