@@ -37,12 +37,20 @@ function load(): LayoutState {
   }
 }
 
+function layoutRoot() {
+  return document.querySelector<HTMLElement>('.game-viewport');
+}
+
 function applyLayout(layout: LayoutState) {
-  values.forEach(item => document.documentElement.style.setProperty(item.key, `${layout[item.key]}px`));
+  const root = layoutRoot();
+  if (!root) return;
+  values.forEach(item => root.style.setProperty(item.key, `${layout[item.key]}px`));
 }
 
 function clearLayoutOverrides() {
-  values.forEach(item => document.documentElement.style.removeProperty(item.key));
+  const root = layoutRoot();
+  if (!root) return;
+  values.forEach(item => root.style.removeProperty(item.key));
 }
 
 export function LayoutTuner() {
