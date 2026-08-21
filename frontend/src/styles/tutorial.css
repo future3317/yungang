@@ -5,6 +5,8 @@
 .evidence-legend span { display: grid; gap: 2px; padding: 6px 7px; color: #d6c9ad; background: rgba(15, 24, 18, .3); border: 1px solid rgba(219, 188, 113, .15); border-radius: 5px; }
 .evidence-legend strong { color: #ebd18c; font-size: .7rem; }
 .evidence-legend small { color: #bfb49e; font-size: .64rem; line-height: 1.35; }
+.card-how-to-use { display: grid; gap: 4px; padding: 10px 11px; color: #e8d7ad; background: rgba(184, 142, 62, .12); border-left: 2px solid #c8a457; font-size: .78rem; line-height: 1.5; }
+.card-how-to-use b { color: #f0d58d; }
 @media (max-width: 520px) { .tutorial-backdrop { padding: 12px; }.tutorial-dialog { padding: 25px 20px; }.tutorial-actions { align-items: stretch; flex-direction: column-reverse; }.tutorial-actions .primary-cta { justify-content: center; }.tutorial-skip { align-self: center; }.tutorial-trigger { right: 12px; bottom: 12px; } }
 .market-row .culture-card { position: relative; }
 .market-card-tooltip {

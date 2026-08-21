@@ -1,15 +1,15 @@
 import { AlertTriangle, Check, X } from 'lucide-react';
-import type { Action, ContentCard, RouteState, Site } from '../../types/game';
+import type { Action, ContentCard, Player, RouteState, Site } from '../../types/game';
 import { actionLabels, localizeActionText, previewDeltaText, resolveTargetName } from './gameUi';
 
-export function resolveActionTargetName(action: Action, sites: Record<string, Site>, routes: Record<string, RouteState> = {}) {
+export function resolveActionTargetName(action: Action, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, players: Record<string, Player> = {}) {
   const target = action.target_id || action.target_site_id || action.route_id;
   if (!target) return '当前地点';
-  return resolveTargetName(target, sites, routes);
+  return resolveTargetName(target, sites, routes, {}, players);
 }
 
-export function ActionPreview({ action, sites, routes, cards, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; routes?: Record<string, RouteState>; cards: Record<string, ContentCard>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
-  const targetName = resolveActionTargetName(action, sites, routes);
+export function ActionPreview({ action, sites, routes, cards, players = {}, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; routes?: Record<string, RouteState>; cards: Record<string, ContentCard>; players?: Record<string, Player>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
+  const targetName = resolveActionTargetName(action, sites, routes, players);
   const cardName = action.card_id ? cards[action.card_id]?.name : undefined;
   const heading = action.type === 'move' && targetName !== '当前地点' ? `移动到${targetName}` : actionLabels[action.type] || localizeActionText(action.label);
   return <div className="dialog-backdrop"><section className="dialog action-preview" role="dialog" aria-modal="true" aria-labelledby="action-preview-title">

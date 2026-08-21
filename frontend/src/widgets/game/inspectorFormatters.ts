@@ -11,6 +11,7 @@ const originNames: Record<string, string> = {
   craft: '工坊',
   silk: '丝路',
 };
+export function originName(value?: string) { return originNames[value || ''] || '未标注来源'; }
 
 const requirementNames: Record<string, string> = {
   cross_origin: '跨来源互证',
@@ -24,7 +25,7 @@ const requirementNames: Record<string, string> = {
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
   return values.map(value => {
     if (meta.domain_meta?.[value]) return domainName(meta, value);
-    if (key.includes('origin')) return originNames[value] || '未标注来源';
+    if (key.includes('origin')) return originName(value);
     return requirementNames[value] || comboNames[value] || '未标注条件';
   }).join('、');
 }

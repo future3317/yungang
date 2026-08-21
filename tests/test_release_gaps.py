@@ -68,3 +68,30 @@ def test_protection_objective_requires_visiting_stable_sites():
     engine.refresh(state)
     assert objective.progress == 1
     assert objective.completed is False
+
+
+def test_round_change_enters_player_action_without_manual_planning_step():
+    state = engine.new_game("round-action-flow", ["p1", "p2"], scenario_id="sand_and_stone")
+    state.shared.current_event_id = None
+    state.shared.active_player_id = "p2"
+    state.shared.planning_marks = {"p1": [{"target_id": next(iter(state.sites)), "turn": "1"}]}
+    engine._end_turn(state, state.players["p2"])
+    assert state.shared.phase == "player_action"
+    assert not state.shared.planning_marks
+    assert any(action["type"] == "move" for action in state.legal_actions)
+
+
+def test_ready_interpretation_is_available_while_ap_remains():
+    state = engine.new_game("interpretation-ready", ["p1"], scenario_id="sand_and_stone")
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+    player.ap = 2
+    engine._interpret_evidence(state, player, player.location, card, "support")
+    engine.refresh(state)
+    assert any(action["type"] == "form_interpretation" for action in state.legal_actions)

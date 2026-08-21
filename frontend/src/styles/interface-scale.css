@@ -14,6 +14,7 @@
 .player-resources b { font-size: 1.2rem; }
 .player-resources small { font-size: .7rem; }
 .dock-hint { font-size: .8rem; }
+.dock-team-status { color: #d6bd7e; font-size: .76rem; white-space: nowrap; }
 .action-card-copy b { font-size: .94rem; }
 .action-card-copy small { font-size: .75rem; }
 .hand-card b { font-size: .84rem; }

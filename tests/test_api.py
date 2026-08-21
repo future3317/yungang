@@ -164,7 +164,7 @@ def test_card_has_archive_and_discard_paths():
     played = action(session, explored, 'p1', 'play_card', card_id=card).json()
     assert card in played['decks']['discard']
 
-def test_round_enters_planning_and_settles_marks():
+def test_round_enters_player_action_without_manual_planning_step():
     session = 'test-planning-phase'
     state = create(session)
     stored = repo.get(session)
@@ -172,12 +172,9 @@ def test_round_enters_planning_and_settles_marks():
     repo.save(stored)
     first = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'end_turn').json()
     second = action(session, first, 'p2', 'end_turn').json()
-    assert second['shared']['phase'] == 'planning'
-    plan = action(session, second, 'p1', 'plan', target_id='pingcheng_ruins').json()
-    assert plan['shared']['planning_marks']['p1'][0]['target_id'] == 'pingcheng_ruins'
-    started = action(session, plan, 'p1', 'end_planning').json()
-    assert started['shared']['phase'] == 'player_action'
-    assert started['sites']['pingcheng_ruins']['influence'] == second['sites']['pingcheng_ruins']['influence'] + 1
+    assert second['shared']['phase'] == 'player_action'
+    assert second['shared']['planning_marks'] == {}
+    assert any(item['type'] == 'move' for item in second['legal_actions'])
 
 def test_event_targets_are_seed_deterministic():
     first = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 91}).json()

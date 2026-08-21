@@ -198,14 +198,7 @@ class GameEngine:
             return state
 
         if state.shared.phase == "planning":
-            marks = sum(len(items) for items in state.shared.planning_marks.values())
-            actions = [{"type": ActionType.END_PLANNING.value, "label": "\u5f00\u59cb\u884c\u52a8", "cost": 0, "planning_marks": marks}]
-            actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
-            actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
-            actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
-            state.legal_actions = actions
-            state.action_options = self._build_action_options(actions, state)
-            return state
+            self._settle_planning_marks(state, state.shared.active_player_id)
         actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
         site = state.sites[active.location]
         actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
@@ -253,9 +246,9 @@ class GameEngine:
                         if card not in placed and self._card_can_contribute(card, task):
                             for relation, label in (("support", "支持"), ("conflict", "冲突"), ("pending", "待确认")):
                                 actions.append({"type": ActionType.INTERPRET_EVIDENCE.value, "target_id": relation, "target_site_id": active.location, "card_id": card, "label": f"将 {self.content.cards[card]['name']} 归入{label}", "cost": 1})
-                elif not interpretation["formed"] and self._interpretation_ready(task):
+                if not interpretation["formed"] and self._interpretation_ready(task):
                     actions.append({"type": ActionType.FORM_INTERPRETATION.value, "target_id": active.location, "label": "形成当前解释", "cost": 0})
-                elif interpretation["formed"] and not interpretation["intervention"]:
+                if interpretation["formed"] and not interpretation["intervention"]:
                     actions.extend({"type": ActionType.CHOOSE_INTERVENTION.value, "target_id": choice, "target_site_id": active.location, "label": label, "cost": 0} for choice, label in (("act_now", "立即处理"), ("minimal", "最小干预"), ("record", "先记录")))
             actions.extend({"type": ActionType.PLAY_CARD.value, "card_id": card, "label": f"\u4f7f\u7528 {self.content.cards[card]['name']}"} for card in active.hand)
             actions.extend({"type": ActionType.USE_ACTION_CARD.value, "card_id": card, "label": f"\u4f7f\u7528\u7b56\u7565\uff1a{self.content.action_cards[card]['name']}", "cost": int(self.content.action_cards[card].get("cost", 1))} for card in active.action_hand if self._action_card_timing_allowed(state, self.content.action_cards[card]))
@@ -326,7 +319,7 @@ class GameEngine:
         return labels.get(action, "完成一项行动") + (f"（目标：{target}）" if target else "")
 
     def _record_journal(self, state: GameState, action: str, player_id: str, message: str) -> None:
-        kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"contribute", "restore", "establish_connection"} else "action"
+        kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"
         state.shared.journal.append({"id": f"journal-{state.revision + len(state.shared.journal) + 1}", "round": state.shared.turn, "type": kind, "message": message, "effects": [], "created_at": datetime.now(timezone.utc).isoformat(), "player_id": player_id})
         del state.shared.journal[:-120]
 
@@ -726,6 +719,9 @@ class GameEngine:
                 "restoration_resource": state.shared.restoration_resource,
             }
             state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
+            if state.shared.current_event_id:
+                event_name = self.content.events.get(state.shared.current_event_id, {}).get("name", "世界事件")
+                self._record_journal(state, "resolve_event", state.shared.active_player_id, f"事件结算：{event_name}")
             if not state.pending_choice:
                 if state.shared.event_instance.get("status") == "resolved": state.shared.event_history.append(dict(state.shared.event_instance))
                 self._reveal_event(state)
@@ -735,13 +731,10 @@ class GameEngine:
                 self._release_reserved_market_cards(state)
                 self._emit_scenario_rule(state, "round_end", snapshot)
             if not state.pending_choice:
-                state.shared.phase = "planning"
+                self._settle_planning_marks(state, state.shared.active_player_id)
                 state.shared.round_summary = self._build_round_summary(state, snapshot)
-                state.shared.planning_marks = {}
 
-    def _end_planning(self, state, player):
-        if state.shared.phase != "planning":
-            raise ValueError("planning_not_active")
+    def _settle_planning_marks(self, state, player_id):
         marks = [mark for values in state.shared.planning_marks.values() for mark in values]
         for mark in marks:
             target_id = mark.get("target_id")
@@ -750,9 +743,15 @@ class GameEngine:
             elif target_id in state.routes:
                 state.routes[target_id].risk = max(0, state.routes[target_id].risk - 1)
             elif target_id in state.projects:
-                self._advance_project(state, state.projects[target_id], player.id, "plan")
+                self._advance_project(state, state.projects[target_id], player_id, "plan")
+        state.shared.planning_marks = {}
         state.shared.phase = "player_action"
         state.shared.log.append(f"\u89c4\u5212\u7ed3\u7b97\uff1a{len(marks)} \u679a\u6807\u8bb0\u8f6c\u4e3a\u534f\u4f5c\u52a0\u6210")
+
+    def _end_planning(self, state, player):
+        if state.shared.phase != "planning":
+            raise ValueError("planning_not_active")
+        self._settle_planning_marks(state, player.id)
 
     def _build_round_summary(self, state, snapshot=None):
         snapshot = snapshot or {}
@@ -981,7 +980,7 @@ class GameEngine:
         requirements = [
             {"key": "cards", "label": "证据数量", "current": len(cards), "target": int(task.get("required_card_count", 0)), "complete": len(cards) >= int(task.get("required_card_count", 0))},
             {"key": "domains", "label": "研究领域", "current": len(domains & required_domains), "target": len(required_domains), "complete": required_domains.issubset(domains), "missing": sorted(required_domains - domains)},
-            {"key": "origins", "label": "来源多样性", "current": len(origins), "target": int(task.get("required_origin_diversity", 0)), "complete": len(origins) >= int(task.get("required_origin_diversity", 0))},
+            {"key": "origins", "label": "指定来源", "current": len(origins & required_origins) if required_origins else len(origins), "target": len(required_origins) if required_origins else int(task.get("required_origin_diversity", 0)), "complete": (required_origins.issubset(origins) if required_origins else len(origins) >= int(task.get("required_origin_diversity", 0))), "missing": sorted(required_origins - origins)},
             {"key": "contributors", "label": "贡献者", "current": len(players), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(players) >= int(combo.get("minimum_distinct_players", 1))},
             {"key": "combos", "label": "组合线索", "current": len(combo_tags & required_tags), "target": len(required_tags), "complete": required_tags.issubset(combo_tags), "missing": sorted(required_tags - combo_tags)},
         ]
@@ -1102,6 +1101,10 @@ class GameEngine:
                 "confirmation": f"确认{action.get('label', action_type)}？",
                 "payload": {},
             })
+            if action_type == ActionType.USE_ACTION_CARD.value and action.get("card_id"):
+                card_definition = self.content.action_cards.get(action["card_id"], {})
+                option["description"] = card_definition.get("description") or option["description"]
+                option["confirmation"] = f"确认使用策略牌“{card_definition.get('name', '策略牌')}”吗？"
             target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
             payload = {key: value for key, value in action.items() if value is not None}
             if target:

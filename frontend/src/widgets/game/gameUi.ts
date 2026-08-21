@@ -1,4 +1,4 @@
-import type { Action, ActionOption, ActionType, GameState, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ActionOption, ActionType, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 
@@ -67,13 +67,13 @@ export function localizeActionText(value?: string) {
     .replace(/use_action_card/gi, '使用策略牌');
 }
 
-export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}) {
+export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}, players: Record<string, Player> = {}) {
   if (!target) return '当前地点';
-  return routes[target]?.name || sites[target]?.name || projects[target]?.name || localizeActionText(target);
+  return routes[target]?.name || sites[target]?.name || projects[target]?.name || players[target]?.name || localizeActionText(target);
 }
 
-export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState> }) {
-  return localizeActionText(message).replace(/（目标：([^）]+)）/g, (_, target: string) => `（目标：${resolveTargetName(target, context.sites, context.routes, context.projects)}）`);
+export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; players?: Record<string, Player> }) {
+  return localizeActionText(message).replace(/（目标：([^）]+)）/g, (_, target: string) => `（目标：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}）`);
 }
 
 export function localizeActionError(error: unknown) {
@@ -133,7 +133,7 @@ export function actionFeedback(action: Action, before: GameState | undefined, af
     restore_route: '路线已恢复通行，新的协作路径已经打开。',
     survey_route: '路线状况已记录，可以据此决定修护或绕行。',
     establish_connection: '地点之间已建立稳定连接。',
-    use_action_card: '策略牌已结算，地图和资源状态已经更新。',
+    use_action_card: '策略牌已结算，地图、资源和旅程记录已经更新。',
     end_planning: '规划标记已结算，现在开始本轮行动。',
   };
   return `${copy[action.type] || '行动已记录，世界状态已更新。'}${changes.length ? ` ${changes.join('、')}。` : ''}`;
