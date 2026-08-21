@@ -1,9 +1,12 @@
-export type ActionType = 'move' | 'explore' | 'restore' | 'interpret_evidence' | 'form_interpretation' | 'choose_intervention' | 'exchange' | 'use_skill' | 'play_card' | 'use_action_card' | 'use_node_ability' | 'use_upgrade' | 'end_turn' | 'end_planning' | 'resolve_event' | 'select_market_card' | 'discard' | 'survey_route' | 'restore_route' | 'establish_connection' | 'prepare' | 'select_upgrade' | 'plan';
-export type SiteStatus = 'stable' | 'at_risk' | 'closed';
+import type { components } from '../shared/api/generated';
+
+export type ActionType = components['schemas']['ActionType'];
+export type SiteStatus = components['schemas']['SiteStatus'];
 export type GameOutcome = 'victory' | 'defeat' | null;
 export interface Action { type: ActionType; label: string; description?: string; cost?: number; target_id?: string; target_site_id?: string; target_ids?: string[]; card_id?: string; recipient_id?: string; route_id?: string; upgrade_id?: string; skill?: string; request_id?: string; preview_delta?: Record<string, unknown>; }
 export interface ActionTarget { id: string; label: string; preview_delta?: Record<string, unknown>; payload?: Partial<Action>; }
-export interface ActionOption { id: string; type: ActionType; label: string; description: string; cost: { ap: number }; enabled: boolean; disabled_reason?: string | null; targets: ActionTarget[]; requirements?: string[]; recommendation_score?: number; reason?: string; preview_delta?: Record<string, unknown>; confirmation?: string; payload?: Partial<Action>; }
+type GeneratedActionOption = components['schemas']['ActionOption'];
+export type ActionOption = Omit<GeneratedActionOption, 'targets' | 'payload' | 'preview_delta' | 'recommendation_score' | 'reason' | 'confirmation'> & Partial<Pick<GeneratedActionOption, 'recommendation_score' | 'reason' | 'confirmation'>> & { targets: ActionTarget[]; payload?: Partial<Action> & Record<string, unknown>; preview_delta?: Record<string, unknown>; };
 export interface Player { id: string; name: string; role_id: string; location: string; ap: number; max_ap: number; influence: number; durability: number; hand: string[]; action_hand?: string[]; supplies?: number; skill_used: boolean; contributions: number; upgrades?: string[]; }
 export interface Site { id: string; name?: string; summary?: string; icon_asset?: string; scene_asset?: string; x?: number; y?: number; layout?: { x?: number; y?: number; labelAnchor?: 'left' | 'right' | 'above' | 'below' }; node_kind?: 'core' | 'support' | 'event'; kind?: string; content_class?: 'documented' | 'interpretive' | 'gameplay'; damage: number; max_damage: number; durability: number; max_durability: number; status: SiteStatus | 'event'; influence: number; discovered: boolean; domains: string[]; contributions: Array<{ player_id: string; card_id: string; origin_tags?: string[] }>; active_task_id?: string; connections?: string[]; node_ability?: { name: string; description: string }; }
 export interface TaskRequirement { key: string; label: string; current?: number; target?: number; complete: boolean; missing?: string[]; }

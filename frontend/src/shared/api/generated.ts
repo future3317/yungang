@@ -318,8 +318,7 @@ export interface components {
         ActionOption: {
             /** Id */
             id: string;
-            /** Type */
-            type: string;
+            type: components["schemas"]["ActionType"];
             /** Label */
             label: string;
             /**
@@ -693,6 +692,11 @@ export interface components {
              */
             completed: boolean;
         };
+        /**
+         * Phase
+         * @enum {string}
+         */
+        Phase: "round_forecast" | "planning" | "player_action" | "pending_choice" | "event_resolution" | "round_summary" | "game_over";
         /** PlayerState */
         PlayerState: {
             /** Id */
@@ -771,11 +775,8 @@ export interface components {
              * @default 0
              */
             progress: number;
-            /**
-             * Status
-             * @default active
-             */
-            status: string;
+            /** @default active */
+            status: components["schemas"]["ProjectStatus"];
             /** Contributors */
             contributors?: string[];
             /** Stage Evidence */
@@ -797,6 +798,11 @@ export interface components {
                 [key: string]: components["schemas"]["JsonValue"];
             }[];
         };
+        /**
+         * ProjectStatus
+         * @enum {string}
+         */
+        ProjectStatus: "active" | "completed";
         /** RoomActionRequest */
         RoomActionRequest: {
             action: components["schemas"]["ActionType"];
@@ -971,11 +977,8 @@ export interface components {
              * @default 1
              */
             cost: number;
-            /**
-             * Status
-             * @default open
-             */
-            status: string;
+            /** @default open */
+            status: components["schemas"]["RouteStatus"];
             /**
              * Risk
              * @default 0
@@ -1015,6 +1018,11 @@ export interface components {
             /** Event Tags */
             event_tags?: string[];
         };
+        /**
+         * RouteStatus
+         * @enum {string}
+         */
+        RouteStatus: "open" | "strained" | "blocked" | "restored" | "illuminated";
         /** ScoreState */
         ScoreState: {
             /**
@@ -1131,11 +1139,8 @@ export interface components {
             };
             /** Node Ability Uses */
             node_ability_uses?: string[];
-            /**
-             * Phase
-             * @default player_action
-             */
-            phase: string;
+            /** @default player_action */
+            phase: components["schemas"]["Phase"];
             /**
              * Weathering Track
              * @default 0
