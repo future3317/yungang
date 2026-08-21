@@ -17,6 +17,7 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
   const [position, setPosition] = useState<Position>(() => loadPosition(storageKey));
   const dragRef = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
   const movedRef = useRef(false);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     try { window.localStorage.setItem(storageKey, JSON.stringify(position)); } catch { /* private browsing can reject storage */ }
@@ -33,7 +34,7 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
       const maxTop = -Math.max(0, window.innerHeight - minVisibleHeight);
       setPosition({ x: Math.max(maxLeft, Math.min(0, nextX)), y: Math.max(maxTop, Math.min(0, nextY)) });
     };
-    const end = () => { dragRef.current = null; };
+    const end = () => { if (dragRef.current && movedRef.current) suppressClickRef.current = true; dragRef.current = null; };
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', end);
     return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); };
@@ -41,14 +42,16 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
 
   const onPointerDown = (event: ReactPointerEvent<HTMLElement>) => {
     movedRef.current = false;
+    suppressClickRef.current = false;
     dragRef.current = { startX: event.clientX, startY: event.clientY, originX: position.x, originY: position.y };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
   const onClickCapture = (event: ReactMouseEvent<HTMLElement>) => {
-    if (!movedRef.current) return;
+    if (!movedRef.current && !suppressClickRef.current) return;
     event.preventDefault();
     event.stopPropagation();
     movedRef.current = false;
+    suppressClickRef.current = false;
   };
   const style = { '--drag-x': `${position.x}px`, '--drag-y': `${position.y}px` } as CSSProperties;
   return { style, onPointerDown, onClickCapture };

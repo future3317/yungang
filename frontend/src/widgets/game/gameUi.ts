@@ -1,4 +1,4 @@
-import type { Action, ActionOption, ActionType, GameState } from '../../types/game';
+import type { Action, ActionOption, ActionType, GameState, ProjectState, RouteState, Site } from '../../types/game';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 
@@ -62,7 +62,18 @@ export function localizeActionText(value?: string) {
   return (value || '').replace(/\s+/g, ' ').trim()
     .replace(/\b(open|blocked|strained|restored|illuminated)\b/gi, match => ({ open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮' }[match.toLowerCase()] || match))
     .replace(/Use Action Card/gi, '使用策略牌')
+    .replace(/\bRoute:\s*/gi, '路线：')
+    .replace(/\bProject:\s*/gi, '项目：')
     .replace(/use_action_card/gi, '使用策略牌');
+}
+
+export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}) {
+  if (!target) return '当前地点';
+  return routes[target]?.name || sites[target]?.name || projects[target]?.name || localizeActionText(target);
+}
+
+export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState> }) {
+  return localizeActionText(message).replace(/（目标：([^）]+)）/g, (_, target: string) => `（目标：${resolveTargetName(target, context.sites, context.routes, context.projects)}）`);
 }
 
 export function localizeActionError(error: unknown) {
@@ -93,6 +104,7 @@ export function optionAction(option: ActionOption, target?: ActionOption['target
     ...payload,
     type: option.type,
     label: target?.label || option.label,
+    description: option.description,
     cost: option.cost?.ap,
     preview_delta: target?.preview_delta || option.preview_delta,
   } as Action;

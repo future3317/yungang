@@ -13,7 +13,7 @@
         "type": "damage_open_sites",
         "amount": 1
       },
-      "forecast_text": "两个稳定或承压节点将受到损伤。",
+      "forecast_text": "回合结束时，两个尚未关闭的地点各增加 1 点损伤。",
       "mitigation_hint": "提前准备、降低风化压力，或优先修护已接近关闭的节点。",
       "tags": [
         "wind",
