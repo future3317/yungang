@@ -678,7 +678,10 @@ class GameEngine:
         else:
             restored = next((route for route in adjacent if route.id == target_id and route.status == "restored"), None)
             if restored: restored.status = "illuminated"; restored.connection_level = 2; state.shared.route_connection_score += 1
-    def _action_card_reserve_ap(self, state, player, effect, target_id, adjacent, stressed): player.ap = min(player.max_ap + 1, player.ap + 1)
+    def _action_card_reserve_ap(self, state, player, effect, target_id, adjacent, stressed):
+        # The card turns this action into a banked AP for this player's next turn.
+        # Applying it immediately would only refund the card cost and have no effect.
+        player.flags["reserved_ap"] = player.flags.get("reserved_ap", 0) + int(effect.get("amount", 1))
     def _action_card_transfer_resource(self, state, player, effect, target_id, adjacent, stressed):
         recipient = state.players.get(target_id or "")
         amount = int(effect.get("amount", 1))
@@ -697,10 +700,6 @@ class GameEngine:
             cards = list(reversed(state.decks.get("archive", [])))[: int(effect.get("amount", 2))]
             if not cards: raise ValueError("archive_empty")
             state.pending_choice = {"kind": "archive_select", "site_id": site_id, "cards": cards}
-        elif effect.get("type") == "clue_to_restoration":
-            clues = int(effect.get("clues", 1)); restoration = int(effect.get("restoration", effect.get("amount", 1)))
-            if state.shared.research_clues < clues: raise ValueError("not_enough_research_clues")
-            state.shared.research_clues -= clues; state.shared.restoration_resource += restoration
         else:
             self._apply_node_effect(state, player, site_id, effect)
         state.shared.node_ability_uses.append(key)
@@ -736,13 +735,34 @@ class GameEngine:
     def _effect_reserve_market_card(self, state, player, effect, site_id=None): player.flags["reserve_market_card"] = True
     def _effect_inspect_archive(self, state, player, effect, site_id=None): player.flags["archive_inspect"] = True
     def _effect_clue_to_restoration(self, state, player, effect, site_id=None):
-        if state.shared.research_clues >= 1:
-            state.shared.research_clues -= 1
-            state.shared.restoration_resource += int(effect.get("amount", 1))
+        clues = int(effect.get("clues", 1))
+        restoration = int(effect.get("restoration", effect.get("amount", 1)))
+        if state.shared.research_clues < clues:
+            raise ValueError("not_enough_research_clues")
+        state.shared.research_clues -= clues
+        state.shared.restoration_resource += restoration
     def _effect_project_progress(self, state, player, effect, site_id=None):
-        if site_id:
-            project = state.projects.get(state.sites[site_id].active_project_id or "")
-            if project: project.progress += int(effect.get("amount", 1))
+        if not site_id:
+            return
+        project = state.projects.get(state.sites[site_id].active_project_id or "")
+        if not project or project.status != "active" or project.stage_index >= len(project.stages):
+            return
+        amount = int(effect.get("amount", 1))
+        stage = project.stages[project.stage_index]
+        stage_id = stage.get("id", str(project.stage_index))
+        project.progress += amount
+        project.stage_progress[stage_id] = project.stage_progress.get(stage_id, 0) + amount
+        while project.stage_index < len(project.stages):
+            current = project.stages[project.stage_index]
+            current_id = current.get("id", str(project.stage_index))
+            if project.progress < int(current.get("required_progress", 1)) or not self._project_stage_ready(state, project, current):
+                break
+            project.completed_stages.append(current_id)
+            project.progress = 0
+            project.stage_index += 1
+        if project.stage_index >= len(project.stages):
+            project.status = "completed"
+            self._apply_reward(state, self.content.projects[project.id].get("reward", {}))
     def _effect_temporary_origin_tag(self, state, player, effect, site_id=None): player.flags["temporary_origin_tag"] = effect.get("tag", "cross_origin")
     def _effect_ignore_route_risk(self, state, player, effect, site_id=None): player.flags["ignore_route_risk"] = True
     def _effect_free_exchange(self, state, player, effect, site_id=None): player.flags["free_exchange"] = True
@@ -752,7 +772,8 @@ class GameEngine:
     def _effect_trigger_role_upgrade(self, state, player, effect, site_id=None): self._offer_upgrade(state, player.id)
 
     def _end_turn(self, state, player):
-        player.ap = player.max_ap; player.skill_used = False
+        reserved_ap = int(player.flags.pop("reserved_ap", 0))
+        player.ap = player.max_ap + reserved_ap; player.skill_used = False
         order = state.shared.player_order; index = order.index(player.id); last = index == len(order) - 1
         state.shared.active_player_id = order[0] if last else order[index + 1]
         self._apply_round_start_upgrades(state, state.players[state.shared.active_player_id])
@@ -1307,5 +1328,7 @@ class GameEngine:
         return any(item.get("type") == effect_type for item in player.flags.get("upgrade_effects", []))
 
     def _apply_round_start_upgrades(self, state, player):
-        return
-        player.flags["archive_round"] = state.shared.turn
+        # Per-round upgrades are consumed by their action handlers. Keeping this
+        # hook explicit makes the turn boundary the single place for future
+        # reset behavior without carrying a dead compatibility branch.
+        return None

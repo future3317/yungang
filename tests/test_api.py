@@ -70,7 +70,7 @@ def test_event_choice_is_server_driven():
     state = client.get(f'/api/games/{session}').json()
     ended = action(session, state, 'p1', 'end_turn').json()
     assert ended['pending_choice']['kind'] == 'event'
-    assert {item['type'] for item in ended['legal_actions']} == {'resolve_event'}
+    assert {item['type'] for item in ended['action_options']} == {'resolve_event'}
     resources_before = ended['shared']['restoration_resource']
     resolved = action(session, ended, 'p1', 'resolve_event', target_id='mitigate').json()
     assert resolved['pending_choice'] is None
@@ -150,7 +150,7 @@ def test_action_card_requires_a_route_target_before_resolution():
     repo.save(stored)
     choosing = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'use_action_card', card_id='action_01').json()
     assert choosing['pending_choice']['kind'] == 'action_card'
-    target = choosing['legal_actions'][0]['target_id']
+    target = choosing['action_options'][0]['targets'][0]['id']
     resolved = action(session, choosing, 'p1', 'use_action_card', card_id='action_01', target_id=target).json()
     assert resolved['pending_choice'] is None
     assert 'action_01' not in resolved['players']['p1']['action_hand']
@@ -174,7 +174,7 @@ def test_round_enters_player_action_without_manual_planning_step():
     second = action(session, first, 'p2', 'end_turn').json()
     assert second['shared']['phase'] == 'player_action'
     assert second['shared']['planning_marks'] == {}
-    assert any(item['type'] == 'move' for item in second['legal_actions'])
+    assert any(item['type'] == 'move' for item in second['action_options'])
 
 def test_event_targets_are_seed_deterministic():
     first = client.post('/api/games', json={'player_ids': ['p1', 'p2'], 'scenario_id': 'sand_and_stone', 'seed': 91}).json()
@@ -191,4 +191,4 @@ def test_non_route_action_card_requires_human_target():
     repo.save(stored)
     choosing = action(session, client.get(f'/api/games/{session}').json(), 'p1', 'use_action_card', card_id='action_11').json()
     assert choosing['pending_choice']['kind'] == 'action_card'
-    assert choosing['legal_actions'][0]['target_id'] == 'p2'
+    assert choosing['action_options'][0]['targets'][0]['id'] == 'p2'

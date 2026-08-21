@@ -78,7 +78,7 @@ def test_round_change_enters_player_action_without_manual_planning_step():
     engine._end_turn(state, state.players["p2"])
     assert state.shared.phase == "player_action"
     assert not state.shared.planning_marks
-    assert any(action["type"] == "move" for action in state.legal_actions)
+    assert any(action.type == "move" for action in state.action_options)
 
 
 def test_ready_interpretation_is_available_while_ap_remains():
@@ -94,4 +94,4 @@ def test_ready_interpretation_is_available_while_ap_remains():
     player.ap = 2
     engine._interpret_evidence(state, player, player.location, card, "support")
     engine.refresh(state)
-    assert any(action["type"] == "form_interpretation" for action in state.legal_actions)
+    assert any(action.type == "form_interpretation" for action in state.action_options)

@@ -398,11 +398,11 @@ export interface components {
             label: string;
             /** Preview Delta */
             preview_delta?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /** Payload */
             payload?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
         };
         /**
@@ -483,7 +483,7 @@ export interface components {
             /** Tasks */
             tasks?: {
                 [key: string]: {
-                    [key: string]: unknown;
+                    [key: string]: components["schemas"]["JsonValue"];
                 };
             };
             shared?: components["schemas"]["SharedState"];
@@ -495,12 +495,8 @@ export interface components {
             market?: string[];
             /** Pending Choice */
             pending_choice?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             } | null;
-            /** Legal Actions */
-            legal_actions?: {
-                [key: string]: unknown;
-            }[];
             /** Action Options */
             action_options?: components["schemas"]["ActionOption"][];
             /**
@@ -540,11 +536,11 @@ export interface components {
             score?: components["schemas"]["ScoreState"];
             /** Result */
             result?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /** Viewer */
             viewer?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /** Feedback Events */
             feedback_events?: components["schemas"]["FeedbackEvent"][];
@@ -605,6 +601,7 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        JsonValue: unknown;
         /** ObjectiveState */
         ObjectiveState: {
             /** Id */
@@ -670,7 +667,7 @@ export interface components {
             supplies: number;
             /** Flags */
             flags?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /**
              * Skill Used
@@ -695,7 +692,7 @@ export interface components {
             name: string;
             /** Stages */
             stages?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
             /**
              * Stage Index
@@ -716,7 +713,7 @@ export interface components {
             contributors?: string[];
             /** Stage Evidence */
             stage_evidence?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
             /** Completed Stages */
             completed_stages?: string[];
@@ -730,7 +727,7 @@ export interface components {
             };
             /** Available Choices */
             available_choices?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
         };
         /** RoomActionRequest */
@@ -1014,7 +1011,7 @@ export interface components {
             weathering_limit: number;
             /** Effective Rules */
             effective_rules?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /**
              * Solo Mode
@@ -1025,21 +1022,21 @@ export interface components {
             controlled_character_ids?: string[];
             /** Journal */
             journal?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
             /** Event Targets */
             event_targets?: string[];
             /** Event Instance */
             event_instance?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /** Event History */
             event_history?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
             /** Round Summary */
             round_summary?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /** Reserved Market Cards */
             reserved_market_cards?: string[];
@@ -1086,7 +1083,7 @@ export interface components {
             domains?: string[];
             /** Contributions */
             contributions?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             }[];
             /** Active Project Id */
             active_project_id?: string | null;

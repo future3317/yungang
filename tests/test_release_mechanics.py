@@ -25,7 +25,7 @@ def test_full_hand_requires_discard_before_exploration():
     engine.refresh(stored)
     repo.save(stored)
     state = client.get(f"/api/games/{session}").json()
-    card = next(item["card_id"] for item in state["legal_actions"] if item["type"] == "explore")
+    card = next(target["payload"]["card_id"] for option in state["action_options"] if option["type"] == "explore" for target in option["targets"])
     pending = client.post(f"/api/games/{session}/actions", json={"player_id": "p1", "action": "explore", "card_id": card, "expected_revision": state["revision"]})
     assert pending.status_code == 200
     pending_state = pending.json()

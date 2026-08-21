@@ -58,7 +58,7 @@ def test_multi_device_requires_roles_ready_and_blocks_legacy_session_access():
     guest_state = client.get(f"/api/rooms/{room_id}/game", headers={"X-Seat-Token": guest_token})
     assert guest_state.status_code == 200
     assert guest_state.json()["viewer"]["can_act"] is False
-    assert guest_state.json()["legal_actions"] == []
+    assert guest_state.json()["action_options"] == []
     reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-2"})
     assert reconnected.status_code == 200
     replacement_token = reconnected.json()["seat_token"]
