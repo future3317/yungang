@@ -25,7 +25,7 @@ export const actionLabels: Partial<Record<ActionType, string>> = {
 
 const previewDeltaLabels: Record<string, string> = {
   ap: '行动点',
-  influence: '个人影响',
+  influence: '共同影响',
   restoration_resource: '修护资源',
   research_clues: '研究线索',
   threat: '风化压力',

@@ -16,6 +16,19 @@ def test_action_feedback_is_returned_by_the_server_state():
     result = engine.apply(state, {"player_id": "p1", "action": "end_turn", "request_id": "feedback-1"})
     assert result.feedback_events
     assert "行动" in result.feedback_events[0].message or "交接" in result.feedback_events[0].message
+    assert all({"metric", "label", "before", "after", "delta"}.issubset(change.model_fields) for change in result.feedback_events[0].changes)
+
+
+def test_action_options_include_effect_preview_not_only_ap():
+    engine = GameEngine()
+    state = engine.new_game("contract-preview", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    site = state.sites[player.location]
+    site.damage = 1
+    engine.refresh(state)
+    restore = next(option for option in state.action_options if option.type == "restore")
+    assert restore.preview_delta.get("restoration_resource") == -1
+    assert restore.preview_delta.get("damage") == -1
 
 
 def test_round_summary_keeps_previous_event_targets():

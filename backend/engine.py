@@ -7,7 +7,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -285,7 +285,7 @@ class GameEngine:
             self._sync_pressure(result, before_threat, before_weathering)
             self._record_journal(state, req.get("action", "choice"), req.get("player_id", state.shared.active_player_id), "共同决定已结算")
             self._remember_request(state, request_id)
-            result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes={})]
+            result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。")]
             return result
         pid, action = req["player_id"], req["action"]
         before = {
@@ -335,7 +335,8 @@ class GameEngine:
             "threat": result.shared.threat,
             "influence": result.shared.influence,
         }
-        changes = {key: after[key] - before[key] for key in before if after[key] != before[key]}
+        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "threat": "风化压力", "influence": "共同影响"}
+        changes = [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
         return result
 
@@ -1196,6 +1197,29 @@ class GameEngine:
                 project = next((item for item in state.projects.values() if item.site_id == site.id), None)
                 site.active_project_id = project.id if project else None
 
+    @staticmethod
+    def _action_preview_delta(action, state=None):
+        cost = int(action.get("cost", 0))
+        delta = {"ap": -cost} if cost else {}
+        action_type = action.get("type")
+        if action_type == ActionType.RESTORE.value:
+            delta["restoration_resource"] = -1
+            delta["damage"] = -1
+        elif action_type == ActionType.RESTORE_ROUTE.value:
+            delta.update({"research_clues": -1, "risk": -1})
+        elif action_type == ActionType.SURVEY_ROUTE.value:
+            delta.update({"research_clues": 1, "risk": -1})
+        elif action_type == ActionType.INTERPRET_EVIDENCE.value:
+            delta["influence"] = 1
+        elif action_type == ActionType.CHOOSE_INTERVENTION.value:
+            choice = action.get("target_id")
+            if choice == "act_now": delta.update({"influence": 2, "damage": -1})
+            elif choice == "minimal": delta.update({"influence": 1, "weathering": -1, "damage": -1})
+            elif choice == "record": delta.update({"research_clues": 2, "weathering": -1})
+        elif action_type == ActionType.ESTABLISH_CONNECTION.value:
+            delta["influence"] = 1
+        return delta
+
     def _build_action_options(self, actions, state=None):
         terminology = self.content.terminology.get("actions", {})
         descriptions = {
@@ -1233,7 +1257,7 @@ class GameEngine:
                 "enabled": True,
                 "disabled_reason": None,
                 "targets": [],
-                "preview_delta": {"ap": -cost},
+                "preview_delta": self._action_preview_delta(action, state),
                 "confirmation": f"确认{action.get('label', action_type)}？",
                 "payload": {},
                 "requirements": [],
@@ -1260,7 +1284,7 @@ class GameEngine:
                 target_key = str(target)
                 if action_type == ActionType.EXCHANGE.value:
                     target_key = f"{target_key}:{action.get('card_id', '')}"
-                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": {"ap": -cost}, "payload": payload})
+                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": self._action_preview_delta(action, state), "payload": payload})
             else:
                 option["payload"] = payload
         if state is not None and not state.pending_choice and not state.shared.outcome:

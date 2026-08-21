@@ -83,10 +83,18 @@ class GameOutcome(StrEnum):
     DEFEAT = "defeat"
 
 
+class FeedbackChange(BaseModel):
+    metric: str
+    label: str
+    before: int
+    after: int
+    delta: int
+
+
 class FeedbackEvent(BaseModel):
     kind: str = "state_change"
     message: str
-    changes: Dict[str, int] = Field(default_factory=dict)
+    changes: List[FeedbackChange] = Field(default_factory=list)
 
 
 class EventInstance(BaseModel):
@@ -120,6 +128,15 @@ class RoundSummary(BaseModel):
     player_contributions: Dict[str, int] = Field(default_factory=dict)
 
 
+class GoalCondition(BaseModel):
+    id: str
+    label: str
+    current: int
+    target: int
+    remaining: int
+    related_ids: List[str] = Field(default_factory=list)
+
+
 class GoalStatus(BaseModel):
     core_projects_completed: int = 0
     core_projects_target: int = 0
@@ -130,8 +147,8 @@ class GoalStatus(BaseModel):
     weathering: int = 0
     weathering_limit: int = 5
     rounds_remaining: int = 0
-    victory_conditions: List[JsonObject] = Field(default_factory=list)
-    failure_conditions: List[JsonObject] = Field(default_factory=list)
+    victory_conditions: List[GoalCondition] = Field(default_factory=list)
+    failure_conditions: List[GoalCondition] = Field(default_factory=list)
 
 
 class ViewerState(BaseModel):

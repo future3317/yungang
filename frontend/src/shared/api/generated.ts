@@ -428,6 +428,19 @@ export interface components {
             /** Daily Seed */
             daily_seed?: string | null;
         };
+        /** FeedbackChange */
+        FeedbackChange: {
+            /** Metric */
+            metric: string;
+            /** Label */
+            label: string;
+            /** Before */
+            before: number;
+            /** After */
+            after: number;
+            /** Delta */
+            delta: number;
+        };
         /** FeedbackEvent */
         FeedbackEvent: {
             /**
@@ -438,9 +451,7 @@ export interface components {
             /** Message */
             message: string;
             /** Changes */
-            changes?: {
-                [key: string]: number;
-            };
+            changes?: components["schemas"]["FeedbackChange"][];
         };
         /**
          * GameOutcome
@@ -547,6 +558,21 @@ export interface components {
             /** Processed Request Ids */
             processed_request_ids?: string[];
         };
+        /** GoalCondition */
+        GoalCondition: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Current */
+            current: number;
+            /** Target */
+            target: number;
+            /** Remaining */
+            remaining: number;
+            /** Related Ids */
+            related_ids?: string[];
+        };
         /** GoalStatus */
         GoalStatus: {
             /**
@@ -594,6 +620,10 @@ export interface components {
              * @default 0
              */
             rounds_remaining: number;
+            /** Victory Conditions */
+            victory_conditions?: components["schemas"]["GoalCondition"][];
+            /** Failure Conditions */
+            failure_conditions?: components["schemas"]["GoalCondition"][];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
