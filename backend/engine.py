@@ -649,11 +649,12 @@ class GameEngine:
         self._action_card_survey_routes(state, effect, stressed)
     def _action_card_reduce_route_risk(self, state, player, effect, target_id, adjacent, stressed):
         stressed.risk = max(0, stressed.risk + int(effect.get("risk_delta", -int(effect.get("amount", 1)))))
+        state.shared.research_clues += int(effect.get("clues", 0))
     def _action_card_survey_routes(self, state, effect, route):
         if route:
             route.status = "strained"
             route.risk = max(0, route.risk + int(effect.get("risk_delta", -1)))
-            state.shared.research_clues += int(effect.get("clues", 1))
+            state.shared.research_clues += int(effect.get("clues", 0))
             state.shared.threat = max(0, state.shared.threat + int(effect.get("threat_delta", 0)))
     def _action_card_restore_route(self, state, player, effect, target_id, adjacent, stressed):
         if stressed:
@@ -667,11 +668,10 @@ class GameEngine:
             selected = list(dict.fromkeys(effect.get("_target_ids", []) + [player.id]))[: int(effect.get("max_targets", 2))]
             for player_id in selected: state.players[player_id].flags["prepared_event_id"] = state.shared.current_event_id
             if state.shared.current_event_id not in state.shared.prepared_event_ids: state.shared.prepared_event_ids.append(state.shared.current_event_id)
-            state.shared.threat = max(0, state.shared.threat - int(effect.get("threat_reduction", 0)))
     def _action_card_restore_and_move(self, state, player, effect, target_id, adjacent, stressed):
         if stressed:
             stressed.status = "restored"; stressed.risk = 0; stressed.connection_level = max(1, stressed.connection_level)
-        state.shared.restoration_resource += int(effect.get("resource", 1)); player.flags["free_move"] = bool(effect.get("move_after_restore", True))
+        player.flags["free_move"] = bool(effect.get("move_after_restore", False))
     def _action_card_remote_exchange_or_connect(self, state, player, effect, target_id, adjacent, stressed):
         recipient = state.players.get(target_id or "")
         if recipient: player.flags["remote_exchange_player_id"] = recipient.id
@@ -685,7 +685,11 @@ class GameEngine:
     def _action_card_transfer_resource(self, state, player, effect, target_id, adjacent, stressed):
         recipient = state.players.get(target_id or "")
         amount = int(effect.get("amount", 1))
-        if not recipient or state.shared.restoration_resource < amount: raise ValueError("not_enough_restoration_resource")
+        if not recipient: raise ValueError("invalid_action_card_target")
+        if effect.get("resource") == "ap":
+            recipient.ap = min(recipient.max_ap, recipient.ap + amount)
+            return
+        if state.shared.restoration_resource < amount: raise ValueError("not_enough_restoration_resource")
         state.shared.restoration_resource -= amount; recipient.supplies += amount
 
     def _use_node_ability(self, state, player, site_id):
@@ -787,21 +791,28 @@ class GameEngine:
                 "restoration_resource": state.shared.restoration_resource,
                 "influence": state.shared.influence,
             }
+            state.shared.round_snapshot = snapshot
             state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
             if state.shared.current_event_id:
                 event_name = self.content.events.get(state.shared.current_event_id, {}).get("name", "世界事件")
                 self._record_journal(state, "resolve_event", state.shared.active_player_id, f"事件结算：{event_name}")
             if not state.pending_choice:
-                if state.shared.event_instance.get("status") == "resolved": state.shared.event_history.append(dict(state.shared.event_instance))
-                self._reveal_event(state)
-                for site_id in state.sites:
-                    self._trigger_node_ability(state, state.players[state.shared.active_player_id], site_id, trigger="round_start")
-                for teammate in state.players.values(): self._draw_action_card(state, teammate)
-                self._release_reserved_market_cards(state)
-                self._emit_scenario_rule(state, "round_end", snapshot)
-            if not state.pending_choice:
-                self._settle_planning_marks(state, state.shared.active_player_id)
-                state.shared.round_summary = self._build_round_summary(state, snapshot)
+                self._finalize_round(state, snapshot)
+
+    def _finalize_round(self, state, snapshot):
+        """Close one round while the resolved event is still the current instance."""
+        if state.shared.event_instance.get("status") == "resolved":
+            state.shared.event_history.append(dict(state.shared.event_instance))
+        state.shared.round_summary = self._build_round_summary(state, snapshot)
+        self._reveal_event(state)
+        for site_id in state.sites:
+            self._trigger_node_ability(state, state.players[state.shared.active_player_id], site_id, trigger="round_start")
+        for teammate in state.players.values():
+            self._draw_action_card(state, teammate)
+        self._release_reserved_market_cards(state)
+        self._emit_scenario_rule(state, "round_end", snapshot)
+        self._settle_planning_marks(state, state.shared.active_player_id)
+        state.shared.round_snapshot = {}
 
     def _settle_planning_marks(self, state, player_id):
         marks = [mark for values in state.shared.planning_marks.values() for mark in values]
@@ -899,8 +910,9 @@ class GameEngine:
                 state.shared.event_instance["mitigation"] = [{"type": "route", "route_id": state.shared.event_targets[0] if state.shared.event_targets else None, "result": "accepted"}]
                 state.shared.event_instance["resolution"] = [{"target_id": state.shared.event_targets[0] if state.shared.event_targets else None, "label": "风化压力", "changes": {"威胁": 1}, "reason": "团队接受道路阻断"}]
             state.shared.event_instance["status"] = "resolved"
-            state.shared.event_history.append(dict(state.shared.event_instance))
-            state.pending_choice = None; self._reveal_event(state); state.shared.phase = "planning"
+            snapshot = dict(state.shared.round_snapshot)
+            state.pending_choice = None
+            self._finalize_round(state, snapshot)
         elif state.pending_choice["kind"] == "view_select":
             player = state.players[state.shared.active_player_id]; card = req.get("card_id")
             if action != ActionType.SELECT_MARKET_CARD.value or card not in state.pending_choice["cards"]: raise ValueError("invalid_market_choice")
@@ -1120,7 +1132,7 @@ class GameEngine:
             objectives_completed=sum(1 for objective in state.objectives.values() if objective.completed),
             objectives_target=len(state.objectives),
             protected_sites=protected_sites,
-            protected_sites_target=int(scenario.get("closed_site_limit", 2)),
+            protected_sites_target=int(next((objective.get("target", 0) for objective in self.content.objectives.values() if objective.get("type") == "site_protection"), 0)),
             weathering=state.shared.weathering_track,
             weathering_limit=state.shared.weathering_limit,
             rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
@@ -1204,6 +1216,8 @@ class GameEngine:
             option["description"] = term.get("description") or option["description"]
             if action_type == ActionType.USE_ACTION_CARD.value and action.get("card_id"):
                 card_definition = self.content.action_cards.get(action["card_id"], {})
+                option["label"] = card_definition.get("name") or option["label"]
+                option["payload"]["action_label"] = "使用策略牌"
                 option["description"] = card_definition.get("description") or option["description"]
                 timing = card_definition.get("timing") or "当前行动阶段"
                 best_use = card_definition.get("best_use") or "在合适目标上使用，改变本回合的风险或资源。"

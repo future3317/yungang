@@ -73,6 +73,19 @@ export function eventTypeName(type?: string) {
   return labels[type || ''] || '区域事件';
 }
 
+export function eventTargetRuleName(rule?: string) {
+  const labels: Record<string, string> = {
+    two_open_sites: '两处尚未关闭的节点',
+    one_at_risk_site: '一处处于风险中的节点',
+    one_site: '一处指定节点',
+    one_route: '一条开放路线',
+    all_players: '所有同行者',
+    shared_resource: '共同修护资源',
+    threat: '风化压力轨',
+  };
+  return labels[rule || ''] || '由本局旅程决定的影响范围';
+}
+
 function cardRecord(card?: ContentCard): CardRecord {
   return (card || {}) as unknown as CardRecord;
 }

@@ -22,32 +22,12 @@ def _adjacent_route(state, player, status="strained", risk=2):
     return route
 
 
-@pytest.mark.parametrize(
-    ("card_id", "effect_check"),
-    [
-        ("action_01", lambda engine, state, player, route: (setattr(route, "risk", 1), setattr(state.shared, "research_clues", 1))),
-        ("action_02", lambda engine, state, player, route: setattr(route, "status", "restored")),
-        ("action_03", lambda engine, state, player, route: setattr(route, "status", "illuminated")),
-        ("action_04", lambda engine, state, player, route: state.players["p1"].flags.__setitem__("prepared_event_id", "sandstorm")),
-        ("action_05", lambda engine, state, player, route: setattr(route, "risk", 1)),
-        ("action_06", lambda engine, state, player, route: setattr(route, "risk", 0)),
-        ("action_07", lambda engine, state, player, route: player.flags.__setitem__("remote_exchange_player_id", "p2")),
-        ("action_08", lambda engine, state, player, route: player.flags.__setitem__("reserved_ap", 1)),
-        ("action_09", lambda engine, state, player, route: setattr(state.shared, "threat", 1)),
-        ("action_10", lambda engine, state, player, route: setattr(route, "status", "restored")),
-        ("action_11", lambda engine, state, player, route: setattr(state.players["p2"], "supplies", 1)),
-        ("action_12", lambda engine, state, player, route: state.players["p2"].flags.__setitem__("prepared_event_id", "sandstorm")),
-        ("action_13", lambda engine, state, player, route: setattr(route, "risk", 1)),
-        ("action_14", lambda engine, state, player, route: setattr(state.shared, "research_clues", 1)),
-        ("action_15", lambda engine, state, player, route: setattr(state.players["p2"], "supplies", 1)),
-        ("action_16", lambda engine, state, player, route: player.flags.__setitem__("prepared_event_id", "sandstorm")),
-    ],
-)
-def test_every_strategy_card_applies_its_declared_effect(card_id, effect_check):
+@pytest.mark.parametrize("card_id", [f"action_{index:02d}" for index in range(1, 17)])
+def test_every_strategy_card_applies_its_declared_effect(card_id):
     engine, state, player = _state_with_card(card_id)
     route = _adjacent_route(state, player, "restored" if card_id == "action_03" else "blocked" if card_id == "action_09" else "strained")
     if card_id in {"action_02", "action_10"}:
-        state.shared.research_clues = 0
+        state.shared.research_clues = 1
     if card_id == "action_03":
         route.status = "restored"
     if card_id == "action_07":
@@ -68,8 +48,48 @@ def test_every_strategy_card_applies_its_declared_effect(card_id, effect_check):
     if card_id in {"action_11", "action_15"}:
         target = "p2"
         state.shared.restoration_resource = 2
+        state.players["p2"].ap = 1
+    before = {
+        "ap": player.ap,
+        "threat": state.shared.threat,
+        "clues": state.shared.research_clues,
+        "restoration": state.shared.restoration_resource,
+        "route_risk": route.risk,
+        "route_status": route.status,
+        "p2_ap": state.players["p2"].ap,
+        "p2_supplies": state.players["p2"].supplies,
+    }
     engine._use_action_card(state, player, card_id, target_id=target, target_ids=target_ids, force_event_response=card_id == "action_09")
-    effect_check(engine, state, player, route)
+    assert player.ap == before["ap"] - 1
+    if card_id in {"action_01", "action_05", "action_06", "action_09", "action_13", "action_14"}:
+        assert route.risk < before["route_risk"]
+    if card_id in {"action_02", "action_03", "action_10"}:
+        assert route.status in {"restored", "illuminated"}
+    if card_id in {"action_01", "action_05", "action_09", "action_13", "action_14"}:
+        expected_clues = 1 if card_id in {"action_01", "action_13", "action_14"} else 0
+        assert state.shared.research_clues == before["clues"] + expected_clues
+    if card_id == "action_04":
+        assert player.flags["prepared_event_id"] == "sandstorm"
+        assert state.shared.threat == before["threat"]
+    if card_id == "action_07":
+        assert player.flags["remote_exchange_player_id"] == "p2"
+    if card_id == "action_08":
+        assert player.flags["reserved_ap"] == 1
+    if card_id == "action_09":
+        assert state.shared.threat == before["threat"] - 1
+    if card_id == "action_10":
+        assert player.flags["free_move"] is True
+        assert state.shared.restoration_resource == before["restoration"]
+    if card_id == "action_11":
+        assert state.players["p2"].supplies == before["p2_supplies"] + 1
+        assert state.shared.restoration_resource == before["restoration"] - 1
+    if card_id == "action_12":
+        assert state.players["p2"].flags["prepared_event_id"] == "sandstorm"
+    if card_id == "action_15":
+        assert state.players["p2"].ap == before["p2_ap"] + 1
+        assert state.shared.restoration_resource == before["restoration"]
+    if card_id == "action_16":
+        assert player.flags["prepared_event_id"] == "sandstorm"
     assert card_id not in player.action_hand
     assert card_id in state.decks["action_discard"]
 

@@ -10,7 +10,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest
+from .models import ActionRequest, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -54,7 +54,7 @@ async def security_and_rate_limit(request: Request, call_next):
 def healthz():
     return {"status": "ok", "service": "yungang-heritage-network", "database": "ready" if repo.path.exists() else "initializing"}
 
-@app.get("/api/meta")
+@app.get("/api/meta", response_model=MetaResponse)
 def meta():
     return {"schema_version": 3, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "terminology": content.terminology, "regions": content.regions, "scenarios": list(content.scenarios.values()), "roles": list(content.roles.values()), "sites": list(content.sites.values()), "facets": content.site_facets, "cards": list(content.cards.values()), "action_cards": list(content.action_cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "projects": list(content.projects.values()), "objectives": list(content.objectives.values()), "difficulty": list(content.difficulty.values())}
 
@@ -115,19 +115,19 @@ def _room_token_error(exc: ValueError) -> HTTPException:
     return HTTPException(status, {"code": code, "message": messages.get(code, "房间操作无法完成。"), "details": {}, "recovery": "return_to_room"})
 
 
-@app.post("/api/rooms")
+@app.post("/api/rooms", response_model=RoomCredentials)
 def create_room(request: RoomCreateRequest):
     room, host_token, seat_token = room_service.create(f"room-{uuid4().hex[:16]}", request)
     return {"room": room_service.public(room, seat_token), "host_token": host_token, "seat_token": seat_token}
 
 
-@app.get("/api/rooms/{room_id}")
+@app.get("/api/rooms/{room_id}", response_model=RoomPublic)
 def get_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/join")
+@app.post("/api/rooms/{room_id}/join", response_model=RoomCredentials)
 def join_room(room_id: str, request: RoomJoinRequest):
     room = _room_or_404(room_id)
     try:
@@ -137,7 +137,7 @@ def join_room(room_id: str, request: RoomJoinRequest):
     return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
 
 
-@app.post("/api/rooms/{room_id}/reconnect")
+@app.post("/api/rooms/{room_id}/reconnect", response_model=RoomCredentials)
 def reconnect_room(room_id: str, request: RoomReconnectRequest):
     room = _room_or_404(room_id)
     try:
@@ -147,7 +147,7 @@ def reconnect_room(room_id: str, request: RoomReconnectRequest):
     return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
 
 
-@app.post("/api/rooms/{room_id}/ready")
+@app.post("/api/rooms/{room_id}/ready", response_model=RoomPublic)
 def ready_room(room_id: str, request: RoomReadyRequest, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:
@@ -157,7 +157,7 @@ def ready_room(room_id: str, request: RoomReadyRequest, x_seat_token: str | None
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/role")
+@app.post("/api/rooms/{room_id}/role", response_model=RoomPublic)
 def role_room(room_id: str, request: RoomRoleRequest, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     if request.role_id not in content.roles:
@@ -169,7 +169,7 @@ def role_room(room_id: str, request: RoomRoleRequest, x_seat_token: str | None =
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/seats/{seat_id}")
+@app.post("/api/rooms/{room_id}/seats/{seat_id}", response_model=RoomPublic)
 def update_local_seat(room_id: str, seat_id: str, request: RoomSeatUpdateRequest, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     if request.role_id is not None and request.role_id not in content.roles:
@@ -181,7 +181,7 @@ def update_local_seat(room_id: str, seat_id: str, request: RoomSeatUpdateRequest
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/leave")
+@app.post("/api/rooms/{room_id}/leave", response_model=RoomPublic)
 def leave_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:
@@ -200,7 +200,7 @@ def _require_host(room: dict, token: str | None) -> None:
         raise HTTPException(403, {"code": "host_required", "message": "只有房主可以改变旅舍状态。", "details": {}, "recovery": "wait_for_host"})
 
 
-@app.post("/api/rooms/{room_id}/pause")
+@app.post("/api/rooms/{room_id}/pause", response_model=RoomPublic)
 def pause_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     _require_host(room, x_seat_token)
@@ -210,7 +210,7 @@ def pause_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/resume")
+@app.post("/api/rooms/{room_id}/resume", response_model=RoomPublic)
 def resume_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     _require_host(room, x_seat_token)
@@ -220,7 +220,7 @@ def resume_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     return room_service.public(room, x_seat_token)
 
 
-@app.post("/api/rooms/{room_id}/start")
+@app.post("/api/rooms/{room_id}/start", response_model=RoomStartResponse)
 def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:
@@ -252,7 +252,7 @@ def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     return {"room": room_service.public(room, x_seat_token), "session_id": session_id}
 
 
-@app.get("/api/rooms/{room_id}/events-ticket")
+@app.get("/api/rooms/{room_id}/events-ticket", response_model=RoomEventTicket)
 def room_events_ticket(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:

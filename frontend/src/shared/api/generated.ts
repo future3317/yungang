@@ -354,7 +354,7 @@ export interface components {
             reason: string;
             /** Preview Delta */
             preview_delta?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
             /**
              * Confirmation
@@ -363,7 +363,7 @@ export interface components {
             confirmation: string;
             /** Payload */
             payload?: {
-                [key: string]: unknown;
+                [key: string]: components["schemas"]["JsonValue"];
             };
         };
         /** ActionRequest */
@@ -602,6 +602,73 @@ export interface components {
             detail?: components["schemas"]["ValidationError"][];
         };
         JsonValue: unknown;
+        /** MetaResponse */
+        MetaResponse: {
+            /** Schema Version */
+            schema_version: number;
+            /** Mode */
+            mode: string;
+            /** Domains */
+            domains: string[];
+            /** Domain Meta */
+            domain_meta?: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Terminology */
+            terminology?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Regions */
+            regions?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Scenarios */
+            scenarios?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Roles */
+            roles?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Sites */
+            sites?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Facets */
+            facets?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Cards */
+            cards?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Action Cards */
+            action_cards?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Events */
+            events?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Tasks */
+            tasks?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Projects */
+            projects?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Objectives */
+            objectives?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Difficulty */
+            difficulty?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+        };
         /** ObjectiveState */
         ObjectiveState: {
             /** Id */
@@ -784,6 +851,23 @@ export interface components {
              */
             max_players: number;
         };
+        /** RoomCredentials */
+        RoomCredentials: {
+            room: components["schemas"]["RoomPublic"];
+            /** Host Token */
+            host_token?: string | null;
+            /** Seat Token */
+            seat_token: string;
+            /** Session Id */
+            session_id?: string | null;
+        };
+        /** RoomEventTicket */
+        RoomEventTicket: {
+            /** Ticket */
+            ticket: string;
+            /** Expires In */
+            expires_in: number;
+        };
         /** RoomJoinRequest */
         RoomJoinRequest: {
             /**
@@ -793,6 +877,29 @@ export interface components {
             name: string;
             /** Role Id */
             role_id?: string | null;
+        };
+        /** RoomPublic */
+        RoomPublic: {
+            /** Room Id */
+            room_id: string;
+            /** Status */
+            status: string;
+            /** Play Mode */
+            play_mode: string;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Difficulty Id */
+            difficulty_id: string;
+            /** Max Players */
+            max_players: number;
+            /** Created At */
+            created_at: string;
+            /** Updated At */
+            updated_at: string;
+            /** Viewer Seat Id */
+            viewer_seat_id?: string | null;
+            /** Seats */
+            seats?: components["schemas"]["RoomSeat"][];
         };
         /** RoomReadyRequest */
         RoomReadyRequest: {
@@ -812,6 +919,30 @@ export interface components {
             /** Role Id */
             role_id: string;
         };
+        /** RoomSeat */
+        RoomSeat: {
+            /** Seat Id */
+            seat_id: string;
+            /** Name */
+            name: string;
+            /** Role Id */
+            role_id?: string | null;
+            /**
+             * Ready
+             * @default false
+             */
+            ready: boolean;
+            /**
+             * Connected
+             * @default false
+             */
+            connected: boolean;
+            /**
+             * Role Locked
+             * @default false
+             */
+            role_locked: boolean;
+        };
         /** RoomSeatUpdateRequest */
         RoomSeatUpdateRequest: {
             /** Name */
@@ -820,6 +951,12 @@ export interface components {
             role_id?: string | null;
             /** Ready */
             ready?: boolean | null;
+        };
+        /** RoomStartResponse */
+        RoomStartResponse: {
+            room: components["schemas"]["RoomPublic"];
+            /** Session Id */
+            session_id: string;
         };
         /** RouteState */
         RouteState: {
@@ -1130,7 +1267,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["MetaResponse"];
                 };
             };
         };
@@ -1253,7 +1390,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomCredentials"];
                 };
             };
             /** @description Validation Error */
@@ -1286,7 +1423,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1321,7 +1458,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomCredentials"];
                 };
             };
             /** @description Validation Error */
@@ -1356,7 +1493,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomCredentials"];
                 };
             };
             /** @description Validation Error */
@@ -1393,7 +1530,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1430,7 +1567,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1468,7 +1605,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1501,7 +1638,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1534,7 +1671,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1567,7 +1704,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomPublic"];
                 };
             };
             /** @description Validation Error */
@@ -1600,7 +1737,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomStartResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1633,7 +1770,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["RoomEventTicket"];
                 };
             };
             /** @description Validation Error */

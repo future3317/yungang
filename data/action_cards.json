@@ -67,8 +67,7 @@
       "timing": "事件预告阶段",
       "target_rule": "当前世界事件",
       "effect": {
-        "type": "prepare_event",
-        "threat_reduction": 1
+        "type": "prepare_event"
       },
       "best_use": "事件将影响多个节点时，先投入准备比事后修护更节省。",
       "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
@@ -279,7 +278,8 @@
       "target_rule": "player",
       "effect": {
         "type": "transfer_resource",
-        "amount": 1
+        "amount": 1,
+        "resource": "ap"
       },
       "strategic_role": "团队支援",
       "best_use": "另一位同行者即将行动但行动力不足时使用。",

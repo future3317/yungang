@@ -107,6 +107,65 @@ class ErrorResponse(BaseModel):
     details: JsonObject = Field(default_factory=dict)
     recovery: Optional[str] = None
 
+
+class MetaResponse(BaseModel):
+    schema_version: int
+    mode: str
+    domains: List[str]
+    domain_meta: Dict[str, JsonObject] = Field(default_factory=dict)
+    terminology: JsonObject = Field(default_factory=dict)
+    regions: List[JsonObject] = Field(default_factory=list)
+    scenarios: List[JsonObject] = Field(default_factory=list)
+    roles: List[JsonObject] = Field(default_factory=list)
+    sites: List[JsonObject] = Field(default_factory=list)
+    facets: List[JsonObject] = Field(default_factory=list)
+    cards: List[JsonObject] = Field(default_factory=list)
+    action_cards: List[JsonObject] = Field(default_factory=list)
+    events: List[JsonObject] = Field(default_factory=list)
+    tasks: List[JsonObject] = Field(default_factory=list)
+    projects: List[JsonObject] = Field(default_factory=list)
+    objectives: List[JsonObject] = Field(default_factory=list)
+    difficulty: List[JsonObject] = Field(default_factory=list)
+
+
+class RoomSeat(BaseModel):
+    seat_id: str
+    name: str
+    role_id: Optional[str] = None
+    ready: bool = False
+    connected: bool = False
+    role_locked: bool = False
+
+
+class RoomPublic(BaseModel):
+    room_id: str
+    status: str
+    play_mode: str
+    scenario_id: str
+    difficulty_id: str
+    max_players: int
+    created_at: str
+    updated_at: str
+    viewer_seat_id: Optional[str] = None
+    seats: List[RoomSeat] = Field(default_factory=list)
+
+
+class RoomCredentials(BaseModel):
+    room: RoomPublic
+    host_token: Optional[str] = None
+    seat_token: str
+    session_id: Optional[str] = None
+
+
+class RoomStartResponse(BaseModel):
+    room: RoomPublic
+    session_id: str
+
+
+class RoomEventTicket(BaseModel):
+    ticket: str
+    expires_in: int
+
 class ActionRequest(BaseModel):
     player_id: str
     action: ActionType
@@ -317,6 +376,7 @@ class SharedState(BaseModel):
     event_instance: JsonObject = Field(default_factory=dict)
     event_history: List[JsonObject] = Field(default_factory=list)
     round_summary: JsonObject = Field(default_factory=dict)
+    round_snapshot: JsonObject = Field(default_factory=dict, exclude=True)
     reserved_market_cards: List[str] = Field(default_factory=list)
     scenario_rule_uses: List[str] = Field(default_factory=list)
 

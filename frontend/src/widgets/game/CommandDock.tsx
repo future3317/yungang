@@ -41,7 +41,7 @@ function ActionDetail({ detail }: { detail: ActionDetailState | null }) {
 export function CommandDock({ state, active, cards, legal, actionOptions = [], actionMode, actionLabels, mutationPending, onRun: _onRun, onChooseOption, onCancel, onCard }: { state: GameState; active: Player; cards: Record<string, ContentCard>; legal: Action[]; actionOptions: ActionOption[]; actionMode: ActionType | null; actionLabels: Partial<Record<ActionType, string>>; mutationPending: boolean; onRun?: (action?: Action) => void; onChooseOption: (option: ActionOption) => void; onCancel: () => void; onCard: (id: string) => void }) {
   const [detail, setDetail] = useState<ActionDetailState | null>(null);
   const ranked = [...actionOptions].sort((left, right) => (right.recommendation_score || 0) - (left.recommendation_score || 0));
-  const featured = primaryOrder.map(type => ranked.find(item => item.type === type)).filter((item): item is ActionOption => Boolean(item)).slice(0, 3);
+  const featured = ranked.filter(item => item.enabled !== false).slice(0, 3);
   const more = ranked.filter(item => !featured.some(feature => feature.id === item.id));
   const select = (option: ActionOption) => { if (option.enabled !== false) onChooseOption(option); };
 
