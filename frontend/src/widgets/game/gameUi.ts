@@ -29,8 +29,13 @@ const previewDeltaLabels: Record<string, string> = {
   restoration_resource: '修护资源',
   research_clues: '研究线索',
   threat: '风化压力',
+  weathering: '风化压力',
   risk: '路线风险',
   restoration: '修护进度',
+  supplies: '个人补给',
+  cards: '手牌',
+  damage: '节点损伤',
+  closed_sites: '关闭节点',
 };
 
 const actionErrorMessages: Record<string, string> = {

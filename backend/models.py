@@ -130,6 +130,8 @@ class GoalStatus(BaseModel):
     weathering: int = 0
     weathering_limit: int = 5
     rounds_remaining: int = 0
+    victory_conditions: List[JsonObject] = Field(default_factory=list)
+    failure_conditions: List[JsonObject] = Field(default_factory=list)
 
 
 class ViewerState(BaseModel):

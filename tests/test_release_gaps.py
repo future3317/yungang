@@ -95,3 +95,25 @@ def test_ready_interpretation_is_available_while_ap_remains():
     engine._interpret_evidence(state, player, player.location, card, "support")
     engine.refresh(state)
     assert any(action.type == "form_interpretation" for action in state.action_options)
+
+
+def test_interpretation_evaluator_is_single_source_for_progress_and_legality():
+    state = engine.new_game("interpretation-evaluator", ["p1"], scenario_id="sand_and_stone")
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    task["required_card_count"] = 2
+    task["required_origin_diversity"] = 2
+    task["required_domains"] = []
+    task["combo_requirement"] = {}
+    cards = list(engine.content.cards)[:2]
+    task["interpretation"]["placements"] = [
+        {"card_id": cards[0], "relation": "support", "origin_tags": ["中原"], "combo_tags": []},
+        {"card_id": cards[1], "relation": "conflict", "origin_tags": ["西域"], "combo_tags": []},
+    ]
+    evaluation = engine._evaluate_interpretation(task)
+    assert evaluation["cards"] == 1
+    assert evaluation["origins"] == ["中原"]
+    assert evaluation["can_form"] is False
+    state = engine.refresh(state)
+    progress = state.tasks[task["id"]]["progress"]["interpretation"]
+    assert progress == engine._evaluate_interpretation(state.tasks[task["id"]])

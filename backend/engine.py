@@ -463,15 +463,30 @@ class GameEngine:
             task_origins = {origin for item in site.contributions if item.get("card_id") in task["contributed_cards"] for origin in item.get("origin_tags", [])}
             if len(task_origins) >= 2: state.shared.research_clues += 1
 
-    def _interpretation_ready(self, task):
+    def _evaluate_interpretation(self, task):
         interpretation = self._ensure_interpretation(task)
         usable = [item for item in interpretation["placements"] if item.get("relation") != "conflict"]
-        if not any(item.get("relation") == "support" for item in usable): return False
         cards = [self.content.cards[item["card_id"]] for item in usable if item.get("card_id") in self.content.cards]
         origins = {origin for item in usable for origin in item.get("origin_tags", [])}
+        domains = {item.get("domain") for item in cards}
         tags = {tag for item in usable for tag in item.get("combo_tags", [])}
         combo = task.get("combo_requirement", {})
-        return len(cards) >= task["required_card_count"] and len(origins) >= task["required_origin_diversity"] and set(task["required_domains"]).issubset({item.get("domain") for item in cards}) and set(combo.get("required_combo_tags", [])).issubset(tags)
+        missing_domains = sorted(set(task.get("required_domains", [])) - domains)
+        preferred_origins = set(combo.get("preferred_origins", []))
+        missing_origins = sorted(preferred_origins - origins) if preferred_origins else []
+        origin_target = len(preferred_origins) or int(task.get("required_origin_diversity", 0))
+        missing_tags = sorted(set(combo.get("required_combo_tags", [])) - tags)
+        has_support = any(item.get("relation") == "support" for item in usable)
+        return {
+            "cards": len(cards), "cards_target": int(task.get("required_card_count", 0)),
+            "domains": sorted(domains), "missing_domains": missing_domains,
+            "origins": sorted(origins), "origins_target": origin_target, "missing_origins": missing_origins,
+            "missing_tags": missing_tags, "has_support": has_support,
+            "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags),
+        }
+
+    def _interpretation_ready(self, task):
+        return self._evaluate_interpretation(task)["can_form"]
 
     def _form_interpretation(self, state, player, site_id):
         task = state.tasks.get(self.content.sites.get(site_id, {}).get("active_task_id"))
@@ -1083,7 +1098,8 @@ class GameEngine:
         if minimum_per_player:
             counts = task.get("contributed_by_player", {})
             requirements.append({"key": "cards_per_player", "label": "参与者最低贡献", "current": min(counts.values(), default=0), "target": minimum_per_player, "complete": bool(counts) and all(count >= minimum_per_player for count in counts.values())})
-        return {"requirements": requirements, "complete": self._task_complete(task)}
+        evaluation = self._evaluate_interpretation(task)
+        return {"requirements": requirements, "complete": self._task_complete(task), "interpretation": evaluation}
 
     def _reachable(self, state, start, hops):
         found = {start}; queue = deque([(start, 0)])
@@ -1126,6 +1142,9 @@ class GameEngine:
         state.score.grade = "gold" if state.score.total >= 55 else "silver" if state.score.total >= 35 else "bronze"
         scenario = self.content.scenarios.get(state.scenario_id, {})
         core_ids = {scenario.get("core_project_id")} if scenario.get("core_project_id") else set()
+        scenario = self.content.scenarios.get(state.scenario_id, {})
+        core_target = len(core_ids)
+        objective_target = len(state.objectives)
         state.goal_status = GoalStatus(
             core_projects_completed=sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"),
             core_projects_target=len(core_ids),
@@ -1136,6 +1155,16 @@ class GameEngine:
             weathering=state.shared.weathering_track,
             weathering_limit=state.shared.weathering_limit,
             rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
+            victory_conditions=[
+                {"id": "core_project", "label": "核心项目", "current": sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"), "target": core_target, "remaining": max(0, core_target - sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")), "related_ids": sorted(core_ids)},
+                {"id": "objectives", "label": "公共目标", "current": sum(objective.completed for objective in state.objectives.values()), "target": objective_target, "remaining": max(0, objective_target - sum(objective.completed for objective in state.objectives.values())), "related_ids": list(state.objectives)},
+                {"id": "weathering_control", "label": "风化压力保持在上限以下", "current": state.shared.weathering_track, "target": state.shared.weathering_limit - 1, "remaining": max(0, state.shared.weathering_limit - 1 - state.shared.weathering_track), "related_ids": []},
+            ],
+            failure_conditions=[
+                {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED]},
+                {"id": "weathering_limit", "label": "风化压力不达到上限", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "related_ids": []},
+                {"id": "round_limit", "label": "在回合耗尽前完成", "current": state.shared.turn, "target": state.shared.max_rounds, "remaining": max(0, state.shared.max_rounds - state.shared.turn + 1), "related_ids": []},
+            ],
         )
 
     def _check_outcome(self, state):
