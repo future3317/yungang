@@ -79,3 +79,5 @@
 @media (max-width: 760px) { .header-center { display: block; width: 100%; }.goal-hud { width: 100%; padding: 5px 8px; border-radius: 8px; }.goal-hud-head { gap: 6px; }.goal-title { font-size: .76rem; }.goal-phase { display: none; }.goal-line { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }.goal-line b { font-size: .76rem; }.goal-context { display: none; }.round-summary { grid-template-columns: minmax(0, 1fr) auto; margin: 0; padding: 8px 10px; }.round-summary-metrics { grid-column: 1; grid-row: 2; }.round-summary button { grid-column: 2; grid-row: 1 / span 2; } }
 
 @media (max-width: 760px) { .stage-caption { grid-template-columns: 50px minmax(0, 1fr) 36px; width: 100%; overflow: hidden; }.stage-caption > div { min-width: 0; max-width: 100%; overflow: hidden; }.stage-caption h2, .stage-caption p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+
+.inspector-scene-art { height: 92px; margin: 10px 0 12px; overflow: hidden; border: 1px solid rgba(220, 190, 112, .28); border-radius: 9px; background: rgba(13, 25, 17, .48); }.inspector-scene-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
