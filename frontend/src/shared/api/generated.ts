@@ -570,6 +570,24 @@ export interface components {
             target: number;
             /** Remaining */
             remaining: number;
+            /**
+             * Kind
+             * @default progress
+             * @enum {string}
+             */
+            kind: "progress" | "guardrail" | "deadline";
+            /**
+             * Operator
+             * @default gte
+             * @enum {string}
+             */
+            operator: "gte" | "lt" | "lte";
+            /**
+             * Status
+             * @default incomplete
+             * @enum {string}
+             */
+            status: "incomplete" | "safe" | "warning" | "completed" | "failed";
             /** Related Ids */
             related_ids?: string[];
         };
