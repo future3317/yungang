@@ -90,6 +90,19 @@ class RoomService:
         self.repository.save(room)
         return room, seat_token, seat
 
+    def reconnect(self, room: dict[str, Any], seat_id: str) -> tuple[dict[str, Any], str]:
+        if room["status"] == "lobby":
+            raise ValueError("room_not_started")
+        seat = next((item for item in room["seats"] if item["seat_id"] == seat_id), None)
+        if not seat:
+            raise ValueError("seat_not_found")
+        seat_token = _token()
+        seat["token_hash"] = _digest(seat_token)
+        seat["connected"] = True
+        room["updated_at"] = _now()
+        self.repository.save(room)
+        return room, seat_token
+
     def authenticate(self, room: dict[str, Any], token: Optional[str]) -> dict[str, Any]:
         if not token:
             raise ValueError("seat_token_required")

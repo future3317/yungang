@@ -94,6 +94,10 @@ class RoomJoinRequest(BaseModel):
     role_id: Optional[str] = None
 
 
+class RoomReconnectRequest(BaseModel):
+    seat_id: str
+
+
 class RoomRoleRequest(BaseModel):
     role_id: str
 

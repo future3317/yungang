@@ -10,7 +10,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomRoleRequest, RoomSeatUpdateRequest
+from .models import ActionRequest, CreateGameRequest, GameState, RoomActionRequest, RoomCreateRequest, RoomJoinRequest, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -111,7 +111,7 @@ def _room_or_404(room_id: str) -> dict:
 def _room_token_error(exc: ValueError) -> HTTPException:
     code = str(exc)
     status = 401 if code in {"seat_token_required", "invalid_seat_token"} else 400
-    messages = {"seat_token_required": "请使用席位凭证进入这间旅舍。", "invalid_seat_token": "席位凭证已失效，请重新加入房间。", "room_not_joinable": "这间旅舍已经开始旅程。", "room_full": "旅舍席位已满。", "role_already_taken": "这个角色已经被同行者选走。", "room_already_started": "旅程开始后不能离开席位。"}
+    messages = {"seat_token_required": "请使用席位凭证进入这间旅舍。", "invalid_seat_token": "席位凭证已失效，请重新加入房间。", "room_not_joinable": "这间旅舍已经开始旅程。", "room_not_started": "旅程尚未点亮，当前不能恢复席位。", "room_full": "旅舍席位已满。", "seat_not_found": "找不到要恢复的席位。", "role_already_taken": "这个角色已经被同行者选走。", "room_already_started": "旅程开始后不能离开席位。"}
     return HTTPException(status, {"code": code, "message": messages.get(code, "房间操作无法完成。"), "details": {}, "recovery": "return_to_room"})
 
 
@@ -132,6 +132,16 @@ def join_room(room_id: str, request: RoomJoinRequest):
     room = _room_or_404(room_id)
     try:
         room, seat_token, _ = room_service.join(room, request.name, request.role_id)
+    except ValueError as exc:
+        raise _room_token_error(exc) from exc
+    return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
+
+
+@app.post("/api/rooms/{room_id}/reconnect")
+def reconnect_room(room_id: str, request: RoomReconnectRequest):
+    room = _room_or_404(room_id)
+    try:
+        room, seat_token = room_service.reconnect(room, request.seat_id)
     except ValueError as exc:
         raise _room_token_error(exc) from exc
     return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
