@@ -31,6 +31,21 @@ def test_action_options_include_effect_preview_not_only_ap():
     assert restore.preview_delta.get("damage") == -1
 
 
+def test_target_route_preview_contains_declared_resource_and_risk_changes():
+    engine = GameEngine()
+    state = engine.new_game("contract-route-preview", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    route = next(route for route in state.routes.values() if player.location in {route.from_site, route.to_site})
+    route.status = "strained"
+    route.risk = 2
+    state.shared.research_clues = 1
+    engine.refresh(state)
+    option = next(option for option in state.action_options if option.type == "restore_route")
+    target = next(target for target in option.targets if target.payload.get("route_id") == route.id)
+    assert target.preview_delta["research_clues"] == -1
+    assert target.preview_delta["risk"] == -1
+
+
 def test_round_summary_keeps_previous_event_targets():
     engine = GameEngine()
     state = engine.new_game("contract-summary", ["p1"], solo_mode=False)

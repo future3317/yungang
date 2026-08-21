@@ -384,7 +384,7 @@
     white-space: nowrap;
   }
   .game-header {
-    position: fixed !important;
+    position: absolute !important;
     z-index: 40 !important;
     top: 0;
     right: 0;
@@ -407,7 +407,7 @@
     box-sizing: border-box;
   }
   .network-tools {
-    position: fixed !important;
+    position: absolute !important;
     z-index: 25 !important;
     top: 104px !important;
     right: calc(var(--map-right-clearance) + 28px) !important;
@@ -466,7 +466,7 @@
 /* The timeline is a docked instrument: it opens upward from one stable map anchor. */
 @media (min-width: 1101px) {
   .timeline-drawer {
-    position: fixed !important;
+    position: absolute !important;
     z-index: 36 !important;
     right: auto !important;
     bottom: 18px !important;

@@ -18,4 +18,9 @@ describe('ActionPreview', () => {
     expect(screen.getByText('善化寺—云冈石窟')).toBeInTheDocument();
     expect(screen.queryByText('route_shanhua_temple_yungang')).not.toBeInTheDocument();
   });
+
+  it('shows the backend-provided state changes before confirmation', () => {
+    render(<ActionPreview action={{ type: 'restore_route', label: '修护路线', target_id: 'route_shanhua_temple_yungang', cost: 1, preview_delta: { research_clues: -1, risk: -1 } }} sites={{}} routes={{ route_shanhua_temple_yungang: { id: 'route_shanhua_temple_yungang', name: '善化寺—云冈石窟' } as never }} cards={{}} onConfirm={vi.fn()} onCancel={vi.fn()} />);
+    expect(screen.getByText('研究线索 -1 · 路线风险 -1')).toBeInTheDocument();
+  });
 });
