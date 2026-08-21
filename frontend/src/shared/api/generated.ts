@@ -48,6 +48,7 @@ export interface paths {
         /** Get Game */
         get: operations["get_game_api_games__session_id__get"];
         put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -122,6 +123,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/rooms/{room_id}/reconnect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Reconnect Room */
+        post: operations["reconnect_room_api_rooms__room_id__reconnect_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/rooms/{room_id}/ready": {
         parameters: {
             query?: never;
@@ -150,6 +168,23 @@ export interface paths {
         put?: never;
         /** Role Room */
         post: operations["role_room_api_rooms__room_id__role_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/rooms/{room_id}/seats/{seat_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Update Local Seat */
+        post: operations["update_local_seat_api_rooms__room_id__seats__seat_id__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -224,6 +259,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/rooms/{room_id}/events-ticket": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Room Events Ticket */
+        get: operations["room_events_ticket_api_rooms__room_id__events_ticket_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/rooms/{room_id}/game": {
         parameters: {
             query?: never;
@@ -262,6 +314,58 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ActionOption */
+        ActionOption: {
+            /** Id */
+            id: string;
+            /** Type */
+            type: string;
+            /** Label */
+            label: string;
+            /**
+             * Description
+             * @default
+             */
+            description: string;
+            /** Cost */
+            cost?: {
+                [key: string]: number;
+            };
+            /**
+             * Enabled
+             * @default true
+             */
+            enabled: boolean;
+            /** Disabled Reason */
+            disabled_reason?: string | null;
+            /** Targets */
+            targets?: components["schemas"]["ActionTarget"][];
+            /** Requirements */
+            requirements?: string[];
+            /**
+             * Recommendation Score
+             * @default 0
+             */
+            recommendation_score: number;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+            /** Preview Delta */
+            preview_delta?: {
+                [key: string]: unknown;
+            };
+            /**
+             * Confirmation
+             * @default
+             */
+            confirmation: string;
+            /** Payload */
+            payload?: {
+                [key: string]: unknown;
+            };
+        };
         /** ActionRequest */
         ActionRequest: {
             /** Player Id */
@@ -286,6 +390,21 @@ export interface components {
             /** Request Id */
             request_id?: string | null;
         };
+        /** ActionTarget */
+        ActionTarget: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Preview Delta */
+            preview_delta?: {
+                [key: string]: unknown;
+            };
+            /** Payload */
+            payload?: {
+                [key: string]: unknown;
+            };
+        };
         /**
          * ActionType
          * @enum {string}
@@ -309,6 +428,20 @@ export interface components {
             seed?: number | null;
             /** Daily Seed */
             daily_seed?: string | null;
+        };
+        /** FeedbackEvent */
+        FeedbackEvent: {
+            /**
+             * Kind
+             * @default state_change
+             */
+            kind: string;
+            /** Message */
+            message: string;
+            /** Changes */
+            changes?: {
+                [key: string]: number;
+            };
         };
         /**
          * GameOutcome
@@ -369,9 +502,7 @@ export interface components {
                 [key: string]: unknown;
             }[];
             /** Action Options */
-            action_options?: {
-                [key: string]: unknown;
-            }[];
+            action_options?: components["schemas"]["ActionOption"][];
             /**
              * Scenario Id
              * @default sand_and_stone
@@ -411,6 +542,63 @@ export interface components {
             result?: {
                 [key: string]: unknown;
             };
+            /** Viewer */
+            viewer?: {
+                [key: string]: unknown;
+            };
+            /** Feedback Events */
+            feedback_events?: components["schemas"]["FeedbackEvent"][];
+            goal_status?: components["schemas"]["GoalStatus"];
+            /** Processed Request Ids */
+            processed_request_ids?: string[];
+        };
+        /** GoalStatus */
+        GoalStatus: {
+            /**
+             * Core Projects Completed
+             * @default 0
+             */
+            core_projects_completed: number;
+            /**
+             * Core Projects Target
+             * @default 0
+             */
+            core_projects_target: number;
+            /**
+             * Objectives Completed
+             * @default 0
+             */
+            objectives_completed: number;
+            /**
+             * Objectives Target
+             * @default 0
+             */
+            objectives_target: number;
+            /**
+             * Protected Sites
+             * @default 0
+             */
+            protected_sites: number;
+            /**
+             * Protected Sites Target
+             * @default 0
+             */
+            protected_sites_target: number;
+            /**
+             * Weathering
+             * @default 0
+             */
+            weathering: number;
+            /**
+             * Weathering Limit
+             * @default 5
+             */
+            weathering_limit: number;
+            /**
+             * Rounds Remaining
+             * @default 0
+             */
+            rounds_remaining: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -475,6 +663,11 @@ export interface components {
             hand?: string[];
             /** Action Hand */
             action_hand?: string[];
+            /**
+             * Supplies
+             * @default 0
+             */
+            supplies: number;
             /** Flags */
             flags?: {
                 [key: string]: unknown;
@@ -612,10 +805,24 @@ export interface components {
              */
             ready: boolean;
         };
+        /** RoomReconnectRequest */
+        RoomReconnectRequest: {
+            /** Seat Id */
+            seat_id: string;
+        };
         /** RoomRoleRequest */
         RoomRoleRequest: {
             /** Role Id */
             role_id: string;
+        };
+        /** RoomSeatUpdateRequest */
+        RoomSeatUpdateRequest: {
+            /** Name */
+            name?: string | null;
+            /** Role Id */
+            role_id?: string | null;
+            /** Ready */
+            ready?: boolean | null;
         };
         /** RouteState */
         RouteState: {
@@ -649,6 +856,30 @@ export interface components {
             active_project_id?: string | null;
             /** Tags */
             tags?: string[];
+            /** Waypoints */
+            waypoints?: number[][];
+            /**
+             * Road Class
+             * @default local
+             */
+            road_class: string;
+            /**
+             * Terrain
+             * @default plain
+             */
+            terrain: string;
+            /** Label Position */
+            label_position?: number[] | null;
+            /** Name */
+            name?: string | null;
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Risk Profile */
+            risk_profile?: string | null;
+            /** Ui Hint */
+            ui_hint?: string | null;
+            /** Event Tags */
+            event_tags?: string[];
         };
         /** ScoreState */
         ScoreState: {
@@ -810,6 +1041,10 @@ export interface components {
             round_summary?: {
                 [key: string]: unknown;
             };
+            /** Reserved Market Cards */
+            reserved_market_cards?: string[];
+            /** Scenario Rule Uses */
+            scenario_rule_uses?: string[];
         };
         /** SiteState */
         SiteState: {
@@ -1103,6 +1338,41 @@ export interface operations {
             };
         };
     };
+    reconnect_room_api_rooms__room_id__reconnect_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                room_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoomReconnectRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     ready_room_api_rooms__room_id__ready_post: {
         parameters: {
             query?: never;
@@ -1154,6 +1424,44 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["RoomRoleRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_local_seat_api_rooms__room_id__seats__seat_id__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-seat-token"?: string | null;
+            };
+            path: {
+                room_id: string;
+                seat_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoomSeatUpdateRequest"];
             };
         };
         responses: {
@@ -1277,6 +1585,39 @@ export interface operations {
         };
     };
     start_room_api_rooms__room_id__start_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-seat-token"?: string | null;
+            };
+            path: {
+                room_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    room_events_ticket_api_rooms__room_id__events_ticket_get: {
         parameters: {
             query?: never;
             header?: {

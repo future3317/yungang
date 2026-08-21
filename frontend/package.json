@@ -11,6 +11,7 @@
     "test:ui": "playwright test",
     "lint": "tsc --noEmit",
     "api:generate": "openapi-typescript http://127.0.0.1:8000/openapi.json -o src/shared/api/generated.ts"
+    ,"content:terms": "python ../scripts/check_ui_terms.py"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.66.8",

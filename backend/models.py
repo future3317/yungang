@@ -1,11 +1,10 @@
 from enum import StrEnum
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 class ActionType(StrEnum):
     MOVE = "move"
     EXPLORE = "explore"
-    CONTRIBUTE = "contribute"  # 内部项目阶段兼容值；玩家不再获得直接交付行动。
     INTERPRET_EVIDENCE = "interpret_evidence"
     FORM_INTERPRETATION = "form_interpretation"
     CHOOSE_INTERVENTION = "choose_intervention"
@@ -37,6 +36,74 @@ class GameOutcome(StrEnum):
     VICTORY = "victory"
     DEFEAT = "defeat"
 
+
+class FeedbackEvent(BaseModel):
+    kind: str = "state_change"
+    message: str
+    changes: Dict[str, int] = Field(default_factory=dict)
+
+
+class EventInstance(BaseModel):
+    event_id: Optional[str] = None
+    status: str = "forecast"
+    forecast_scope: Dict[str, object] = Field(default_factory=dict)
+    revealed_targets: List[str] = Field(default_factory=list)
+    resolved_targets: List[str] = Field(default_factory=list)
+    resolution: List[Dict[str, object]] = Field(default_factory=list)
+
+
+class PendingChoice(BaseModel):
+    kind: str
+    options: List[Dict[str, object]] = Field(default_factory=list)
+    cards: List[str] = Field(default_factory=list)
+    event_id: Optional[str] = None
+    card_id: Optional[str] = None
+
+
+class RoundSummary(BaseModel):
+    round: int = 0
+    event_id: Optional[str] = None
+    event_targets: List[str] = Field(default_factory=list)
+    event_resolution: List[Dict[str, object]] = Field(default_factory=list)
+    before: Dict[str, int] = Field(default_factory=dict)
+    after: Dict[str, int] = Field(default_factory=dict)
+    planning_mark_count: int = 0
+    completed_projects: int = 0
+    completed_objectives: int = 0
+    player_contributions: Dict[str, int] = Field(default_factory=dict)
+
+
+class GoalStatus(BaseModel):
+    core_projects_completed: int = 0
+    core_projects_target: int = 0
+    objectives_completed: int = 0
+    objectives_target: int = 0
+    protected_sites: int = 0
+    protected_sites_target: int = 0
+    weathering: int = 0
+    weathering_limit: int = 5
+    rounds_remaining: int = 0
+
+
+class ViewerState(BaseModel):
+    seat_id: Optional[str] = None
+    player_id: Optional[str] = None
+    controlled_player_ids: List[str] = Field(default_factory=list)
+    can_act: bool = False
+    can_manage_room: bool = False
+    play_mode: str = "solo"
+    paused: bool = False
+    room_id: Optional[str] = None
+    room_status: Optional[str] = None
+    seats: List[Dict[str, object]] = Field(default_factory=list)
+
+
+class ErrorResponse(BaseModel):
+    code: str
+    message: str
+    details: Dict[str, object] = Field(default_factory=dict)
+    recovery: Optional[str] = None
+
 class ActionRequest(BaseModel):
     player_id: str
     action: ActionType
@@ -54,8 +121,8 @@ class ActionRequest(BaseModel):
 class ActionTarget(BaseModel):
     id: str
     label: str
-    preview_delta: Dict[str, Any] = Field(default_factory=dict)
-    payload: Dict[str, Any] = Field(default_factory=dict)
+    preview_delta: Dict[str, object] = Field(default_factory=dict)
+    payload: Dict[str, object] = Field(default_factory=dict)
 
 
 class ActionOption(BaseModel):
@@ -67,9 +134,12 @@ class ActionOption(BaseModel):
     enabled: bool = True
     disabled_reason: Optional[str] = None
     targets: List[ActionTarget] = Field(default_factory=list)
-    preview_delta: Dict[str, Any] = Field(default_factory=dict)
+    requirements: List[str] = Field(default_factory=list)
+    recommendation_score: int = 0
+    reason: str = ""
+    preview_delta: Dict[str, object] = Field(default_factory=dict)
     confirmation: str = ""
-    payload: Dict[str, Any] = Field(default_factory=dict)
+    payload: Dict[str, object] = Field(default_factory=dict)
 
 class CreateGameRequest(BaseModel):
     player_ids: List[str] = Field(default_factory=lambda: ["p1", "p2"])
@@ -136,7 +206,7 @@ class PlayerState(BaseModel):
     hand: List[str] = Field(default_factory=list)
     action_hand: List[str] = Field(default_factory=list)
     supplies: int = 0
-    flags: Dict[str, Any] = Field(default_factory=dict)
+    flags: Dict[str, object] = Field(default_factory=dict)
     skill_used: bool = False
     contributions: int = 0
     upgrades: List[str] = Field(default_factory=list)
@@ -167,16 +237,16 @@ class ProjectState(BaseModel):
     id: str
     site_id: str
     name: str
-    stages: List[Dict[str, Any]] = Field(default_factory=list)
+    stages: List[Dict[str, object]] = Field(default_factory=list)
     stage_index: int = 0
     progress: int = 0
     status: str = "active"
     contributors: List[str] = Field(default_factory=list)
-    stage_evidence: List[Dict[str, Any]] = Field(default_factory=list)
+    stage_evidence: List[Dict[str, object]] = Field(default_factory=list)
     completed_stages: List[str] = Field(default_factory=list)
     stage_progress: Dict[str, int] = Field(default_factory=dict)
     stage_contributors: Dict[str, List[str]] = Field(default_factory=dict)
-    available_choices: List[Dict[str, Any]] = Field(default_factory=list)
+    available_choices: List[Dict[str, object]] = Field(default_factory=list)
 
 
 class ObjectiveState(BaseModel):
@@ -210,7 +280,7 @@ class SiteState(BaseModel):
     influence: int = 0
     discovered: bool = False
     domains: List[str] = Field(default_factory=list)
-    contributions: List[Dict[str, Any]] = Field(default_factory=list)
+    contributions: List[Dict[str, object]] = Field(default_factory=list)
     active_project_id: Optional[str] = None
 
 class SharedState(BaseModel):
@@ -236,14 +306,14 @@ class SharedState(BaseModel):
     phase: str = "player_action"
     weathering_track: int = 0
     weathering_limit: int = 5
-    effective_rules: Dict[str, Any] = Field(default_factory=dict)
+    effective_rules: Dict[str, object] = Field(default_factory=dict)
     solo_mode: bool = False
     controlled_character_ids: List[str] = Field(default_factory=list)
-    journal: List[Dict[str, Any]] = Field(default_factory=list)
+    journal: List[Dict[str, object]] = Field(default_factory=list)
     event_targets: List[str] = Field(default_factory=list)
-    event_instance: Dict[str, Any] = Field(default_factory=dict)
-    event_history: List[Dict[str, Any]] = Field(default_factory=list)
-    round_summary: Dict[str, Any] = Field(default_factory=dict)
+    event_instance: Dict[str, object] = Field(default_factory=dict)
+    event_history: List[Dict[str, object]] = Field(default_factory=list)
+    round_summary: Dict[str, object] = Field(default_factory=dict)
     reserved_market_cards: List[str] = Field(default_factory=list)
     scenario_rule_uses: List[str] = Field(default_factory=list)
 
@@ -255,12 +325,12 @@ class GameState(BaseModel):
     difficulty_id: str = "normal"
     players: Dict[str, PlayerState]
     sites: Dict[str, SiteState]
-    tasks: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+    tasks: Dict[str, Dict[str, object]] = Field(default_factory=dict)
     shared: SharedState = Field(default_factory=SharedState)
     decks: Dict[str, List[str]] = Field(default_factory=lambda: {"culture": [], "events": []})
     market: List[str] = Field(default_factory=list)
-    pending_choice: Optional[Dict[str, Any]] = None
-    legal_actions: List[Dict[str, Any]] = Field(default_factory=list)
+    pending_choice: Optional[Dict[str, object]] = None
+    legal_actions: List[Dict[str, object]] = Field(default_factory=list)
     action_options: List[ActionOption] = Field(default_factory=list)
     scenario_id: str = "sand_and_stone"
     seed: int = 0
@@ -271,6 +341,8 @@ class GameState(BaseModel):
     projects: Dict[str, ProjectState] = Field(default_factory=dict)
     objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
     score: ScoreState = Field(default_factory=ScoreState)
-    result: Dict[str, Any] = Field(default_factory=dict)
-    viewer: Dict[str, Any] = Field(default_factory=dict)
+    result: Dict[str, object] = Field(default_factory=dict)
+    viewer: Dict[str, object] = Field(default_factory=dict)
+    feedback_events: List[FeedbackEvent] = Field(default_factory=list)
+    goal_status: GoalStatus = Field(default_factory=GoalStatus)
     processed_request_ids: List[str] = Field(default_factory=list)

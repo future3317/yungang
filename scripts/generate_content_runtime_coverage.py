@@ -19,7 +19,7 @@ FILES = {
     "role_upgrades.json": ("backend.engine._upgrade_effect / trigger checks", "RoleUpgradeDialog"),
     "projects.json": ("backend.engine._advance_project", "ProjectState / SiteInspector"),
     "tasks.json": ("backend.engine._task_complete", "SiteInspector / HandTray"),
-    "culture_cards.json": ("backend.engine._explore / _contribute / _effect", "Market / HandTray"),
+    "culture_cards.json": ("backend.engine._explore / _interpret_evidence / _effect", "Market / HandTray"),
 }
 
 rows = ["# 内容运行时覆盖", "", "此表由 `scripts/generate_content_runtime_coverage.py` 生成。它列出入口，不替代语义测试。", "", "| 文件 | ID 数量 | 后端处理器 | UI 入口 | 测试状态 |", "| --- | ---: | --- | --- | --- |"]

@@ -69,7 +69,7 @@ export function localizeActionText(value?: string) {
 
 export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}, players: Record<string, Player> = {}) {
   if (!target) return '当前地点';
-  return routes[target]?.name || sites[target]?.name || projects[target]?.name || players[target]?.name || localizeActionText(target);
+  return routes[target]?.name || sites[target]?.name || projects[target]?.name || players[target]?.name || '未知目标';
 }
 
 export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; players?: Record<string, Player> }) {
@@ -91,7 +91,7 @@ export function findCardAction(actions: Action[], type: ActionType, cardId: stri
 }
 
 export function actionModeLabel(mode: ActionMode) {
-  return mode ? actionLabels[mode] || mode : '';
+  return mode ? actionLabels[mode] || '当前行动' : '';
 }
 
 export function roleBadgeAsset(roleId: string | undefined, fallback?: string) {
@@ -121,7 +121,7 @@ export function actionFeedback(action: Action, before: GameState | undefined, af
   delta('AP', previousPlayer?.ap, nextPlayer?.ap);
   delta('研究线索', before?.shared.research_clues, after.shared.research_clues);
   delta('修护资源', before?.shared.restoration_resource, after.shared.restoration_resource);
-  delta('威胁', before?.shared.threat, after.shared.threat);
+  delta('风化压力', before?.shared.weathering_track ?? before?.shared.threat, after.shared.weathering_track ?? after.shared.threat);
   delta('共同影响', before?.shared.influence, after.shared.influence);
   const copy: Partial<Record<ActionType, string>> = {
     move: '已抵达新地点。新的线索与风险已经显影。',

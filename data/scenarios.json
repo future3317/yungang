@@ -214,7 +214,7 @@
       ],
       "scenario_rule": {
         "description": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究线索。",
-        "trigger": "after_contribute",
+        "trigger": "after_interpret_evidence",
         "effect": {
           "type": "gain_clue_if_distinct_players",
           "amount": 1

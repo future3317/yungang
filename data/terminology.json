@@ -116,9 +116,17 @@
       "name": "准备应对",
       "description": "投入行动点，降低本轮事件带来的压力。"
     },
-    "contribute": {
-      "name": "贡献证据",
-      "description": "将手牌投入当前节点任务或项目。"
+    "interpret_evidence": {
+      "name": "研判证据",
+      "description": "将线索归入支持、冲突或待确认，建立一段可解释的证据关系。"
+    },
+    "form_interpretation": {
+      "name": "形成解释",
+      "description": "在领域、来源和组合条件满足后形成当前解释。"
+    },
+    "choose_intervention": {
+      "name": "选择干预",
+      "description": "决定立即处理、最小干预或先记录。"
     },
     "restore": {
       "name": "修护节点",
@@ -139,6 +147,22 @@
     "use_skill": {
       "name": "角色技能",
       "description": "使用角色每回合一次的专属能力。"
+    },
+    "use_action_card": {
+      "name": "使用策略牌",
+      "description": "在合适的时机使用策略牌，改变路线、资源或事件结果。"
+    },
+    "use_node_ability": {
+      "name": "地点能力",
+      "description": "使用当前地点的一次性或每轮能力。"
+    },
+    "use_upgrade": {
+      "name": "角色专长",
+      "description": "使用已经获得的角色升级效果。"
+    },
+    "resolve_event": {
+      "name": "回应事件",
+      "description": "选择本轮事件的应对方式。"
     },
     "end_turn": {
       "name": "结束回合",

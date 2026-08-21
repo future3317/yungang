@@ -7,7 +7,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, GameOutcome, GameState, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -279,11 +279,23 @@ class GameEngine:
         if state.shared.outcome:
             raise ValueError("game_is_over")
         if state.pending_choice:
+            before_threat = state.shared.threat
+            before_weathering = state.shared.weathering_track
             result = self._resolve_choice(state, req)
+            self._sync_pressure(result, before_threat, before_weathering)
             self._record_journal(state, req.get("action", "choice"), req.get("player_id", state.shared.active_player_id), "共同决定已结算")
             self._remember_request(state, request_id)
+            result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes={})]
             return result
         pid, action = req["player_id"], req["action"]
+        before = {
+            "ap": state.players.get(pid, PlayerState(id=pid, name=pid, role_id="", location="")).ap if pid in state.players else 0,
+            "research_clues": state.shared.research_clues,
+            "restoration_resource": state.shared.restoration_resource,
+            "weathering": state.shared.weathering_track,
+            "threat": state.shared.threat,
+            "influence": state.shared.influence,
+        }
         if pid != state.shared.active_player_id:
             raise ValueError("not_active_player")
         player = state.players[pid]
@@ -309,14 +321,49 @@ class GameEngine:
         elif action == ActionType.END_PLANNING.value: self._end_planning(state, player)
         else: raise ValueError("unknown_action")
         self._record_journal(state, action, pid, self._journal_message(action, target, req))
+        self._sync_pressure(state, before["threat"], before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
         self._check_outcome(state)
-        return self.refresh(state)
+        result = self.refresh(state)
+        after_player = result.players.get(pid)
+        after = {
+            "ap": after_player.ap if after_player else before["ap"],
+            "research_clues": result.shared.research_clues,
+            "restoration_resource": result.shared.restoration_resource,
+            "weathering": result.shared.weathering_track,
+            "threat": result.shared.threat,
+            "influence": result.shared.influence,
+        }
+        changes = {key: after[key] - before[key] for key in before if after[key] != before[key]}
+        result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
+        return result
 
     def _journal_message(self, action: str, target: str | None, req: dict[str, Any]) -> str:
-        labels = {"move": "移动", "explore": "探索", "contribute": "贡献证据", "restore": "修护节点", "exchange": "交换证据", "use_skill": "使用角色技能", "play_card": "使用文化牌", "use_action_card": "使用策略牌", "survey_route": "勘察路线", "restore_route": "修护路线", "establish_connection": "建立区域连接", "prepare": "准备事件", "end_turn": "结束回合", "plan": "放置规划标记", "end_planning": "开始行动"}
+        labels = {"move": "移动", "explore": "寻访文化线索", "interpret_evidence": "研判证据", "form_interpretation": "形成解释", "choose_intervention": "选择干预", "restore": "修护节点", "exchange": "交换证据", "use_skill": "使用角色技能", "play_card": "使用文化牌", "use_action_card": "使用策略牌", "survey_route": "勘察路线", "restore_route": "修护路线", "establish_connection": "建立区域连接", "prepare": "准备事件", "end_turn": "结束回合", "plan": "放置规划标记", "end_planning": "开始行动"}
         return labels.get(action, "完成一项行动") + (f"（目标：{target}）" if target else "")
+
+    @staticmethod
+    def _sync_pressure(state: GameState, before_threat: int, before_weathering: int) -> None:
+        """Keep the legacy threat field as a transport alias, not a second pressure system."""
+        if state.shared.weathering_track != before_weathering:
+            state.shared.threat = state.shared.weathering_track
+        elif state.shared.threat != before_threat:
+            state.shared.weathering_track = state.shared.threat
+        else:
+            state.shared.threat = state.shared.weathering_track
+
+    @staticmethod
+    def _feedback_message(action: str) -> str:
+        return {
+            "move": "已抵达新地点，新的线索与风险已经显影。",
+            "explore": "文化线索已进入手牌，可用于当前地点的互证。",
+            "interpret_evidence": "证据已归入研究台，关系判断已记录。",
+            "form_interpretation": "当前解释已经形成，可以选择如何回应。",
+            "choose_intervention": "干预已经写入遗产网络，现场与共同目标已更新。",
+            "use_action_card": "策略牌已结算，资源、路线与旅程记录已经更新。",
+            "end_turn": "本角色行动结束，旅程正在交接给下一位同行者。",
+        }.get(action, "行动已记录，世界状态已经更新。")
 
     def _record_journal(self, state: GameState, action: str, player_id: str, message: str) -> None:
         kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"
@@ -403,14 +450,14 @@ class GameEngine:
         if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
         site = state.sites[site_id]; site.contributions.append(placement); site.influence += 1
         project = state.projects.get(site.active_project_id or "")
-        if project and project.status == "active" and relation != "conflict": self._advance_project(state, project, player.id, "contribute", card)
+        if project and project.status == "active" and relation != "conflict": self._advance_project(state, project, player.id, "interpret_evidence", card)
         state.decks.setdefault("archive", []).append(card)
         bonus = player.flags.pop("next_contribute_bonus", 0)
         if bonus:
             player.influence += bonus; state.shared.influence += bonus
             state.shared.log.append(f"{player.name} \u7684\u534f\u4f5c\u52a0\u6210\u751f\u6548\uff1a\u5f71\u54cd\u529b +{bonus}")
-        self._trigger_node_ability(state, player, site_id, card_id=card, trigger="after_contribute")
-        self._emit_scenario_rule(state, "after_contribute", {"player_id": player.id, "site_id": site_id, "task": task})
+        self._trigger_node_ability(state, player, site_id, card_id=card, trigger="after_interpret_evidence")
+        self._emit_scenario_rule(state, "after_interpret_evidence", {"player_id": player.id, "site_id": site_id, "task": task})
         if player.flags.pop("post_contribution_clue", False): state.shared.research_clues += 1
         if self._has_upgrade_effect(player, "post_contribution_clue"):
             task_origins = {origin for item in site.contributions if item.get("card_id") in task["contributed_cards"] for origin in item.get("origin_tags", [])}
@@ -717,6 +764,7 @@ class GameEngine:
                 "planning_marks": {key: [dict(item) for item in items] for key, items in state.shared.planning_marks.items()},
                 "weathering_track": state.shared.weathering_track,
                 "restoration_resource": state.shared.restoration_resource,
+                "influence": state.shared.influence,
             }
             state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
             if state.shared.current_event_id:
@@ -760,6 +808,18 @@ class GameEngine:
             "event_id": snapshot.get("event_id", state.shared.current_event_id),
             "event_targets": list(snapshot.get("event_targets", state.shared.event_targets)),
             "planning_marks": sum(len(items) for items in snapshot.get("planning_marks", state.shared.planning_marks).values()),
+            "planning_mark_count": sum(len(items) for items in snapshot.get("planning_marks", state.shared.planning_marks).values()),
+            "before": {
+                "weathering": snapshot.get("weathering_track", state.shared.weathering_track),
+                "restoration_resource": snapshot.get("restoration_resource", state.shared.restoration_resource),
+                "influence": snapshot.get("influence", state.shared.influence),
+            },
+            "after": {
+                "weathering": state.shared.weathering_track,
+                "restoration_resource": state.shared.restoration_resource,
+                "influence": state.shared.influence,
+            },
+            "event_resolution": list(state.shared.event_instance.get("resolution", [])),
             "weathering_track": state.shared.weathering_track,
             "restoration_resource": state.shared.restoration_resource,
         }
@@ -930,10 +990,10 @@ class GameEngine:
             if card not in state.market: state.market.insert(0, card)
             if len(state.market) > 3: state.decks["culture"].append(state.market.pop())
 
-    def _advance_project(self, state, project, player_id, action_type="contribute", card_id=None):
+    def _advance_project(self, state, project, player_id, action_type="interpret_evidence", card_id=None):
         if not project or project.status != "active" or project.stage_index >= len(project.stages): return
         stage = project.stages[project.stage_index]
-        if stage.get("action_type", "contribute") != action_type: return
+        if stage.get("action_type", "interpret_evidence") != action_type: return
         stage_id = stage.get("id", str(project.stage_index))
         project.stage_evidence.append({"stage_id": stage_id, "card_id": card_id, "player_id": player_id, "action_type": action_type})
         project.stage_progress[stage_id] = project.stage_progress.get(stage_id, 0) + 1
@@ -1031,6 +1091,19 @@ class GameEngine:
         state.score.efficiency = max(0, state.shared.max_rounds - state.shared.turn + 1)
         state.score.total = state.score.tasks * 10 + state.score.routes * 5 + state.score.protection * 2 + state.score.discovery + state.score.diversity * 2 + state.score.efficiency
         state.score.grade = "gold" if state.score.total >= 55 else "silver" if state.score.total >= 35 else "bronze"
+        scenario = self.content.scenarios.get(state.scenario_id, {})
+        core_ids = {scenario.get("core_project_id")} if scenario.get("core_project_id") else set()
+        state.goal_status = GoalStatus(
+            core_projects_completed=sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"),
+            core_projects_target=len(core_ids),
+            objectives_completed=sum(1 for objective in state.objectives.values() if objective.completed),
+            objectives_target=len(state.objectives),
+            protected_sites=protected_sites,
+            protected_sites_target=int(scenario.get("closed_site_limit", 2)),
+            weathering=state.shared.weathering_track,
+            weathering_limit=state.shared.weathering_limit,
+            rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
+        )
 
     def _check_outcome(self, state):
         self._update_objectives(state)
@@ -1062,6 +1135,7 @@ class GameEngine:
                 site.active_project_id = project.id if project else None
 
     def _build_action_options(self, actions, state=None):
+        terminology = self.content.terminology.get("actions", {})
         descriptions = {
             ActionType.MOVE.value: "沿已显影的路线前往另一个开放节点。",
             ActionType.EXPLORE.value: "从公开市场取走一件文化线索，推进当前地点的研究。",
@@ -1100,10 +1174,21 @@ class GameEngine:
                 "preview_delta": {"ap": -cost},
                 "confirmation": f"确认{action.get('label', action_type)}？",
                 "payload": {},
+                "requirements": [],
+                "recommendation_score": 0,
+                "reason": "",
             })
+            term = terminology.get(action_type, {})
+            option["label"] = term.get("name") or option["label"]
+            option["description"] = term.get("description") or option["description"]
             if action_type == ActionType.USE_ACTION_CARD.value and action.get("card_id"):
                 card_definition = self.content.action_cards.get(action["card_id"], {})
                 option["description"] = card_definition.get("description") or option["description"]
+                timing = card_definition.get("timing") or "当前行动阶段"
+                best_use = card_definition.get("best_use") or "在合适目标上使用，改变本回合的风险或资源。"
+                limitations = card_definition.get("limitations") or "使用前请确认目标和行动点。"
+                option["reason"] = f"时机：{timing}。最适合：{best_use}。限制：{limitations}"
+                option["payload"].update({key: card_definition.get(key) for key in ("timing", "effect", "best_use", "limitations", "combo_tags") if card_definition.get(key) is not None})
                 option["confirmation"] = f"确认使用策略牌“{card_definition.get('name', '策略牌')}”吗？"
             target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
             payload = {key: value for key, value in action.items() if value is not None}
@@ -1129,11 +1214,22 @@ class GameEngine:
                     if ActionType.USE_SKILL.value not in present: disabled[ActionType.USE_SKILL.value] = "角色专长本回合已使用，或行动点不足。"
                 for action_type, reason in disabled.items():
                     grouped[action_type] = {
-                        "id": f"action:{action_type}", "type": action_type, "label": action_type,
-                        "description": descriptions.get(action_type, "执行一项可用行动。"), "cost": {"ap": 0},
+                        "id": f"action:{action_type}", "type": action_type, "label": terminology.get(action_type, {}).get("name", "当前行动"),
+                        "description": terminology.get(action_type, {}).get("description", descriptions.get(action_type, "执行一项可用行动。")), "cost": {"ap": 0},
                         "enabled": False, "disabled_reason": reason, "targets": [],
-                        "preview_delta": {}, "confirmation": "", "payload": {},
+                        "preview_delta": {}, "confirmation": "", "payload": {}, "requirements": [], "recommendation_score": 0, "reason": reason,
                     }
+        for option in grouped.values():
+            if option["enabled"]:
+                if option["type"] in {ActionType.FORM_INTERPRETATION.value, ActionType.CHOOSE_INTERVENTION.value, ActionType.RESOLVE_EVENT.value}:
+                    option["recommendation_score"] = 100
+                    option["reason"] = option["reason"] or "当前状态可以直接推进共同目标。"
+                elif option["type"] in {ActionType.MOVE.value, ActionType.EXPLORE.value, ActionType.INTERPRET_EVIDENCE.value}:
+                    option["recommendation_score"] = 80
+                    option["reason"] = option["reason"] or "这是当前旅程推进证据链的优先行动。"
+                else:
+                    option["recommendation_score"] = 40
+                    option["reason"] = option["reason"] or option["description"]
         return [ActionOption.model_validate(option) for option in grouped.values()]
 
     def _event_deck_for_scenario(self, scenario, rng):
@@ -1192,7 +1288,7 @@ class GameEngine:
     @staticmethod
     def _ability_matches_event(ability_trigger, event):
         if ability_trigger == event: return True
-        return event == "after_contribute" and ability_trigger in {"first_new_domain_contribution_per_round", "after_architecture_contribution", "statue_architecture_combo", "once_per_round_pattern_contribution", "frontier_trade_combo"}
+        return event == "after_interpret_evidence" and ability_trigger in {"first_new_domain_contribution_per_round", "after_architecture_contribution", "statue_architecture_combo", "once_per_round_pattern_contribution", "frontier_trade_combo"}
 
     def _apply_node_effect(self, state, player, site_id, effect):
         self._dispatch_effect(NODE_EFFECT_HANDLERS, state, player, effect, site_id)

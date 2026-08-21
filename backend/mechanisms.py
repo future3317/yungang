@@ -19,7 +19,7 @@ TRIGGER_HANDLERS = {
     "frontier_trade_combo": "node_trigger",
     "round_start": "node_trigger",
     "first_route_action_per_round": "node_trigger",
-    "after_contribute": "node_trigger",
+    "after_interpret_evidence": "node_trigger",
     "after_exchange": "node_trigger",
     "after_route_action": "node_trigger",
     "use_node_ability": "node_trigger",
@@ -79,7 +79,7 @@ ACTION_CARD_EFFECT_HANDLERS = {
     "team_prepare": "_action_card_team_prepare",
 }
 
-SCENARIO_RULE_TRIGGERS = {"after_restore", "after_contribute", "after_establish_connection", "after_explore", "round_end"}
+SCENARIO_RULE_TRIGGERS = {"after_restore", "after_interpret_evidence", "after_establish_connection", "after_explore", "round_end"}
 SCENARIO_RULE_EFFECT_HANDLERS = {
     "move_planning_mark_adjacent": "_scenario_move_planning_mark_adjacent",
     "gain_clue_if_distinct_players": "_scenario_gain_clue_if_distinct_players",
@@ -106,7 +106,7 @@ EFFECT_HANDLERS = {
 }
 
 ACTION_TYPES = {
-    "move", "explore", "restore", "contribute", "interpret_evidence", "form_interpretation", "choose_intervention", "exchange", "use_skill", "play_card",
+    "move", "explore", "restore", "interpret_evidence", "form_interpretation", "choose_intervention", "exchange", "use_skill", "play_card",
     "use_action_card", "use_node_ability", "use_upgrade", "end_turn", "end_planning", "resolve_event", "select_market_card",
     "discard", "survey_route", "restore_route", "establish_connection", "prepare", "select_upgrade", "plan",
 }

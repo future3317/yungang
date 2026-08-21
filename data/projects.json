@@ -21,7 +21,7 @@
           "id": "compare",
           "name": "建立图像对照",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "statue",
@@ -86,7 +86,7 @@
           "id": "interpret",
           "name": "补充跨来源证据",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "architecture",
@@ -131,7 +131,7 @@
           "id": "compare",
           "name": "协调材料与运输",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "architecture",
@@ -184,7 +184,7 @@
           "id": "compare",
           "name": "提交守望与互市证据",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "frontier",
@@ -239,7 +239,7 @@
           "id": "compare",
           "name": "完成多方互证",
           "required_progress": 3,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "trade",
@@ -293,7 +293,7 @@
           "id": "compare",
           "name": "汇集五域证据",
           "required_progress": 5,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "statue",
@@ -351,7 +351,7 @@
           "id": "compare",
           "name": "完成来源交叉索引",
           "required_progress": 3,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "origin_diversity": 3,
             "domains": [
@@ -404,7 +404,7 @@
           "id": "compare",
           "name": "形成治理方案",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "domains": [
               "frontier",
@@ -457,7 +457,7 @@
           "id": "compare",
           "name": "来源对读",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "origin_diversity": 2
           },
@@ -506,7 +506,7 @@
           "id": "compare",
           "name": "来源对读",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "origin_diversity": 2
           },
@@ -555,7 +555,7 @@
           "id": "compare",
           "name": "来源对读",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "origin_diversity": 2
           },
@@ -604,7 +604,7 @@
           "id": "compare",
           "name": "来源对读",
           "required_progress": 2,
-          "action_type": "contribute",
+          "action_type": "interpret_evidence",
           "requirements": {
             "origin_diversity": 2
           },
