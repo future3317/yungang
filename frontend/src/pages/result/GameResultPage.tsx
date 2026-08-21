@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Archive, Compass, RotateCcw, Trophy } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../shared/api/client';
+import { getRoomToken } from '../../shared/roomToken';
 import type { GameState, Meta } from '../../types/game';
 
 const outcomeCopy: Record<string, { title: string; body: string }> = {
@@ -15,7 +16,7 @@ const outcomeCopy: Record<string, { title: string; body: string }> = {
 export function GameResultPage() {
   const { sessionId = '', roomId = '' } = useParams();
   const navigate = useNavigate();
-  const roomToken = roomId ? window.sessionStorage.getItem(`yungang-room-token:${roomId}`) || '' : '';
+  const roomToken = roomId ? getRoomToken(roomId) : '';
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-result' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId) });
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
   const replay = useMutation({ mutationFn: (sameSeed: boolean) => {

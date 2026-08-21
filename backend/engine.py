@@ -1016,7 +1016,7 @@ class GameEngine:
     def _update_objectives(self, state):
         completed_projects = sum(project.status == "completed" for project in state.projects.values())
         restored_routes = sum(route.status in {"restored", "illuminated"} for route in state.routes.values())
-        protected_sites = sum(site.status == SiteStatus.STABLE for site in state.sites.values())
+        protected_sites = sum(site.status == SiteStatus.STABLE and site.discovered for site in state.sites.values())
         all_evidence = [card for player in state.players.values() for card in player.hand] + state.decks.get("archive", [])
         for task in state.tasks.values(): all_evidence.extend(task.get("contributed_cards", []))
         diversity = len({origin for card_id in all_evidence for origin in self.content.cards.get(card_id, {}).get("origin_tags", [])})

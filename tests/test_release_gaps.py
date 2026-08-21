@@ -53,3 +53,18 @@ def test_room_session_cannot_be_read_through_legacy_game_endpoint():
     session_id = started.json()["session_id"]
     assert client.get(f"/api/games/{session_id}").status_code == 403
     assert repo.get(session_id) is not None
+
+
+def test_protection_objective_requires_visiting_stable_sites():
+    state = engine.new_game("objective-protection", ["p1"], scenario_id="sand_and_stone")
+    objective = state.objectives["objective_protect_core"]
+    assert objective.progress == 0
+    assert objective.completed is False
+
+    stable_site = next(iter(state.sites.values()))
+    stable_site.damage = 0
+    engine._update_site(stable_site)
+    state.sites[stable_site.id].discovered = True
+    engine.refresh(state)
+    assert objective.progress == 1
+    assert objective.completed is False

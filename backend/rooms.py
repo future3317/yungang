@@ -123,7 +123,9 @@ class RoomService:
 
     def update_local_seat(self, room: dict[str, Any], token: str, seat_id: str, name: Optional[str], role_id: Optional[str], ready: Optional[bool]) -> dict[str, Any]:
         host = self.authenticate(room, token)
-        if host["seat_id"] != "seat-1" or room["play_mode"] not in {"solo", "local"}:
+        if host["seat_id"] != "seat-1":
+            raise ValueError("host_required")
+        if room["play_mode"] == "multi_device" and seat_id != "seat-1":
             raise ValueError("host_required")
         seat = next((item for item in room["seats"] if item["seat_id"] == seat_id), None)
         if not seat:

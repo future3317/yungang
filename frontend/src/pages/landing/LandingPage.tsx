@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Compass, Dice5, Laptop, Users, Wifi } from 'lucid
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../shared/api/client';
+import { setRoomToken } from '../../shared/roomToken';
 import type { Meta, PlayMode } from '../../types/game';
 import '../../styles/lobby.css';
 
@@ -34,7 +35,7 @@ export function LandingPage() {
     setBusy(true);
     try {
       const result = await api.createRoom({ play_mode: mode, name: name.trim() || '同行者', scenario_id: scenario, difficulty_id: difficulty, max_players: mode === 'solo' ? 2 : count, ...(seedText.trim() ? { seed: Number(seedText) || 1 } : {}) });
-      window.sessionStorage.setItem(`yungang-room-token:${result.room.room_id}`, result.seat_token);
+      setRoomToken(result.room.room_id, result.seat_token);
       navigate(`/room/${result.room.room_id}`);
     } finally {
       setBusy(false);

@@ -5,7 +5,7 @@
       "name": "守住关键节点",
       "type": "site_protection",
       "target": 4,
-      "description": "结算时至少有4个启用节点保持稳定状态。",
+      "description": "结算时至少有4个已寻访且保持稳定的启用节点。",
       "progress_text": "稳定节点",
       "completion_text": "关键节点均处于可持续守护状态。",
       "scoring_weight": 3,

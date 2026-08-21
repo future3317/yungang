@@ -61,6 +61,19 @@ def test_multi_device_requires_roles_ready_and_blocks_legacy_session_access():
     assert guest_state.json()["legal_actions"] == []
 
 
+def test_multi_device_host_can_update_own_name():
+    created = client.post("/api/rooms", json={"play_mode": "multi_device", "name": "房主", "max_players": 2})
+    payload = created.json()
+    room_id = payload["room"]["room_id"]
+    updated = client.post(
+        f"/api/rooms/{room_id}/seats/seat-1",
+        headers={"X-Seat-Token": payload["seat_token"]},
+        json={"name": "新的房主"},
+    )
+    assert updated.status_code == 200
+    assert updated.json()["seats"][0]["name"] == "新的房主"
+
+
 def test_local_host_configures_all_seats_without_joining_from_another_device():
     created = client.post("/api/rooms", json={"play_mode": "local", "name": "主持人", "max_players": 2})
     payload = created.json()
