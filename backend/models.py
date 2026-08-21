@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field, JsonValue
 
 JsonObject = Dict[str, JsonValue]
@@ -134,6 +134,9 @@ class GoalCondition(BaseModel):
     current: int
     target: int
     remaining: int
+    kind: Literal['progress', 'guardrail', 'deadline'] = 'progress'
+    operator: Literal['gte', 'lt', 'lte'] = 'gte'
+    status: Literal['incomplete', 'safe', 'warning', 'completed', 'failed'] = 'incomplete'
     related_ids: List[str] = Field(default_factory=list)
 
 

@@ -36,7 +36,11 @@ const previewDeltaLabels: Record<string, string> = {
   cards: '手牌',
   damage: '节点损伤',
   closed_sites: '关闭节点',
+  site_influence: '地点影响',
+  route_connection_score: '区域连接',
 };
+
+export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', route_status: '路线状态', site_status: '节点状态' }[metric] || '状态变化'); }
 
 const actionErrorMessages: Record<string, string> = {
   action_card_wrong_timing: '当前时机不能使用这张策略牌。',
@@ -58,7 +62,7 @@ const roleBadgeAssets: Record<string, string> = {
 export function previewDeltaText(delta: Record<string, unknown> | undefined, fallback: string) {
   const text = Object.entries(delta || {})
     .filter(([, value]) => typeof value === 'number')
-    .map(([key, value]) => `${previewDeltaLabels[key] || '状态变化'} ${Number(value) > 0 ? '+' : ''}${value}`)
+    .map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`)
     .join(' · ');
   return text || fallback;
 }
