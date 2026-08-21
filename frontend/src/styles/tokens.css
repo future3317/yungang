@@ -16,12 +16,4 @@
   --shadow-stage: 0 24px 70px rgba(0, 0, 0, .22); --shadow-lift: 0 10px 24px rgba(0, 0, 0, .18);
   --motion-fast: 140ms; --motion-standard: 240ms; --motion-slow: 520ms; --ease-out: cubic-bezier(.16, 1, .3, 1);
   --z-dock: 10; --z-dialog: 30; --rail-width: 196px; --inspector-width: 304px; --header-height: 58px;
-  /* Desktop game HUD geometry lives here so layout tuning does not require
-     chasing fixed values through component styles. */
-  --hud-left-width: clamp(248px, 19vw, 302px);
-  --hud-right-width: clamp(310px, 24vw, 366px);
-  --hud-center-gutter: 30px;
-  --hud-panel-top: 92px;
-  --hud-panel-bottom: 14px;
-  --hud-footer-bottom: 20px;
 }

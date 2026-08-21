@@ -111,7 +111,7 @@
 }
 
 @media (min-width: 1101px) and (max-height: 780px) {
-  :root {
+  .game-viewport {
     --hud-panel-top: 72px;
     --hud-panel-bottom: 8px;
   }
