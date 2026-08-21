@@ -29,3 +29,13 @@ test('game page keeps the map inside the viewport', async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
 });
+
+test('game actions expose a guided target mode without internal enums', async ({ page }) => {
+  await startSolo(page);
+  const move = page.getByRole('button', { name: /^移动/ }).first();
+  await expect(move).toBeVisible();
+  await move.click();
+  await expect(page.getByRole('status').filter({ hasText: /正在选择.*目标/ })).toBeVisible();
+  const bodyText = await page.locator('body').innerText();
+  expect(bodyText).not.toMatch(/use_action_card|form_interpretation|project_[0-9]+/);
+});

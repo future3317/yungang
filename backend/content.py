@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from .content_schemas import validate_content_contracts
 from .mechanisms import validate_content_mechanisms
 
 class Content:
@@ -63,6 +64,7 @@ class Content:
         return value if isinstance(value, list) else value.get(key, [])
 
     def _validate(self):
+        validate_content_contracts(self.files)
         known = set(self.sites)
         if any(r["from"] not in known or r["to"] not in known for r in self.routes):
             raise ValueError("route references unknown site")

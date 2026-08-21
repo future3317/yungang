@@ -3,6 +3,7 @@ import json
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from backend.content_schemas import validate_content_contracts
 from backend.mechanisms import validate_content_mechanisms
 
 ROOT = Path(__file__).resolve().parents[1] / "data"
@@ -39,6 +40,8 @@ def main():
     assert all(route.get("waypoints") is not None and route.get("roadClass") for route in routes)
     content_items = [*cards.values(), *events.values(), *tasks.values(), *(projects.values() if isinstance(projects, dict) else projects), *action_cards, *role_upgrades]
     assert all(item.get("content_class") in {"documented", "interpretive", "gameplay"} for item in content_items)
+    files = {name: load(name) for name in entry["content"].values()}
+    validate_content_contracts(files)
     validate_content_mechanisms({"sites": list(sites.values()), "culture_cards": list(cards.values()), "events": events, "action_cards": action_cards, "role_upgrades": role_upgrades, "projects": projects})
     assert len(sites) >= 24 and len(routes) >= 42 and len(cards) >= 48 and len(action_cards) >= 16 and len(events) >= 24 and len(projects) >= 12
     assert len(regions) >= 4 and len(facets) >= len(sites) * 3 and len(scenarios) >= 4 and len(projects) >= 6 and len(objectives) >= 5

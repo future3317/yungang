@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Archive, ArrowRight, Compass, Flag, HelpCircle, Library, MapPinned, Target, X } from 'lucide-react';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
+import type { ActionOption, GameState } from '../../types/game';
 
 const TUTORIAL_KEY = 'yungang-journey-tutorial-v1';
 
@@ -16,18 +17,19 @@ function markSeen() {
   try { window.localStorage.setItem(TUTORIAL_KEY, 'seen'); } catch { /* private browsing can reject storage */ }
 }
 
-export function TutorialGuide({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export function TutorialGuide({ open, onOpenChange, state, actionOptions = [] }: { open: boolean; onOpenChange: (open: boolean) => void; state?: GameState; actionOptions?: ActionOption[] }) {
   const [step, setStep] = useState(0);
   const drag = useDraggablePosition('yungang-tutorial-trigger-position', { minVisibleWidth: 96, minVisibleHeight: 52 });
+  const journeySteps = state ? steps.map((item, index) => index === 0 ? { ...item, body: `当前旅程需要在 ${state.goal_status?.rounds_remaining ?? state.shared.max_rounds - state.shared.turn + 1} 个回合内完成共同目标；风化压力达到上限会导致失败。` } : index === 1 ? { ...item, body: actionOptions.find(option => option.enabled && (option.recommendation_score || 0) > 0)?.reason || item.body } : index === 4 ? { ...item, body: actionOptions.some(option => option.type === 'choose_intervention' && option.enabled) ? '研究台条件已经接近满足：先完成证据关系判断，再形成解释并选择干预。' : item.body } : item) : steps;
 
   useEffect(() => {
     if (open) setStep(0);
   }, [open]);
 
-  const current = steps[step];
+  const current = journeySteps[Math.min(step, journeySteps.length - 1)];
   const Icon = current.icon;
   const close = () => { markSeen(); onOpenChange(false); };
-  const next = () => { if (step === steps.length - 1) close(); else setStep(value => value + 1); };
+  const next = () => { if (step === journeySteps.length - 1) close(); else setStep(value => value + 1); };
 
   return <>
     <button type="button" className="tutorial-trigger" style={drag.style} onPointerDown={drag.onPointerDown} onClickCapture={drag.onClickCapture} onClick={() => onOpenChange(true)} aria-label="打开新手教程" title="拖动调整位置，点击打开教程"><HelpCircle size={18} /><span>怎么玩</span></button>
@@ -39,8 +41,8 @@ export function TutorialGuide({ open, onOpenChange }: { open: boolean; onOpenCha
         <h2 id="tutorial-title">{current.title}</h2>
         <p>{current.body}</p>
         <div className="tutorial-cue"><Compass size={15} /><span>{current.cue}</span></div>
-        <div className="tutorial-progress" aria-label={`教程进度 ${step + 1} / ${steps.length}`}><span>{steps.map((_, index) => <i key={index} className={index === step ? 'active' : index < step ? 'done' : ''} />)}</span><small>{step + 1} / {steps.length}</small></div>
-        <div className="tutorial-actions"><button type="button" className="tutorial-skip" onClick={close}>跳过，自己探索</button><button type="button" className="primary-cta" onClick={next}>{step === steps.length - 1 ? '开始旅程' : '下一步'}<ArrowRight size={16} /></button></div>
+        <div className="tutorial-progress" aria-label={`教程进度 ${step + 1} / ${journeySteps.length}`}><span>{journeySteps.map((_, index) => <i key={index} className={index === step ? 'active' : index < step ? 'done' : ''} />)}</span><small>{step + 1} / {journeySteps.length}</small></div>
+        <div className="tutorial-actions"><button type="button" className="tutorial-skip" onClick={close}>跳过，自己探索</button><button type="button" className="primary-cta" onClick={next}>{step === journeySteps.length - 1 ? '开始旅程' : '下一步'}<ArrowRight size={16} /></button></div>
       </section>
     </div>}
   </>;

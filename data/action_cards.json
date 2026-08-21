@@ -234,7 +234,9 @@
     {
       "id": "action_13",
       "name": "巡线标记",
+      "action_type": "survey_route",
       "description": "沿路线留下可复核的勘察标记，降低一条路线的风险。",
+      "timing": "行动阶段",
       "cost": 1,
       "target_rule": "route",
       "effect": {
@@ -243,12 +245,17 @@
         "clues": 1
       },
       "strategic_role": "路线侦察",
+      "best_use": "路线承压但尚未阻断时使用，先降低风险再决定是否修护。",
+      "limitations": "只能选择当前地点相邻路线；使用后进入行动牌弃牌区。",
+      "combo_tags": ["route_governance"],
       "content_class": "gameplay"
     },
     {
       "id": "action_14",
       "name": "旧道测绘",
+      "action_type": "survey_route",
       "description": "把模糊的通行关系重新画入共同图卷，为后续修护争取线索。",
+      "timing": "行动阶段",
       "cost": 1,
       "target_rule": "route",
       "effect": {
@@ -257,12 +264,17 @@
         "clues": 1
       },
       "strategic_role": "路线侦察",
+      "best_use": "研究线索不足时使用，先获取路线信息和一枚研究线索。",
+      "limitations": "只能选择当前地点相邻路线；使用后进入行动牌弃牌区。",
+      "combo_tags": ["archive_context"],
       "content_class": "gameplay"
     },
     {
       "id": "action_15",
       "name": "同行分灯",
+      "action_type": "exchange",
       "description": "将一枚行动资源交给另一位同行者，让团队保持接力。",
+      "timing": "行动阶段",
       "cost": 1,
       "target_rule": "player",
       "effect": {
@@ -270,18 +282,26 @@
         "amount": 1
       },
       "strategic_role": "团队支援",
+      "best_use": "另一位同行者即将行动但行动力不足时使用。",
+      "limitations": "只能选择当前地点的同行者；使用后进入行动牌弃牌区。",
+      "combo_tags": ["cross_origin"],
       "content_class": "gameplay"
     },
     {
       "id": "action_16",
       "name": "预备石灯",
+      "action_type": "prepare",
       "description": "提前布置应对方案，抵消下一次事件带来的压力。",
+      "timing": "事件预告阶段",
       "cost": 1,
       "target_rule": "event",
       "effect": {
         "type": "team_prepare"
       },
       "strategic_role": "事件预案",
+      "best_use": "事件即将结算且团队无法及时抵达目标时使用。",
+      "limitations": "只能在事件预告阶段使用；使用后进入行动牌弃牌区。",
+      "combo_tags": ["route_governance"],
       "content_class": "gameplay"
     }
   ]
