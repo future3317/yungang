@@ -1220,6 +1220,35 @@ class GameEngine:
             delta["influence"] = 1
         return delta
 
+    def _recommendation_for_option(self, option, state, active):
+        action_type = option["type"]
+        urgency = int((state.shared.weathering_track / max(1, state.shared.weathering_limit)) * 24)
+        time_pressure = max(0, 8 - state.shared.turn) * 2
+        task = state.tasks.get(self.content.sites.get(active.location, {}).get("active_task_id"), {})
+        progress = task.get("progress", {})
+        missing = sum(1 for item in progress.get("requirements", []) if not item.get("complete"))
+        score = 18 + urgency + time_pressure
+        reason = option.get("description", "执行一项可用行动。")
+        if action_type == ActionType.CHOOSE_INTERVENTION.value:
+            score += 62; reason = "解释已经形成，选择干预会直接推进当前委托。"
+        elif action_type == ActionType.FORM_INTERPRETATION.value:
+            score += 54; reason = "研究台条件已满足，现在形成解释不会再消耗行动点。"
+        elif action_type == ActionType.INTERPRET_EVIDENCE.value:
+            score += 34 + missing * 5; reason = "这一步会填补当前委托的证据条件。"
+        elif action_type == ActionType.EXPLORE.value:
+            score += 26 + missing * 4; reason = "优先选择能补足当前委托领域或来源的线索。"
+        elif action_type == ActionType.RESTORE.value:
+            score += state.sites[active.location].damage * 14; reason = "当前节点存在损伤，修护可以降低关闭风险。"
+        elif action_type in {ActionType.SURVEY_ROUTE.value, ActionType.RESTORE_ROUTE.value}:
+            score += 18 + urgency; reason = "路线风险会限制后续移动，尽早处理可以保留行动空间。"
+        elif action_type == ActionType.MOVE.value:
+            score += 12; reason = "前往新的节点，寻找能填补团队缺口的证据。"
+        elif action_type == ActionType.USE_ACTION_CARD.value:
+            score += 20; reason = option.get("reason") or "策略牌适合在当前风险或目标出现缺口时使用。"
+        elif action_type == ActionType.END_TURN.value:
+            score = max(0, 12 - urgency); reason = "行动点已接近耗尽，结束行动让下一位同行者接手。"
+        return min(100, score), reason
+
     def _build_action_options(self, actions, state=None):
         terminology = self.content.terminology.get("actions", {})
         descriptions = {
@@ -1309,14 +1338,12 @@ class GameEngine:
                     }
         for option in grouped.values():
             if option["enabled"]:
-                if option["type"] in {ActionType.FORM_INTERPRETATION.value, ActionType.CHOOSE_INTERVENTION.value, ActionType.RESOLVE_EVENT.value}:
-                    option["recommendation_score"] = 100
-                    option["reason"] = option["reason"] or "当前状态可以直接推进共同目标。"
-                elif option["type"] in {ActionType.MOVE.value, ActionType.EXPLORE.value, ActionType.INTERPRET_EVIDENCE.value}:
-                    option["recommendation_score"] = 80
-                    option["reason"] = option["reason"] or "这是当前旅程推进证据链的优先行动。"
+                active = state.players.get(state.shared.active_player_id) if state else None
+                if active:
+                    option["recommendation_score"], generated_reason = self._recommendation_for_option(option, state, active)
+                    option["reason"] = option["reason"] or generated_reason
                 else:
-                    option["recommendation_score"] = 40
+                    option["recommendation_score"] = 0
                     option["reason"] = option["reason"] or option["description"]
         return [ActionOption.model_validate(option) for option in grouped.values()]
 
