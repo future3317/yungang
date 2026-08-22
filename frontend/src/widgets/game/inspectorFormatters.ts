@@ -1,5 +1,5 @@
 import type { ContentCard, Meta, Task } from '../../types/game';
-import { comboNames, contentTagName, domainName } from './contentLabels';
+import { comboNames, contentTagName, displayText, domainName } from './contentLabels';
 import { actionLabels } from './gameUi';
 
 export type CardRecord = Record<string, unknown>;
@@ -12,7 +12,7 @@ const originNames: Record<string, string> = {
   craft: '工坊',
   silk: '丝路',
 };
-export function originName(value?: string) { return originNames[value || ''] || '未标注来源'; }
+export function originName(value?: string, meta?: Meta) { return displayText(meta, 'origins', value, originNames[value || ''] || '未标注来源'); }
 
 const requirementNames: Record<string, string> = {
   cross_origin: '跨来源互证',
@@ -26,7 +26,7 @@ const requirementNames: Record<string, string> = {
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
   return values.map(value => {
     if (meta.domain_meta?.[value]) return domainName(meta, value);
-    if (key.includes('origin')) return originName(value);
+    if (key.includes('origin')) return originName(value, meta);
     return requirementNames[value] || comboNames[value] || '未标注条件';
   }).join('、');
 }
@@ -103,7 +103,7 @@ export function eventTypeName(type?: string) {
   return labels[type || ''] || '区域事件';
 }
 
-export function eventTargetRuleName(rule?: string) {
+export function eventTargetRuleName(rule?: string, meta?: Meta) {
   const labels: Record<string, string> = {
     two_open_sites: '两处尚未关闭的节点',
     one_at_risk_site: '一处处于风险中的节点',
@@ -113,7 +113,7 @@ export function eventTargetRuleName(rule?: string) {
     shared_resource: '共同修护资源',
     threat: '风化压力轨',
   };
-  return labels[rule || ''] || '由本局旅程决定的影响范围';
+  return displayText(meta, 'event_target_rules', rule, labels[rule || ''] || '由本局旅程决定的影响范围');
 }
 
 function cardRecord(card?: ContentCard): CardRecord {

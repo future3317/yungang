@@ -3,8 +3,8 @@ import { eventDecisionBrief, interpretationConfidenceGuidance, localizeActionTex
 
 describe('game UI localization and previews', () => {
   it('localizes planning target prefixes', () => {
-    expect(localizeActionText('Route: route_shanhua_temple_yungang')).toBe('路线：route_shanhua_temple_yungang');
-    expect(localizeActionText('Project: project_01')).toBe('项目：project_01');
+    expect(localizeActionText('Route: route_shanhua_temple_yungang', { sites: {}, routes: { route_shanhua_temple_yungang: { name: '善化寺—云冈石窟' } as never } })).toBe('路线：善化寺—云冈石窟');
+    expect(localizeActionText('Project: project_01', { sites: {}, projects: { project_01: { name: '云冈造像线索工程' } as never } })).toBe('项目：云冈造像线索工程');
   });
 
   it('resolves timeline target ids into player-facing names', () => {

@@ -191,6 +191,15 @@
       "short_name": "压力"
     }
   },
+  "event_target_rules": {
+    "two_open_sites": "两处仍可守护的节点",
+    "one_at_risk_site": "一处处于风险中的节点",
+    "one_site": "一处指定节点",
+    "one_route": "一条开放路线",
+    "all_players": "所有同行者",
+    "shared_resource": "共同修护资源",
+    "threat": "风化压力"
+  },
   "combo_tags": {
     "image_reconstruction": {
       "name": "图像复原",

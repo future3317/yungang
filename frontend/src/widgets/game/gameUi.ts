@@ -1,6 +1,7 @@
 import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
+export type DisplayContext = { sites: Record<string, Site>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; players?: Record<string, Player> };
 
 export const actionLabels: Partial<Record<ActionType, string>> = {
   move: '移动',
@@ -134,8 +135,8 @@ export function eventDecisionBrief(event?: Partial<Pick<ContentEvent, 'forecast_
   };
 }
 
-export function localizeActionText(value?: string) {
-  return (value || '').replace(/\s+/g, ' ').trim()
+export function localizeActionText(value?: string, context?: DisplayContext) {
+  let text = (value || '').replace(/\s+/g, ' ').trim()
     .replace(/\btwo_open_sites\b/gi, '两处仍可守护的节点')
     .replace(/\ball_players\b/gi, '所有同行者')
     .replace(/\bshared_resource\b/gi, '团队修护资源')
@@ -157,6 +158,12 @@ export function localizeActionText(value?: string) {
     .replace(/\bRoute:\s*/gi, '路线：')
     .replace(/\bProject:\s*/gi, '项目：')
     .replace(/use_action_card/gi, '使用策略牌');
+  if (context) {
+    text = text
+      .replace(/路线：\s*([A-Za-z0-9_-]+)/gi, (_, target: string) => `路线：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}`)
+      .replace(/项目：\s*([A-Za-z0-9_-]+)/gi, (_, target: string) => `项目：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}`);
+  }
+  return text;
 }
 
 export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}, players: Record<string, Player> = {}) {

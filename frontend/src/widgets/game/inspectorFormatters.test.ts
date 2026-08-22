@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ContentCard, Meta } from '../../types/game';
-import { contentTagName, formatProjectRequirements, marketReason } from './inspectorFormatters';
+import { contentTagName, eventTargetRuleName, formatProjectRequirements, marketReason } from './inspectorFormatters';
 
 const meta = {
   domain_meta: {
@@ -28,5 +28,11 @@ describe('inspector player-facing labels', () => {
     expect(marketReason({ domain: 'statue' } as ContentCard, undefined, false, meta)).toContain('造像');
     expect(marketReason({ domain: 'statue' } as ContentCard, undefined, false, meta)).not.toContain('statue');
     expect(contentTagName('unknown_combo')).toBe('未标注组合');
+  });
+
+  it('uses the shared terminology catalog for event target rules', () => {
+    const eventMeta = { ...meta, terminology: { event_target_rules: { two_open_sites: '两处仍可守护的节点' } } } as Meta;
+    expect(eventTargetRuleName('two_open_sites', eventMeta)).toBe('两处仍可守护的节点');
+    expect(eventTargetRuleName('two_open_sites', eventMeta)).not.toContain('two_open_sites');
   });
 });
