@@ -238,8 +238,8 @@ class GameEngine:
         site = state.sites[active.location]
         if not has_current_plan:
             actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
-            actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
-            actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"路线：{next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"项目：{state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
         if site.status != SiteStatus.CLOSED and active.ap > 0:
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
