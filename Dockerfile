@@ -4,7 +4,7 @@ WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend ./
-RUN npm run build && rm -rf dist/ui-assets static/ui-assets/generated/source
+RUN npm run build && rm -rf dist/ui-assets/generated/source
 
 FROM python:3.12-slim AS runtime
 
@@ -18,7 +18,6 @@ COPY backend ./backend
 COPY data ./data
 RUN test -f /app/data/game_data.json
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
-COPY --from=frontend-build /app/frontend/static/ui-assets ./frontend/static/ui-assets
 
 EXPOSE 8000
 CMD ["sh", "-c", "uvicorn backend.app:app --host 0.0.0.0 --port ${PORT:-8000}"]

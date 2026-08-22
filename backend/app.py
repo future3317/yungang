@@ -364,7 +364,9 @@ def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | No
 
 frontend_root = Path(__file__).resolve().parents[1] / "frontend"
 frontend = frontend_root / "dist" if (frontend_root / "dist").exists() else frontend_root
-ui_assets = frontend_root / "static" / "ui-assets"
+ui_assets = frontend / "ui-assets"
+if not ui_assets.is_dir():
+    ui_assets = frontend_root / "static" / "ui-assets"
 
 @app.get("/game/{session_id}", include_in_schema=False)
 def game_shell(session_id: str):
@@ -380,7 +382,7 @@ def ui_asset(asset_name: str):
         asset = (root / "generated" / asset_name).resolve()
     if root not in asset.parents or not asset.is_file():
         raise HTTPException(404, "asset not found")
-    return FileResponse(asset, headers={"Cache-Control": "public, max-age=86400"})
+    return FileResponse(asset, headers={"Cache-Control": "public, max-age=86400, stale-while-revalidate=604800"})
 
 class SPAStaticFiles(StaticFiles):
     async def get_response(self, path: str, scope: dict) -> Response:

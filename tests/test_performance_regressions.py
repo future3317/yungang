@@ -1,9 +1,11 @@
 import asyncio
+import sys
 from contextlib import contextmanager
 from types import SimpleNamespace
 
 from backend import app as app_module
 from backend.database import Database
+from backend.models import RoomActionRequest
 from backend.rooms import RoomRepository, RoomService
 
 
@@ -31,6 +33,28 @@ def test_room_for_session_uses_the_session_indexed_lookup(tmp_path):
     assert RoomService(repository).room_for_session("game-1")["room_id"] == "room-1"
     assert any("WHERE session_id=? LIMIT 1" in statement for statement in statements)
     assert not any(statement.strip() == "SELECT payload FROM rooms" for statement in statements)
+
+
+def test_postgres_database_reuses_one_connection_pool(monkeypatch):
+    instances = []
+
+    class FakePool:
+        def __init__(self, target, **kwargs):
+            self.target = target
+            self.kwargs = kwargs
+            instances.append(self)
+
+        def wait(self, timeout):
+            return None
+
+        def close(self):
+            return None
+
+    monkeypatch.setitem(sys.modules, "psycopg_pool", SimpleNamespace(ConnectionPool=FakePool))
+    database = Database("postgresql://user:password@host/database")
+    assert database._get_pool() is database._get_pool()
+    assert len(instances) == 1
+    assert instances[0].kwargs["max_size"] == 10
 
 
 def test_existing_room_rows_are_backfilled_without_being_deleted(tmp_path):
@@ -62,6 +86,55 @@ def test_run_action_uses_prefetched_room_state(monkeypatch):
     monkeypatch.setattr(app_module, "repo", NoReadRepository())
     monkeypatch.setattr(app_module, "dispatch", lambda engine, current, action: current)
     assert app_module._run_action("game-1", request, state) is state
+
+
+def test_room_action_loads_game_once(monkeypatch):
+    state = SimpleNamespace(
+        revision=4,
+        processed_request_ids=[],
+        shared=SimpleNamespace(active_player_id="player-seat-1", outcome=None),
+        model_dump=lambda: {},
+    )
+    room = {
+        "room_id": "room-1",
+        "status": "in_progress",
+        "play_mode": "multi_device",
+        "session_id": "game-1",
+        "seats": [{"seat_id": "seat-1", "player_id": "player-seat-1"}],
+    }
+    loads = 0
+
+    class FakeRepository:
+        def notify(self, room_id, **kwargs):
+            return None
+
+    class FakeRoomService:
+        repository = FakeRepository()
+
+        @staticmethod
+        def authenticate(_room, _token):
+            return room["seats"][0]
+
+    class FakeGameRepository:
+        def get(self, session_id):
+            nonlocal loads
+            loads += 1
+            assert session_id == "game-1"
+            return state
+
+        @staticmethod
+        def save_if_revision(_state, _expected_revision):
+            return True
+
+    monkeypatch.setattr(app_module, "_room_or_404", lambda _room_id: room)
+    monkeypatch.setattr(app_module, "room_service", FakeRoomService())
+    monkeypatch.setattr(app_module, "repo", FakeGameRepository())
+    monkeypatch.setattr(app_module, "dispatch", lambda _engine, current, _request: current)
+
+    result = app_module.room_action("room-1", RoomActionRequest(action="end_turn", expected_revision=4), "seat-token")
+
+    assert result is state
+    assert loads == 1
 
 
 def test_sse_stream_waits_for_notification_instead_of_querying_each_second(monkeypatch):

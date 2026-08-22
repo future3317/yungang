@@ -5,6 +5,7 @@ from pathlib import Path
 import os
 import sqlite3
 import json
+import threading
 from typing import Any, Iterator
 
 
@@ -23,16 +24,19 @@ class Database:
         self.is_postgres = self.target.startswith(("postgres://", "postgresql://"))
         self.path = None if self.is_postgres else Path(self.target)
         self._pool = None
+        self._pool_lock = threading.Lock()
         if self.path is not None:
             self.path.parent.mkdir(parents=True, exist_ok=True)
     def _get_pool(self):
         if self._pool is None:
-            try:
-                from psycopg_pool import ConnectionPool
-            except ImportError as exc:
-                raise RuntimeError("PostgreSQL storage requires psycopg with the pool extra.") from exc
-            self._pool = ConnectionPool(self.target, min_size=1, max_size=10, timeout=10, open=True)
-            self._pool.wait(timeout=10)
+            with self._pool_lock:
+                if self._pool is None:
+                    try:
+                        from psycopg_pool import ConnectionPool
+                    except ImportError as exc:
+                        raise RuntimeError("PostgreSQL storage requires psycopg with the pool extra.") from exc
+                    self._pool = ConnectionPool(self.target, min_size=1, max_size=10, timeout=10, open=True)
+                    self._pool.wait(timeout=10)
         return self._pool
 
     @property
@@ -96,5 +100,7 @@ class Database:
             db.execute(self.sql("SELECT 1")).fetchone()
 
     def close(self) -> None:
-        if self._pool is not None:
-            self._pool.close()
+        with self._pool_lock:
+            if self._pool is not None:
+                self._pool.close()
+                self._pool = None
