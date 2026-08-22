@@ -2,8 +2,9 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import pytest
 from fastapi.testclient import TestClient
-from backend.app import app, repo
+from backend.app import app, content, repo
 from backend.engine import GameEngine
 
 client = TestClient(app)
@@ -33,6 +34,28 @@ def test_meta_and_v3_game_setup():
     assert len(state['market']) == 3
     assert state['players']['p1']['location'] == 'pingcheng_ruins'
     assert state['action_options']
+
+@pytest.mark.parametrize('raw_code,base_code', [
+    ('invalid_action_card_discard', 'invalid_action_card_discard'),
+    ('unsupported_action_card_effect:unknown_effect', 'unsupported_action_card_effect'),
+    ('unsupported_effect:unknown_effect', 'unsupported_effect'),
+    ('unsupported_trigger:unknown_trigger', 'unsupported_trigger'),
+])
+def test_dynamic_engine_errors_use_catalog_messages(monkeypatch, raw_code, base_code):
+    state = create(f'error-catalog-{base_code}', ['p1'])
+
+    def fail_dispatch(*_args, **_kwargs):
+        raise ValueError(raw_code)
+
+    monkeypatch.setattr('backend.app.dispatch', fail_dispatch)
+    response = action(f'error-catalog-{base_code}', state, 'p1', 'end_turn')
+    detail = response.json()['detail']
+    errors = content.terminology['errors']
+
+    assert response.status_code == 400
+    assert detail['code'] == raw_code
+    assert detail['message'] == errors[base_code]
+    assert 'unknown_' not in detail['message']
 
 def test_market_explore_and_revision_conflict():
     session = 'test-market'

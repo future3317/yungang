@@ -104,8 +104,10 @@ def _run_action(session_id: str, request: ActionRequest) -> GameState:
         state = dispatch(engine, state, request)
     except ValueError as exc:
         code = str(exc)
+        base_code = code.split(":", 1)[0]
         recovery = {"not_active_player": "wait_for_active_player", "invalid_route": "choose_another_action", "site_does_not_need_restoration": "inspect_site_status", "planning_not_active": "continue_current_phase", "game_is_over": "open_result"}.get(code, "choose_another_action")
-        raise HTTPException(400, {"code": code, "message": content.terminology.get("errors", {}).get(code, code), "details": {}, "recovery": recovery}) from exc
+        message = content.terminology.get("errors", {}).get(base_code, "行动暂时无法完成，请重新选择。")
+        raise HTTPException(400, {"code": code, "message": message, "details": {}, "recovery": recovery}) from exc
     if not repo.save_if_revision(state, expected_revision):
         current = repo.get(session_id)
         raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": current.model_dump() if current else None})
