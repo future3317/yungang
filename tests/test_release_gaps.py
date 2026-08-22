@@ -202,3 +202,27 @@ def test_interpretation_evaluator_is_single_source_for_progress_and_legality():
     state = engine.refresh(state)
     progress = state.tasks[task["id"]]["progress"]["interpretation"]
     assert progress == engine._evaluate_interpretation(state.tasks[task["id"]])
+
+
+def test_intervention_preview_delta_matches_real_execution():
+    state = engine.new_game("intervention-preview-contract", ["p1"], scenario_id="sand_and_stone")
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    option = next(item for item in state.action_options if item.type == "choose_intervention" and item.enabled and item.targets)
+    target = option.targets[0]
+    request = {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": target.payload["target_id"]}
+    before = engine._preview_snapshot(state, request)
+    actual = engine.apply(deepcopy(state), request)
+    after = engine._preview_snapshot(actual, request)
+    expected = {key: after[key] - value for key, value in before.items() if isinstance(value, (int, float)) and after.get(key) != value}
+
+    assert option.targets[0].preview_delta == expected
