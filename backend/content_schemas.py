@@ -40,6 +40,7 @@ class EffectContract(BaseModel):
     move_after_restore: bool | None = None
     range: int | None = None
     resource: str | None = None
+    restoration: int | None = None
     risk_delta: int | None = None
     weathering_delta: int | None = None
 
@@ -51,6 +52,33 @@ class CultureEffectContract(BaseModel):
     amount: int | None = None
     influence: int | None = None
     resource: int | None = None
+
+
+class NodeAbilityContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    name: str
+    description: str
+    trigger: str
+    effect: EffectContract
+
+
+class RoleAbilityContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    description: str
+    action: str
+    ap_cost: int = Field(ge=0)
+    max_hops: int | None = Field(default=None, ge=1)
+
+
+class RoleUpgradeEffectContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: str = Field(min_length=1)
+    value: int = 0
 
 
 class ContentItemContract(BaseModel):
@@ -65,7 +93,7 @@ class SiteContract(ContentItemContract):
     y: float = Field(ge=0, le=100)
     connections: list[str] = Field(default_factory=list)
     domains: list[str] = Field(default_factory=list)
-    node_ability: JsonObject | None = None
+    node_ability: NodeAbilityContract | None = None
     active_task_id: str | None = None
     gameplay_hint: str | None = None
     icon_asset: str | None = None
@@ -108,7 +136,7 @@ class RoleContract(ContentItemContract):
     content_class: str = "gameplay"
     start_site_id: str
     upgrade_ids: list[str] = Field(default_factory=list)
-    ability: JsonObject
+    ability: RoleAbilityContract
     color: str | None = None
     icon: str | None = None
     icon_asset: str | None = None
@@ -172,7 +200,7 @@ class EventContract(ContentItemContract):
     target_rule: str
     preview_delta: JsonObject = Field(default_factory=dict)
     mitigation_hint: str = ""
-    effect: JsonObject
+    effect: EffectContract
     damage: int | None = None
     description: str | None = None
     difficulty_weight: float | None = None

@@ -657,6 +657,8 @@ export interface components {
             range?: number | null;
             /** Resource */
             resource?: string | null;
+            /** Restoration */
+            restoration?: number | null;
             /** Risk Delta */
             risk_delta?: number | null;
             /** Weathering Delta */
@@ -678,10 +680,7 @@ export interface components {
             };
             /** Mitigation Hint */
             mitigation_hint?: string | null;
-            /** Effect */
-            effect: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            effect: components["schemas"]["EffectContract"];
             /** Damage */
             damage?: number | null;
             /** Description */
@@ -1074,6 +1073,18 @@ export interface components {
                 };
             };
         };
+        /** NodeAbilityContract */
+        NodeAbilityContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Trigger */
+            trigger: string;
+            effect: components["schemas"]["EffectContract"];
+        };
         /** ObjectiveContract */
         ObjectiveContract: {
             /** Id */
@@ -1429,6 +1440,19 @@ export interface components {
              */
             seed: number;
         };
+        /** RoleAbilityContract */
+        RoleAbilityContract: {
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Action */
+            action: string;
+            /** Ap Cost */
+            ap_cost: number;
+            /** Max Hops */
+            max_hops?: number | null;
+        };
         /** RoleContract */
         RoleContract: {
             /** Id */
@@ -1444,10 +1468,7 @@ export interface components {
             start_site_id: string;
             /** Upgrade Ids */
             upgrade_ids?: string[];
-            /** Ability */
-            ability: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            ability: components["schemas"]["RoleAbilityContract"];
             /** Color */
             color?: string | null;
             /** Icon */
@@ -2039,10 +2060,7 @@ export interface components {
             connections?: string[];
             /** Domains */
             domains?: string[];
-            /** Node Ability */
-            node_ability?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            } | null;
+            node_ability?: components["schemas"]["NodeAbilityContract"] | null;
             /** Active Task Id */
             active_task_id?: string | null;
             /** Gameplay Hint */
