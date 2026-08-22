@@ -64,6 +64,8 @@
 .choice-dialog .choice-list button b { overflow: hidden; font-size: .95rem; text-overflow: ellipsis; white-space: nowrap; }
 .choice-dialog .choice-list button small { color: #cdbd9e; font-size: .76rem; line-height: 1.35; }
 .choice-dialog > .ghost-button { justify-self: end; min-height: 40px; color: #e6d8bb; background: transparent; border: 1px solid rgba(220, 195, 144, .3); border-radius: 8px; }
+.action-requirements { display: grid; gap: 5px; margin: 0; padding: 10px 12px; color: #d9cba9; background: rgba(16, 28, 20, .48); border-left: 2px solid #c9a95a; border-radius: 6px; font-size: .78rem; line-height: 1.45; }
+.action-requirements b { color: #efd28c; font-size: .7rem; letter-spacing: .04em; }
 .dialog-backdrop .dialog:not(.card-dialog):not(.choice-dialog):not(.action-preview):not(.role-upgrade-dialog) { background: linear-gradient(145deg, #35493c, #1c2921); color: #f5ead8; border: 1px solid rgba(220, 190, 112, .55); }
 .toast { color: #f7ecd4; background: rgba(24, 39, 29, .96); border: 1px solid rgba(220, 190, 112, .4); box-shadow: 0 14px 32px rgba(0, 0, 0, .34); }
 .roster-column > *, .site-inspector > * { position: relative; flex-shrink: 0; }

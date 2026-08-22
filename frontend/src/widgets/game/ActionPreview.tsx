@@ -19,6 +19,7 @@ export function ActionPreview({ action, sites, routes, cards, players = {}, isPe
     <span className="eyebrow"><AlertTriangle size={14} />行动确认</span><h2 id="action-preview-title">{heading}</h2>
     <div className="preview-grid"><span><small>目标</small><b>{targetName}</b></span><span><small>消耗</small><b>{action.cost || 0} AP</b></span>{cardName && <span><small>证据</small><b>{cardName}</b></span>}</div>
     <p>{action.description || '确认后将立即结算这次行动，并更新地图上的路线、资源或地点状态。'}</p>
+    {action.requirements?.length ? <div className="action-requirements" aria-label="行动前提"><b>行动前提</b><span>{action.requirements.join(' · ')}</span></div> : null}
     {action.preview_delta && Object.keys(action.preview_delta).length > 0 && <div className="preview-effects"><b>预计变化</b><span>{previewDeltaText(action.preview_delta, '状态会在结算后更新')}</span></div>}
     <div className="dialog-actions"><button className="ghost-button" disabled={isPending} onClick={onCancel}><X size={15} />返回浏览</button><button className="primary-cta" disabled={isPending} aria-label="确认行动：踏上这一步" onClick={onConfirm}><Check size={15} />{isPending ? '正在结算…' : '踏上这一步'}</button></div>
   </section></div>;

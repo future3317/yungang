@@ -12,6 +12,19 @@ def test_action_options_are_the_ranked_player_contract():
     assert all(condition.related_labels for condition in state.goal_status.victory_conditions if condition.related_ids)
 
 
+def test_action_options_expose_human_readable_requirements():
+    engine = GameEngine()
+    state = engine.new_game("action-requirements", ["p1"], solo_mode=False)
+
+    move = next(option for option in state.action_options if option.type == "move")
+    explore = next(option for option in state.action_options if option.type == "explore")
+    end_turn = next(option for option in state.action_options if option.type == "end_turn")
+
+    assert any("路线" in requirement and "通行" in requirement for requirement in move.requirements)
+    assert any("手牌" in requirement for requirement in explore.requirements)
+    assert any("结束当前行动" in requirement for requirement in end_turn.requirements)
+
+
 def test_each_player_can_declare_only_one_planning_target_per_round():
     engine = GameEngine()
     state = engine.new_game("planning-one-target", ["p1", "p2"], scenario_id="sand_and_stone")

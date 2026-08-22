@@ -1441,6 +1441,62 @@ class GameEngine:
             score += min(12, max(0, 18 - cost * 6))
         return max(0, min(100, int(score))), reason
 
+    def _action_requirements(self, action_type, action, state=None, active=None):
+        cost = action.get("cost", 0)
+        if isinstance(cost, dict):
+            cost = cost.get("ap", 0)
+        requirements = [f"行动点至少 {int(cost)}"] if int(cost or 0) > 0 else []
+        if not state or not active:
+            return requirements
+        site = state.sites.get(active.location)
+        if action_type == ActionType.MOVE.value:
+            requirements.append("目标节点开放，且路线保持通行")
+        elif action_type == ActionType.EXPLORE.value:
+            requirements.extend(["已抵达当前节点", "手牌未满（最多 3 张）", "公开市场仍有可取线索"])
+        elif action_type == ActionType.INTERPRET_EVIDENCE.value:
+            requirements.extend(["已抵达任务节点", "证据符合当前委托", "这件证据尚未归入研究台"])
+        elif action_type == ActionType.FORM_INTERPRETATION.value:
+            requirements.append("研究台的领域、来源和组合条件全部满足")
+        elif action_type == ActionType.CHOOSE_INTERVENTION.value:
+            requirements.append("当前解释已经形成，且尚未选择干预")
+        elif action_type == ActionType.RESTORE.value:
+            requirements.extend(["已抵达受损节点", "团队修护资源或个人补给至少 1 点"])
+        elif action_type == ActionType.EXCHANGE.value:
+            requirements.extend(["与同行者同处一处，或已获得远程交换权限", "对方手牌未满"])
+        elif action_type == ActionType.SURVEY_ROUTE.value:
+            requirements.extend(["已抵达路线一端", "路线处于承压或阻断状态"])
+        elif action_type == ActionType.RESTORE_ROUTE.value:
+            requirements.extend(["已抵达路线一端", "路线处于承压或阻断状态", "研究线索至少 1 点"])
+        elif action_type == ActionType.ESTABLISH_CONNECTION.value:
+            requirements.extend(["已抵达路线一端", "路线已经修护"])
+        elif action_type == ActionType.PREPARE.value:
+            requirements.append("当前有尚未结算的事件")
+        elif action_type == ActionType.USE_SKILL.value:
+            requirements.append("角色技能本回合尚未使用")
+        elif action_type == ActionType.USE_NODE_ABILITY.value:
+            requirements.append("当前地点能力本回合尚未使用")
+        elif action_type == ActionType.USE_UPGRADE.value:
+            requirements.append("该角色专长已解锁，且当前允许使用")
+        elif action_type == ActionType.PLAY_CARD.value:
+            requirements.append("手中有这张文化牌，并确认放弃它的研究台用途")
+        elif action_type == ActionType.USE_ACTION_CARD.value:
+            requirements.append("这张策略牌当前处于可使用时机")
+        elif action_type == ActionType.PLAN.value:
+            requirements.append("本轮尚未为当前角色声明规划目标")
+        elif action_type == ActionType.RESOLVE_EVENT.value:
+            requirements.append("当前事件正在等待团队回应")
+        elif action_type == ActionType.DISCARD.value:
+            requirements.append("从当前手牌中选择一件放下")
+        elif action_type == ActionType.SELECT_MARKET_CARD.value:
+            requirements.append("从当前展示的线索中选择一件")
+        elif action_type == ActionType.SELECT_UPGRADE.value:
+            requirements.append("选择一个已展示的角色专长")
+        elif action_type == ActionType.END_TURN.value:
+            requirements.append("可随时结束当前行动")
+        if site and action_type == ActionType.RESTORE.value and site.status == SiteStatus.CLOSED:
+            requirements.append("节点尚未关闭")
+        return requirements
+
     def _build_action_options(self, actions, state=None):
         terminology = self.content.terminology.get("actions", {})
         descriptions = {
@@ -1478,6 +1534,7 @@ class GameEngine:
         }
         specific_types = set(category_labels)
         grouped = {}
+        active = state.players.get(state.shared.active_player_id) if state else None
         for action in actions:
             action_type = action["type"]
             cost = int(action.get("cost", 0))
@@ -1498,7 +1555,7 @@ class GameEngine:
                 "preview_delta": self._action_preview_delta(action, state),
                 "confirmation": f"确认{action.get('label', action_type)}？",
                 "payload": {},
-                "requirements": [],
+                "requirements": self._action_requirements(action_type, action, state, active),
                 "recommendation_score": 0,
                 "reason": "",
             })
@@ -1550,7 +1607,7 @@ class GameEngine:
                         "category_label": category_labels.get(action_type, "基础行动"), "action_label": action_labels_by_type.get(action_type, terminology.get(action_type, {}).get("name", action_type)),
                         "description": terminology.get(action_type, {}).get("description", descriptions.get(action_type, "执行一项可用行动。")), "cost": {"ap": 0},
                         "enabled": False, "disabled_reason": reason, "targets": [],
-                        "preview_delta": {}, "confirmation": "", "payload": {}, "requirements": [], "recommendation_score": 0, "reason": reason,
+                        "preview_delta": {}, "confirmation": "", "payload": {}, "requirements": self._action_requirements(action_type, {"type": action_type}, state, active), "recommendation_score": 0, "reason": reason,
                     }
         for option in grouped.values():
             if option["enabled"]:

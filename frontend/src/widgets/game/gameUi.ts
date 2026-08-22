@@ -183,6 +183,7 @@ export function optionAction(option: ActionOption, target?: ActionOption['target
     description: option.description,
     cost: option.cost?.ap,
     preview_delta: target?.preview_delta || option.preview_delta,
+    requirements: option.requirements,
   } as Action;
 }
 
