@@ -351,10 +351,7 @@ export interface components {
             limitations: string;
             /** Combo Tags */
             combo_tags?: string[];
-            /** Effect */
-            effect: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            effect: components["schemas"]["EffectContract"];
             /** Description */
             description?: string | null;
             /** Strategic Role */
@@ -572,10 +569,7 @@ export interface components {
             combo_with_domains?: string[];
             /** Culture Note */
             culture_note?: string | null;
-            /** Effect */
-            effect?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            effect?: components["schemas"]["CultureEffectContract"];
             /** Era Tags */
             era_tags?: string[];
             /** Event Option Tags */
@@ -594,6 +588,17 @@ export interface components {
             strategic_role?: string | null;
             /** Technique Tags */
             technique_tags?: string[];
+        };
+        /** CultureEffectContract */
+        CultureEffectContract: {
+            /** Type */
+            type: string;
+            /** Amount */
+            amount?: number | null;
+            /** Influence */
+            influence?: number | null;
+            /** Resource */
+            resource?: number | null;
         };
         /** DifficultyContract */
         DifficultyContract: {
@@ -628,6 +633,34 @@ export interface components {
             color_token?: string | null;
             /** Description */
             description?: string | null;
+        };
+        /**
+         * EffectContract
+         * @description Shared, closed vocabulary for data-driven mechanism effects.
+         */
+        EffectContract: {
+            /** Type */
+            type: string;
+            /** Amount */
+            amount?: number | null;
+            /** Clues */
+            clues?: number | null;
+            /** Connection Bonus */
+            connection_bonus?: number | null;
+            /** Ignore Clue Cost */
+            ignore_clue_cost?: boolean | null;
+            /** Max Targets */
+            max_targets?: number | null;
+            /** Move After Restore */
+            move_after_restore?: boolean | null;
+            /** Range */
+            range?: number | null;
+            /** Resource */
+            resource?: string | null;
+            /** Risk Delta */
+            risk_delta?: number | null;
+            /** Weathering Delta */
+            weathering_delta?: number | null;
         };
         /** EventContract */
         EventContract: {
@@ -1839,10 +1872,7 @@ export interface components {
             description: string;
             /** Trigger */
             trigger: string;
-            /** Effect */
-            effect: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            effect: components["schemas"]["EffectContract"];
         };
         /** ScoreState */
         ScoreState: {

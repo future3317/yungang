@@ -26,6 +26,33 @@ class ProjectStageContract(BaseModel):
     stage_text: str | None = None
 
 
+class EffectContract(BaseModel):
+    """Shared, closed vocabulary for data-driven mechanism effects."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    type: str = Field(min_length=1)
+    amount: int | None = None
+    clues: int | None = None
+    connection_bonus: int | None = None
+    ignore_clue_cost: bool | None = None
+    max_targets: int | None = None
+    move_after_restore: bool | None = None
+    range: int | None = None
+    resource: str | None = None
+    risk_delta: int | None = None
+    weathering_delta: int | None = None
+
+
+class CultureEffectContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: str = Field(min_length=1)
+    amount: int | None = None
+    influence: int | None = None
+    resource: int | None = None
+
+
 class ContentItemContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -97,7 +124,7 @@ class ScenarioRuleContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
     description: str
     trigger: str
-    effect: JsonObject
+    effect: EffectContract
 
 
 class ScenarioContract(ContentItemContract):
@@ -134,7 +161,7 @@ class ActionCardContract(ContentItemContract):
     best_use: str
     limitations: str
     combo_tags: list[str] = Field(default_factory=list)
-    effect: JsonObject
+    effect: EffectContract
     description: str | None = None
     name: str
     strategic_role: str | None = None
@@ -180,7 +207,7 @@ class CultureCardContract(ContentItemContract):
     combo_tags: list[str] = Field(default_factory=list)
     combo_with_domains: list[str] = Field(default_factory=list)
     culture_note: str | None = None
-    effect: JsonObject = Field(default_factory=dict)
+    effect: CultureEffectContract = Field(default_factory=lambda: CultureEffectContract(type="none"))
     era_tags: list[str] = Field(default_factory=list)
     event_option_tags: list[str] = Field(default_factory=list)
     evidence_use_text: str | None = None
