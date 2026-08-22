@@ -353,6 +353,8 @@ class GameEngine:
         elif action == ActionType.PLAN.value: self._plan(state, player, target)
         elif action == ActionType.END_PLANNING.value: self._end_planning(state, player)
         else: raise ValueError("unknown_action")
+        if action not in {ActionType.PLAN.value, ActionType.END_TURN.value, ActionType.END_PLANNING.value}:
+            self._resolve_planning_collaboration(state, player, action, req)
         self._sync_pressure(state, before["threat"], before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
@@ -889,6 +891,8 @@ class GameEngine:
         marks = [mark for values in state.shared.planning_marks.values() for mark in values]
         effects = []
         for mark in marks:
+            if mark.get("collaborated"):
+                continue
             target_id = mark.get("target_id")
             if target_id in state.sites:
                 state.sites[target_id].influence += 1
@@ -1160,6 +1164,32 @@ class GameEngine:
         if len(marks) >= int(state.shared.effective_rules.get("planning_marks_per_round", 2)): raise ValueError("planning_limit_reached")
         marks.append({"target_id": target, "turn": str(state.shared.turn)})
         state.shared.log.append(f"{player.name} \u653e\u7f6e\u89c4\u5212\u6807\u8bb0\uff1a{target}")
+
+    def _resolve_planning_collaboration(self, state, player, action, req):
+        target_ids = {value for value in (req.get("target_id"), req.get("target_site_id"), req.get("route_id")) if value}
+        if action == ActionType.MOVE.value and req.get("target_id"):
+            route = next((item for item in state.routes.values() if {item.from_site, item.to_site} == {player.location, req["target_id"]}), None)
+            if route:
+                target_ids.add(route.id)
+        for project_id, project in state.projects.items():
+            if project.site_id in target_ids:
+                target_ids.add(project_id)
+        for owner_id, marks in state.shared.planning_marks.items():
+            if owner_id == player.id:
+                continue
+            for mark in marks:
+                if mark.get("collaborated") or str(mark.get("turn")) != str(state.shared.turn) or mark.get("target_id") not in target_ids:
+                    continue
+                mark["collaborated"] = True
+                mark["collaboration_action"] = action
+                player.ap = min(player.max_ap, player.ap + 1)
+                state.shared.research_clues += 1
+                route = state.routes.get(mark["target_id"])
+                if route:
+                    route.risk = max(0, route.risk - 1)
+                target_name = self.content.sites.get(mark["target_id"], {}).get("name") or self.content.projects.get(mark["target_id"], {}).get("name") or (route.name if route else mark["target_id"])
+                state.shared.log.append(f"{player.name} 与 {state.players[owner_id].name} 协作完成{target_name}的计划：行动点返还1，研究线索+1")
+                return
 
     def _card_can_contribute(self, card, task):
         definition = self.content.cards[card]; required_tags = set(task.get("combo_requirement", {}).get("required_combo_tags", []))

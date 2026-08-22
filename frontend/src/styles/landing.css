@@ -10,3 +10,10 @@
 .landing-feedback { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; color: #713b2e; background: #f1ddd0; border: 1px solid #d19a83; border-radius: 7px; font-size: .78rem; line-height: 1.4; }
 .landing-feedback button { flex: none; padding: 4px 8px; color: #713b2e; background: transparent; border: 1px solid currentColor; border-radius: 5px; font-size: .72rem; }
 .scenario-options button.selected em { color: #f0dfbd; }
+
+.scenario-options button small:nth-of-type(2) { color: #7f5741; }
+.scenario-options button.selected small:nth-of-type(2) { color: #f0dfbd; }
+.difficulty-detail { display: grid; gap: 7px; margin-top: 8px; padding: 10px 12px; color: #47574b; background: #eee8d8; border-left: 2px solid #7d967d; font-size: .73rem; line-height: 1.45; }
+.difficulty-detail > div { display: flex; flex-wrap: wrap; gap: 5px; }
+.difficulty-detail > div span { padding: 3px 6px; color: #526656; background: rgba(255, 252, 242, .62); border: 1px solid rgba(109, 132, 108, .26); border-radius: 999px; font-size: .68rem; }
+.difficulty-detail small, .difficulty-detail em { color: #66746a; font-size: .7rem; font-style: normal; }

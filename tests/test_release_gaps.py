@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from backend.app import app, engine, repo
 from fastapi.testclient import TestClient
 
@@ -81,6 +83,43 @@ def test_refresh_preview_does_not_crash_for_event_choice():
 
     assert refreshed is state
     assert isinstance(refreshed.action_options, list)
+
+
+def test_other_player_completing_planned_site_triggers_collaboration_reward():
+    state = engine.new_game("planning-collaboration", ["p1", "p2"], scenario_id="sand_and_stone")
+    player = state.players[state.shared.active_player_id]
+    target = player.location
+    card = state.market[0]
+    before_ap = player.ap
+    baseline = deepcopy(state)
+    baseline.shared.planning_marks = {}
+    state.shared.planning_marks = {"p2": [{"target_id": target, "turn": str(state.shared.turn)}]}
+
+    baseline_result = engine.apply(baseline, {"player_id": player.id, "action": "explore", "target_id": target, "card_id": card})
+    result = engine.apply(state, {"player_id": player.id, "action": "explore", "target_id": target, "card_id": card})
+
+    mark = result.shared.planning_marks["p2"][0]
+    assert mark["collaborated"] is True
+    assert result.players[player.id].ap == baseline_result.players[player.id].ap + 1 == before_ap
+    assert result.shared.research_clues == baseline_result.shared.research_clues + 1
+
+
+def test_route_plan_collaboration_reduces_risk_beyond_route_survey():
+    state = engine.new_game("planning-route-collaboration", ["p1", "p2"], scenario_id="sand_and_stone")
+    player = state.players[state.shared.active_player_id]
+    route = next(route for route in state.routes.values() if player.location in {route.from_site, route.to_site})
+    route.risk = 2
+    route.status = "strained"
+    baseline = deepcopy(state)
+    baseline.shared.planning_marks = {}
+    state.shared.planning_marks = {"p2": [{"target_id": route.id, "turn": str(state.shared.turn)}]}
+    request = {"player_id": player.id, "action": "survey_route", "target_id": route.to_site if route.from_site == player.location else route.from_site, "route_id": route.id}
+
+    baseline_result = engine.apply(baseline, request)
+    result = engine.apply(state, request)
+
+    assert result.routes[route.id].risk == max(0, baseline_result.routes[route.id].risk - 1)
+    assert result.shared.planning_marks["p2"][0]["collaborated"] is True
 
 
 def test_room_session_cannot_be_read_through_legacy_game_endpoint():

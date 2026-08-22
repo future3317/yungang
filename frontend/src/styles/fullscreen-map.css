@@ -64,6 +64,7 @@
   .site-inspector { right: 0; width: var(--map-right-clearance); color: #f1e6cb; background: linear-gradient(270deg, rgba(48, 49, 39, .9), rgba(48, 49, 39, .74) 78%, transparent) !important; border: 0 !important; border-radius: 0; box-shadow: none; backdrop-filter: blur(12px); }
 
   .roster-column .roster, .roster-column .current-player, .roster-column .command-deck { flex: 0 0 auto; margin: 0 8px !important; padding: 12px !important; background: rgba(14, 29, 21, .76) !important; border: 1px solid rgba(219, 192, 126, .18) !important; border-radius: 12px !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .16); backdrop-filter: blur(10px); }
+  .roster-column .planning-phase { position: relative; inset: auto; z-index: 1; flex: 0 0 auto; margin: 0 8px; padding: 12px; background: rgba(14, 29, 21, .76); border: 1px solid rgba(219, 192, 126, .18); border-radius: 12px; box-shadow: 0 10px 24px rgba(0, 0, 0, .16); backdrop-filter: blur(10px); }
   .roster-column .command-deck { display: flex !important; flex-direction: column; grid-template-columns: none !important; gap: 10px; }
   .roster-column .featured-actions, .roster-column .hand-cards { display: grid !important; gap: 7px; }
   .roster-column .hand-tray { padding: 10px 0 0 !important; border-top: 1px solid rgba(219, 192, 126, .17); border-left: 0 !important; }
@@ -586,6 +587,109 @@
   .game-header .brand-scenario { max-width: 125px; padding-left: 8px; font-size: .68rem; }
   .game-header .goal-summary { grid-template-columns: repeat(2, auto); gap: 4px 8px; }
   .game-header .goal-summary > span:nth-child(n + 3) { display: none; }
+}
+
+/* Final desktop HUD geometry: the title bar owns the goal, and each side has one scroll surface. */
+@media (min-width: 1101px) {
+  .game-header {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 540px) minmax(74px, 1fr);
+    height: auto !important;
+    min-height: var(--header-height);
+    align-items: start;
+  }
+  .game-header .brand-group {
+    min-width: 0;
+    align-self: start;
+  }
+  .game-header .brand-scenario {
+    display: grid;
+    gap: 1px;
+    max-width: 240px;
+    overflow: hidden;
+    white-space: normal;
+  }
+  .game-header .header-center {
+    position: static !important;
+    top: auto;
+    left: auto;
+    width: auto;
+    min-width: 0;
+    transform: none;
+    align-self: start;
+  }
+  .game-header .goal-hud,
+  .game-header .goal-hud.is-open {
+    max-height: min(360px, calc(100dvh - 116px));
+    overflow: visible;
+  }
+  .game-header .goal-hud.is-open .goal-conditions {
+    max-height: min(250px, calc(100dvh - 178px));
+    overflow-y: auto;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(220, 188, 105, .45) transparent;
+  }
+  .game-header .goal-hud.is-open .goal-conditions::-webkit-scrollbar {
+    width: 8px;
+  }
+  .game-header .goal-hud.is-open .goal-conditions::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .48);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+  .game-header:has(.goal-hud.is-open) {
+    z-index: 60 !important;
+  }
+  .site-inspector {
+    overflow: hidden !important;
+  }
+  .site-inspector .inspector-content {
+    overflow-y: scroll !important;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(220, 188, 105, .45) transparent;
+  }
+  .site-inspector .inspector-content::-webkit-scrollbar {
+    width: 10px;
+  }
+  .site-inspector .inspector-content::-webkit-scrollbar-track {
+    background: rgba(7, 15, 10, .28);
+  }
+  .site-inspector .inspector-content::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .48);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+}
+
+/* An event owns one scene surface. The title and type are caption text below it, never a second image layer. */
+.event-art {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  padding: 8px;
+  background: rgba(14, 28, 20, .42);
+  border: 1px solid rgba(219, 192, 126, .18);
+  border-radius: 10px;
+}
+.event-art .event-art-scene {
+  position: static !important;
+  display: block;
+  width: 100% !important;
+  height: 112px !important;
+  object-fit: cover;
+  border-radius: 7px;
+}
+.event-art-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.event-art-copy h3 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .scene-thumb,
