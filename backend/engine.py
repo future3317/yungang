@@ -98,7 +98,7 @@ class GameEngine:
 
     def _scenario_increase_weathering(self, state, context, effect):
         state.shared.weathering_track += int(effect.get("amount", 1))
-        state.shared.threat += int(effect.get("threat_amount", 0))
+        state.shared.weathering_track += int(effect.get("weathering_amount", 0))
         return True
 
     def _scenario_gain_clue(self, state, context, effect):
@@ -108,7 +108,7 @@ class GameEngine:
     def _scenario_event_diversity_pressure(self, state, context, effect):
         event_ids = {item.get("event_id") for item in state.shared.event_history[-3:]}
         if len(event_ids) >= int(effect.get("minimum_events", 2)):
-            state.shared.threat += int(effect.get("amount", 1))
+            state.shared.weathering_track += int(effect.get("amount", 1))
             return True
         return False
 
@@ -182,7 +182,7 @@ class GameEngine:
             players=players,
             sites=sites,
             tasks=tasks,
-            shared={"max_rounds": effective_rules["max_rounds"], "active_player_id": ids[0], "player_order": ids, "restoration_resource": effective_rules["restoration_resource"], "scenario_id": scenario_id, "threat": scenario.get("starting_threat", 0), "research_clues": scenario.get("starting_clues", 0), "phase": "player_action", "weathering_track": scenario.get("starting_threat", 0), "weathering_limit": scenario.get("weathering_limit", 5), "effective_rules": effective_rules, "solo_mode": solo, "controlled_character_ids": ids if solo else []},
+            shared={"max_rounds": effective_rules["max_rounds"], "active_player_id": ids[0], "player_order": ids, "restoration_resource": effective_rules["restoration_resource"], "scenario_id": scenario_id, "research_clues": scenario.get("starting_clues", 0), "phase": "player_action", "weathering_track": scenario.get("starting_weathering", 0), "weathering_limit": scenario.get("weathering_limit", 5), "effective_rules": effective_rules, "solo_mode": solo, "controlled_character_ids": ids if solo else []},
             decks={"culture": culture_deck, "events": event_deck, "discard": [], "archive": [], "action": [card_id for card_id in scenario.get("action_card_pool", self.content.action_cards) for _ in range(int(scenario.get("action_card_pool", {}).get(card_id, 1)))]},
             scenario_id=scenario_id,
             seed=rng.seed,
@@ -328,10 +328,8 @@ class GameEngine:
         if state.pending_choice:
             pid = req.get("player_id", state.shared.active_player_id)
             before = self._metric_snapshot(state, pid)
-            before_threat = state.shared.threat
             before_weathering = state.shared.weathering_track
             result = self._resolve_choice(state, req)
-            self._sync_pressure(result, before_threat, before_weathering)
             after = self._metric_snapshot(result, pid)
             changes = self._feedback_changes(before, after)
             self._record_journal(state, req.get("action", "choice"), pid, "共同决定已结算", changes)
@@ -339,7 +337,6 @@ class GameEngine:
             result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes=changes)]
             return result
         pid, action = req["player_id"], req["action"]
-        before_threat = state.shared.threat
         before = self._metric_snapshot(state, pid)
         if pid != state.shared.active_player_id:
             raise ValueError("not_active_player")
@@ -367,7 +364,6 @@ class GameEngine:
         else: raise ValueError("unknown_action")
         if action not in {ActionType.PLAN.value, ActionType.END_TURN.value, ActionType.END_PLANNING.value}:
             self._resolve_planning_collaboration(state, player, action, req)
-        self._sync_pressure(state, before_threat, before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
         if not req.get("_preview"):
@@ -395,16 +391,6 @@ class GameEngine:
             if not target_label:
                 target_label = "同行者" if str(target).startswith(("player-", "seat-")) else target
         return labels.get(action, "完成一项行动") + (f"（目标：{target_label}）" if target_label else "")
-
-    @staticmethod
-    def _sync_pressure(state: GameState, before_threat: int, before_weathering: int) -> None:
-        """Keep the legacy threat field as a transport alias, not a second pressure system."""
-        if state.shared.weathering_track != before_weathering:
-            state.shared.threat = state.shared.weathering_track
-        elif state.shared.threat != before_threat:
-            state.shared.weathering_track = state.shared.threat
-        else:
-            state.shared.threat = state.shared.weathering_track
 
     @staticmethod
     def _feedback_message(action: str) -> str:
@@ -591,12 +577,12 @@ class GameEngine:
         if domain and domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
         if intervention == "act_now":
             state.shared.influence += 2; state.shared.restoration_resource += int(reward.get("restoration_delta", 0)); site.damage = max(0, site.damage - 1)
-            if any(item.get("relation") == "conflict" for item in interpretation["placements"]): state.shared.threat += 1
-            if confidence <= 2: state.shared.threat += 1
+            if any(item.get("relation") == "conflict" for item in interpretation["placements"]): state.shared.weathering_track += 1
+            if confidence <= 2: state.shared.weathering_track += 1
         elif intervention == "minimal":
-            state.shared.influence += 1; state.shared.threat = max(0, state.shared.threat - 1); site.damage = max(0, site.damage - 1)
+            state.shared.influence += 1; state.shared.weathering_track = max(0, state.shared.weathering_track - 1); site.damage = max(0, site.damage - 1)
         else:
-            state.shared.research_clues += 3 if confidence <= 2 else 2; state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.research_clues += 3 if confidence <= 2 else 2; state.shared.weathering_track = max(0, state.shared.weathering_track - 1)
         project = state.projects.get(site.active_project_id or "")
         if project and intervention != "record": self._advance_project(state, project, player.id, "choose_intervention")
         self._update_site(site); self._trigger_node_ability(state, player, site_id, trigger="task_completed")
@@ -666,7 +652,7 @@ class GameEngine:
             site = state.sites[player.location]
             if site.damage <= 0 or state.shared.restoration_resource < 1: raise ValueError("nothing_to_repair")
             player.ap -= cost; state.shared.restoration_resource -= 1; site.damage = max(0, site.damage - 2); self._update_site(site)
-            if self._has_upgrade_effect(player, "fine_repair_threat_bonus") and site.damage > 0: state.shared.threat = max(0, state.shared.threat - 1)
+            if self._has_upgrade_effect(player, "fine_repair_weathering_bonus") and site.damage > 0: state.shared.weathering_track = max(0, state.shared.weathering_track - 1)
         elif ability["action"] == "harmony_hint": player.ap -= cost; player.flags["harmony_active"] = True
         elif ability["action"] == "sprint_move": player.ap -= cost; player.flags["sprint_move"] = True; player.flags["sprint_survey_available"] = self._has_upgrade_effect(player, "sprint_survey")
         elif ability["action"] == "view_select":
@@ -748,14 +734,13 @@ class GameEngine:
         risk_delta = int(effect.get("risk_delta", -int(effect.get("amount", 1))))
         stressed.risk = max(0, stressed.risk + risk_delta)
         state.shared.research_clues += int(effect.get("clues", 0))
-        state.shared.threat = max(0, state.shared.threat + int(effect.get("threat_delta", 0)))
-        state.shared.weathering_track = state.shared.threat
+        state.shared.weathering_track = max(0, state.shared.weathering_track + int(effect.get("weathering_delta", 0)))
     def _action_card_survey_routes(self, state, effect, route):
         if route:
             route.status = "strained"
             route.risk = max(0, route.risk + int(effect.get("risk_delta", -1)))
             state.shared.research_clues += int(effect.get("clues", 0))
-            state.shared.threat = max(0, state.shared.threat + int(effect.get("threat_delta", 0)))
+            state.shared.weathering_track = max(0, state.shared.weathering_track + int(effect.get("weathering_delta", 0)))
     def _action_card_restore_route(self, state, player, effect, target_id, adjacent, stressed):
         if stressed:
             stressed.status = "restored"; stressed.risk = 0; stressed.connection_level = max(1, stressed.connection_level)
@@ -829,7 +814,7 @@ class GameEngine:
     def _effect_next_contribute_bonus(self, state, player, effect, site_id=None): player.flags["next_contribute_bonus"] = player.flags.get("next_contribute_bonus", 0) + int(effect.get("amount", 1))
     def _effect_free_move(self, state, player, effect, site_id=None): player.flags["free_move"] = True
     def _effect_restore_and_influence(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("resource", 1)); player.influence += int(effect.get("influence", 1))
-    def _effect_reduce_threat(self, state, player, effect, site_id=None): state.shared.threat = max(0, state.shared.threat - int(effect.get("amount", 1))); state.shared.weathering_track = state.shared.threat
+    def _effect_reduce_weathering(self, state, player, effect, site_id=None): state.shared.weathering_track = max(0, state.shared.weathering_track - int(effect.get("amount", 1)))
     def _effect_influence(self, state, player, effect, site_id=None): state.shared.influence += int(effect.get("amount", 1))
     def _effect_gain_influence(self, state, player, effect, site_id=None): state.shared.influence += int(effect.get("amount", 1)); player.influence += int(effect.get("amount", 1))
     def _effect_restore_discount(self, state, player, effect, site_id=None): player.flags["restore_discount"] = int(effect.get("amount", 1))
@@ -982,10 +967,10 @@ class GameEngine:
         if prepared:
             if event_id in state.shared.prepared_event_ids: state.shared.prepared_event_ids.remove(event_id)
             for item in state.players.values(): item.flags.pop("prepared_event_id", None)
-            state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.weathering_track = max(0, state.shared.weathering_track - 1)
             state.shared.log.append(f"\u51c6\u5907\u751f\u6548\uff1a{event['name']} \u7684\u98ce\u5316\u538b\u529b\u964d\u4f4e 1")
         if harmony:
-            state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.weathering_track = max(0, state.shared.weathering_track - 1)
             state.shared.log.append("\u548c\u5408\u534f\u4f5c\u751f\u6548\uff1a\u4e8b\u4ef6\u538b\u529b\u964d\u4f4e 1")
         instance = state.shared.event_instance
         if instance.get("event_id") != event_id:
@@ -1022,10 +1007,9 @@ class GameEngine:
                 state.shared.event_instance["mitigation"] = [{"type": "route", "route_id": route_id, "result": "strained"}]
                 state.shared.event_instance["resolution"] = [{"target_id": route_id, "label": "路线风险", "changes": {"修护资源": -1, "路线状态": "承压"}, "reason": "团队选择缓和阻断"}]
             else:
-                state.shared.threat += 1
-                state.shared.weathering_track = state.shared.threat
+                state.shared.weathering_track += 1
                 state.shared.event_instance["mitigation"] = [{"type": "route", "route_id": state.shared.event_targets[0] if state.shared.event_targets else None, "result": "accepted"}]
-                state.shared.event_instance["resolution"] = [{"target_id": state.shared.event_targets[0] if state.shared.event_targets else None, "label": "风化压力", "changes": {"威胁": 1}, "reason": "团队接受道路阻断"}]
+                state.shared.event_instance["resolution"] = [{"target_id": state.shared.event_targets[0] if state.shared.event_targets else None, "label": "风化压力", "changes": {"风化压力": 1}, "reason": "团队接受道路阻断"}]
             state.shared.event_instance["status"] = "resolved"
             snapshot = dict(state.shared.round_snapshot)
             state.pending_choice = None
@@ -1096,7 +1080,6 @@ class GameEngine:
         if not handler_name:
             raise ValueError(f"unsupported_effect:{effect.get('type')}")
         getattr(self, handler_name)(state, None, effect)
-        state.shared.weathering_track = state.shared.threat
         state.shared.event_instance["status"] = "resolved"
 
     def _event_damage_open_sites(self, state, player, effect, site_id=None):
@@ -1111,7 +1094,7 @@ class GameEngine:
         for teammate in state.players.values(): teammate.influence += int(effect.get("amount", 1))
         state.shared.event_instance["resolution"] = [{"target_id": teammate.id, "label": teammate.name, "changes": {"个人影响": int(effect.get("amount", 1))}, "reason": "事件结算"} for teammate in state.players.values()]
     def _event_gain_resource(self, state, player, effect, site_id=None): state.shared.restoration_resource += int(effect.get("amount", 1)); state.shared.event_instance["resolution"] = [{"label": "共同修护资源", "changes": {"修护资源": int(effect.get("amount", 1))}, "reason": "事件结算"}]
-    def _event_threat(self, state, player, effect, site_id=None): state.shared.threat += int(effect.get("amount", 1)); state.shared.event_instance["resolution"] = [{"label": "风化压力", "changes": {"威胁": int(effect.get("amount", 1))}, "reason": "事件结算"}]
+    def _event_weathering(self, state, player, effect, site_id=None): state.shared.weathering_track += int(effect.get("amount", 1)); state.shared.event_instance["resolution"] = [{"label": "风化压力", "changes": {"风化压力": int(effect.get("amount", 1))}, "reason": "事件结算"}]
 
     def _reveal_event(self, state):
         if not state.decks["events"]:
@@ -1808,8 +1791,7 @@ class GameEngine:
     def _apply_reward(self, state, reward):
         state.shared.influence += int(reward.get("influence", 0)); state.shared.research_clues += int(reward.get("research_clues", 0)); state.shared.restoration_resource += int(reward.get("restoration_resource", 0))
         state.shared.route_connection_score += int(reward.get("route_connection", 0))
-        state.shared.threat = max(0, state.shared.threat - int(reward.get("threat_reduction", 0)))
-        state.shared.weathering_track = state.shared.threat
+        state.shared.weathering_track = max(0, state.shared.weathering_track - int(reward.get("weathering_reduction", 0)))
 
     def _trigger_node_ability(self, state, player, site_id, card_id=None, trigger=None):
         ability = self.content.sites.get(site_id, {}).get("node_ability")

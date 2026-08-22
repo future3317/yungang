@@ -105,7 +105,7 @@
           "amount": 1
         }
       },
-      "starting_threat": 1,
+      "starting_weathering": 1,
       "starting_clues": 0,
       "solo_rules": {
         "controlled_roles": 2,
@@ -220,7 +220,7 @@
           "amount": 1
         }
       },
-      "starting_threat": 0,
+      "starting_weathering": 0,
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
@@ -335,7 +335,7 @@
           "amount": 1
         }
       },
-      "starting_threat": 1,
+      "starting_weathering": 1,
       "starting_clues": 2,
       "solo_rules": {
         "controlled_roles": 2,
@@ -483,7 +483,7 @@
           "amount": 1
         }
       },
-      "starting_threat": 1,
+      "starting_weathering": 1,
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
@@ -558,7 +558,7 @@
         }
       },
       "event_chain_ids": [],
-      "starting_threat": 1,
+      "starting_weathering": 1,
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
@@ -657,7 +657,7 @@
         }
       },
       "event_chain_ids": [],
-      "starting_threat": 0,
+      "starting_weathering": 0,
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,

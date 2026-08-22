@@ -557,7 +557,7 @@
       "description": "边塞与互市证据在此共同贡献时，降低1点风化压力。",
       "trigger": "frontier_trade_combo",
       "effect": {
-        "type": "reduce_threat",
+        "type": "reduce_weathering",
         "amount": 1
       }
     },
@@ -837,7 +837,7 @@
       "description": "投入边地与交流证据，降低网络压力。",
       "trigger": "task_completed",
       "effect": {
-        "type": "reduce_threat",
+        "type": "reduce_weathering",
         "amount": 1
       }
     },
@@ -919,7 +919,7 @@
       "description": "在事件来临前查看路线风险并安排修护。",
       "trigger": "round_start",
       "effect": {
-        "type": "reduce_threat",
+        "type": "reduce_weathering",
         "amount": 1
       }
     },

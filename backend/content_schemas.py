@@ -8,7 +8,7 @@ JsonObject = dict[str, JsonValue]
 
 
 class ContentItemContract(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="forbid")
     id: str
     name: str
     content_class: str = Field(pattern="^(documented|interpretive|gameplay)$")
@@ -18,6 +18,20 @@ class SiteContract(ContentItemContract):
     x: float = Field(ge=0, le=100)
     y: float = Field(ge=0, le=100)
     connections: list[str] = Field(default_factory=list)
+    domains: list[str] = Field(default_factory=list)
+    node_ability: JsonObject | None = None
+    active_task_id: str | None = None
+    gameplay_hint: str | None = None
+    icon_asset: str | None = None
+    layout: JsonObject | None = None
+    max_damage: int | None = None
+    region_id: str | None = None
+    scene_asset: str | None = None
+    site_tags: list[str] = Field(default_factory=list)
+    start_damage: int | None = None
+    strategic_role: str | None = None
+    summary: str | None = None
+    type: str | None = None
 
 
 class TaskContract(ContentItemContract):
@@ -27,11 +41,21 @@ class TaskContract(ContentItemContract):
     required_card_count: int = Field(ge=1)
     combo_requirement: JsonObject = Field(default_factory=dict)
     reward: JsonObject = Field(default_factory=dict)
+    culture_explanation: str | None = None
+    learning_objective: str | None = None
+    required_cards_per_player_min: int | None = None
+    route_synergy: str | None = None
+    strategic_role: str | None = None
+    ui_instruction: str | None = None
 
 
 class ProjectContract(ContentItemContract):
     site_id: str
     stages: list[JsonObject] = Field(min_length=1)
+    project_type: str | None = None
+    reward: JsonObject = Field(default_factory=dict)
+    strategy_note: str | None = None
+    summary: str | None = None
 
 
 class RoleContract(ContentItemContract):
@@ -39,10 +63,19 @@ class RoleContract(ContentItemContract):
     start_site_id: str
     upgrade_ids: list[str] = Field(default_factory=list)
     ability: JsonObject
+    color: str | None = None
+    icon: str | None = None
+    icon_asset: str | None = None
+    meaning: str | None = None
+    origin: str | None = None
+    play_style: str | None = None
+    solo_rule: str | None = None
+    starting_hint: str | None = None
+    team_role: str | None = None
 
 
 class ScenarioRuleContract(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="forbid")
     description: str
     trigger: str
     effect: JsonObject
@@ -53,6 +86,26 @@ class ScenarioContract(ContentItemContract):
     enabled_site_ids: list[str] = Field(min_length=1)
     card_pool: dict[str, int] = Field(min_length=1)
     scenario_rule: ScenarioRuleContract | None = None
+    action_card_pool: dict[str, int] = Field(default_factory=dict)
+    blocked_route_count: int | None = None
+    closed_site_limit: int | None = None
+    core_project_id: str | None = None
+    description: str | None = None
+    enabled_project_ids: list[str] = Field(default_factory=list)
+    event_chain_ids: list[str] = Field(default_factory=list)
+    event_deck: list[str] = Field(default_factory=list)
+    failure_brief: str | None = None
+    victory_brief: str | None = None
+    influence_goal: int | None = None
+    initial_damage: JsonObject | None = None
+    max_rounds: int | None = None
+    objective_ids: list[str] = Field(default_factory=list)
+    recommended_minutes: str | int | None = None
+    recommended_players: list[int] = Field(default_factory=list)
+    restoration_resource: int | None = None
+    solo_rules: JsonObject | None = None
+    starting_clues: int | None = None
+    starting_weathering: int | None = None
 
 
 class ActionCardContract(ContentItemContract):
@@ -63,6 +116,10 @@ class ActionCardContract(ContentItemContract):
     limitations: str
     combo_tags: list[str] = Field(default_factory=list)
     effect: JsonObject
+    description: str | None = None
+    name: str
+    strategic_role: str | None = None
+    target_rule: str | None = None
 
 
 class EventContract(ContentItemContract):
@@ -70,12 +127,73 @@ class EventContract(ContentItemContract):
     preview_delta: JsonObject = Field(default_factory=dict)
     mitigation_hint: str = ""
     effect: JsonObject
+    damage: int | None = None
+    description: str | None = None
+    difficulty_weight: float | None = None
+    forecast_text: str | None = None
+    mitigation_hint: str | None = None
+    modifier: JsonValue | None = None
+    name: str
+    scene_asset: str | None = None
+    severity: int | None = None
+    tags: list[str] = Field(default_factory=list)
 
 
 class ObjectiveContract(ContentItemContract):
     content_class: str = "gameplay"
     type: str
     target: int = Field(ge=1)
+    completion_text: str | None = None
+    description: str | None = None
+    progress_text: str | None = None
+    scoring_weight: int | None = None
+    strategy_hint: str | None = None
+
+
+class CultureCardContract(ContentItemContract):
+    domain: str
+    description: str
+    icon_asset: str
+    origin_tags: list[str] = Field(min_length=1)
+    combo_name: str | None = None
+    combo_reward_text: str | None = None
+    combo_tags: list[str] = Field(default_factory=list)
+    combo_with_domains: list[str] = Field(default_factory=list)
+    culture_note: str | None = None
+    effect: JsonObject = Field(default_factory=dict)
+    era_tags: list[str] = Field(default_factory=list)
+    event_option_tags: list[str] = Field(default_factory=list)
+    evidence_use_text: str | None = None
+    finale_tags: list[str] = Field(default_factory=list)
+    instant_use_text: str | None = None
+    rarity: str | None = None
+    site_tags: list[str] = Field(default_factory=list)
+    strategic_role: str | None = None
+    technique_tags: list[str] = Field(default_factory=list)
+
+
+class RouteContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    from_: str = Field(alias="from")
+    to: str
+    active_project_id: str | None = None
+    connection_level: int = 0
+    cost: int = Field(ge=0)
+    directional_rules: JsonObject | None = None
+    event_tags: list[str] = Field(default_factory=list)
+    evidence_tags: list[str] = Field(default_factory=list)
+    labelPosition: list[float] | None = None
+    name: str | None = None
+    risk: int = 0
+    risk_profile: str | None = None
+    roadClass: str | None = None
+    status: str = "open"
+    strategic_role: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    terrain: str | None = None
+    ui_hint: str | None = None
+    waypoints: list[float] = Field(default_factory=list)
 
 
 def _items(value: object, key: str) -> list[dict]:
@@ -112,6 +230,7 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
     action_cards = _items(files.get("action_cards", []), "cards")
     events = _items(files.get("events", []), "events")
     objectives = _items(files.get("objectives", []), "objectives")
+    cards = _items(files.get("culture_cards", []), "cards")
     site_ids = {item["id"] for item in sites}
     card_ids = {item["id"] for item in _items(files.get("culture_cards", []), "cards")}
     upgrade_ids = {item["id"] for item in _items(files.get("role_upgrades", []), "role_upgrades")}
@@ -124,6 +243,8 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
     TypeAdapter(list[ActionCardContract]).validate_python(action_cards)
     TypeAdapter(list[EventContract]).validate_python(events)
     TypeAdapter(list[ObjectiveContract]).validate_python(objectives)
+    TypeAdapter(list[CultureCardContract]).validate_python(cards)
+    TypeAdapter(list[RouteContract]).validate_python(routes)
 
     for route in routes:
         start = route.get("from") or route.get("from_site")
@@ -150,7 +271,6 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
         if not scenario["card_pool"]:
             raise ValueError(f"scenario card pool is empty: {scenario['id']}")
 
-    cards = _items(files.get("culture_cards", []), "cards")
     for scenario in scenarios:
         enabled_sites = set(scenario["enabled_site_ids"])
         pool = set(scenario["card_pool"])

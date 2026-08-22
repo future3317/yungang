@@ -696,7 +696,7 @@
     "required_card_count": 2,
     "required_cards_per_player_min": 0,
     "reward": {
-      "threat_reduction": 1,
+      "weathering_reduction": 1,
       "domain": "frontier"
     },
     "learning_objective": "将边地与交流证据放在一起，判断图像和人员如何沿路线传播。",

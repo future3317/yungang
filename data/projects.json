@@ -207,7 +207,7 @@
       ],
       "reward": {
         "route_connection": 2,
-        "threat_reduction": 1,
+        "weathering_reduction": 1,
         "objective_tags": [
           "route_restoration",
           "regions"

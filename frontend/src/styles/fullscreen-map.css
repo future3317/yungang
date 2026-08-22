@@ -33,8 +33,9 @@
     box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
     backdrop-filter: blur(12px);
   }
-  .game-header .header-center { position: absolute; top: 8px; left: 50%; width: min(620px, calc(100% - 440px)); transform: translateX(-50%); }
-  .game-header .goal-hud { width: 100%; box-sizing: border-box; }
+  .game-header { grid-template-columns: minmax(0, 1fr) minmax(360px, 620px) auto; align-items: center; min-height: var(--hud-header-height, 76px); height: auto; }
+  .game-header .header-center { position: static; width: auto; min-width: 0; transform: none; display: flex; justify-content: center; }
+  .game-header .goal-hud { width: min(620px, 100%); box-sizing: border-box; }
 
   .game-grid { position: absolute; inset: 0; display: block !important; width: 100vw !important; max-width: none !important; min-height: 100dvh; margin: 0; padding: 0 !important; }
   .stage-column { position: absolute; inset: 0; display: block !important; min-height: 100dvh !important; padding: 0 !important; }
@@ -88,7 +89,7 @@
   .network-stage .mode-strip { position: absolute !important; z-index: 30 !important; top: calc(var(--hud-panel-top) + 176px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); }
   .action-target-guide { position: absolute !important; z-index: 30 !important; right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); bottom: calc(var(--hud-footer-bottom) + 2px); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); width: min(470px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - var(--hud-center-gutter) - var(--hud-center-gutter))); margin: 0 auto; }
 
-  .timeline-drawer { position: absolute !important; z-index: 20 !important; right: 16px; bottom: calc(var(--hud-footer-bottom) - 4px); left: auto; width: min(290px, calc(var(--map-right-clearance) - 26px)); max-height: min(230px, calc(100dvh - 150px)); margin: 0 !important; padding: 8px 10px; color: var(--ink-secondary); background: rgba(14, 28, 20, .88); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; backdrop-filter: blur(12px); }
+  .timeline-drawer { position: absolute !important; z-index: 20 !important; right: 16px; bottom: calc(var(--hud-footer-bottom) - 4px); left: auto; width: min(330px, calc(var(--map-right-clearance) - 26px)); max-height: min(300px, calc(100dvh - 150px)); margin: 0 !important; padding: 8px 10px; color: var(--ink-secondary); background: rgba(14, 28, 20, .94); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; backdrop-filter: blur(12px); }
   .timeline-drawer > div { max-height: 160px; overflow-y: auto; }
   .timeline-drawer summary { padding: 2px 0; }
   .room-state-notice { position: fixed; z-index: 40; top: 50%; left: 50%; width: min(380px, calc(100vw - 40px)); transform: translate(-50%, -50%); padding: 22px; color: #f4e7c8; text-align: center; background: rgba(11, 25, 17, .94); border: 1px solid rgba(220, 190, 113, .42); border-radius: 14px; box-shadow: 0 20px 50px rgba(0, 0, 0, .38); backdrop-filter: blur(14px); }
@@ -1575,6 +1576,19 @@
     max-height: 220px !important;
     margin: 0 auto !important;
   }
+}
+
+@media (min-width: 1101px) {
+  .game-header .goal-hud { min-width: 0; overflow: visible; }
+  .game-header .goal-summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .game-header .goal-conditions { max-height: min(54dvh, 430px); overflow-y: auto; scrollbar-width: auto; scrollbar-color: rgba(220, 188, 105, .55) transparent; }
+  .game-header .goal-conditions > div { min-width: 0; }
+  .game-header .goal-conditions span { min-width: 0; overflow-wrap: anywhere; }
+  .roster-column, .site-inspector { overscroll-behavior: contain; }
+  .roster-column > *, .site-inspector > * { max-width: 100%; }
+  .site-inspector .inspector-content { min-height: 0; overflow-wrap: anywhere; }
+  .timeline-drawer .timeline-body { max-height: 220px; overflow: hidden; }
+  .timeline-drawer .timeline-events { max-height: 180px; overflow-y: auto; scrollbar-width: auto; scrollbar-color: rgba(220, 188, 105, .55) transparent; }
 }
 
 /* Final desktop contract: the header is a row, while both rails own their scroll surface. */

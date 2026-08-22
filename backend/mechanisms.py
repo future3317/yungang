@@ -31,7 +31,7 @@ CULTURE_EFFECT_HANDLERS = {
     "next_contribute_bonus": "_effect_next_contribute_bonus",
     "free_move": "_effect_free_move",
     "restore_and_influence": "_effect_restore_and_influence",
-    "reduce_threat": "_effect_reduce_threat",
+    "reduce_weathering": "_effect_reduce_weathering",
     "influence": "_effect_influence",
     "gain_influence": "_effect_gain_influence",
 }
@@ -50,7 +50,7 @@ NODE_EFFECT_HANDLERS = {
     "temporary_origin_tag": "_effect_temporary_origin_tag",
     "ignore_route_risk": "_effect_ignore_route_risk",
     "free_exchange": "_effect_free_exchange",
-    "reduce_threat": "_effect_reduce_threat",
+    "reduce_weathering": "_effect_reduce_weathering",
     "preview_event_target": "_effect_preview_event_target",
     "route_action_discount": "_effect_route_action_discount",
     "inspect_adjacent_routes": "_effect_inspect_adjacent_routes",
@@ -61,7 +61,7 @@ EVENT_EFFECT_HANDLERS = {
     "damage_open_sites": "_event_damage_open_sites",
     "all_influence": "_event_all_influence",
     "gain_resource": "_event_gain_resource",
-    "threat": "_event_threat",
+    "weathering": "_event_weathering",
 }
 
 ACTION_CARD_EFFECT_HANDLERS = {
@@ -95,7 +95,7 @@ EFFECT_HANDLERS = {
     **NODE_EFFECT_HANDLERS,
     **EVENT_EFFECT_HANDLERS,
     **ACTION_CARD_EFFECT_HANDLERS,
-    "fine_repair_threat_bonus": "_upgrade_effect",
+    "fine_repair_weathering_bonus": "_upgrade_effect",
     "project_restore_discount": "_upgrade_effect",
     "harmony_origin_bonus": "_upgrade_effect",
     "post_contribution_clue": "_upgrade_effect",

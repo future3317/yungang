@@ -163,7 +163,7 @@
       "effect": {
         "type": "survey_and_mitigate",
         "risk_delta": -1,
-        "threat_delta": -1
+        "weathering_delta": -1
       },
       "best_use": "针对风沙、磨蚀和路径承压事件。",
       "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",

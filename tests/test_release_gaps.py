@@ -29,13 +29,13 @@ def test_event_response_action_card_keeps_timing_and_declared_mitigation():
     player.action_hand = ["action_09"]
     state.decks["action"] = ["action_10"]
     state.shared.phase = "pending_choice"
-    state.shared.threat = 2
+    state.shared.weathering_track = 2
     state.pending_choice = {"kind": "event", "event_id": "route_blocked", "options": []}
     engine._use_action_card(state, player, "action_09", target_id=route.id, force_event_response=True)
     assert player.ap == 2
     assert route.status == "strained"
     assert route.risk == 1
-    assert state.shared.threat == 1
+    assert state.shared.weathering_track == 1
     assert "action_09" in state.decks["action_discard"]
     assert player.action_hand == []
     assert "action_10" in state.decks["action"]

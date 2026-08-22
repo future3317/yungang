@@ -1524,11 +1524,6 @@ export interface components {
             /** Player Order */
             player_order?: string[];
             /**
-             * Threat
-             * @default 0
-             */
-            threat: number;
-            /**
              * Influence
              * @default 0
              */

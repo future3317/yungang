@@ -48,7 +48,7 @@ export function formatProjectReward(reward?: Record<string, unknown>) {
     restoration_resource: value => `修护资源 +${String(value)}`,
     influence: value => `共同影响 +${String(value)}`,
     route_connection: value => `路线连接 +${String(value)}`,
-    threat_reduction: value => `风化压力 -${String(value)}`,
+    weathering_reduction: value => `风化压力 -${String(value)}`,
     market_reserve: value => `保留市场线索机会 ×${String(value)}`,
     archive_retrieve: value => `获得档案回收机会 ×${String(value)}`,
     finale_unlock: value => value ? '解锁终局' : '',
@@ -111,7 +111,7 @@ export function eventTargetRuleName(rule?: string, meta?: Meta) {
     one_route: '一条开放路线',
     all_players: '所有同行者',
     shared_resource: '共同修护资源',
-    threat: '风化压力轨',
+    weathering: '风化压力轨',
   };
   return displayText(meta, 'event_target_rules', rule, labels[rule || ''] || '由本局旅程决定的影响范围');
 }

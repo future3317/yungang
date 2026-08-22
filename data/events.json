@@ -73,12 +73,12 @@
       "scene_asset": "scene_frontier_pass.webp",
       "name": "道路阻断",
       "description": "一段关键通道出现阻碍。团队需要消耗修护资源缓解，或接受风化压力上升。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 1.0,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "回合末将出现一次团队选择。",
@@ -86,7 +86,7 @@
       "tags": [
         "route",
         "choice",
-        "threat"
+        "weathering"
       ],
       "severity": 2,
       "content_class": "gameplay"
@@ -164,19 +164,19 @@
       "scene_asset": "scene_archive_cave.webp",
       "name": "表面附着扩散",
       "description": "表面附着影响观察与记录，团队的风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 0.9,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "本轮不直接损伤节点，但会压缩后续容错。",
       "mitigation_hint": "准备应对或使用降低压力的文化证据。",
       "tags": [
         "surface",
-        "threat",
+        "weathering",
         "monitoring"
       ],
       "severity": 1,
@@ -187,12 +187,12 @@
       "scene_asset": "scene_frontier_pass.webp",
       "name": "危岩松动",
       "description": "局部危岩使通行与巡查更困难，团队的风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 1.1,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "路线治理和节点修护都会受到时间压力。",
@@ -200,7 +200,7 @@
       "tags": [
         "rock",
         "route",
-        "threat"
+        "weathering"
       ],
       "severity": 2,
       "content_class": "gameplay"
@@ -233,12 +233,12 @@
       "scene_asset": "scene_archive_cave.webp",
       "name": "监测数据异常",
       "description": "监测记录显示多个指标偏离稳定范围，团队的风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 0.9,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "信息已经公开，但具体受影响地点仍不完全明确。",
@@ -246,7 +246,7 @@
       "tags": [
         "monitoring",
         "information",
-        "threat"
+        "weathering"
       ],
       "severity": 1,
       "content_class": "gameplay"
@@ -279,19 +279,19 @@
       "scene_asset": "scene_frontier_pass.webp",
       "name": "维护排期延误",
       "description": "维护人员和资源调度受阻，团队的风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 1.0,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "本轮完成修护和项目的窗口缩短。",
       "mitigation_hint": "减少无效移动，优先完成已经接近结束的任务。",
       "tags": [
         "schedule",
-        "threat",
+        "weathering",
         "resource"
       ],
       "severity": 1,
@@ -302,12 +302,12 @@
       "scene_asset": "scene_trade_meeting.webp",
       "name": "路径承载增加",
       "description": "人员与物资集中通行使路线承压，团队的风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 1.0,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "互市与边塞区域需要准备替代路线。",
@@ -315,7 +315,7 @@
       "tags": [
         "route",
         "traffic",
-        "threat"
+        "weathering"
       ],
       "severity": 1,
       "content_class": "gameplay"
@@ -325,12 +325,12 @@
       "scene_asset": "scene_archive_cave.webp",
       "name": "记录出现缺口",
       "description": "部分记录无法相互对应，团队需要重新整理线索。风化压力上升1点。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 0,
       "modifier": 1,
       "difficulty_weight": 0.9,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "来源多样性和档案任务的推进会更加重要。",
@@ -338,7 +338,7 @@
       "tags": [
         "archive",
         "information",
-        "threat"
+        "weathering"
       ],
       "severity": 1,
       "content_class": "gameplay"
@@ -439,12 +439,12 @@
       "scene_asset": "scene_frontier_pass.webp",
       "name": "风沙入道",
       "description": "风沙越过边道，正在把未处理的风险推向整张网络。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 1,
       "modifier": 0,
       "difficulty_weight": 1.0,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "边道风沙将使共同风化压力增加。",
@@ -527,12 +527,12 @@
       "scene_asset": "scene_frontier_pass.webp",
       "name": "夜风穿廊",
       "description": "夜间风向改变，尚未治理的风险会再次向网络深处传递。",
-      "target_rule": "threat",
+      "target_rule": "weathering",
       "damage": 1,
       "modifier": 0,
       "difficulty_weight": 1.0,
       "effect": {
-        "type": "threat",
+        "type": "weathering",
         "amount": 1
       },
       "forecast_text": "风化压力将在回合结束时继续累积。",

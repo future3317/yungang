@@ -38,7 +38,7 @@ def test_every_strategy_card_applies_its_declared_effect(card_id):
     if card_id == "action_09":
         state.pending_choice = {"kind": "event", "event_id": "sandstorm", "options": []}
         state.shared.phase = "pending_choice"
-        state.shared.threat = 2
+        state.shared.weathering_track = 2
     target = route.id if card_id not in {"action_04", "action_08", "action_12", "action_16"} else None
     target_ids = ["p1", "p2"] if card_id == "action_12" else None
     if card_id == "action_16":
@@ -51,7 +51,7 @@ def test_every_strategy_card_applies_its_declared_effect(card_id):
         state.players["p2"].ap = 1
     before = {
         "ap": player.ap,
-        "threat": state.shared.threat,
+        "weathering": state.shared.weathering_track,
         "clues": state.shared.research_clues,
         "restoration": state.shared.restoration_resource,
         "route_risk": route.risk,
@@ -70,13 +70,13 @@ def test_every_strategy_card_applies_its_declared_effect(card_id):
         assert state.shared.research_clues == before["clues"] + expected_clues
     if card_id == "action_04":
         assert player.flags["prepared_event_id"] == "sandstorm"
-        assert state.shared.threat == before["threat"]
+        assert state.shared.weathering_track == before["weathering"]
     if card_id == "action_07":
         assert player.flags["remote_exchange_player_id"] == "p2"
     if card_id == "action_08":
         assert player.flags["reserved_ap"] == 1
     if card_id == "action_09":
-        assert state.shared.threat == before["threat"] - 1
+        assert state.shared.weathering_track == before["weathering"] - 1
     if card_id == "action_10":
         assert player.flags["free_move"] is True
         assert state.shared.restoration_resource == before["restoration"]

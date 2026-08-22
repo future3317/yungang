@@ -88,17 +88,17 @@ def test_full_action_hand_requires_discard_before_round_draw():
     assert "action_01" in state.decks["action_discard"]
 
 
-def test_pingcheng_artisan_upgrade_fine_repair_threat_bonus():
+def test_pingcheng_artisan_upgrade_fine_repair_weathering_bonus():
     state = engine.new_game("upgrade-fine", ["p1"])
     player = state.players["p1"]
     site = state.sites[player.location]
     site.damage = 3
     state.shared.restoration_resource = 1
-    state.shared.threat = 2
-    engine._upgrade_effect(state, player, {"type": "fine_repair_threat_bonus", "value": 1})
+    state.shared.weathering_track = 2
+    engine._upgrade_effect(state, player, {"type": "fine_repair_weathering_bonus", "value": 1})
     engine._skill(state, player)
     assert site.damage == 1
-    assert state.shared.threat == 1
+    assert state.shared.weathering_track == 1
 
 
 def test_pingcheng_artisan_upgrade_project_restore_discount_is_once_per_round():

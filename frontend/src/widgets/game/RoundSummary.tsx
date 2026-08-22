@@ -2,7 +2,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import type { GameState, RouteState, Site } from '../../types/game';
 import { StateChangeList } from './StateChangeList';
 
-const metricLabels: Record<string, string> = { weathering: '风化压力', weathering_track: '风化压力', threat: '风化压力', 威胁: '风化压力', restoration_resource: '修护资源', research_clues: '研究线索', influence: '共同影响', route_risk: '路线风险', damage: '节点损伤', 节点损伤: '节点损伤', 修护资源: '修护资源', 路线风险: '路线风险', 路线状态: '路线状态', 个人影响: '个人影响' };
+const metricLabels: Record<string, string> = { weathering: '风化压力', weathering_track: '风化压力', restoration_resource: '修护资源', research_clues: '研究线索', influence: '共同影响', route_risk: '路线风险', damage: '节点损伤', 节点损伤: '节点损伤', 修护资源: '修护资源', 路线风险: '路线风险', 路线状态: '路线状态', 个人影响: '个人影响' };
 
 export function RoundSummary({ state, sites, routes = {}, eventName, onContinue }: { state: GameState; sites: Record<string, Site>; routes?: Record<string, RouteState>; eventName?: string; onContinue?: () => void }) {
   const summary = state.shared.round_summary || {};

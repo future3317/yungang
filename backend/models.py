@@ -573,7 +573,6 @@ class SharedState(BaseModel):
     max_rounds: int = 8
     active_player_id: str = "p1"
     player_order: List[str] = Field(default_factory=lambda: ["p1", "p2"])
-    threat: int = 0
     influence: int = 0
     restoration_resource: int = 6
     completed_domains: List[str] = Field(default_factory=list)

@@ -6,7 +6,7 @@
                               "name":  "石作精修",
                               "description":  "精修完成后，若节点仍有损伤，再降低1点风化压力。",
                               "effect":  {
-                                             "type":  "fine_repair_threat_bonus",
+                                             "type":  "fine_repair_weathering_bonus",
                                              "value":  1
                                          },
                               "trigger":  "使用精修后",

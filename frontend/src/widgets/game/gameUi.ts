@@ -30,7 +30,6 @@ const previewDeltaLabels: Record<string, string> = {
   influence: '共同影响',
   restoration_resource: '修护资源',
   research_clues: '研究线索',
-  threat: '风化压力',
   weathering: '风化压力',
   risk: '路线风险',
   restoration: '修护进度',
@@ -42,12 +41,12 @@ const previewDeltaLabels: Record<string, string> = {
   route_connection_score: '区域连接',
 };
 
-export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', threat: '风化压力', 威胁: '风化压力', route_status: '路线状态', 路线状态: '路线状态', site_status: '节点状态', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
+export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', weathering: '风化压力', route_status: '路线状态', 路线状态: '路线状态', site_status: '节点状态', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
 
 export function feedbackChangeText(changes: FeedbackChange[]) {
   const seen = new Set<string>();
   return changes.filter(change => {
-    const key = change.metric === 'threat' ? 'weathering' : change.metric || change.label || '状态变化';
+    const key = change.metric === 'weathering' ? 'weathering' : change.metric || change.label || '状态变化';
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -101,7 +100,7 @@ export function localizeActionText(value?: string, context?: DisplayContext) {
     .replace(/\bseat-\d+\b/gi, '同行席位')
     .replace(/\broute_risk\b/gi, '路线风险')
     .replace(/\bweathering_track\b/gi, '风化压力')
-    .replace(/\bthreat_delta\b/gi, '风化压力变化')
+    .replace(/\bweathering_delta\b/gi, '风化压力变化')
     .replace(/\brisk_delta\b/gi, '路线风险变化')
     .replace(/\brestore_discount\b/gi, '修护费用减免')
     .replace(/\bexchange_discount\b/gi, '交换费用减免')
@@ -182,7 +181,7 @@ export function actionFeedback(action: Action, before: GameState | undefined, af
   delta('AP', previousPlayer?.ap, nextPlayer?.ap);
   delta('研究线索', before?.shared.research_clues, after.shared.research_clues);
   delta('修护资源', before?.shared.restoration_resource, after.shared.restoration_resource);
-  delta('风化压力', before?.shared.weathering_track ?? before?.shared.threat, after.shared.weathering_track ?? after.shared.threat);
+  delta('风化压力', before?.shared.weathering_track ?? before?.shared.weathering_track, after.shared.weathering_track ?? after.shared.weathering_track);
   delta('共同影响', before?.shared.influence, after.shared.influence);
   const copy: Partial<Record<ActionType, string>> = {
     move: '已抵达新地点。新的线索与风险已经显影。',

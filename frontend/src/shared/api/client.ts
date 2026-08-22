@@ -63,7 +63,6 @@ function normalizeGameState(payload: ContractGameState): GameState {
       max_rounds: 8,
       active_player_id: Object.keys(players)[0] || 'p1',
       player_order: Object.keys(players),
-      threat: 0,
       influence: 0,
       restoration_resource: 0,
       completed_domains: [],
