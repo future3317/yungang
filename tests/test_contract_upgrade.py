@@ -128,6 +128,27 @@ def test_round_summary_keeps_previous_event_targets():
     assert summary["planning_mark_count"] == 1
 
 
+def test_round_summary_records_target_before_after_state():
+    game_engine = GameEngine()
+    state = game_engine.new_game("round-summary-entities", ["p1"])
+    site = next(iter(state.sites.values()))
+    snapshot = {
+        "round": 1,
+        "event_id": "sandstorm",
+        "event_targets": [site.id],
+        "planning_marks": {},
+        "weathering_track": state.shared.weathering_track,
+        "restoration_resource": state.shared.restoration_resource,
+        "influence": state.shared.influence,
+        "site_states": {site.id: {"damage": site.damage, "status": site.status.value}},
+    }
+    site.damage += 1
+    game_engine._update_site(site)
+    summary = game_engine._build_round_summary(state, snapshot)
+    assert summary["site_changes"][0]["label"] == game_engine.content.sites[site.id]["name"]
+    assert summary["site_changes"][0]["before"] + 1 == summary["site_changes"][0]["after"]
+
+
 def test_action_option_scores_each_target_and_promotes_best_target():
     engine = GameEngine()
     state = engine.new_game("target-recommendation", ["p1"], solo_mode=False)
