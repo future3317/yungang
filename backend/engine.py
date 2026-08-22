@@ -228,11 +228,15 @@ class GameEngine:
 
         if state.shared.phase == "planning":
             self._settle_planning_marks(state, state.shared.active_player_id)
-        actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}, {"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0}]
+        has_current_plan = any(str(mark.get("turn")) == str(state.shared.turn) for mark in state.shared.planning_marks.get(active.id, []))
+        actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}]
+        if not has_current_plan:
+            actions.append({"type": ActionType.PLAN.value, "label": "\u653e\u7f6e\u89c4\u5212\u6807\u8bb0", "cost": 0})
         site = state.sites[active.location]
-        actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
-        actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
-        actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
+        if not has_current_plan:
+            actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"Route: {next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
+            actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"Project: {state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
         if site.status != SiteStatus.CLOSED and active.ap > 0:
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
@@ -890,22 +894,14 @@ class GameEngine:
     def _settle_planning_marks(self, state, player_id):
         marks = [mark for values in state.shared.planning_marks.values() for mark in values]
         effects = []
+        collaborated_count = 0
         for mark in marks:
             if mark.get("collaborated"):
+                collaborated_count += 1
                 continue
-            target_id = mark.get("target_id")
-            if target_id in state.sites:
-                state.sites[target_id].influence += 1
-                effects.append({"type": "planning_site", "target_id": target_id, "label": "地点协作影响", "amount": 1})
-            elif target_id in state.routes:
-                state.routes[target_id].risk = max(0, state.routes[target_id].risk - 1)
-                effects.append({"type": "planning_route", "target_id": target_id, "label": "路线风险", "amount": -1})
-            elif target_id in state.projects:
-                self._advance_project(state, state.projects[target_id], player_id, "plan")
-                effects.append({"type": "planning_project", "target_id": target_id, "label": "项目推进", "amount": 1})
         state.shared.planning_marks = {}
         state.shared.phase = "player_action"
-        state.shared.log.append(f"\u89c4\u5212\u7ed3\u7b97\uff1a{len(marks)} \u679a\u6807\u8bb0\u8f6c\u4e3a\u534f\u4f5c\u52a0\u6210")
+        state.shared.log.append(f"\u89c4\u5212\u7ed3\u7b97\uff1a{collaborated_count} \u679a\u6807\u8bb0\u5df2\u88ab\u63a5\u7eed\uff0c{len(marks) - collaborated_count} \u679a\u672a\u63a5\u7eed\u4e14\u672a\u6539\u53d8\u72b6\u6001")
 
         return effects
 
@@ -1161,7 +1157,7 @@ class GameEngine:
         if not target or (target not in state.sites and target not in state.projects and target not in state.routes):
             raise ValueError("invalid_plan_target")
         marks = state.shared.planning_marks.setdefault(player.id, [])
-        if len(marks) >= int(state.shared.effective_rules.get("planning_marks_per_round", 2)): raise ValueError("planning_limit_reached")
+        if any(str(mark.get("turn")) == str(state.shared.turn) for mark in marks): raise ValueError("planning_limit_reached")
         marks.append({"target_id": target, "turn": str(state.shared.turn)})
         state.shared.log.append(f"{player.name} \u653e\u7f6e\u89c4\u5212\u6807\u8bb0\uff1a{target}")
 

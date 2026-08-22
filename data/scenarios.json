@@ -109,7 +109,7 @@
       "starting_clues": 0,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2,
+        "planning_marks_per_round": 1,
         "hand_limit_bonus": 1
       },
       "victory_brief": "完成云冈多域总汇和两个公共目标，并保持风化压力可控。",
@@ -224,7 +224,7 @@
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2,
+        "planning_marks_per_round": 1,
         "virtual_exchange": true
       },
       "victory_brief": "完成互市证据编目、跨来源互证目标和任意两个其他项目。",
@@ -339,7 +339,7 @@
       "starting_clues": 2,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2,
+        "planning_marks_per_round": 1,
         "route_action_discount": 1
       },
       "victory_brief": "完成多路线联络方案，并达成路线恢复与区域联络目标。",
@@ -487,7 +487,7 @@
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2,
+        "planning_marks_per_round": 1,
         "max_rounds_bonus": 1
       },
       "victory_brief": "完成云冈多域总汇、三个公共目标和至少三条稳定区域连接。",
@@ -562,7 +562,7 @@
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2
+        "planning_marks_per_round": 1
       },
       "victory_brief": "在压力失控前完成共同目标并保持关键节点开放。",
       "failure_brief": "风化压力达到上限，或关键节点关闭过多。",
@@ -661,7 +661,7 @@
       "starting_clues": 1,
       "solo_rules": {
         "controlled_roles": 2,
-        "planning_marks_per_round": 2
+        "planning_marks_per_round": 1
       },
       "victory_brief": "完成档案项目并让至少三类文化领域进入共同图卷。",
       "failure_brief": "回合耗尽仍未完成档案目标。",

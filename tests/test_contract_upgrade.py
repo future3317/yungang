@@ -1,4 +1,5 @@
 from backend.engine import GameEngine
+import pytest
 
 
 def test_action_options_are_the_ranked_player_contract():
@@ -9,6 +10,60 @@ def test_action_options_are_the_ranked_player_contract():
     assert all(option.reason and option.recommendation_score >= 0 for option in state.action_options)
     assert state.goal_status.weathering_limit == state.shared.weathering_limit
     assert all(condition.related_labels for condition in state.goal_status.victory_conditions if condition.related_ids)
+
+
+def test_each_player_can_declare_only_one_planning_target_per_round():
+    engine = GameEngine()
+    state = engine.new_game("planning-one-target", ["p1", "p2"], scenario_id="sand_and_stone")
+    player = state.players["p1"]
+    first, second = list(state.sites)[:2]
+    state.shared.phase = "player_action"
+
+    engine._plan(state, player, first)
+
+    with pytest.raises(ValueError, match="planning_limit_reached"):
+        engine._plan(state, player, second)
+
+
+def test_unconnected_site_plan_does_not_change_site_state():
+    engine = GameEngine()
+    state = engine.new_game("planning-no-free-site", ["p1", "p2"], scenario_id="sand_and_stone")
+    target = next(iter(state.sites.values()))
+    before_influence = target.influence
+    state.shared.planning_marks = {"p2": [{"target_id": target.id, "turn": str(state.shared.turn)}]}
+
+    effects = engine._settle_planning_marks(state, "p1")
+
+    assert target.influence == before_influence
+    assert effects == []
+
+
+def test_unconnected_route_plan_does_not_change_route_state():
+    engine = GameEngine()
+    state = engine.new_game("planning-no-free-route", ["p1", "p2"], scenario_id="sand_and_stone")
+    target = next(iter(state.routes.values()))
+    before_risk = target.risk
+    state.shared.planning_marks = {"p2": [{"target_id": target.id, "turn": str(state.shared.turn)}]}
+
+    effects = engine._settle_planning_marks(state, "p1")
+
+    assert target.risk == before_risk
+    assert effects == []
+
+
+def test_unconnected_project_plan_does_not_change_project_state():
+    engine = GameEngine()
+    state = engine.new_game("planning-no-free-project", ["p1", "p2"], scenario_id="sand_and_stone")
+    target = next(iter(state.projects.values()))
+    before_progress = target.progress
+    before_stage = target.stage_index
+    state.shared.planning_marks = {"p2": [{"target_id": target.id, "turn": str(state.shared.turn)}]}
+
+    effects = engine._settle_planning_marks(state, "p1")
+
+    assert target.progress == before_progress
+    assert target.stage_index == before_stage
+    assert effects == []
 
 
 def test_action_feedback_is_returned_by_the_server_state():
