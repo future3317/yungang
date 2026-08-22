@@ -29,3 +29,5 @@ audit_output/
 coverage/
 *.log
 data.zip
+output/
+tmp/

@@ -136,3 +136,28 @@ test('single player can follow the learning chain with visible confirmations', a
   const bodyText = await page.locator('body').innerText();
   expect(bodyText).not.toMatch(/player-seat-|target_rule|use_action_card|form_interpretation/);
 });
+
+test('decision surfaces remain accessible when opened', async ({ page }) => {
+  await startSolo(page);
+
+  const inspectorResults = await new AxeBuilder({ page }).include('.site-inspector').analyze();
+  const inspectorSerious = inspectorResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+  expect(inspectorSerious, inspectorSerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
+
+  await page.getByRole('button', { name: /^移动/ }).first().click();
+  const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await tutorialClose.isVisible()) await tutorialClose.click();
+  const actionResults = await new AxeBuilder({ page }).include('.action-preview').analyze();
+  const actionSerious = actionResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+  expect(actionSerious, actionSerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
+  await page.getByRole('button', { name: '返回浏览' }).click();
+
+  const strategy = page.locator('.strategy-card').first();
+  if (await strategy.isVisible()) {
+    await strategy.click();
+    const strategyResults = await new AxeBuilder({ page }).include('.strategy-card-dialog').analyze();
+    const strategySerious = strategyResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+    expect(strategySerious, strategySerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
+    await page.getByRole('button', { name: /返回|关闭/ }).last().click();
+  }
+});

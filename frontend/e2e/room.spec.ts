@@ -1,5 +1,7 @@
 ﻿import { expect, test } from '@playwright/test';
 
+import AxeBuilder from '@axe-core/playwright';
+
 test('two devices can join, ready, and start a room', async ({ browser }) => {
   const hostContext = await browser.newContext();
   const guestContext = await browser.newContext();
@@ -28,6 +30,11 @@ test('two devices can join, ready, and start a room', async ({ browser }) => {
   await host.getByRole('button', { name: '开始旅程' }).click();
   await expect(host).toHaveURL(/\/room\/room-.*\/game/);
   await expect(guest).toHaveURL(/\/room\/room-.*\/game/);
+  await expect(host.locator('.game-viewport')).toBeVisible();
+  await expect(guest.locator('.game-viewport')).toBeVisible();
+  const roomResults = await new AxeBuilder({ page: host }).include('.game-viewport').analyze();
+  const roomSerious = roomResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+  expect(roomSerious, roomSerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
   await hostContext.close();
   await guestContext.close();
 });
@@ -58,6 +65,8 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   await host.getByRole('button', { name: '开始旅程' }).click();
   await expect(host).toHaveURL(/\/room\/room-.*\/game/);
   await expect(guest).toHaveURL(/\/room\/room-.*\/game/);
+  await expect(host.locator('.game-viewport')).toBeVisible();
+  await expect(guest.locator('.game-viewport')).toBeVisible();
 
   await guestContext.close();
   const recovered = await recoveredContext.newPage();

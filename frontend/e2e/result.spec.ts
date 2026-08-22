@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 type OutcomeCase = {
@@ -56,6 +57,9 @@ for (const outcome of outcomes) {
 
     await page.goto(`/result/${state.session_id}`);
     await expect(page.getByRole('heading', { name: outcome.title })).toBeVisible();
+    const resultResults = await new AxeBuilder({ page }).include('.result-card').analyze();
+    const resultSerious = resultResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+    expect(resultSerious, resultSerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
     if (state.shared.outcome === 'defeat') await expect(page.locator('.result-failure-reason')).toContainText(outcome.detail);
   });
 }

@@ -9,7 +9,7 @@
   --surface-environment: #121715; --surface-stage: #19201d; --surface-raised: #222b26; --surface-inspector: #e7e0d0;
   --surface-interactive: #2a352e; --surface-selected: #39473c; --surface-paper: #f0eadc;
   --ink-primary: #f3eddf; --ink-secondary: #c3c8b9; --ink-muted: #89948a; --ink-dark: #29342e;
-  --action-primary: #c65b42; --discovery: #739fa1; --repair: #789a76; --connection: #b99a58; --risk: #bb7651; --closed: #94534b;
+  --action-primary: #8f3b2e; --discovery: #739fa1; --repair: #789a76; --connection: #b99a58; --risk: #bb7651; --closed: #94534b;
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
   --radius-sm: 6px; --radius-md: 12px; --radius-lg: 18px; --radius-pill: 999px;
   --line-subtle: rgba(233, 227, 205, .16); --line-dark: rgba(31, 40, 34, .16);
