@@ -7,7 +7,7 @@ Date: 2026-07-27
 - Content validation passed: schema v3, 18 sites, 30 routes, 36 culture cards, 18 events, and 4 scenarios.
 - Frontend type checking and production build passed.
 - The frontend had no discovered Vitest test files.
-- Backend tests initially failed because the test and local-recovery workflow used `POST /api/games/{session_id}`, while the app exposed only an auto-ID creation route. This compatibility endpoint is restored in the player-experience branch.
+- The former fixed-session write endpoint `POST /api/games/{session_id}` and the direct player-join endpoint are intentionally removed. Production creation uses `POST /api/games`; room membership uses the authenticated room flow, and regression tests assert that both old writes return `405`.
 - Before this branch there was no result route. A game with an outcome could remain on the game board after legal actions were cleared.
 
 ## Remaining evidence gaps

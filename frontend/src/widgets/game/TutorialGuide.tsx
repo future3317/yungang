@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Archive, ArrowRight, CircleAlert, Compass, Flag, HelpCircle, Library, MapPinned, Sparkles, Target, X } from 'lucide-react';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
-import type { TutorialProgress } from '../../shared/useTutorialProgress';
+import type { TutorialContext, TutorialProgress } from '../../shared/useTutorialProgress';
 import type { ActionOption, GameState } from '../../types/game';
 
 const steps = [
@@ -12,7 +12,7 @@ const steps = [
   { icon: Archive, eyebrow: '第 5 步 · 互证成章', title: '让不同来源的证据相互印证', body: '寻访所得会收在手牌中。回到节点，在研究台把线索判断为支持、冲突或待确认；当来源和领域都满足时，形成解释并选择干预。', cue: '手牌 · 研究台 · 形成解释' },
 ];
 
-const contextualSteps: Record<string, { icon: typeof Flag; eyebrow: string; title: string; body: string; cue: string }> = {
+const contextualSteps: Record<TutorialContext, { icon: typeof Flag; eyebrow: string; title: string; body: string; cue: string }> = {
   move: { icon: MapPinned, eyebrow: '第一次移动', title: '先抵达，再决定做什么', body: '地图上高亮的地点是当前行动可以抵达的目标。移动会消耗行动点，抵达后才能在该处寻访和推进委托。', cue: '选择高亮节点 · 查看抵达后的委托' },
   explore: { icon: Library, eyebrow: '第一次寻访', title: '从市场带回一件线索', body: '三件线索各自属于不同领域和来源。优先选择能填补当前委托缺口的一件，确认后消耗 1 点行动力并进入手牌。', cue: '金边推荐 · 领域 · 来源 · 组合标签' },
   interpret_evidence: { icon: Archive, eyebrow: '第一次研判', title: '给证据安排它的关系', body: '把线索放入研究台时，判断它是支持、冲突还是待确认。冲突不是错误，它会保留矛盾，但可能降低这次解释的可信度。', cue: '支持 · 冲突 · 待确认' },
@@ -20,7 +20,7 @@ const contextualSteps: Record<string, { icon: typeof Flag; eyebrow: string; titl
   use_action_card: { icon: Sparkles, eyebrow: '第一次策略牌', title: '把策略留给关键时刻', body: '策略牌是一次性的团队手段。先查看使用时机、目标和预计变化，再确认；它不会替你完成任务，但能改变一处紧要局面。', cue: '使用时机 · 合法目标 · 预计变化' },
 };
 
-export function TutorialGuide({ open, onOpenChange, state, actionOptions = [], triggerAction, progress }: { open: boolean; onOpenChange: (open: boolean) => void; state?: GameState; actionOptions?: ActionOption[]; triggerAction?: string | null; progress: TutorialProgress }) {
+export function TutorialGuide({ open, onOpenChange, state, actionOptions = [], triggerAction, progress }: { open: boolean; onOpenChange: (open: boolean) => void; state?: GameState; actionOptions?: ActionOption[]; triggerAction?: TutorialContext | null; progress: TutorialProgress }) {
   const [step, setStep] = useState(0);
   const drag = useDraggablePosition('yungang-tutorial-trigger-position', { minVisibleWidth: 96, minVisibleHeight: 52 });
   const { markManualSeen, hasSeenContext, markContextSeen } = progress;
@@ -34,7 +34,7 @@ export function TutorialGuide({ open, onOpenChange, state, actionOptions = [], t
 
   const current = contextual || journeySteps[Math.min(step, journeySteps.length - 1)];
   const Icon = current.icon;
-  const close = () => { markManualSeen(); onOpenChange(false); };
+  const close = () => { if (!contextual) markManualSeen(); onOpenChange(false); };
   const next = () => { if (step === journeySteps.length - 1) close(); else setStep(value => value + 1); };
 
   return <>

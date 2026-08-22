@@ -339,8 +339,8 @@ def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | No
     if current.shared.active_player_id not in controlled_ids:
         raise HTTPException(403, {"code": "not_active_player", "message": "当前由另一位同行者行动。", "details": {}, "recovery": "wait_for_active_player"})
     player_id = current.shared.active_player_id
-    legacy = ActionRequest(player_id=player_id, **request.model_dump())
-    result = _run_action(room["session_id"], legacy)
+    action_request = ActionRequest(player_id=player_id, **request.model_dump())
+    result = _run_action(room["session_id"], action_request)
     if result.shared.outcome:
         room["status"] = "completed"
         room_service.repository.save(room)

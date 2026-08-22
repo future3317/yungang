@@ -38,7 +38,7 @@ function feedbackChangeText(changes: FeedbackChange[]) {
 }
 import { StrategyCardDialog } from '../../widgets/game/StrategyCardDialog';
 import { assetUrl } from '../../shared/assetUrl';
-import { useTutorialProgress } from '../../shared/useTutorialProgress';
+import { tutorialContextForAction, type TutorialContext, useTutorialProgress } from '../../shared/useTutorialProgress';
 import '../../styles/experience.css';
 import '../../styles/tutorial.css';
 import '../../styles/interface-scale.css';
@@ -61,7 +61,7 @@ export function GamePage() {
   const [handoffName, setHandoffName] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<ActionOption | null>(null);
   const [completedTask, setCompletedTask] = useState<{ task: Task; siteName: string; changes: Array<{ label?: string; before?: string | number | null; after?: string | number | null; delta?: number | null }> } | null>(null);
-  const [tutorialIntent, setTutorialIntent] = useState<ActionType | null>(null);
+  const [tutorialIntent, setTutorialIntent] = useState<TutorialContext | null>(null);
   const tutorialProgress = useTutorialProgress();
   const [roomToken] = useState(() => roomId ? getRoomToken(roomId) : '');
   const [roomEventState, setRoomEventState] = useState<'connected' | 'retrying' | 'ended' | 'unauthorized'>('connected');
@@ -107,10 +107,8 @@ export function GamePage() {
   const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : roomEventState === 'unauthorized' ? '席位失效' : roomEventState === 'retrying' ? '重连中' : roomEventState === 'ended' ? '重新连接' : '已连接';
   const run = (action?: Action) => { if (roomId && roomEventState === 'unauthorized') { enqueueToast('\u5e2d\u4f4d\u51ed\u8bc1\u5df2\u5931\u6548\uff0c\u8bf7\u8fd4\u56de\u623f\u95f4\u6062\u590d\u3002'); return; } if (action && canAct && !mutation.isPending) mutation.mutate({ ...action, request_id: action.request_id || crypto.randomUUID() }); };
   const announceIntent = (type: ActionType) => {
-    if (!tutorialProgress.hasSeenContext(type)) {
-      setTutorialIntent(type);
-      setTutorialOpen(true);
-    }
+    const context = tutorialContextForAction(type);
+    if (context && !tutorialProgress.hasSeenContext(context)) { setTutorialIntent(context); setTutorialOpen(true); }
   };
  const chooseOption = (option: ActionOption) => { if (!canAct || option.enabled === false) return; announceIntent(option.type); if (option.type === 'explore') { setSelectedOption(null); setActionMode('explore'); setInspectorOpen(true); return; } if (option.targets.length) { setSelectedOption(option); if (['move', 'restore', 'survey_route', 'restore_route', 'establish_connection'].includes(option.type)) { setActionMode(option.type as ActionMode); setFocus(active.location); } else setActionMode(null); return; } const action = optionAction(option); if (option.type === 'end_turn') { const weathering = state.shared.weathering_track ?? state.shared.threat ?? 0; const isFinalPlayer = state.shared.player_order[state.shared.player_order.length - 1] === active.id; const warnings = [active.ap > 0 ? `你还有 ${active.ap} 点行动力未使用` : '', isFinalPlayer && state.shared.current_event_id ? '当前事件将在回合结束时结算' : '', weathering >= Math.max(0, (state.shared.weathering_limit || 5) - 1) ? '风化压力已经接近上限' : ''].filter(Boolean); const handoff = isFinalPlayer ? '确认结束团队本轮行动，随后进入事件结算。' : '确认结束这位角色的行动，交给下一位同行者；事件暂不结算。'; setPreview({ ...action, description: warnings.length ? `${warnings.join('；')}。${handoff}` : handoff }); return; } if (['use_skill', 'use_node_ability', 'use_upgrade', 'end_planning', 'prepare'].includes(option.type)) setPreview(action); else run(action); };
   const chooseAction = (type: ActionType) => { const option = state.action_options?.find(item => item.type === type && item.enabled !== false); if (option) chooseOption(option); };
@@ -119,9 +117,9 @@ export function GamePage() {
   const mapActionMode = actionMode && ['move', 'restore', 'survey_route', 'restore_route', 'establish_connection'].includes(actionMode) ? actionMode as Extract<ActionType, 'move' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection'> : null;
   const selectExploreCard = (id: string) => { const option = state.action_options?.find(item => item.type === 'explore' && item.targets.some(target => target.payload?.card_id === id)); const target = option?.targets.find(item => item.payload?.card_id === id); if (option && target) selectAction(optionAction(option, target)); };
   const selectInterpretation = (cardId: string, relation: 'support' | 'conflict' | 'pending') => { announceIntent('interpret_evidence'); const action = legal.find(item => item.type === 'interpret_evidence' && item.card_id === cardId && item.target_id === relation); if (action) selectAction(action); };
-  const formInterpretation = () => { announceIntent('form_interpretation'); const action = legal.find(item => item.type === 'form_interpretation'); if (action) selectAction(action); };
-  const chooseIntervention = (choice: 'act_now' | 'minimal' | 'record') => { announceIntent('choose_intervention'); const action = legal.find(item => item.type === 'choose_intervention' && item.target_id === choice); if (action) selectAction(action); };
-  const pendingAction = (action: Action) => state.pending_choice?.kind === 'action_card' ? selectAction(action) : run(action);
+  const formInterpretation = () => { const action = legal.find(item => item.type === 'form_interpretation'); if (action) selectAction(action); };
+  const chooseIntervention = (choice: 'act_now' | 'minimal' | 'record') => { const action = legal.find(item => item.type === 'choose_intervention' && item.target_id === choice); if (action) selectAction(action); };
+  const pendingAction = (action: Action) => state.pending_choice?.kind === 'action_card' ? (announceIntent('use_action_card'), selectAction(action)) : run(action);
 
   const timelineEvents = (state.shared.journal?.length ? state.shared.journal : state.shared.log.map((message, index) => ({ id: `legacy-${index}`, round: state.shared.turn, type: 'action', message, effects: [], created_at: '', player_id: state.shared.active_player_id }))).map(entry => ({ ...entry, player_name: entry.player_id ? state.players[entry.player_id]?.name : undefined, message: localizeTimelineMessage(entry.message, { sites, routes: state.routes || {}, projects: state.projects || {}, players: state.players }) }));
   const summaryEventId = typeof state.shared.round_summary?.event_id === 'string' ? state.shared.round_summary.event_id : undefined;

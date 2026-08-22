@@ -2,6 +2,20 @@ import { useCallback, useState } from 'react';
 
 const STORAGE_KEY = 'yungang-journey-tutorial-v2';
 type Progress = { manual: boolean; contexts: string[] };
+export type TutorialContext = 'move' | 'explore' | 'interpret_evidence' | 'resolve_event' | 'use_action_card';
+const actionContexts: Record<string, TutorialContext> = {
+  move: 'move',
+  explore: 'explore',
+  interpret_evidence: 'interpret_evidence',
+  resolve_event: 'resolve_event',
+  use_action_card: 'use_action_card',
+  play_card: 'use_action_card',
+};
+
+export function tutorialContextForAction(type: string): TutorialContext | null {
+  return actionContexts[type] || null;
+}
+
 export type TutorialProgress = {
   hasSeenManual: boolean;
   hasSeenContext: (context: string) => boolean;
