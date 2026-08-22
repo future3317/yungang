@@ -116,6 +116,30 @@
   .region-shape text { fill: rgba(235, 225, 194, .33); font-size: 1.5px; stroke: none; }
   .map-node .node-label { fill: #eee6d3; font-size: 1.92px; stroke: rgba(14, 24, 18, .76); stroke-width: .58px; paint-order: stroke; }
   .map-node .node-status { font-size: 1.35px; }
+} 
+
+/* Canonical desktop geometry: the top bar owns its row; the HUD grid starts below it. */
+@media (min-width: 1101px) {
+  .game-viewport {
+    --hud-header-height: 76px;
+    --hud-panel-top: 16px;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top {
+    position: relative;
+    z-index: 40;
+    height: var(--hud-header-height);
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center {
+    inset: var(--hud-header-height) 0 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column {
+    min-height: 0 !important;
+  }
 }
 
 @media (min-width: 1101px) and (max-height: 780px) {
