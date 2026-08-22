@@ -7,6 +7,25 @@ from pydantic import BaseModel, ConfigDict, Field, JsonValue, TypeAdapter
 JsonObject = dict[str, JsonValue]
 
 
+class ComboRequirementContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    required_combo_tags: list[str] = Field(default_factory=list)
+    preferred_origins: list[str] = Field(default_factory=list)
+    minimum_distinct_players: int = Field(default=0, ge=0)
+
+
+class ProjectStageContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str
+    name: str
+    required_progress: int = Field(default=1, ge=0)
+    action_type: str
+    requirements: JsonObject = Field(default_factory=dict)
+    stage_text: str | None = None
+
+
 class ContentItemContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -39,7 +58,7 @@ class TaskContract(ContentItemContract):
     required_domains: list[str] = Field(min_length=1)
     required_origin_diversity: int = Field(ge=1)
     required_card_count: int = Field(ge=1)
-    combo_requirement: JsonObject = Field(default_factory=dict)
+    combo_requirement: ComboRequirementContract = Field(default_factory=ComboRequirementContract)
     reward: JsonObject = Field(default_factory=dict)
     culture_explanation: str | None = None
     learning_objective: str | None = None
@@ -51,7 +70,7 @@ class TaskContract(ContentItemContract):
 
 class ProjectContract(ContentItemContract):
     site_id: str
-    stages: list[JsonObject] = Field(min_length=1)
+    stages: list[ProjectStageContract] = Field(min_length=1)
     project_type: str | None = None
     reward: JsonObject = Field(default_factory=dict)
     strategy_note: str | None = None

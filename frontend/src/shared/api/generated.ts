@@ -515,6 +515,18 @@ export interface components {
          * @enum {string}
          */
         ChoiceKind: "event" | "view_select" | "discard" | "action_card" | "archive_select" | "archive_retrieve" | "role_upgrade";
+        /** ComboRequirementContract */
+        ComboRequirementContract: {
+            /** Required Combo Tags */
+            required_combo_tags?: string[];
+            /** Preferred Origins */
+            preferred_origins?: string[];
+            /**
+             * Minimum Distinct Players
+             * @default 0
+             */
+            minimum_distinct_players: number;
+        };
         /** CreateGameRequest */
         CreateGameRequest: {
             /** Player Ids */
@@ -1215,9 +1227,7 @@ export interface components {
             /** Site Id */
             site_id: string;
             /** Stages */
-            stages: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            stages: components["schemas"]["ProjectStageContract"][];
             /** Project Type */
             project_type?: string | null;
             /** Reward */
@@ -1267,6 +1277,26 @@ export interface components {
             }[];
         } & {
             [key: string]: unknown;
+        };
+        /** ProjectStageContract */
+        ProjectStageContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Required Progress
+             * @default 1
+             */
+            required_progress: number;
+            /** Action Type */
+            action_type: string;
+            /** Requirements */
+            requirements?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Stage Text */
+            stage_text?: string | null;
         };
         /** ProjectState */
         ProjectState: {
@@ -2093,10 +2123,7 @@ export interface components {
             required_origin_diversity: number;
             /** Required Card Count */
             required_card_count: number;
-            /** Combo Requirement */
-            combo_requirement?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            combo_requirement?: components["schemas"]["ComboRequirementContract"];
             /** Reward */
             reward?: {
                 [key: string]: components["schemas"]["JsonValue"];
