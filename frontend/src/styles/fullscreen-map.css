@@ -1486,6 +1486,40 @@
     overscroll-behavior: contain;
   }
 }
+
+@layer layout {
+  .game-viewport > .game-shell {
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    min-height: 100dvh;
+    box-sizing: border-box;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top { grid-row: 1; }
+  .game-viewport > .game-shell > .mobile-tabs { grid-row: 2; }
+  .game-viewport > .game-shell > .game-grid { grid-row: 3; }
+  .game-viewport > .game-shell > .hud-slot-bottom { grid-row: 4; }
+}
+
+@media (min-width: 1101px) {
+  .stage-column > .stage-heading,
+  .stage-column > .round-summary {
+    position: relative;
+    inset: auto;
+    left: auto;
+    top: auto;
+    z-index: 1;
+    width: auto;
+    margin: 0;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .stage-column > .stage-heading { grid-row: 1; }
+  .stage-column > .round-summary { grid-row: 2; }
+  .stage-column > .network-stage { grid-row: 3; min-height: 0; }
+  .stage-column > .stage-caption { grid-row: 4; }
+}
 /* Canonical desktop shell boundaries: header row, world layer, and two scroll rails. */
 @media (min-width: 1101px) {
   .hud-slot-top { position: relative !important; z-index: 70 !important; height: auto !important; min-height: 72px !important; margin: 0 !important; pointer-events: auto !important; }
