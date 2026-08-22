@@ -141,6 +141,9 @@
   .room-feedback .ghost-button { min-height: 32px; }
   .result-explanation { padding: 13px 15px; color: #e4d7b9; text-align: left; background: rgba(14, 23, 17, .34); border: 1px solid rgba(222, 201, 153, .18); border-radius: 10px; }
   .result-explanation p { margin: 5px 0 0; color: #c9bda5; font-size: .82rem; line-height: 1.55; }
+  .result-failure-reason { display: grid; gap: 5px; padding: 12px 14px; color: #f0d5a3; text-align: left; background: rgba(143, 64, 48, .16); border: 1px solid rgba(214, 138, 107, .42); border-left: 3px solid #d68a6b; border-radius: 10px; }
+  .result-failure-reason b { color: #f2bd8e; font-size: .78rem; }
+  .result-failure-reason span { color: #dfcdb4; font-size: .82rem; line-height: 1.55; }
   @container (max-width: 360px) {
     .hand-cards { grid-template-columns: 1fr; }
     .site-inspector .inspector-tabs button { min-width: 0; padding-inline: 6px; font-size: .82rem; }
