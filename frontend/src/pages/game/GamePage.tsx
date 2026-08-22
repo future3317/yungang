@@ -117,13 +117,24 @@ function ActionTargetDialog({ option, disabled, onChoose, onCancel }: { option: 
 function CardDialog({ id, item, action, onClose, onUse }: { id: string; item?: ContentCard; action?: Action; onClose: () => void; onUse: (action?: Action) => void }) { const ref = useDialogFocus(); return <div className="dialog-backdrop"><section ref={ref} className="dialog card-dialog" role="dialog" aria-modal="true" aria-labelledby="card-dialog-title"><button className="dialog-close" onClick={onClose} aria-label="关闭"><X /></button><img className="dialog-card-art" src={assetUrl(item?.icon_asset)} alt="" /><span className="eyebrow">文化证据</span><h2 id="card-dialog-title">{item?.name || id}</h2><p>{item?.description || item?.summary || '一份等待被理解并投入合适地点的文化记录。'}</p><div className="card-how-to-use"><b>怎么用</b><span>带回当前节点的研究台，选择它是“支持”“冲突”还是“待确认”。它会消耗 1 AP，并推进对应的领域、来源或组合条件。</span></div>{item?.combo_name && <p className="card-combo"><b>{item.combo_name}</b> · {item.combo_reward_text || item.instant_use_text}</p>}<button className="primary-cta" disabled={!action} onClick={() => onUse(action)}>{action ? '查看行动后果' : '当前不可使用'}</button></section></div>; }
 function ChoiceDialog({ state, event, disabled = false, onChoose }: { state: GameState; event?: ContentEvent; disabled?: boolean; onChoose: (action: Action) => void }) {
   const isEvent = state.pending_choice?.kind === 'event';
+  const pendingKind = state.pending_choice?.kind || 'choice';
+  const pendingCopy: Record<string, { eyebrow: string; title: string; body: string }> = {
+    discard: { eyebrow: '手牌整理 · 需要选择', title: '手牌已满', body: '新的线索已经抵达。请选择一张旧线索放入弃牌堆，才能把新线索带回研究台。' },
+    view_select: { eyebrow: '档案检视 · 需要选择', title: '从档案中挑出一条线索', body: '档案库已摊开可检视的线索。选择一条加入手牌，其他线索会留在档案中。' },
+    archive_select: { eyebrow: '档案检视 · 需要选择', title: '确定要记录的档案线索', body: '你正在查看档案顶部的线索。选择一条作为本次研究的重点，选择完成后才能继续行动。' },
+    archive_retrieve: { eyebrow: '档案回收 · 需要选择', title: '从档案中取回一条线索', body: '角色专长允许你调换一张手牌与档案线索。选择要取回的线索，随后再选择要放回档案的手牌。' },
+    action_card: { eyebrow: '策略牌 · 选择目标', title: '为策略牌选择目标', body: '这张策略牌已经准备好。选择一个合法目标，确认后费用和效果会立即结算。' },
+    select_market_card: { eyebrow: '公开市场 · 需要选择', title: '选择一条带回的文化线索', body: '公开市场已经展开。选中的线索会进入当前角色的手牌，并推进后续的研究台判断。' },
+    choice: { eyebrow: '共同决定 · 需要选择', title: '完成当前选择', body: '这一步会影响团队的资源、风险或证据进度。选择一个选项后，旅程才能继续。' },
+  };
+  const copy = isEvent ? { eyebrow: '世界事件 · 需要回应', title: event?.name || '线路正在等待回应', body: event?.forecast_text || event?.description || '你的选择会立即改变本回合的风险与资源。' } : pendingCopy[pendingKind] || pendingCopy.choice;
   if (state.pending_choice?.kind === 'role_upgrade') return <RoleUpgradeDialog state={state} disabled={disabled} onChoose={onChoose} />;
   const ref = useDialogFocus();
   const choices = (state.action_options || []).flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
   return <div className="dialog-backdrop"><section ref={ref} className="dialog choice-dialog" role="dialog" aria-modal="true" aria-labelledby="choice-dialog-title">
-    <span className="eyebrow">{isEvent ? '世界事件 · 需要回应' : '共同决定'}</span>
-    <h2 id="choice-dialog-title">{event?.name || (isEvent ? '线路正在等待回应' : '从市场中选择一件证据')}</h2>
-    <p>{event?.forecast_text || event?.description || '你的选择会立即改变本回合的风险与资源。'}</p>
+    <span className="eyebrow">{copy.eyebrow}</span>
+    <h2 id="choice-dialog-title">{copy.title}</h2>
+    <p>{copy.body}</p>
     {isEvent && state.shared.event_targets?.length ? <div className="choice-hint"><b>已锁定影响范围</b><span>{state.shared.event_targets.length} 个目标已由本局种子确定，选择会改变这些目标的结果。</span></div> : null}
     {event?.mitigation_hint && <div className="choice-hint"><b>应对建议</b><span>{event.mitigation_hint}</span></div>}
     <div className="choice-list">{choices.map((action, index) => <button disabled={disabled} key={`${action.type}-${index}`} onClick={() => onChoose(action)}>
