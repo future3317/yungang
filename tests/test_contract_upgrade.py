@@ -1,5 +1,5 @@
 from backend.engine import GameEngine
-from backend.models import ResultState, ViewerState
+from backend.models import ProjectStatus, ResultState, SiteStatus, ViewerState
 import pytest
 
 
@@ -24,6 +24,45 @@ def test_action_options_expose_human_readable_requirements():
     assert any("路线" in requirement and "通行" in requirement for requirement in move.requirements)
     assert any("手牌" in requirement for requirement in explore.requirements)
     assert any("结束当前行动" in requirement for requirement in end_turn.requirements)
+
+
+@pytest.mark.parametrize(
+    ("reason", "setup"),
+    [
+        ("too_many_closed_sites", lambda state: [setattr(site, "status", SiteStatus.CLOSED) for site in list(state.sites.values())[:2]]),
+        ("weathering_track_reached_limit", lambda state: setattr(state.shared, "weathering_track", state.shared.weathering_limit)),
+        ("round_limit_reached", lambda state: setattr(state.shared, "turn", state.shared.max_rounds + 1)),
+    ],
+)
+def test_each_failure_path_writes_a_specific_result(reason, setup):
+    engine = GameEngine()
+    state = engine.new_game(f"result-{reason}", ["p1"], scenario_id="sand_and_stone")
+    setup(state)
+
+    engine._check_outcome(state)
+
+    assert state.shared.outcome == "defeat"
+    assert state.shared.outcome_reason == reason
+    assert state.result is not None
+    assert state.result.outcome_reason == reason
+
+
+def test_success_path_writes_a_specific_result():
+    engine = GameEngine()
+    state = engine.new_game("result-victory", ["p1"], scenario_id="sand_and_stone")
+    core = state.projects[state.scenario_id and engine.content.scenarios[state.scenario_id]["core_project_id"]]
+    core.status = ProjectStatus.COMPLETED
+    for project in state.projects.values():
+        project.status = ProjectStatus.COMPLETED
+    for site in state.sites.values():
+        site.discovered = True
+        site.status = SiteStatus.STABLE
+
+    engine._check_outcome(state)
+
+    assert state.shared.outcome == "victory"
+    assert state.shared.outcome_reason == "core_project_and_objectives_completed"
+    assert state.result is not None
 
 
 def test_each_player_can_declare_only_one_planning_target_per_round():
