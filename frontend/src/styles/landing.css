@@ -43,7 +43,7 @@ main.landing .start-panel {
 }
 main.landing .start-panel form { gap: 14px; }
 main.landing .scenario-options {
-  grid-auto-rows: minmax(0, auto);
+  grid-auto-rows: max-content;
   max-height: min(420px, 45dvh);
   overflow-y: auto;
   align-content: start;
@@ -51,7 +51,9 @@ main.landing .scenario-options {
   scrollbar-gutter: stable;
 }
 main.landing .scenario-options > button {
+  height: auto;
   min-height: 0;
+  align-self: start;
   align-content: start;
   overflow-wrap: anywhere;
   line-height: 1.35;
