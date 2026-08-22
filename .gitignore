@@ -14,8 +14,7 @@ dist/
 # Transient chat artifacts
 ChatGPT Image*.png
 
-# Generated temporary assets
-frontend/static/ui-assets/generated/
+# Runtime assets are deployed with the frontend. Only the source-side scratch pack stays local.
 yungang_game_ui_assets/
 
 # Runtime databases and local QA artifacts

@@ -128,6 +128,11 @@
   .game-shell { background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, .12), transparent 42%), #0c1711; }
   .network-stage { background: radial-gradient(ellipse at 50% 46%, rgba(188, 155, 82, .12), transparent 66%) !important; }
 }
+
+/* Event art is one deliberate scene surface, never a stacked paper/card fallback. */
+.event-art { isolation: isolate; }
+.event-art::before, .event-art::after { display: none !important; }
+.event-art .event-art-scene { position: static !important; display: block; width: 100%; height: 100%; object-fit: cover; }
 /* New interaction art is a restrained map layer, not a second background. */
 .network-atmosphere-layer,
 .map-focus-layer,
@@ -768,4 +773,17 @@
 .event-projection span { color: #d8c7aa; font-size: .72rem; line-height: 1.4; }
 @media (min-width: 1101px) {
   .site-inspector .inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+
+/* Final desktop HUD overrides: keep these after legacy finishing rules. */
+@media (min-width: 1101px) {
+  .hud-slot-top > .game-header { position: relative; z-index: 50; display: grid; grid-template-columns: minmax(360px, 1fr) minmax(540px, min(760px, 52vw)) minmax(96px, 1fr); align-items: start; min-height: var(--header-height); height: auto; overflow: visible !important; }
+  .hud-slot-top .header-center { position: relative; top: auto; left: auto; width: 100%; transform: none; justify-self: center; }
+  .hud-slot-top .goal-hud.is-open { position: absolute; z-index: 30; top: 8px; left: 0; width: 100%; max-height: min(440px, calc(100dvh - 96px)); overflow: visible; background: rgba(16, 31, 22, .96); box-shadow: 0 18px 36px rgba(0, 0, 0, .34); }
+  .hud-slot-top .goal-hud.is-open .goal-conditions { max-height: min(300px, calc(100dvh - 190px)); overflow-y: auto; padding-right: 4px; scrollbar-gutter: stable; }
+  .site-inspector { display: flex !important; flex-direction: column !important; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-gutter: stable; }
+  .site-inspector .inspector-summary, .site-inspector .inspector-tabs { flex: 0 0 auto; }
+  .site-inspector .inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .site-inspector .inspector-content { flex: 0 0 auto; min-height: 0; overflow: visible !important; }
+  .route-inspector { top: calc(var(--hud-panel-top) + 116px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); width: min(292px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 3 * var(--hud-center-gutter))); max-height: min(250px, calc(100dvh - 240px)); overflow-y: auto; }
 }
