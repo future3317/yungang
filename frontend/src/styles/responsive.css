@@ -1,7 +1,5 @@
 .mobile-tabs { display: none; }
 @media (max-width: 760px) {
-  .game-shell { padding: 8px; }
-  .game-header { grid-template-columns: 1fr auto; height: auto; min-height: 54px; }
   .header-center { display: none; }
   .mobile-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin: 9px 0; }
   .mobile-tabs button { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--ink-secondary); background: transparent; border: 1px solid var(--line-subtle); border-radius: var(--radius-sm); }
@@ -9,7 +7,6 @@
   .mobile-hidden, .mobile-context-hidden { display: none; }
   .mobile-tabs { position: sticky; z-index: 25; top: 0; }
   .mobile-tabs button { font-size: .86rem; }
-  .stage-column { grid-template-rows: auto minmax(480px, 62vh) auto; }
   .command-deck { position: relative; grid-template-columns: 1fr; margin-top: 12px; }
   .featured-actions { overflow-x: auto; padding-bottom: 3px; }
   .action-card { min-width: 195px; }

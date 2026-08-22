@@ -28,7 +28,12 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     const message = detail.message || detail.details?.message || (response.status === 404 ? '找不到这段旅程。' : response.status === 409 ? '旅程已被更新，请同步后重试。' : `请求失败：${response.status}`);
     throw new ApiError(response.status, message, body, detail.code, detail.recovery);
   }
-  return body as T;
+  return body;
+}
+
+function requiredArray<T>(value: T[] | undefined, field: string): T[] {
+  if (!Array.isArray(value)) throw new Error(`服务器返回缺少 ${field}，无法继续显示这段旅程。`);
+  return value;
 }
 
 function normalizeGameState(payload: ContractGameState): GameState {
@@ -51,9 +56,8 @@ function normalizeGameState(payload: ContractGameState): GameState {
     ...payload,
     players: Object.fromEntries(Object.entries(players).map(([id, player]) => [id, {
       ...player,
-      hand: player.hand || [],
-      action_hand: player.action_hand || [],
-      flags: player.flags || {},
+      hand: requiredArray(player.hand, `players.${id}.hand`),
+      action_hand: requiredArray(player.action_hand, `players.${id}.action_hand`),
       upgrades: player.upgrades || [],
     }])) as GameState['players'],
     sites: payload.sites as GameState['sites'],

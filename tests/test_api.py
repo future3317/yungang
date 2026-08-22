@@ -146,10 +146,12 @@ def test_prepare_event_consumes_flag_and_prevents_event_choice():
     repo.save(stored)
     state = client.get(f'/api/games/{session}').json()
     prepared = action(session, state, 'p1', 'prepare').json()
-    assert prepared['players']['p1']['flags']['prepared_event_id'] == 'route_blocked'
+    assert 'flags' not in prepared['players']['p1']
+    assert repo.get(session).players['p1'].flags['prepared_event_id'] == 'route_blocked'
     ended = action(session, prepared, 'p1', 'end_turn').json()
     assert ended['pending_choice'] is None
-    assert ended['shared']['prepared_event_ids'] == []
+    assert 'prepared_event_ids' not in ended['shared']
+    assert repo.get(session).shared.prepared_event_ids == []
 
 def test_route_blocked_event_changes_a_real_route_state():
     session = 'test-route-blocked-target'

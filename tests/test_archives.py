@@ -56,3 +56,12 @@ def test_legacy_state_migration_translates_pressure_alias_before_validation():
     assert migrated["migrated_from_schema_version"] == 2
     assert migrated["shared"]["weathering_track"] == 3
     assert "threat" not in migrated["shared"]
+
+
+def test_v1_state_migration_runs_each_version_step():
+    payload = {"schema_version": 1, "session_id": "legacy-v1", "shared": {"threat": 2}}
+    migrated = migrate_game_state(payload)
+    assert migrated["schema_version"] == 3
+    assert migrated["migrated_from_schema_version"] == 1
+    assert migrated["shared"]["weathering_track"] == 2
+    assert "threat" not in migrated["shared"]

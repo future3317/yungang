@@ -1,7 +1,7 @@
 import pytest
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 
-from backend.content_schemas import ComboRequirementContract, EventContract, ProjectStageContract
+from backend.content_schemas import ComboRequirementContract, EffectContract, EventContract, ProjectStageContract
 from backend.models import EventForecastScope, EventInstance, EventRecord, PendingChoice, PendingChoiceOption, ProjectStage, RoundEntityChange, RoundMetrics, RoundSummary, TaskState
 
 
@@ -22,6 +22,20 @@ def test_project_stage_contract_rejects_unknown_fields():
 
 def test_event_contract_has_one_mitigation_hint_field():
     assert list(EventContract.model_fields).count("mitigation_hint") == 1
+
+
+def test_effect_contract_uses_closed_discriminated_shapes():
+    adapter = TypeAdapter(EffectContract)
+    assert adapter.validate_python({"type": "survey_route", "risk_delta": -1, "clues": 1}).type == "survey_route"
+    with pytest.raises(ValidationError):
+        adapter.validate_python({"type": "survey_route", "amount": 1})
+    with pytest.raises(ValidationError):
+        adapter.validate_python({"type": "not_a_runtime_effect", "amount": 1})
+
+
+def test_task_runtime_submodels_reject_unknown_nested_fields():
+    with pytest.raises(ValidationError):
+        TaskState.model_validate({"interpretation": {"placements": [{"card_id": "survey", "relation": "support", "unexpected": True}]}})
 
 
 @pytest.mark.parametrize("model, payload", [

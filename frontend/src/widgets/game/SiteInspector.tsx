@@ -64,7 +64,9 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const eventResponseAvailable = state.pending_choice?.kind === 'event';
   const interventionActions = actionOptions.filter(item => item.type === 'choose_intervention').flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
   const contributions = task?.contributed_cards || [];
-  const matchingHand = active.hand.filter(id => task?.required_domains.includes(cards[id]?.domain || '')).length;
+  const requiredDomains = task?.required_domains ?? [];
+  const matchingHand = active.hand.filter(id => requiredDomains.includes(cards[id]?.domain || '')).length;
+  const cardRequirement = task?.progress?.requirements?.find(item => item.key === 'cards');
   const marketCards = state.market.map(id => cards[id]).filter(Boolean);
   const exploreAvailable = isCurrentSite && legal.some(item => item.type === 'explore');
   const exploreStatus = !isCurrentSite ? '抵达节点后才能寻访' : !marketCards.length ? '本轮市场暂时没有可取线索' : !exploreAvailable ? '行动点不足或当前阶段不可寻访' : matchingHand ? '手牌里已有待归类证据' : '从市场挑选与委托相关的线索';
@@ -102,11 +104,11 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           <div className="task-workflow" aria-label="任务完成步骤">
             <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达此处</b><small>{isCurrentSite ? '你已来到节点，可以开始寻访。' : `沿路线前往${site.name}，那里正在等待你的脚步。`}</small></div></div>
             <div className="task-step"><span className={matchingHand > 0 || contributions.length > 0 ? 'complete' : ''}>{matchingHand > 0 || contributions.length > 0 ? <Check size={13} /> : '2'}</span><div><b>寻访文化线索</b><small>消耗 1 AP 从公开市场取走一件线索，手牌最多收纳 3 张。</small></div></div>
-            <div className="task-step"><span className={task.progress?.requirements?.find(item => item.key === 'cards')?.complete ? 'complete' : ''}>{task.progress?.requirements?.find(item => item.key === 'cards')?.complete ? <Check size={13} /> : '3'}</span><div><b>在研究台归类证据</b><small>{task.progress?.requirements?.find(item => item.key === 'cards')?.current ?? 0} / {(task.progress?.requirements?.find(item => item.key === 'cards')?.target ?? task.required_card_count) || 1} 件有效证据；需要 {task.required_domains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
+            <div className="task-step"><span className={cardRequirement?.complete ? 'complete' : ''}>{cardRequirement?.complete ? <Check size={13} /> : '3'}</span><div><b>在研究台归类证据</b><small>{cardRequirement?.current ?? 0} / {(cardRequirement?.target ?? task.required_card_count) || 1} 件有效证据；需要 {requiredDomains.map(domain => domainName(meta, domain)).join('、')}。</small></div></div>
             <div className="task-step"><span className={task.completed ? 'complete' : ''}>{task.completed ? <Check size={13} /> : '4'}</span><div><b>形成解释并选择干预</b><small>{task.interpretation?.formed ? '解释已形成，请选择如何回应这段文化关系。' : '支持、冲突与待确认会共同决定解释的可信度。'}</small></div></div>
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此印证。{task.combo_requirement?.preferred_origins?.length ? `指定来源：${formatRequirementValues(meta, 'origins', task.combo_requirement.preferred_origins)}。` : ''}带回不同来处的线索，才能让联系站得住脚。</span></div>}
-          <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
+          <div className="domain-list">{requiredDomains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
           <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!canAct || !isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={interventionActions} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
           {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
           {task.progress?.interpretation?.reason && <div className="task-rule-callout interpretation-guidance"><Info size={15} /><span>{task.progress.interpretation.reason}</span></div>}
@@ -131,7 +133,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
         {!isCurrentSite && <div className="task-access-hint"><Compass size={15} />你可以先辨认市场中的线索；抵达{site.name}后，才能将它带走，不会提前消耗 AP。</div>}
         {!marketCards.length && <div className="empty-tab"><Library size={22} /><h3>本轮没有可取线索</h3><p>等待下一次市场补充，或先处理手边已有的证据。</p></div>}<div className="market-row">{marketCards.map(item => {
           const explore = legal.find(candidate => candidate.type === 'explore' && candidate.card_id === item.id);
-          const useful = Boolean(task?.required_domains.includes(item.domain || ''));
+          const useful = Boolean(requiredDomains.includes(item.domain || ''));
           const description = textField(item, 'description', 'summary') || '一条等待被放入更大文化脉络的线索。';
           const combo = textField(item, 'combo_name');
           const displayDomain = item.domain ? domainName(meta, item.domain) : '文化证据';
@@ -154,9 +156,10 @@ function EvidenceLedger({ task, cards, hand, meta, disabled, formAvailable, inte
   const placements = task.interpretation?.placements || [];
   const contributed = placements.map(item => item.card_id);
   const requiredTags = task.combo_requirement?.required_combo_tags || [];
+  const requiredDomains = task.required_domains ?? [];
   const contributedCards = contributed.map(id => cards[id]).filter(Boolean);
   const contributedTags = new Set(contributedCards.flatMap(item => item.combo_tags || []));
-  const candidates = hand.map(id => cards[id]).filter((item): item is ContentCard => Boolean(item)).filter(item => !contributed.includes(item.id) && (task.required_domains.includes(item.domain || '') || (item.combo_tags || []).some(tag => requiredTags.includes(tag))));
+  const candidates = hand.map(id => cards[id]).filter((item): item is ContentCard => Boolean(item)).filter(item => !contributed.includes(item.id) && (requiredDomains.includes(item.domain || '') || (item.combo_tags || []).some(tag => requiredTags.includes(tag))));
   const missingTags = requiredTags.filter(tag => !contributedTags.has(tag));
 
   const relationLabel = { support: '支持', conflict: '冲突', pending: '待确认' } as const;

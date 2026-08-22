@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import Annotated, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field, JsonValue, TypeAdapter
 
@@ -26,29 +27,128 @@ class ProjectStageContract(BaseModel):
     stage_text: str | None = None
 
 
-class EffectContract(BaseModel):
-    """Shared, closed vocabulary for data-driven mechanism effects."""
-
+class _EffectBase(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    type: str = Field(min_length=1)
+
+class AmountEffectContract(_EffectBase):
+    type: Literal[
+        "all_influence", "damage_open_sites", "gain_ap", "gain_clue",
+        "gain_clue_if_distinct_players", "gain_influence", "gain_resource", "weathering",
+        "ignore_route_risk", "increase_weathering", "inspect_adjacent_routes",
+        "inspect_archive", "move_planning_mark_adjacent", "next_contribute_bonus",
+        "next_player_move_discount", "preview_event", "preview_event_target",
+        "project_progress", "reduce_weathering", "reduce_weathering_if_stage_and_route",
+        "reserve_ap", "reserve_market_card", "restore_discount", "exchange_discount",
+        "free_exchange", "route_action_discount", "temporary_origin_tag",
+        "trigger_role_upgrade"
+    ]
+    amount: int
+
+
+class NoArgumentEffectContract(_EffectBase):
+    type: Literal["free_move", "prepare_event"]
+
+
+class SurveyRouteEffectContract(_EffectBase):
+    type: Literal["survey_route"]
+    risk_delta: int
+    clues: int
+
+
+class RestoreRouteEffectContract(_EffectBase):
+    type: Literal["restore_route"]
+    ignore_clue_cost: bool
+
+
+class EstablishConnectionEffectContract(_EffectBase):
+    type: Literal["establish_connection"]
+    connection_bonus: int
+
+
+class SurveyMultipleRoutesEffectContract(_EffectBase):
+    type: Literal["survey_multiple_routes"]
+    max_targets: int
+
+
+class ReduceRouteRiskEffectContract(_EffectBase):
+    type: Literal["reduce_route_risk"]
     amount: int | None = None
-    clues: int | None = None
-    connection_bonus: int | None = None
-    ignore_clue_cost: bool | None = None
-    max_targets: int | None = None
-    move_after_restore: bool | None = None
-    range: int | None = None
-    resource: str | None = None
-    restoration: int | None = None
     risk_delta: int | None = None
-    weathering_delta: int | None = None
+    clues: int | None = None
+
+
+class RemoteExchangeEffectContract(_EffectBase):
+    type: Literal["remote_exchange_or_connect"]
+    range: int
+
+
+class SurveyAndMitigateEffectContract(_EffectBase):
+    type: Literal["survey_and_mitigate"]
+    risk_delta: int
+    weathering_delta: int
+
+
+class RestoreAndMoveEffectContract(_EffectBase):
+    type: Literal["restore_and_move"]
+    move_after_restore: bool
+
+
+class TransferResourceEffectContract(_EffectBase):
+    type: Literal["transfer_resource"]
+    resource: Literal["restoration", "ap"]
+    amount: int
+
+
+class TeamPrepareEffectContract(_EffectBase):
+    type: Literal["team_prepare"]
+    max_targets: int | None = None
+
+
+class RouteActionCostEffectContract(_EffectBase):
+    type: Literal["route_action_cost"]
+    action: str
+    amount: int
+
+
+class RestoreAndInfluenceEffectContract(_EffectBase):
+    type: Literal["restore_and_influence"]
+    influence: int
+    resource: int
+
+
+class ClueToRestorationEffectContract(_EffectBase):
+    type: Literal["clue_to_restoration"]
+    clues: int
+    restoration: int
+
+
+EffectContract = Annotated[
+    Union[
+        AmountEffectContract,
+        NoArgumentEffectContract,
+        SurveyRouteEffectContract,
+        RestoreRouteEffectContract,
+        EstablishConnectionEffectContract,
+        SurveyMultipleRoutesEffectContract,
+        ReduceRouteRiskEffectContract,
+        RemoteExchangeEffectContract,
+        SurveyAndMitigateEffectContract,
+        RestoreAndMoveEffectContract,
+        TransferResourceEffectContract,
+        TeamPrepareEffectContract,
+        RouteActionCostEffectContract,
+        RestoreAndInfluenceEffectContract,
+        ClueToRestorationEffectContract,
+    ],
+    Field(discriminator="type"),
+]
 
 
 class CultureEffectContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    type: str = Field(min_length=1)
+    type: Literal["none", "gain_ap", "gain_clue", "influence", "next_contribute_bonus", "free_move", "reduce_weathering", "restore_and_influence"]
     amount: int | None = None
     influence: int | None = None
     resource: int | None = None
@@ -77,7 +177,11 @@ class RoleAbilityContract(BaseModel):
 class RoleUpgradeEffectContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    type: str = Field(min_length=1)
+    type: Literal[
+        "fine_repair_weathering_bonus", "project_restore_discount", "harmony_origin_bonus",
+        "post_contribution_clue", "sprint_survey", "route_action_discount",
+        "market_look_bonus", "archive_retrieve"
+    ]
     value: int = 0
 
 

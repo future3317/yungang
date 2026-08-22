@@ -6,13 +6,20 @@ from .database import Database
 from .models import GameState
 
 
-def migrate_game_state(payload: dict) -> dict:
-    """Convert persisted pre-v3 state shapes before Pydantic validation."""
-    version = int(payload.get("schema_version", 2))
-    if version >= 3:
-        return payload
+CURRENT_SCHEMA_VERSION = 3
+
+
+def _migrate_v1_to_v2(payload: dict) -> dict:
     migrated = dict(payload)
-    migrated["migrated_from_schema_version"] = version
+    shared = dict(migrated.get("shared") or {})
+    if "threat" in shared and "weathering" not in shared:
+        shared["weathering"] = shared.pop("threat")
+    migrated["shared"] = shared
+    return migrated
+
+
+def _migrate_v2_to_v3(payload: dict) -> dict:
+    migrated = dict(payload)
     shared = dict(migrated.get("shared") or {})
     if "threat" in shared and "weathering_track" not in shared:
         shared["weathering_track"] = shared.pop("threat")
@@ -28,6 +35,27 @@ def migrate_game_state(payload: dict) -> dict:
     migrated.setdefault("result", {})
     migrated.setdefault("viewer", {})
     migrated["schema_version"] = 3
+    return migrated
+
+
+def migrate_game_state(payload: dict, *, from_version: int | None = None, to_version: int = CURRENT_SCHEMA_VERSION) -> dict:
+    """Apply each persisted schema migration before strict model validation."""
+    version = int(payload.get("schema_version", 1) if from_version is None else from_version)
+    if version > to_version:
+        raise ValueError(f"unsupported_game_schema:{version}")
+    migrated = dict(payload)
+    original_version = version
+    while version < to_version:
+        if version == 1:
+            migrated = _migrate_v1_to_v2(migrated)
+        elif version == 2:
+            migrated = _migrate_v2_to_v3(migrated)
+        else:
+            raise ValueError(f"unsupported_game_schema:{version}")
+        version += 1
+    if original_version < to_version:
+        migrated["migrated_from_schema_version"] = original_version
+    migrated["schema_version"] = to_version
     return migrated
 
 

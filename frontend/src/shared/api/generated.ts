@@ -351,7 +351,8 @@ export interface components {
             limitations: string;
             /** Combo Tags */
             combo_tags?: string[];
-            effect: components["schemas"]["EffectContract"];
+            /** Effect */
+            effect: components["schemas"]["AmountEffectContract"] | components["schemas"]["NoArgumentEffectContract"] | components["schemas"]["SurveyRouteEffectContract"] | components["schemas"]["RestoreRouteEffectContract"] | components["schemas"]["EstablishConnectionEffectContract"] | components["schemas"]["SurveyMultipleRoutesEffectContract"] | components["schemas"]["ReduceRouteRiskEffectContract"] | components["schemas"]["RemoteExchangeEffectContract"] | components["schemas"]["SurveyAndMitigateEffectContract"] | components["schemas"]["RestoreAndMoveEffectContract"] | components["schemas"]["TransferResourceEffectContract"] | components["schemas"]["TeamPrepareEffectContract"] | components["schemas"]["RouteActionCostEffectContract"] | components["schemas"]["RestoreAndInfluenceEffectContract"] | components["schemas"]["ClueToRestorationEffectContract"];
             /** Description */
             description?: string | null;
             /** Strategic Role */
@@ -408,7 +409,7 @@ export interface components {
             reason: string;
             /** Preview Delta */
             preview_delta?: {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: number;
             };
             /**
              * Confirmation
@@ -452,7 +453,7 @@ export interface components {
             label: string;
             /** Preview Delta */
             preview_delta?: {
-                [key: string]: components["schemas"]["JsonValue"];
+                [key: string]: number;
             };
             /** Payload */
             payload?: {
@@ -474,6 +475,16 @@ export interface components {
          * @enum {string}
          */
         ActionType: "move" | "explore" | "interpret_evidence" | "form_interpretation" | "choose_intervention" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "use_node_ability" | "use_upgrade" | "end_planning";
+        /** AmountEffectContract */
+        AmountEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "all_influence" | "damage_open_sites" | "exchange_discount" | "free_exchange" | "gain_ap" | "gain_clue" | "gain_clue_if_distinct_players" | "gain_influence" | "gain_resource" | "ignore_route_risk" | "increase_weathering" | "inspect_adjacent_routes" | "inspect_archive" | "move_planning_mark_adjacent" | "next_contribute_bonus" | "next_player_move_discount" | "preview_event" | "preview_event_target" | "project_progress" | "reduce_weathering" | "reduce_weathering_if_stage_and_route" | "reserve_ap" | "reserve_market_card" | "restore_discount" | "route_action_discount" | "temporary_origin_tag" | "trigger_role_upgrade" | "weathering";
+            /** Amount */
+            amount: number;
+        };
         /** ArchivePlayer */
         ArchivePlayer: {
             /** Name */
@@ -512,6 +523,30 @@ export interface components {
          * @enum {string}
          */
         ChoiceKind: "event" | "view_select" | "discard" | "action_card" | "archive_select" | "archive_retrieve" | "role_upgrade";
+        /** ClueToRestorationEffectContract */
+        ClueToRestorationEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "clue_to_restoration";
+            /** Clues */
+            clues: number;
+            /** Restoration */
+            restoration: number;
+        };
+        /** ComboRequirement */
+        ComboRequirement: {
+            /** Required Combo Tags */
+            required_combo_tags?: string[];
+            /** Preferred Origins */
+            preferred_origins?: string[];
+            /**
+             * Minimum Distinct Players
+             * @default 0
+             */
+            minimum_distinct_players: number;
+        };
         /** ComboRequirementContract */
         ComboRequirementContract: {
             /** Required Combo Tags */
@@ -591,8 +626,11 @@ export interface components {
         };
         /** CultureEffectContract */
         CultureEffectContract: {
-            /** Type */
-            type: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "none" | "gain_ap" | "gain_clue" | "influence" | "next_contribute_bonus" | "free_move" | "reduce_weathering" | "restore_and_influence";
             /** Amount */
             amount?: number | null;
             /** Influence */
@@ -634,35 +672,15 @@ export interface components {
             /** Description */
             description?: string | null;
         };
-        /**
-         * EffectContract
-         * @description Shared, closed vocabulary for data-driven mechanism effects.
-         */
-        EffectContract: {
-            /** Type */
-            type: string;
-            /** Amount */
-            amount?: number | null;
-            /** Clues */
-            clues?: number | null;
+        /** EstablishConnectionEffectContract */
+        EstablishConnectionEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "establish_connection";
             /** Connection Bonus */
-            connection_bonus?: number | null;
-            /** Ignore Clue Cost */
-            ignore_clue_cost?: boolean | null;
-            /** Max Targets */
-            max_targets?: number | null;
-            /** Move After Restore */
-            move_after_restore?: boolean | null;
-            /** Range */
-            range?: number | null;
-            /** Resource */
-            resource?: string | null;
-            /** Restoration */
-            restoration?: number | null;
-            /** Risk Delta */
-            risk_delta?: number | null;
-            /** Weathering Delta */
-            weathering_delta?: number | null;
+            connection_bonus: number;
         };
         /** EventContract */
         EventContract: {
@@ -678,7 +696,8 @@ export interface components {
             preview_delta?: {
                 [key: string]: components["schemas"]["JsonValue"];
             };
-            effect: components["schemas"]["EffectContract"];
+            /** Effect */
+            effect: components["schemas"]["AmountEffectContract"] | components["schemas"]["NoArgumentEffectContract"] | components["schemas"]["SurveyRouteEffectContract"] | components["schemas"]["RestoreRouteEffectContract"] | components["schemas"]["EstablishConnectionEffectContract"] | components["schemas"]["SurveyMultipleRoutesEffectContract"] | components["schemas"]["ReduceRouteRiskEffectContract"] | components["schemas"]["RemoteExchangeEffectContract"] | components["schemas"]["SurveyAndMitigateEffectContract"] | components["schemas"]["RestoreAndMoveEffectContract"] | components["schemas"]["TransferResourceEffectContract"] | components["schemas"]["TeamPrepareEffectContract"] | components["schemas"]["RouteActionCostEffectContract"] | components["schemas"]["RestoreAndInfluenceEffectContract"] | components["schemas"]["ClueToRestorationEffectContract"];
             /** Damage */
             damage?: number | null;
             /** Description */
@@ -710,8 +729,6 @@ export interface components {
              * @default 0
              */
             hidden_target_count: number;
-        } & {
-            [key: string]: unknown;
         };
         /** EventHistoryRecord */
         EventHistoryRecord: {
@@ -728,13 +745,17 @@ export interface components {
             mitigation?: components["schemas"]["EventRecord"][];
             /** Resolution */
             resolution?: components["schemas"]["EventRecord"][];
+            /** Modifiers */
+            modifiers?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
             /**
              * Round
              * @default 0
              */
             round: number;
-        } & {
-            [key: string]: unknown;
+            /** Event Targets */
+            event_targets?: string[];
         };
         /** EventInstance */
         EventInstance: {
@@ -751,8 +772,10 @@ export interface components {
             mitigation?: components["schemas"]["EventRecord"][];
             /** Resolution */
             resolution?: components["schemas"]["EventRecord"][];
-        } & {
-            [key: string]: unknown;
+            /** Modifiers */
+            modifiers?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
         };
         /** EventRecord */
         EventRecord: {
@@ -776,8 +799,6 @@ export interface components {
             amount?: number | null;
             /** Trigger */
             trigger?: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /**
          * EventStatus
@@ -831,7 +852,7 @@ export interface components {
             difficulty_id: string;
             /** Players */
             players: {
-                [key: string]: components["schemas"]["PlayerState"];
+                [key: string]: components["schemas"]["PublicPlayerState"];
             };
             /** Sites */
             sites: {
@@ -841,7 +862,7 @@ export interface components {
             tasks?: {
                 [key: string]: components["schemas"]["TaskState"];
             };
-            shared: components["schemas"]["SharedState"];
+            shared: components["schemas"]["PublicSharedState"];
             /** Decks */
             decks?: {
                 [key: string]: string[];
@@ -966,6 +987,116 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** InterpretationEvaluation */
+        InterpretationEvaluation: {
+            /**
+             * Cards
+             * @default 0
+             */
+            cards: number;
+            /**
+             * Cards Target
+             * @default 0
+             */
+            cards_target: number;
+            /** Domains */
+            domains?: string[];
+            /** Missing Domains */
+            missing_domains?: string[];
+            /** Origins */
+            origins?: string[];
+            /**
+             * Origins Target
+             * @default 0
+             */
+            origins_target: number;
+            /** Missing Origins */
+            missing_origins?: string[];
+            /** Missing Tags */
+            missing_tags?: string[];
+            /**
+             * Has Support
+             * @default false
+             */
+            has_support: boolean;
+            /** Contributors */
+            contributors?: string[];
+            /**
+             * Contributors Target
+             * @default 0
+             */
+            contributors_target: number;
+            /**
+             * Missing Contributors
+             * @default 0
+             */
+            missing_contributors: number;
+            /**
+             * Support
+             * @default 0
+             */
+            support: number;
+            /**
+             * Conflict
+             * @default 0
+             */
+            conflict: number;
+            /**
+             * Pending
+             * @default 0
+             */
+            pending: number;
+            /**
+             * Confidence
+             * @default 0
+             */
+            confidence: number;
+            /** Requirements */
+            requirements?: components["schemas"]["TaskRequirement"][];
+            /**
+             * Can Form
+             * @default false
+             */
+            can_form: boolean;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
+        };
+        /** InterpretationPlacement */
+        InterpretationPlacement: {
+            /** Card Id */
+            card_id: string;
+            /**
+             * Relation
+             * @enum {string}
+             */
+            relation: "support" | "conflict" | "pending";
+            /** Player Id */
+            player_id?: string | null;
+            /** Origin Tags */
+            origin_tags?: string[];
+            /** Combo Tags */
+            combo_tags?: string[];
+        };
+        /** InterpretationState */
+        InterpretationState: {
+            /** Placements */
+            placements?: components["schemas"]["InterpretationPlacement"][];
+            /**
+             * Formed
+             * @default false
+             */
+            formed: boolean;
+            /** Intervention */
+            intervention?: ("act_now" | "minimal" | "record") | null;
+            /**
+             * Confidence
+             * @default 0
+             */
+            confidence: number;
+        };
         /** JournalEntry */
         JournalEntry: {
             /** Id */
@@ -996,8 +1127,6 @@ export interface components {
             created_at: string;
             /** Player Id */
             player_id?: string | null;
-        } & {
-            [key: string]: unknown;
         };
         JsonValue: unknown;
         /** MetaResponse */
@@ -1044,6 +1173,14 @@ export interface components {
                 };
             };
         };
+        /** NoArgumentEffectContract */
+        NoArgumentEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "free_move" | "prepare_event";
+        };
         /** NodeAbilityContract */
         NodeAbilityContract: {
             /** Id */
@@ -1054,7 +1191,8 @@ export interface components {
             description: string;
             /** Trigger */
             trigger: string;
-            effect: components["schemas"]["EffectContract"];
+            /** Effect */
+            effect: components["schemas"]["AmountEffectContract"] | components["schemas"]["NoArgumentEffectContract"] | components["schemas"]["SurveyRouteEffectContract"] | components["schemas"]["RestoreRouteEffectContract"] | components["schemas"]["EstablishConnectionEffectContract"] | components["schemas"]["SurveyMultipleRoutesEffectContract"] | components["schemas"]["ReduceRouteRiskEffectContract"] | components["schemas"]["RemoteExchangeEffectContract"] | components["schemas"]["SurveyAndMitigateEffectContract"] | components["schemas"]["RestoreAndMoveEffectContract"] | components["schemas"]["TransferResourceEffectContract"] | components["schemas"]["TeamPrepareEffectContract"] | components["schemas"]["RouteActionCostEffectContract"] | components["schemas"]["RestoreAndInfluenceEffectContract"] | components["schemas"]["ClueToRestorationEffectContract"];
         };
         /** ObjectiveContract */
         ObjectiveContract: {
@@ -1129,8 +1267,6 @@ export interface components {
             resume_choice?: {
                 [key: string]: components["schemas"]["JsonValue"];
             } | null;
-        } & {
-            [key: string]: unknown;
         };
         /** PendingChoiceOption */
         PendingChoiceOption: {
@@ -1146,8 +1282,6 @@ export interface components {
             trigger?: string | null;
             /** Strategic Direction */
             strategic_direction?: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /**
          * Phase
@@ -1167,70 +1301,12 @@ export interface components {
             collaborated: boolean;
             /** Collaboration Action */
             collaboration_action?: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /**
          * PlayMode
          * @enum {string}
          */
         PlayMode: "solo" | "local" | "multi_device";
-        /** PlayerState */
-        PlayerState: {
-            /** Id */
-            id: string;
-            /** Name */
-            name: string;
-            /** Role Id */
-            role_id: string;
-            /** Location */
-            location: string;
-            /**
-             * Ap
-             * @default 3
-             */
-            ap: number;
-            /**
-             * Max Ap
-             * @default 3
-             */
-            max_ap: number;
-            /**
-             * Influence
-             * @default 0
-             */
-            influence: number;
-            /**
-             * Durability
-             * @default 3
-             */
-            durability: number;
-            /** Hand */
-            hand?: string[];
-            /** Action Hand */
-            action_hand?: string[];
-            /**
-             * Supplies
-             * @default 0
-             */
-            supplies: number;
-            /** Flags */
-            flags?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
-            /**
-             * Skill Used
-             * @default false
-             */
-            skill_used: boolean;
-            /**
-             * Contributions
-             * @default 0
-             */
-            contributions: number;
-            /** Upgrades */
-            upgrades?: string[];
-        };
         /** ProjectContract */
         ProjectContract: {
             /** Id */
@@ -1290,8 +1366,6 @@ export interface components {
             choices?: {
                 [key: string]: components["schemas"]["JsonValue"];
             }[];
-        } & {
-            [key: string]: unknown;
         };
         /** ProjectStageContract */
         ProjectStageContract: {
@@ -1367,6 +1441,163 @@ export interface components {
          * @enum {string}
          */
         ProjectStatus: "active" | "completed";
+        /** PublicPlayerState */
+        PublicPlayerState: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Role Id */
+            role_id: string;
+            /** Location */
+            location: string;
+            /**
+             * Ap
+             * @default 3
+             */
+            ap: number;
+            /**
+             * Max Ap
+             * @default 3
+             */
+            max_ap: number;
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Durability
+             * @default 3
+             */
+            durability: number;
+            /** Hand */
+            hand?: string[];
+            /** Action Hand */
+            action_hand?: string[];
+            /**
+             * Supplies
+             * @default 0
+             */
+            supplies: number;
+            /**
+             * Skill Used
+             * @default false
+             */
+            skill_used: boolean;
+            /**
+             * Contributions
+             * @default 0
+             */
+            contributions: number;
+            /** Upgrades */
+            upgrades?: string[];
+        };
+        /** PublicSharedState */
+        PublicSharedState: {
+            /**
+             * Turn
+             * @default 1
+             */
+            turn: number;
+            /**
+             * Max Rounds
+             * @default 8
+             */
+            max_rounds: number;
+            /**
+             * Active Player Id
+             * @default p1
+             */
+            active_player_id: string;
+            /** Player Order */
+            player_order?: string[];
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Restoration Resource
+             * @default 6
+             */
+            restoration_resource: number;
+            /** Completed Domains */
+            completed_domains?: string[];
+            /** Current Event Id */
+            current_event_id?: string | null;
+            outcome?: components["schemas"]["GameOutcome"] | null;
+            /** Outcome Reason */
+            outcome_reason?: string | null;
+            /**
+             * Scenario Id
+             * @default sand_and_stone
+             */
+            scenario_id: string;
+            /**
+             * Research Clues
+             * @default 0
+             */
+            research_clues: number;
+            /**
+             * Route Connection Score
+             * @default 0
+             */
+            route_connection_score: number;
+            /** Log */
+            log?: string[];
+            /** Planning Marks */
+            planning_marks?: {
+                [key: string]: components["schemas"]["PlanningMark"][];
+            };
+            /** @default player_action */
+            phase: components["schemas"]["Phase"];
+            /**
+             * Weathering Track
+             * @default 0
+             */
+            weathering_track: number;
+            /**
+             * Weathering Limit
+             * @default 5
+             */
+            weathering_limit: number;
+            /** Effective Rules */
+            effective_rules?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /**
+             * Solo Mode
+             * @default false
+             */
+            solo_mode: boolean;
+            /** Controlled Character Ids */
+            controlled_character_ids?: string[];
+            /** Journal */
+            journal?: components["schemas"]["JournalEntry"][];
+            /** Event Targets */
+            event_targets?: string[];
+            event_instance?: components["schemas"]["EventInstance"];
+            /** Event History */
+            event_history?: components["schemas"]["EventHistoryRecord"][];
+            round_summary?: components["schemas"]["RoundSummary"];
+            /** Reserved Market Cards */
+            reserved_market_cards?: string[];
+        };
+        /** ReduceRouteRiskEffectContract */
+        ReduceRouteRiskEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "reduce_route_risk";
+            /** Amount */
+            amount?: number | null;
+            /** Risk Delta */
+            risk_delta?: number | null;
+            /** Clues */
+            clues?: number | null;
+        };
         /** RegionContract */
         RegionContract: {
             /** Id */
@@ -1389,6 +1620,48 @@ export interface components {
             entry_hint: string;
             /** Risk Profile */
             risk_profile: string;
+        };
+        /** RemoteExchangeEffectContract */
+        RemoteExchangeEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "remote_exchange_or_connect";
+            /** Range */
+            range: number;
+        };
+        /** RestoreAndInfluenceEffectContract */
+        RestoreAndInfluenceEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "restore_and_influence";
+            /** Influence */
+            influence: number;
+            /** Resource */
+            resource: number;
+        };
+        /** RestoreAndMoveEffectContract */
+        RestoreAndMoveEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "restore_and_move";
+            /** Move After Restore */
+            move_after_restore: boolean;
+        };
+        /** RestoreRouteEffectContract */
+        RestoreRouteEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "restore_route";
+            /** Ignore Clue Cost */
+            ignore_clue_cost: boolean;
         };
         /** ResultState */
         ResultState: {
@@ -1656,8 +1929,6 @@ export interface components {
             status_before?: string | null;
             /** Status After */
             status_after?: string | null;
-        } & {
-            [key: string]: unknown;
         };
         /** RoundMetrics */
         RoundMetrics: {
@@ -1686,8 +1957,6 @@ export interface components {
              * @default 0
              */
             influence: number;
-        } & {
-            [key: string]: unknown;
         };
         /** RoundSummary */
         RoundSummary: {
@@ -1710,6 +1979,21 @@ export interface components {
              */
             planning_mark_count: number;
             /**
+             * Planning Marks
+             * @default 0
+             */
+            planning_marks: number;
+            /**
+             * Weathering Track
+             * @default 0
+             */
+            weathering_track: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
              * Completed Projects
              * @default 0
              */
@@ -1731,8 +2015,18 @@ export interface components {
             route_changes?: components["schemas"]["RoundEntityChange"][];
             /** Next Priority */
             next_priority?: string | null;
-        } & {
-            [key: string]: unknown;
+        };
+        /** RouteActionCostEffectContract */
+        RouteActionCostEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "route_action_cost";
+            /** Action */
+            action: string;
+            /** Amount */
+            amount: number;
         };
         /** RouteState */
         RouteState: {
@@ -1864,7 +2158,8 @@ export interface components {
             description: string;
             /** Trigger */
             trigger: string;
-            effect: components["schemas"]["EffectContract"];
+            /** Effect */
+            effect: components["schemas"]["AmountEffectContract"] | components["schemas"]["NoArgumentEffectContract"] | components["schemas"]["SurveyRouteEffectContract"] | components["schemas"]["RestoreRouteEffectContract"] | components["schemas"]["EstablishConnectionEffectContract"] | components["schemas"]["SurveyMultipleRoutesEffectContract"] | components["schemas"]["ReduceRouteRiskEffectContract"] | components["schemas"]["RemoteExchangeEffectContract"] | components["schemas"]["SurveyAndMitigateEffectContract"] | components["schemas"]["RestoreAndMoveEffectContract"] | components["schemas"]["TransferResourceEffectContract"] | components["schemas"]["TeamPrepareEffectContract"] | components["schemas"]["RouteActionCostEffectContract"] | components["schemas"]["RestoreAndInfluenceEffectContract"] | components["schemas"]["ClueToRestorationEffectContract"];
         };
         /** ScoreState */
         ScoreState: {
@@ -1913,107 +2208,6 @@ export interface components {
              * @default stone
              */
             grade: string;
-        };
-        /** SharedState */
-        SharedState: {
-            /**
-             * Turn
-             * @default 1
-             */
-            turn: number;
-            /**
-             * Max Rounds
-             * @default 8
-             */
-            max_rounds: number;
-            /**
-             * Active Player Id
-             * @default p1
-             */
-            active_player_id: string;
-            /** Player Order */
-            player_order?: string[];
-            /**
-             * Influence
-             * @default 0
-             */
-            influence: number;
-            /**
-             * Restoration Resource
-             * @default 6
-             */
-            restoration_resource: number;
-            /** Completed Domains */
-            completed_domains?: string[];
-            /** Current Event Id */
-            current_event_id?: string | null;
-            outcome?: components["schemas"]["GameOutcome"] | null;
-            /** Outcome Reason */
-            outcome_reason?: string | null;
-            /**
-             * Scenario Id
-             * @default sand_and_stone
-             */
-            scenario_id: string;
-            /**
-             * Research Clues
-             * @default 0
-             */
-            research_clues: number;
-            /** Prepared Event Ids */
-            prepared_event_ids?: string[];
-            /**
-             * Route Connection Score
-             * @default 0
-             */
-            route_connection_score: number;
-            /** Log */
-            log?: string[];
-            /** Planning Marks */
-            planning_marks?: {
-                [key: string]: components["schemas"]["PlanningMark"][];
-            };
-            /** Node Ability Uses */
-            node_ability_uses?: string[];
-            /** @default player_action */
-            phase: components["schemas"]["Phase"];
-            /**
-             * Weathering Track
-             * @default 0
-             */
-            weathering_track: number;
-            /**
-             * Weathering Limit
-             * @default 5
-             */
-            weathering_limit: number;
-            /** Effective Rules */
-            effective_rules?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
-            /**
-             * Solo Mode
-             * @default false
-             */
-            solo_mode: boolean;
-            /** Controlled Character Ids */
-            controlled_character_ids?: string[];
-            /** Journal */
-            journal?: components["schemas"]["JournalEntry"][];
-            /** Event Targets */
-            event_targets?: string[];
-            event_instance?: components["schemas"]["EventInstance"];
-            /** Event History */
-            event_history?: components["schemas"]["EventHistoryRecord"][];
-            round_summary?: components["schemas"]["RoundSummary"];
-            /** Reserved Market Cards */
-            reserved_market_cards?: string[];
-            /** Scenario Rule Uses */
-            scenario_rule_uses?: string[];
-            /** Scenario Round Baseline */
-            scenario_round_baseline?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
         };
         /** SiteContract */
         SiteContract: {
@@ -2126,6 +2320,40 @@ export interface components {
          * @enum {string}
          */
         SiteStatus: "stable" | "at_risk" | "closed";
+        /** SurveyAndMitigateEffectContract */
+        SurveyAndMitigateEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "survey_and_mitigate";
+            /** Risk Delta */
+            risk_delta: number;
+            /** Weathering Delta */
+            weathering_delta: number;
+        };
+        /** SurveyMultipleRoutesEffectContract */
+        SurveyMultipleRoutesEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "survey_multiple_routes";
+            /** Max Targets */
+            max_targets: number;
+        };
+        /** SurveyRouteEffectContract */
+        SurveyRouteEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "survey_route";
+            /** Risk Delta */
+            risk_delta: number;
+            /** Clues */
+            clues: number;
+        };
         /** TaskContract */
         TaskContract: {
             /** Id */
@@ -2160,6 +2388,35 @@ export interface components {
             /** Ui Instruction */
             ui_instruction?: string | null;
         };
+        /** TaskProgress */
+        TaskProgress: {
+            /** Requirements */
+            requirements?: components["schemas"]["TaskRequirement"][];
+            /**
+             * Complete
+             * @default false
+             */
+            complete: boolean;
+            interpretation?: components["schemas"]["InterpretationEvaluation"];
+        };
+        /** TaskRequirement */
+        TaskRequirement: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Current */
+            current?: number | null;
+            /** Target */
+            target?: number | null;
+            /**
+             * Complete
+             * @default false
+             */
+            complete: boolean;
+            /** Missing */
+            missing?: string[];
+        };
         /** TaskState */
         TaskState: {
             /**
@@ -2189,10 +2446,7 @@ export interface components {
              * @default 1
              */
             required_card_count: number;
-            /** Combo Requirement */
-            combo_requirement?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            combo_requirement?: components["schemas"]["ComboRequirement"];
             /** Reward */
             reward?: {
                 [key: string]: components["schemas"]["JsonValue"];
@@ -2200,20 +2454,46 @@ export interface components {
             /** Contributed Cards */
             contributed_cards?: string[];
             /** Contribution Records */
-            contribution_records?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
-            /** Interpretation */
-            interpretation?: {
-                [key: string]: components["schemas"]["JsonValue"];
+            contribution_records?: components["schemas"]["InterpretationPlacement"][];
+            interpretation?: components["schemas"]["InterpretationState"];
+            progress?: components["schemas"]["TaskProgress"];
+            /** Contributed By Player */
+            contributed_by_player?: {
+                [key: string]: number;
             };
+            /** Contributing Player Ids */
+            contributing_player_ids?: string[];
+            /** Content Class */
+            content_class?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Culture Explanation */
+            culture_explanation?: string | null;
+            /** Learning Objective */
+            learning_objective?: string | null;
+            /** Required Cards Per Player Min */
+            required_cards_per_player_min?: number | null;
+            /** Route Synergy */
+            route_synergy?: string | null;
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Ui Instruction */
+            ui_instruction?: string | null;
             /**
              * Completed
              * @default false
              */
             completed: boolean;
-        } & {
-            [key: string]: unknown;
+        };
+        /** TeamPrepareEffectContract */
+        TeamPrepareEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "team_prepare";
+            /** Max Targets */
+            max_targets?: number | null;
         };
         /** TerminologyContract */
         TerminologyContract: {
@@ -2262,6 +2542,21 @@ export interface components {
             color_token?: string | null;
             /** Description */
             description?: string | null;
+        };
+        /** TransferResourceEffectContract */
+        TransferResourceEffectContract: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "transfer_resource";
+            /**
+             * Resource
+             * @enum {string}
+             */
+            resource: "restoration" | "ap";
+            /** Amount */
+            amount: number;
         };
         /** ValidationError */
         ValidationError: {

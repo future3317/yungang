@@ -73,7 +73,9 @@
 }
 
 @media (max-width: 760px) {
-  .game-shell { min-height: 100dvh; overflow-x: hidden; }
+  .game-shell { min-height: 100dvh; padding: 8px; overflow-x: hidden; }
+  .game-header { grid-template-columns: 1fr auto; height: auto; min-height: 54px; }
+  .stage-column { grid-template-rows: auto minmax(480px, 62vh) auto; }
   .hud-layout { display: block; min-height: 0; }
   .hud-slot-left, .hud-slot-right { max-height: none; overflow: visible; }
   .hud-slot-world { min-height: 420px; }

@@ -176,6 +176,64 @@ class PendingChoice(DictModel):
     resume_choice: Optional[JsonObject] = None
 
 
+class ComboRequirement(DictModel):
+    required_combo_tags: List[str] = Field(default_factory=list)
+    preferred_origins: List[str] = Field(default_factory=list)
+    minimum_distinct_players: int = 0
+
+
+class InterpretationPlacement(DictModel):
+    card_id: str
+    relation: Literal["support", "conflict", "pending"]
+    player_id: Optional[str] = None
+    origin_tags: List[str] = Field(default_factory=list)
+    combo_tags: List[str] = Field(default_factory=list)
+
+
+class TaskRequirement(DictModel):
+    key: str
+    label: str
+    current: Optional[int] = None
+    target: Optional[int] = None
+    complete: bool = False
+    missing: List[str] = Field(default_factory=list)
+
+
+class InterpretationEvaluation(DictModel):
+    cards: int = 0
+    cards_target: int = 0
+    domains: List[str] = Field(default_factory=list)
+    missing_domains: List[str] = Field(default_factory=list)
+    origins: List[str] = Field(default_factory=list)
+    origins_target: int = 0
+    missing_origins: List[str] = Field(default_factory=list)
+    missing_tags: List[str] = Field(default_factory=list)
+    has_support: bool = False
+    contributors: List[str] = Field(default_factory=list)
+    contributors_target: int = 0
+    missing_contributors: int = 0
+    support: int = 0
+    conflict: int = 0
+    pending: int = 0
+    confidence: int = 0
+    requirements: List[TaskRequirement] = Field(default_factory=list)
+    can_form: bool = False
+    reason: str = ""
+
+
+class InterpretationState(DictModel):
+    placements: List[InterpretationPlacement] = Field(default_factory=list)
+    formed: bool = False
+    intervention: Optional[Literal["act_now", "minimal", "record"]] = None
+    confidence: int = 0
+
+
+class TaskProgress(DictModel):
+    requirements: List[TaskRequirement] = Field(default_factory=list)
+    complete: bool = False
+    interpretation: InterpretationEvaluation = Field(default_factory=InterpretationEvaluation)
+
+
 class RoundMetrics(DictModel):
     weathering: int = 0
     weathering_track: int = 0
@@ -233,12 +291,12 @@ class TaskState(DictModel):
     required_domains: List[str] = Field(default_factory=list)
     required_origin_diversity: int = 1
     required_card_count: int = 1
-    combo_requirement: JsonObject = Field(default_factory=dict)
+    combo_requirement: ComboRequirement = Field(default_factory=ComboRequirement)
     reward: JsonObject = Field(default_factory=dict)
     contributed_cards: List[str] = Field(default_factory=list)
-    contribution_records: List[JsonObject] = Field(default_factory=list)
-    interpretation: JsonObject = Field(default_factory=dict)
-    progress: JsonObject = Field(default_factory=dict)
+    contribution_records: List[InterpretationPlacement] = Field(default_factory=list)
+    interpretation: InterpretationState = Field(default_factory=InterpretationState)
+    progress: TaskProgress = Field(default_factory=TaskProgress)
     contributed_by_player: Dict[str, int] = Field(default_factory=dict)
     contributing_player_ids: List[str] = Field(default_factory=list)
     content_class: Optional[str] = None
@@ -426,7 +484,7 @@ class ActionRequest(BaseModel):
 class ActionTarget(BaseModel):
     id: str
     label: str
-    preview_delta: JsonObject = Field(default_factory=dict)
+    preview_delta: Dict[str, int] = Field(default_factory=dict)
     payload: JsonObject = Field(default_factory=dict)
     recommendation_score: int = 0
     reason: str = ""
@@ -446,7 +504,7 @@ class ActionOption(BaseModel):
     requirements: List[str] = Field(default_factory=list)
     recommendation_score: int = 0
     reason: str = ""
-    preview_delta: JsonObject = Field(default_factory=dict)
+    preview_delta: Dict[str, int] = Field(default_factory=dict)
     confirmation: str = ""
     payload: JsonObject = Field(default_factory=dict)
 
@@ -516,6 +574,23 @@ class PlayerState(BaseModel):
     action_hand: List[str] = Field(default_factory=list)
     supplies: int = 0
     flags: JsonObject = Field(default_factory=dict)
+    skill_used: bool = False
+    contributions: int = 0
+    upgrades: List[str] = Field(default_factory=list)
+
+
+class PublicPlayerState(BaseModel):
+    id: str
+    name: str
+    role_id: str
+    location: str
+    ap: int = 3
+    max_ap: int = 3
+    influence: int = 0
+    durability: int = 3
+    hand: List[str] = Field(default_factory=list)
+    action_hand: List[str] = Field(default_factory=list)
+    supplies: int = 0
     skill_used: bool = False
     contributions: int = 0
     upgrades: List[str] = Field(default_factory=list)
@@ -640,6 +715,36 @@ class SharedState(BaseModel):
     scenario_rule_uses: List[str] = Field(default_factory=list)
     scenario_round_baseline: JsonObject = Field(default_factory=dict)
 
+
+class PublicSharedState(BaseModel):
+    turn: int = 1
+    max_rounds: int = 8
+    active_player_id: str = "p1"
+    player_order: List[str] = Field(default_factory=lambda: ["p1", "p2"])
+    influence: int = 0
+    restoration_resource: int = 6
+    completed_domains: List[str] = Field(default_factory=list)
+    current_event_id: Optional[str] = None
+    outcome: Optional[GameOutcome] = None
+    outcome_reason: Optional[str] = None
+    scenario_id: str = "sand_and_stone"
+    research_clues: int = 0
+    route_connection_score: int = 0
+    log: List[str] = Field(default_factory=list)
+    planning_marks: Dict[str, List[PlanningMark]] = Field(default_factory=dict)
+    phase: Phase = Phase.PLAYER_ACTION
+    weathering_track: int = 0
+    weathering_limit: int = 5
+    effective_rules: JsonObject = Field(default_factory=dict)
+    solo_mode: bool = False
+    controlled_character_ids: List[str] = Field(default_factory=list)
+    journal: List[JournalEntry] = Field(default_factory=list)
+    event_targets: List[str] = Field(default_factory=list)
+    event_instance: EventInstance = Field(default_factory=EventInstance)
+    event_history: List[EventHistoryRecord] = Field(default_factory=list)
+    round_summary: RoundSummary = Field(default_factory=RoundSummary)
+    reserved_market_cards: List[str] = Field(default_factory=list)
+
 class GameState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
     schema_version: int = 3
@@ -679,10 +784,10 @@ class GameStateResponse(BaseModel):
     session_id: str
     mode: str
     difficulty_id: str
-    players: Dict[str, PlayerState]
+    players: Dict[str, PublicPlayerState]
     sites: Dict[str, SiteState]
     tasks: Dict[str, TaskState] = Field(default_factory=dict)
-    shared: SharedState
+    shared: PublicSharedState
     decks: Dict[str, List[str]] = Field(default_factory=dict)
     market: List[str] = Field(default_factory=list)
     pending_choice: Optional[PendingChoice] = None

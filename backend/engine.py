@@ -8,7 +8,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, EVENT_MODIFIER_ACTIONS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, JournalEntry, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, InterpretationEvaluation, InterpretationPlacement, JournalEntry, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -310,7 +310,7 @@ class GameEngine:
             task = state.tasks.get(self.content.sites[active.location].get("active_task_id"))
             if task and not task["completed"]:
                 interpretation = self._ensure_interpretation(task)
-                placed = {item["card_id"] for item in interpretation["placements"]}
+                placed = {self._placement_value(item, "card_id") for item in interpretation["placements"]}
                 if not interpretation["formed"] and active.ap >= 1:
                     for card in active.hand:
                         if card not in placed and self._card_can_contribute(card, task):
@@ -520,13 +520,17 @@ class GameEngine:
         interpretation.setdefault("confidence", 0)
         return interpretation
 
+    @staticmethod
+    def _placement_value(item, key, default=None):
+        return item.get(key, default) if isinstance(item, dict) else getattr(item, key, default)
+
     def _interpret_evidence(self, state, player, site_id, card, relation):
         task_id = self.content.sites.get(site_id, {}).get("active_task_id")
         task = state.tasks.get(task_id)
         action_cost = self._event_action_cost(state, "interpret_evidence", 1)
         if relation not in {"support", "conflict", "pending"} or player.ap < action_cost or player.location != site_id or not task or task["completed"] or card not in player.hand or not self._card_can_contribute(card, task): raise ValueError("invalid_interpretation_evidence")
         interpretation = self._ensure_interpretation(task)
-        if interpretation["formed"] or any(item["card_id"] == card for item in interpretation["placements"]): raise ValueError("evidence_already_placed")
+        if interpretation["formed"] or any(self._placement_value(item, "card_id") == card for item in interpretation["placements"]): raise ValueError("evidence_already_placed")
         player.ap -= action_cost; player.hand.remove(card); player.contributions += 1
         definition = self.content.cards[card]
         origin_tags, combo_tags = list(definition.get("origin_tags", [])), list(definition.get("combo_tags", []))
@@ -534,8 +538,9 @@ class GameEngine:
         if player.flags.get("harmony_active") and self._has_upgrade_effect(player, "harmony_origin_bonus"):
             origin_tags.append("harmony_origin"); combo_tags.append("cross_origin")
         placement = {"player_id": player.id, "card_id": card, "relation": relation, "origin_tags": origin_tags, "combo_tags": combo_tags}
-        interpretation["placements"].append(placement)
-        task["contributed_cards"].append(card); task.setdefault("contribution_records", []).append(placement)
+        placement_model = InterpretationPlacement.model_validate(placement)
+        interpretation["placements"].append(placement_model)
+        task["contributed_cards"].append(card); task.setdefault("contribution_records", []).append(placement_model)
         task.setdefault("contributed_by_player", {})[player.id] = task.setdefault("contributed_by_player", {}).get(player.id, 0) + 1
         if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
         site = state.sites[site_id]; site.contributions.append(placement); site.influence += 1
@@ -555,23 +560,23 @@ class GameEngine:
 
     def _evaluate_interpretation(self, task):
         interpretation = self._ensure_interpretation(task)
-        usable = [item for item in interpretation["placements"] if item.get("relation") != "conflict"]
-        cards = [self.content.cards[item["card_id"]] for item in usable if item.get("card_id") in self.content.cards]
-        origins = {origin for item in usable for origin in item.get("origin_tags", [])}
+        usable = [item for item in interpretation["placements"] if self._placement_value(item, "relation") != "conflict"]
+        cards = [self.content.cards[self._placement_value(item, "card_id")] for item in usable if self._placement_value(item, "card_id") in self.content.cards]
+        origins = {origin for item in usable for origin in self._placement_value(item, "origin_tags", [])}
         domains = {item.get("domain") for item in cards}
-        tags = {tag for item in usable for tag in item.get("combo_tags", [])}
+        tags = {tag for item in usable for tag in self._placement_value(item, "combo_tags", [])}
         combo = task.get("combo_requirement", {})
         missing_domains = sorted(set(task.get("required_domains", [])) - domains)
         preferred_origins = set(combo.get("preferred_origins", []))
         missing_origins = sorted(preferred_origins - origins) if preferred_origins else []
         origin_target = len(preferred_origins) or int(task.get("required_origin_diversity", 0))
         missing_tags = sorted(set(combo.get("required_combo_tags", [])) - tags)
-        has_support = any(item.get("relation") == "support" for item in usable)
-        support = sum(item.get("relation") == "support" for item in interpretation["placements"])
-        conflict = sum(item.get("relation") == "conflict" for item in interpretation["placements"])
+        has_support = any(self._placement_value(item, "relation") == "support" for item in usable)
+        support = sum(self._placement_value(item, "relation") == "support" for item in interpretation["placements"])
+        conflict = sum(self._placement_value(item, "relation") == "conflict" for item in interpretation["placements"])
         confidence = max(0, support * 2 - conflict)
         required_domains = set(task.get("required_domains", []))
-        contributors = {item.get("player_id") for item in interpretation["placements"] if item.get("player_id")}
+        contributors = {self._placement_value(item, "player_id") for item in interpretation["placements"] if self._placement_value(item, "player_id")}
         contributor_target = int(combo.get("minimum_distinct_players", 1))
         missing_contributors = max(0, contributor_target - len(contributors))
         requirements = [
@@ -589,16 +594,16 @@ class GameEngine:
         if missing_tags: reason_parts.append("还需要完成关键组合互证")
         if missing_contributors: reason_parts.append(f"还需要 {missing_contributors} 位不同同行者参与")
         if not reason_parts: reason_parts.append("条件已经满足，可以形成解释")
-        return {
+        return InterpretationEvaluation.model_validate({
             "cards": len(cards), "cards_target": int(task.get("required_card_count", 0)),
             "domains": sorted(domains), "missing_domains": missing_domains,
             "origins": sorted(origins), "origins_target": origin_target, "missing_origins": missing_origins,
             "missing_tags": missing_tags, "has_support": has_support,
             "contributors": sorted(contributors), "contributors_target": contributor_target, "missing_contributors": missing_contributors,
-            "support": support, "conflict": conflict, "pending": sum(item.get("relation") == "pending" for item in interpretation["placements"]),
+            "support": support, "conflict": conflict, "pending": sum(self._placement_value(item, "relation") == "pending" for item in interpretation["placements"]),
             "confidence": confidence, "requirements": requirements, "reason": "；".join(reason_parts),
             "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags and missing_contributors == 0),
-        }
+        })
 
     def _interpretation_ready(self, task):
         return self._evaluate_interpretation(task)["can_form"]

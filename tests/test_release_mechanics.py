@@ -223,6 +223,27 @@ def test_low_confidence_recording_grants_extra_research_value():
     assert state.shared.research_clues == before_clues + 3
 
 
+def test_conflict_is_counted_once_in_immediate_intervention_penalty():
+    state = engine.new_game("confidence-conflict", ["p1"])
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    first_domain = task["required_domains"][0]
+    cards = [card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") == first_domain][:2]
+    assert len(cards) == 2
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[cards[0]]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = list(cards)
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": cards[0]})
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "conflict", "card_id": cards[1]})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    assert task["interpretation"]["confidence"] == 1
+    before_weathering = state.shared.weathering_track
+    engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "act_now"})
+    assert state.shared.weathering_track == before_weathering + 1
+
+
 def test_direct_contribution_path_is_not_available():
     assert not hasattr(engine, "_contribute")
 
@@ -281,7 +302,7 @@ def test_western_dancer_upgrade_rewards_cross_origin_contribution_with_clue():
     task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
     card = next(card for card in engine.content.cards if engine._card_can_contribute(card, task))
     task["contributed_cards"] = [next(iter(engine.content.cards))]
-    task["contribution_records"] = [{"origin_tags": ["earlier_origin"], "combo_tags": []}]
+    task["contribution_records"] = [{"player_id": "p2", "card_id": next(iter(engine.content.cards)), "relation": "support", "origin_tags": ["earlier_origin"], "combo_tags": []}]
     player.hand = [card]
     engine._upgrade_effect(state, player, {"type": "post_contribution_clue", "value": 1})
     before = state.shared.research_clues

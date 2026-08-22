@@ -129,11 +129,10 @@ test('decision surfaces remain accessible when opened', async ({ page }) => {
   await page.getByRole('button', { name: '返回浏览' }).click();
 
   const strategy = page.locator('.strategy-card').first();
-  if (await strategy.isVisible()) {
-    await strategy.click();
-    const strategyResults = await new AxeBuilder({ page }).include('.strategy-card-dialog').analyze();
-    const strategySerious = strategyResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
-    expect(strategySerious, strategySerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
-    await page.getByRole('button', { name: /返回|关闭/ }).last().click();
-  }
+  await expect(strategy).toBeVisible();
+  await strategy.click();
+  const strategyResults = await new AxeBuilder({ page }).include('.strategy-card-dialog').analyze();
+  const strategySerious = strategyResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
+  expect(strategySerious, strategySerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
+  await page.getByRole('button', { name: /返回|关闭/ }).last().click();
 });
