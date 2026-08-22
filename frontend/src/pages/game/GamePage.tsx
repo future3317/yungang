@@ -15,7 +15,7 @@ import { ActionPreview } from '../../widgets/game/ActionPreview';
 import { TutorialGuide } from '../../widgets/game/TutorialGuide';
 import { SeatHandoff } from '../../widgets/game/SeatHandoff';
 import { useDialogFocus } from '../../widgets/game/useDialogFocus';
-import { actionFeedback, actionLabels, actionModeLabel, eventDecisionBrief, feedbackChangeText, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
+import { actionFeedback, actionLabels, actionModeLabel, eventDecisionBrief, feedbackChangeText, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, metricLabel, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
 import { fallbackPollInterval, useRoomEvents, type RoomEventState } from '../../shared/useRoomEvents';
 import { getRoomToken } from '../../shared/roomToken';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
@@ -109,7 +109,7 @@ export function GamePage() {
   const pendingAction = (action: Action) => state.pending_choice?.kind === 'action_card' ? (announceIntent('use_action_card'), selectAction(action)) : run(action);
 
   const journalEntries = state.shared.journal?.length ? state.shared.journal : state.shared.log.map((message, index) => ({ id: `legacy-${index}`, round: state.shared.turn, type: 'action', message, effects: [], created_at: '', player_id: state.shared.active_player_id }));
-  const historyEntries = (state.shared.event_history || []).map((entry, index) => ({ id: `event-history-${entry.event_id || index}-${entry.round || index}`, round: Number(entry.round || 0), type: 'event', message: `${events[entry.event_id || '']?.name || '世界事件'}已结算`, effects: (entry.resolution || []).flatMap((item: { changes?: Record<string, unknown> }) => Object.entries(item.changes || {}).map(([label, value]) => ({ label, delta: typeof value === 'number' ? value : null, after: typeof value === 'number' ? null : String(value) }))), created_at: '', player_id: undefined }));
+  const historyEntries = (state.shared.event_history || []).map((entry, index) => ({ id: `event-history-${entry.event_id || index}-${entry.round || index}`, round: Number(entry.round || 0), type: 'event', message: `${events[entry.event_id || '']?.name || '世界事件'}已结算`, effects: (entry.resolution || []).flatMap((item: { changes?: Record<string, unknown> | Array<{ metric?: string; label?: string; before?: string | number; after?: string | number; delta?: number }> }) => Array.isArray(item.changes) ? item.changes.map(change => ({ ...change, label: change.label || metricLabel(change.metric || '') })) : Object.entries(item.changes || {}).map(([key, value]) => ({ label: metricLabel(key), delta: typeof value === 'number' ? value : undefined, after: typeof value === 'number' ? undefined : String(value) }))), created_at: '', player_id: undefined }));
   const timelineEvents = [...journalEntries.filter(entry => !String(entry.message).startsWith('事件结算：')), ...historyEntries].map(entry => ({ ...entry, player_name: entry.player_id ? state.players[entry.player_id]?.name : undefined, message: localizeTimelineMessage(entry.message, { sites, routes: state.routes || {}, projects: state.projects || {}, players: state.players }) }));
   const summaryEventId = typeof state.shared.round_summary?.event_id === 'string' ? state.shared.round_summary.event_id : undefined;
   const hasExplicitFocus = focus !== null;

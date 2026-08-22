@@ -1724,6 +1724,9 @@
 
   .game-viewport > .game-shell > .hud-slot-center > .roster-column,
   .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    position: absolute !important;
+    top: var(--hud-panel-top) !important;
+    bottom: var(--hud-panel-bottom) !important;
     height: auto !important;
     min-height: 0 !important;
     max-height: none !important;
@@ -1738,6 +1741,16 @@
     height: max-content !important;
     min-height: 100%;
     overflow: visible !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column {
+    left: 0 !important;
+    width: var(--map-left-clearance) !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    right: 0 !important;
+    width: var(--map-right-clearance) !important;
   }
 
   .game-viewport > .game-shell > .hud-slot-center > .site-inspector::-webkit-scrollbar,

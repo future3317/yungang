@@ -46,7 +46,7 @@ export function metricLabel(metric: string) { return previewDeltaLabels[metric] 
 export function feedbackChangeText(changes: FeedbackChange[]) {
   const seen = new Set<string>();
   return changes.filter(change => {
-    const key = change.metric === 'weathering' ? 'weathering' : change.metric || change.label || '状态变化';
+    const key = change.metric === 'weathering' || change.metric === 'weathering_track' ? 'weathering' : change.metric || change.label || '状态变化';
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
