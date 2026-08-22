@@ -622,7 +622,6 @@ class GameEngine:
         if domain and domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
         if intervention == "act_now":
             state.shared.influence += 2; state.shared.restoration_resource += int(reward.get("restoration_delta", 0)); site.damage = max(0, site.damage - 1)
-            if any(item.get("relation") == "conflict" for item in interpretation["placements"]): state.shared.weathering_track += 1
             if confidence <= 2: state.shared.weathering_track += 1
         elif intervention == "minimal":
             state.shared.influence += 1; state.shared.weathering_track = max(0, state.shared.weathering_track - 1); site.damage = max(0, site.damage - 1)
@@ -1204,6 +1203,10 @@ class GameEngine:
         if rule == "one_route":
             candidates = sorted((route.id for route in state.routes.values() if route.status in {"open", "strained"}), key=str)
             return candidates[:1]
+        if rule in {"shared_resource", "weathering", "global_resource", "global_weathering"}:
+            return []
+        if rule == "all_players":
+            return list(state.players)
         return list(state.players)
 
     def _refill_market(self, state):

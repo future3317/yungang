@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from backend.content_schemas import ComboRequirementContract, ProjectStageContract
+from backend.content_schemas import ComboRequirementContract, EventContract, ProjectStageContract
 
 
 def test_combo_requirement_contract_rejects_unknown_fields():
@@ -17,3 +17,7 @@ def test_project_stage_contract_rejects_unknown_fields():
             "action_type": "explore",
             "unexpected": "not part of the stage contract",
         })
+
+
+def test_event_contract_has_one_mitigation_hint_field():
+    assert list(EventContract.model_fields).count("mitigation_hint") == 1

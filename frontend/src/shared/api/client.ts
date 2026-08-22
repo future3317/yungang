@@ -2,7 +2,7 @@ import type { Action, ArchiveSummary, GameState, Meta, PlayMode, Room, RoomCrede
 import type { components } from './generated';
 
 type ActionRequest = components['schemas']['ActionRequest'];
-type ContractGameState = components['schemas']['GameState'];
+type ContractGameState = components['schemas']['GameStateResponse'];
 
 export class ApiError extends Error {
   status: number;
@@ -58,34 +58,7 @@ function normalizeGameState(payload: ContractGameState): GameState {
     }])) as GameState['players'],
     sites: payload.sites as GameState['sites'],
     tasks,
-    shared: {
-      turn: 1,
-      max_rounds: 8,
-      active_player_id: Object.keys(players)[0] || 'p1',
-      player_order: Object.keys(players),
-      influence: 0,
-      restoration_resource: 0,
-      completed_domains: [],
-      current_event_id: null,
-      outcome: null,
-      outcome_reason: null,
-      scenario_id: payload.scenario_id,
-      research_clues: 0,
-      prepared_event_ids: [],
-      route_connection_score: 0,
-      phase: 'player_action',
-      weathering_track: 0,
-      weathering_limit: 5,
-      effective_rules: {},
-      solo_mode: false,
-      controlled_character_ids: [],
-      journal: [],
-      event_targets: [],
-      event_history: [],
-      planning_marks: {},
-      log: [],
-      ...shared,
-    } as GameState['shared'],
+    shared: shared as GameState['shared'],
     decks: payload.decks || {},
     market: payload.market || [],
     pending_choice: payload.pending_choice as GameState['pending_choice'] || null,

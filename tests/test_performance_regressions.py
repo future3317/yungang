@@ -1,11 +1,14 @@
 import asyncio
 import sys
+import time
 from contextlib import contextmanager
 from types import SimpleNamespace
 
 from backend import app as app_module
 from backend.database import Database
 from backend.models import RoomActionRequest
+from backend.content import Content
+from backend.engine import GameEngine
 from backend.rooms import RoomRepository, RoomService
 
 
@@ -150,3 +153,15 @@ def test_sse_stream_waits_for_notification_instead_of_querying_each_second(monke
     monkeypatch.setattr(app_module.room_service.repository, "unsubscribe", lambda room_id, listener: None)
     event = asyncio.run(consume_one_event())
     assert '"revision": 7' in event
+
+
+def test_action_option_refresh_stays_within_performance_budget():
+    engine = GameEngine(Content())
+    state = engine.new_game("performance-budget", ["p1", "p2"], "normal", "sand_and_stone", seed=2026)
+    engine.refresh(state)
+    samples = []
+    for _ in range(3):
+        started = time.perf_counter()
+        engine.refresh(state)
+        samples.append((time.perf_counter() - started) * 1000)
+    assert max(samples) < 200, f"refresh exceeded 200ms budget: {samples}"

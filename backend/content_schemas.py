@@ -208,7 +208,6 @@ class ActionCardContract(ContentItemContract):
 class EventContract(ContentItemContract):
     target_rule: str
     preview_delta: JsonObject = Field(default_factory=dict)
-    mitigation_hint: str = ""
     effect: EffectContract
     damage: int | None = None
     description: str | None = None

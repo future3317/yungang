@@ -654,3 +654,30 @@ class GameState(BaseModel):
     feedback_events: List[FeedbackEvent] = Field(default_factory=list)
     goal_status: GoalStatus = Field(default_factory=GoalStatus)
     processed_request_ids: List[str] = Field(default_factory=list)
+
+
+class GameStateResponse(BaseModel):
+    """Public game DTO; persistence-only engine fields never cross this boundary."""
+    schema_version: int
+    revision: int
+    session_id: str
+    mode: str
+    difficulty_id: str
+    players: Dict[str, PlayerState]
+    sites: Dict[str, SiteState]
+    tasks: Dict[str, TaskState] = Field(default_factory=dict)
+    shared: SharedState
+    decks: Dict[str, List[str]] = Field(default_factory=dict)
+    market: List[str] = Field(default_factory=list)
+    pending_choice: Optional[PendingChoice] = None
+    action_options: List[ActionOption] = Field(default_factory=list)
+    scenario_id: str
+    seed: int
+    routes: Dict[str, RouteState] = Field(default_factory=dict)
+    projects: Dict[str, ProjectState] = Field(default_factory=dict)
+    objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
+    score: ScoreState = Field(default_factory=ScoreState)
+    result: ResultState = Field(default_factory=ResultState)
+    viewer: ViewerState = Field(default_factory=ViewerState)
+    feedback_events: List[FeedbackEvent] = Field(default_factory=list)
+    goal_status: GoalStatus = Field(default_factory=GoalStatus)

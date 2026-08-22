@@ -678,8 +678,6 @@ export interface components {
             preview_delta?: {
                 [key: string]: components["schemas"]["JsonValue"];
             };
-            /** Mitigation Hint */
-            mitigation_hint?: string | null;
             effect: components["schemas"]["EffectContract"];
             /** Damage */
             damage?: number | null;
@@ -689,6 +687,8 @@ export interface components {
             difficulty_weight?: number | null;
             /** Forecast Text */
             forecast_text?: string | null;
+            /** Mitigation Hint */
+            mitigation_hint?: string | null;
             modifier?: components["schemas"]["JsonValue"] | null;
             /** Modifiers */
             modifiers?: {
@@ -814,29 +814,20 @@ export interface components {
          * @enum {string}
          */
         GameOutcome: "victory" | "defeat";
-        /** GameState */
-        GameState: {
-            /**
-             * Schema Version
-             * @default 3
-             */
+        /**
+         * GameStateResponse
+         * @description Public game DTO; persistence-only engine fields never cross this boundary.
+         */
+        GameStateResponse: {
+            /** Schema Version */
             schema_version: number;
-            /**
-             * Revision
-             * @default 0
-             */
+            /** Revision */
             revision: number;
             /** Session Id */
             session_id: string;
-            /**
-             * Mode
-             * @default heritage_network
-             */
+            /** Mode */
             mode: string;
-            /**
-             * Difficulty Id
-             * @default normal
-             */
+            /** Difficulty Id */
             difficulty_id: string;
             /** Players */
             players: {
@@ -850,7 +841,7 @@ export interface components {
             tasks?: {
                 [key: string]: components["schemas"]["TaskState"];
             };
-            shared?: components["schemas"]["SharedState"];
+            shared: components["schemas"]["SharedState"];
             /** Decks */
             decks?: {
                 [key: string]: string[];
@@ -860,28 +851,10 @@ export interface components {
             pending_choice?: components["schemas"]["PendingChoice"] | null;
             /** Action Options */
             action_options?: components["schemas"]["ActionOption"][];
-            /**
-             * Scenario Id
-             * @default sand_and_stone
-             */
+            /** Scenario Id */
             scenario_id: string;
-            /**
-             * Seed
-             * @default 0
-             */
+            /** Seed */
             seed: number;
-            /**
-             * Rng State
-             * @default 0
-             */
-            rng_state: number;
-            /**
-             * Rng Position
-             * @default 0
-             */
-            rng_position: number;
-            /** Migrated From Schema Version */
-            migrated_from_schema_version?: number | null;
             /** Routes */
             routes?: {
                 [key: string]: components["schemas"]["RouteState"];
@@ -900,8 +873,6 @@ export interface components {
             /** Feedback Events */
             feedback_events?: components["schemas"]["FeedbackEvent"][];
             goal_status?: components["schemas"]["GoalStatus"];
-            /** Processed Request Ids */
-            processed_request_ids?: string[];
         };
         /** GoalCondition */
         GoalCondition: {
@@ -2248,33 +2219,23 @@ export interface components {
         TerminologyContract: {
             /** Domains */
             domains: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Origins */
             origins: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Statuses */
             statuses: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Actions */
             actions: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Resources */
             resources: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Event Target Rules */
             event_target_rules: {
@@ -2282,9 +2243,7 @@ export interface components {
             };
             /** Combo Tags */
             combo_tags: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TerminologyEntryContract"];
             };
             /** Errors */
             errors: {
@@ -2292,6 +2251,17 @@ export interface components {
                     [key: string]: components["schemas"]["JsonValue"];
                 };
             };
+        };
+        /** TerminologyEntryContract */
+        TerminologyEntryContract: {
+            /** Name */
+            name: string;
+            /** Short Name */
+            short_name?: string | null;
+            /** Color Token */
+            color_token?: string | null;
+            /** Description */
+            description?: string | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -2406,7 +2376,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GameState"];
+                    "application/json": components["schemas"]["GameStateResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2457,7 +2427,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GameState"];
+                    "application/json": components["schemas"]["GameStateResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2492,7 +2462,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GameState"];
+                    "application/json": components["schemas"]["GameStateResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2938,7 +2908,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GameState"];
+                    "application/json": components["schemas"]["GameStateResponse"];
                 };
             };
             /** @description Validation Error */
@@ -2975,7 +2945,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GameState"];
+                    "application/json": components["schemas"]["GameStateResponse"];
                 };
             };
             /** @description Validation Error */

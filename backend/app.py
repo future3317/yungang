@@ -11,7 +11,7 @@ from .content import Content
 from .database import database_target_from_environment
 from .engine import GameEngine
 from .errors import error_detail, error_status
-from .models import ActionRequest, ArchiveSummary, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
+from .models import ActionRequest, ArchiveSummary, CreateGameRequest, GameState, GameStateResponse, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -37,8 +37,12 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
 @app.middleware("http")
 async def security_and_rate_limit(request: Request, call_next):
     now = __import__("time").monotonic()
-    key = (request.client.host if request.client else "unknown", request.url.path)
-    if request.method in {"POST", "PUT", "PATCH"} and (request.url.path == "/api/rooms" or request.url.path.endswith("/join") or request.url.path.endswith("/actions")):
+    if len(_rate_buckets) > 2048:
+        _rate_buckets.update({key: stamps for key, stamps in _rate_buckets.items() if stamps and now - stamps[-1] < 60})
+    path = request.url.path
+    category = "room-create" if path == "/api/rooms" else "room-join" if path.endswith("/join") else "room-action" if path.endswith("/actions") else ""
+    key = (request.client.host if request.client else "unknown", category)
+    if request.method in {"POST", "PUT", "PATCH"} and category:
         bucket = [stamp for stamp in _rate_buckets.get(key, []) if now - stamp < 60]
         if len(bucket) >= 30:
             return Response(content=json.dumps({"detail": {"code": "rate_limited", "message": "请求过于频繁，请稍后再试。"}}, ensure_ascii=False), status_code=429, media_type="application/json")
@@ -75,7 +79,7 @@ def meta():
                 }
     return {"schema_version": 3, "mode": "heritage_network", "domains": content.domains, "domain_meta": content.domain_meta, "terminology": content.terminology, "regions": content.regions, "scenarios": list(content.scenarios.values()), "roles": list(content.roles.values()), "sites": list(content.sites.values()), "facets": content.site_facets, "cards": list(content.cards.values()), "action_cards": list(content.action_cards.values()), "events": list(content.events.values()), "tasks": list(content.tasks.values()), "projects": list(content.projects.values()), "objectives": list(content.objectives.values()), "difficulty": list(content.difficulty.values()), "effective_rules_preview": rules_preview}
 
-@app.post("/api/games", response_model=GameState)
+@app.post("/api/games", response_model=GameStateResponse)
 def create_game(request: CreateGameRequest) -> GameState:
     session_id = f"game-{uuid4().hex[:10]}"
     seed = request.seed if request.seed is not None else request.daily_seed
@@ -95,7 +99,7 @@ def list_archives() -> list[ArchiveSummary]:
             continue
         room = rooms.get(session_id)
         journal = state.shared.journal or []
-        timestamps = [entry.get("created_at") for entry in journal if isinstance(entry, dict) and entry.get("created_at")]
+        timestamps = [entry.created_at for entry in journal if entry.created_at]
         updated_at = max(timestamps) if timestamps else None
         status = str(room.get("status")) if room else ("completed" if state.shared.outcome else "in_progress")
         archives.append(ArchiveSummary(
@@ -114,7 +118,7 @@ def list_archives() -> list[ArchiveSummary]:
         ))
     return sorted(archives, key=lambda item: item.updated_at or "", reverse=True)
 
-@app.get("/api/games/{session_id}", response_model=GameState)
+@app.get("/api/games/{session_id}", response_model=GameStateResponse)
 def get_game(session_id: str) -> GameState:
     if room_service.room_for_session(session_id):
         raise HTTPException(403, {"code": "room_session_requires_seat_token", "message": "这段房间旅程需要通过房间入口访问。", "details": {}, "recovery": "return_to_room"})
@@ -122,7 +126,7 @@ def get_game(session_id: str) -> GameState:
     if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     return state
 
-@app.post("/api/games/{session_id}/actions", response_model=GameState)
+@app.post("/api/games/{session_id}/actions", response_model=GameStateResponse)
 def game_action(session_id: str, request: ActionRequest) -> GameState:
     if room_service.room_for_session(session_id):
         raise HTTPException(403, {"code": "room_session_requires_seat_token", "message": "这段房间旅程需要通过房间入口操作。", "details": {}, "recovery": "return_to_room"})
@@ -308,7 +312,7 @@ def room_events_ticket(room_id: str, x_seat_token: str | None = Header(default=N
     return {"ticket": ticket, "expires_in": 60}
 
 
-@app.get("/api/rooms/{room_id}/game", response_model=GameState)
+@app.get("/api/rooms/{room_id}/game", response_model=GameStateResponse)
 def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:
@@ -363,7 +367,7 @@ async def room_events(room_id: str, ticket: str | None = None):
     return StreamingResponse(_room_revision_stream(room_id, listener), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})
 
 
-@app.post("/api/rooms/{room_id}/actions", response_model=GameState)
+@app.post("/api/rooms/{room_id}/actions", response_model=GameStateResponse)
 def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | None = Header(default=None)):
     room = _room_or_404(room_id)
     try:
@@ -429,3 +433,4 @@ class SPAStaticFiles(StaticFiles):
         return response
 
 app.mount("/", SPAStaticFiles(directory=frontend, html=True), name="frontend")
+

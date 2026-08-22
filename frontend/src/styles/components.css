@@ -166,12 +166,8 @@
     scrollbar-gutter: stable;
     scrollbar-color: rgba(214, 180, 103, .62) rgba(16, 28, 20, .42);
   }
-  .hud-slot-left::-webkit-scrollbar,
-  .hud-slot-right::-webkit-scrollbar,
   .timeline-body::-webkit-scrollbar,
   .goal-conditions::-webkit-scrollbar { width: 8px; }
-  .hud-slot-left::-webkit-scrollbar-thumb,
-  .hud-slot-right::-webkit-scrollbar-thumb,
   .timeline-body::-webkit-scrollbar-thumb,
   .goal-conditions::-webkit-scrollbar-thumb { background: rgba(214, 180, 103, .62); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
 

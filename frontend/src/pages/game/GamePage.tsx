@@ -31,7 +31,6 @@ import { tutorialContextForAction, type TutorialContext, useTutorialProgress } f
 import '../../styles/experience.css';
 import '../../styles/tutorial.css';
 import '../../styles/handoff.css';
-import '../../styles/map.css';
 import '../../styles/hud-contract.css';
 
 

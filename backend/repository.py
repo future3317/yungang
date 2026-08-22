@@ -6,6 +6,31 @@ from .database import Database
 from .models import GameState
 
 
+def migrate_game_state(payload: dict) -> dict:
+    """Convert persisted pre-v3 state shapes before Pydantic validation."""
+    version = int(payload.get("schema_version", 2))
+    if version >= 3:
+        return payload
+    migrated = dict(payload)
+    migrated["migrated_from_schema_version"] = version
+    shared = dict(migrated.get("shared") or {})
+    if "threat" in shared and "weathering_track" not in shared:
+        shared["weathering_track"] = shared.pop("threat")
+    if "weathering" in shared and "weathering_track" not in shared:
+        shared["weathering_track"] = shared.pop("weathering")
+    shared.setdefault("event_targets", [])
+    shared.setdefault("event_history", [])
+    migrated["shared"] = shared
+    migrated.setdefault("scenario_id", shared.get("scenario_id", "sand_and_stone"))
+    migrated.setdefault("routes", {})
+    migrated.setdefault("projects", {})
+    migrated.setdefault("objectives", {})
+    migrated.setdefault("result", {})
+    migrated.setdefault("viewer", {})
+    migrated["schema_version"] = 3
+    return migrated
+
+
 class GameRepository:
     def __init__(self, path: Optional[str | Path | Database] = None):
         target = path or Path(__file__).resolve().parents[1] / "data" / "games.sqlite3"
@@ -18,11 +43,7 @@ class GameRepository:
             row = db.execute(self.database.sql("SELECT state FROM games WHERE session_id=?"), (session_id,)).fetchone()
         if not row:
             return None
-        payload = json.loads(row[0])
-        if payload.get("schema_version", 2) < 3:
-            payload["migrated_from_schema_version"] = payload.get("schema_version", 2)
-            payload["schema_version"] = 3
-        return GameState.model_validate(payload)
+        return GameState.model_validate(migrate_game_state(json.loads(row[0])))
 
     def save(self, state: GameState):
         with self.database.connect() as db:
