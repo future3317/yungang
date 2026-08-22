@@ -1163,3 +1163,80 @@
     white-space: nowrap;
   }
 }
+
+/* Canonical desktop header geometry: the brand, phase, and victory list share one stable top rail. */
+@media (min-width: 1101px) {
+  .hud-slot-top {
+    position: fixed !important;
+    z-index: 200 !important;
+    inset: 0 0 auto !important;
+    height: var(--header-height) !important;
+    pointer-events: none !important;
+  }
+
+  .hud-slot-top > .game-header {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(320px, 1fr) minmax(190px, 260px) minmax(360px, 1.2fr) !important;
+    align-items: start;
+    width: 100% !important;
+    height: var(--header-height) !important;
+    min-height: var(--header-height) !important;
+    box-sizing: border-box;
+    padding: 8px 20px !important;
+    overflow: visible !important;
+    background: linear-gradient(180deg, rgba(9, 21, 14, .94), rgba(9, 21, 14, .7)) !important;
+    border-bottom: 1px solid rgba(219, 192, 126, .22) !important;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, .2);
+    pointer-events: auto;
+  }
+
+  .hud-slot-top .brand-group {
+    display: flex !important;
+    min-width: 0;
+    max-width: none !important;
+    min-height: 46px;
+    align-items: center;
+    overflow: visible;
+  }
+
+  .hud-slot-top .brand-mark {
+    display: inline-flex !important;
+    visibility: visible !important;
+    color: #f1e6ca !important;
+    font-size: 1.2rem;
+  }
+
+  .hud-slot-top .brand-scenario {
+    display: grid !important;
+    min-width: 0;
+    max-width: min(320px, 24vw) !important;
+    gap: 2px;
+    overflow: hidden;
+    white-space: normal;
+  }
+
+  .hud-slot-top .header-center {
+    position: static !important;
+    width: auto !important;
+    min-width: 0 !important;
+    align-self: start;
+    justify-self: stretch;
+    transform: none !important;
+  }
+
+  .hud-slot-top .header-actions {
+    display: flex !important;
+    min-width: 0 !important;
+    width: auto !important;
+    justify-content: flex-end;
+  }
+
+  .hud-slot-top .header-actions > .goal-hud,
+  .hud-slot-top .goal-hud {
+    width: min(100%, 620px) !important;
+    max-height: min(360px, calc(100dvh - 116px));
+    overflow: visible;
+  }
+}

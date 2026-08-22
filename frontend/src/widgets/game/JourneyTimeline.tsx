@@ -28,7 +28,7 @@ const entryTypeLabels: Record<string, string> = { action: '行动', event: '事�
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
-  const drag = useDraggablePosition('yungang-journey-timeline-position', { minVisibleWidth: 190, minVisibleHeight: 64 });
+  const drag = useDraggablePosition('yungang-journey-timeline-position-v2', { minVisibleWidth: 190, minVisibleHeight: 64 });
   const visibleEntries = entries.filter(entry => filter === 'all' || entry.type === filter).reverse();
 
   return <details className="timeline-drawer" style={drag.style}>
