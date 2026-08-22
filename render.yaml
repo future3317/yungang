@@ -3,5 +3,8 @@ services:
     name: yungang-feitianqi
     runtime: docker
     plan: free
-    healthCheckPath: /api/meta
+    healthCheckPath: /healthz
     autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false

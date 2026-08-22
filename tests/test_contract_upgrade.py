@@ -1,5 +1,5 @@
 from backend.engine import GameEngine
-from backend.models import ResultState
+from backend.models import ResultState, ViewerState
 import pytest
 
 
@@ -177,3 +177,24 @@ def test_result_state_is_structured_and_survives_game_serialization():
 
     assert restored.result.outcome == "victory"
     assert restored.result.completed_projects == ["project_01"]
+
+
+def test_viewer_state_is_structured_for_room_replay():
+    engine = GameEngine()
+    state = engine.new_game("contract-viewer-state", ["p1"], solo_mode=False)
+    state.viewer = ViewerState(
+        seat_id="seat-1",
+        player_id="p1",
+        controlled_player_ids=["p1"],
+        can_act=True,
+        play_mode="multi_device",
+        room_id="room-contract",
+        room_status="in_progress",
+        seats=[{"seat_id": "seat-1", "player_id": "p1", "name": "石刻旅人", "role_id": "pingcheng_artisan", "ready": True, "connected": True}],
+    )
+
+    restored = type(state).model_validate_json(state.model_dump_json())
+
+    assert restored.viewer.play_mode == "multi_device"
+    assert restored.viewer.room_id == "room-contract"
+    assert restored.viewer.seats[0].role_id == "pingcheng_artisan"

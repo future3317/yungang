@@ -6,7 +6,7 @@
 
 ## 发布前要求
 
-- 使用环境变量 `YUNGANG_DATABASE_PATH` 指向运行时数据库，不把数据库提交到仓库。
+- 本地可使用 `YUNGANG_DATABASE_PATH` 指向 SQLite；生产使用秘密环境变量 `DATABASE_URL` 连接 Neon PostgreSQL，不把数据库或连接串提交到仓库。
 - 房间读取和写入必须使用 `X-Seat-Token`；事件流只使用短时订阅票据。
 - 生产环境应在反向代理层启用 HTTPS、限流、备份和日志脱敏。
 - 应用提供 `/healthz`，部署检查不得把数据库内容或令牌写入响应和日志。

@@ -1,0 +1,13 @@
+data/*.sqlite3
+data/*.sqlite3-*
+data/*.db
+data/*.db-*
+frontend/node_modules
+frontend/dist
+frontend/playwright-report
+frontend/test-results
+frontend/audit_output
+output
+tmp
+coverage
+*.log

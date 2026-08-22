@@ -7,23 +7,19 @@
 3. Render 会读取根目录的 `render.yaml`；确认服务名后点击 **Apply**。
 4. 等待首次构建完成，在服务页复制 `https://yungang-feitianqi.onrender.com` 这一类公开地址并发给同学。
 
-免费实例在一段时间无人访问后会休眠，第一次重新打开通常需要几十秒。正式答辩前请提前打开一次，并在服务页确认 `/api/meta` 健康检查为正常。
+免费实例在一段时间无人访问后会休眠，第一次重新打开通常需要几十秒。正式答辩前请提前打开一次，并在服务页确认 `/healthz` 健康检查为正常。
 
 ## 存档持久化是发布前置条件
 
-游戏状态、房间席位、旅程时间线和事件历史都写入同一个 SQLite 文件。运行时数据库不提交到 GitHub，也不会复制进 Docker 镜像；否则每次构建都会覆盖成旧快照。
+游戏状态、房间席位、旅程时间线和事件历史都写入同一个数据库。Render 免费实例的本地文件系统不能保存 SQLite，所以生产环境使用 Neon PostgreSQL；运行时数据库不提交到 GitHub，也不会复制进 Docker 镜像。
 
-要让重新部署、实例重启和免费实例休眠后的存档继续可读，Render 服务必须使用支持持久磁盘的付费计划，并挂载：
+## Neon 免费数据库配置
 
-```yaml
-plan: starter
-disk:
-  name: yungang-runtime-data
-  mountPath: /var/lib/yungang
-  sizeGB: 1
-envVars:
-  - key: YUNGANG_DATABASE_PATH
-    value: /var/lib/yungang/games.sqlite3
-```
+1. 在 Neon 创建 PostgreSQL 项目，复制带 `sslmode=require` 的连接串。
+2. 在 Render 服务的 Environment 中新增 `DATABASE_URL`，粘贴连接串；不要把它写进仓库或聊天记录。
+3. 重新部署后打开 `/healthz`，返回 `"database": "postgresql"` 才表示应用已经切换到 Neon。
+4. 如果本地 `data/games.sqlite3` 有需要保留的存档，在切换前执行 `D:\Anaconda\envs\piepaper\python.exe scripts/migrate_sqlite_to_postgres.py --source data/games.sqlite3`，并在同一终端设置 `DATABASE_URL`。
 
-持久磁盘只保证同一个 Render 服务实例的运行数据跨部署保留。删除服务、删除磁盘或没有完成数据库备份时，不能把存档视为可恢复。发布前应先确认磁盘已挂载，并通过 `/healthz` 检查数据库状态。
+迁移脚本按 `session_id` 和 `room_id` 幂等覆盖目标记录，迁移前应保留本地数据库备份。迁移完成后，Render 的重新部署、休眠和重启都只会重新连接 Neon，不会重建游戏存档。
+
+不要同时设置 `DATABASE_URL` 和云端 SQLite 路径；应用优先使用 `DATABASE_URL`。本地开发和测试不设置 `DATABASE_URL` 时仍使用 SQLite。删除 Neon 项目或超过免费额度后，服务会无法读写存档，应在 Neon 控制台保留备份和用量提醒。

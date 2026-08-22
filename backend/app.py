@@ -10,15 +10,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .actions import dispatch
 from .content import Content
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse
+from .models import ActionRequest, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
 app = FastAPI(title="Yungang Heritage Network", version="3.0")
-repo = GameRepository(os.getenv("YUNGANG_DATABASE_PATH"))
+database_target = os.getenv("DATABASE_URL") or os.getenv("YUNGANG_DATABASE_PATH")
+repo = GameRepository(database_target)
 content = Content()
 engine = GameEngine(content)
-room_service = RoomService(RoomRepository(repo.path))
+room_service = RoomService(RoomRepository(repo.database))
 _rate_buckets: dict[tuple[str, str], list[float]] = {}
 
 
@@ -27,8 +28,9 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
     global repo, room_service
     if database_path is not None:
         isolated = GameRepository(database_path)
+        repo.database = isolated.database
         repo.path = isolated.path
-        room_service.repository = RoomRepository(repo.path)
+        room_service = RoomService(RoomRepository(repo.database))
         _rate_buckets.clear()
     return app
 
@@ -52,7 +54,11 @@ async def security_and_rate_limit(request: Request, call_next):
 
 @app.get("/healthz", include_in_schema=False)
 def healthz():
-    return {"status": "ok", "service": "yungang-heritage-network", "database": "ready" if repo.path.exists() else "initializing"}
+    try:
+        repo.database.ping()
+    except Exception as exc:
+        raise HTTPException(503, {"code": "database_unavailable", "message": "存档数据库暂时不可用。", "details": {}, "recovery": "retry"}) from exc
+    return {"status": "ok", "service": "yungang-heritage-network", "database": repo.database.kind}
 
 @app.get("/api/meta", response_model=MetaResponse)
 def meta():
@@ -290,7 +296,7 @@ def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     state = GameState.model_validate(state.model_dump())
     controlled_ids = [item["player_id"] for item in room["seats"]] if room["play_mode"] in {"solo", "local"} else [seat["player_id"]]
     can_act = room["status"] == "in_progress" and state.shared.active_player_id in controlled_ids
-    state.viewer = {"seat_id": seat["seat_id"], "player_id": seat["player_id"], "controlled_player_ids": controlled_ids, "can_act": can_act, "can_manage_room": seat["seat_id"] == "seat-1", "play_mode": room["play_mode"], "paused": room["status"] == "paused", "room_id": room["room_id"], "room_status": room["status"], "seats": [{key: item.get(key) for key in ("seat_id", "player_id", "name", "role_id", "ready", "connected")} for item in room["seats"]]}
+    state.viewer = ViewerState(seat_id=seat["seat_id"], player_id=seat["player_id"], controlled_player_ids=controlled_ids, can_act=can_act, can_manage_room=seat["seat_id"] == "seat-1", play_mode=room["play_mode"], paused=room["status"] == "paused", room_id=room["room_id"], room_status=room["status"], seats=[{key: item.get(key) for key in ("seat_id", "player_id", "name", "role_id", "ready", "connected")} for item in room["seats"]])
     if not can_act:
         state.legal_actions = []
         state.action_options = []

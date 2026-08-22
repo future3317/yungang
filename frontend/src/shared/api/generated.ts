@@ -565,10 +565,7 @@ export interface components {
             };
             score?: components["schemas"]["ScoreState"];
             result?: components["schemas"]["ResultState"];
-            /** Viewer */
-            viewer?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            viewer?: components["schemas"]["ViewerState"];
             /** Feedback Events */
             feedback_events?: components["schemas"]["FeedbackEvent"][];
             goal_status?: components["schemas"]["GoalStatus"];
@@ -770,6 +767,11 @@ export interface components {
          * @enum {string}
          */
         Phase: "round_forecast" | "planning" | "player_action" | "pending_choice" | "event_resolution" | "round_summary" | "game_over";
+        /**
+         * PlayMode
+         * @enum {string}
+         */
+        PlayMode: "solo" | "local" | "multi_device";
         /** PlayerState */
         PlayerState: {
             /** Id */
@@ -1347,6 +1349,59 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** ViewerSeat */
+        ViewerSeat: {
+            /** Seat Id */
+            seat_id: string;
+            /** Player Id */
+            player_id?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Role Id */
+            role_id?: string | null;
+            /**
+             * Ready
+             * @default false
+             */
+            ready: boolean;
+            /**
+             * Connected
+             * @default false
+             */
+            connected: boolean;
+        };
+        /** ViewerState */
+        ViewerState: {
+            /** Seat Id */
+            seat_id?: string | null;
+            /** Player Id */
+            player_id?: string | null;
+            /** Controlled Player Ids */
+            controlled_player_ids?: string[];
+            /**
+             * Can Act
+             * @default false
+             */
+            can_act: boolean;
+            /**
+             * Can Manage Room
+             * @default false
+             */
+            can_manage_room: boolean;
+            /** @default solo */
+            play_mode: components["schemas"]["PlayMode"];
+            /**
+             * Paused
+             * @default false
+             */
+            paused: boolean;
+            /** Room Id */
+            room_id?: string | null;
+            /** Room Status */
+            room_status?: string | null;
+            /** Seats */
+            seats?: components["schemas"]["ViewerSeat"][];
         };
     };
     responses: never;

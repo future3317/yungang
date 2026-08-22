@@ -5,11 +5,12 @@ from __future__ import annotations
 import hashlib
 import json
 import secrets
-import sqlite3
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
+
+from .database import Database
 
 
 def _now() -> str:
@@ -25,23 +26,20 @@ def _digest(token: str) -> str:
 
 
 class RoomRepository:
-    def __init__(self, path: Path):
-        self.path = Path(path)
-        with sqlite3.connect(self.path, timeout=10) as db:
-            db.execute("PRAGMA journal_mode=WAL")
-            db.execute("PRAGMA busy_timeout=10000")
-            db.execute("CREATE TABLE IF NOT EXISTS rooms (room_id TEXT PRIMARY KEY, payload TEXT NOT NULL)")
+    def __init__(self, path: str | Path | Database):
+        self.database = path if isinstance(path, Database) else Database(path)
+        self.path = self.database.path
+        self.database.ensure_rooms()
 
     def get(self, room_id: str) -> Optional[dict[str, Any]]:
-        with sqlite3.connect(self.path, timeout=10) as db:
-            db.execute("PRAGMA busy_timeout=10000")
-            row = db.execute("SELECT payload FROM rooms WHERE room_id=?", (room_id,)).fetchone()
+        with self.database.connect() as db:
+            row = db.execute(self.database.sql("SELECT payload FROM rooms WHERE room_id=?"), (room_id,)).fetchone()
         return json.loads(row[0]) if row else None
 
     def save(self, room: dict[str, Any]) -> None:
         payload = json.dumps(room, ensure_ascii=False, separators=(",", ":"))
-        with sqlite3.connect(self.path) as db:
-            db.execute("INSERT INTO rooms(room_id,payload) VALUES(?,?) ON CONFLICT(room_id) DO UPDATE SET payload=excluded.payload", (room["room_id"], payload))
+        with self.database.connect() as db:
+            db.execute(self.database.sql("INSERT INTO rooms(room_id,payload) VALUES(?,?) ON CONFLICT(room_id) DO UPDATE SET payload=excluded.payload"), (room["room_id"], payload))
 
 
 class RoomService:
@@ -200,9 +198,8 @@ class RoomService:
         }
 
     def room_for_session(self, session_id: str) -> Optional[dict[str, Any]]:
-        with sqlite3.connect(self.repository.path, timeout=10) as db:
-            db.execute("PRAGMA busy_timeout=10000")
-            rows = db.execute("SELECT payload FROM rooms").fetchall()
+        with self.repository.database.connect() as db:
+            rows = db.execute(self.repository.database.sql("SELECT payload FROM rooms")).fetchall()
         return next((room for (payload,) in rows if (room := json.loads(payload)).get("session_id") == session_id), None)
 
     @staticmethod

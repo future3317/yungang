@@ -156,6 +156,15 @@ class GoalStatus(BaseModel):
     failure_conditions: List[GoalCondition] = Field(default_factory=list)
 
 
+class ViewerSeat(BaseModel):
+    seat_id: str
+    player_id: Optional[str] = None
+    name: Optional[str] = None
+    role_id: Optional[str] = None
+    ready: bool = False
+    connected: bool = False
+
+
 class ViewerState(BaseModel):
     seat_id: Optional[str] = None
     player_id: Optional[str] = None
@@ -166,7 +175,7 @@ class ViewerState(BaseModel):
     paused: bool = False
     room_id: Optional[str] = None
     room_status: Optional[str] = None
-    seats: List[JsonObject] = Field(default_factory=list)
+    seats: List[ViewerSeat] = Field(default_factory=list)
 
 
 class ErrorResponse(BaseModel):
@@ -491,7 +500,7 @@ class GameState(BaseModel):
     objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
     score: ScoreState = Field(default_factory=ScoreState)
     result: ResultState = Field(default_factory=ResultState)
-    viewer: JsonObject = Field(default_factory=dict)
+    viewer: ViewerState = Field(default_factory=ViewerState)
     feedback_events: List[FeedbackEvent] = Field(default_factory=list)
     goal_status: GoalStatus = Field(default_factory=GoalStatus)
     processed_request_ids: List[str] = Field(default_factory=list)
