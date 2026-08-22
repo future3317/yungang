@@ -82,6 +82,17 @@ function requiredRecord<T extends object>(value: T | undefined, field: string): 
 function normalizeGameState(payload: ContractGameState): GameState {
   const players = requiredRecord(payload.players, 'players');
   const shared = requiredRecord(payload.shared, 'shared');
+  const decks = requiredRecord(payload.decks, 'decks');
+  const market = requiredArray(payload.market, 'market');
+  const actionOptions = requiredArray(payload.action_options, 'action_options');
+  const routes = requiredRecord(payload.routes, 'routes');
+  const projects = requiredRecord(payload.projects, 'projects');
+  const objectives = requiredRecord(payload.objectives, 'objectives');
+  const feedbackEvents = requiredArray(payload.feedback_events, 'feedback_events');
+  const goalStatus = requiredRecord(payload.goal_status, 'goal_status');
+  const result = requiredRecord(payload.result, 'result');
+  const score = requiredRecord(payload.score, 'score');
+  const viewer = requiredRecord(payload.viewer, 'viewer');
   const tasks = Object.fromEntries(Object.entries(payload.tasks || {}).map(([id, value]) => {
     const record = value as Record<string, unknown>;
     return [id, {
@@ -106,18 +117,18 @@ function normalizeGameState(payload: ContractGameState): GameState {
     sites: payload.sites as GameState['sites'],
     tasks,
     shared: shared as GameState['shared'],
-    decks: payload.decks || {},
-    market: payload.market || [],
+    decks: decks as GameState['decks'],
+    market,
     pending_choice: payload.pending_choice as GameState['pending_choice'] || null,
-    action_options: (payload.action_options || []) as GameState['action_options'],
-    routes: (payload.routes || {}) as GameState['routes'],
-    projects: (payload.projects || {}) as GameState['projects'],
-    objectives: (payload.objectives || {}) as GameState['objectives'],
-    feedback_events: (payload.feedback_events || []) as GameState['feedback_events'],
-    goal_status: payload.goal_status,
-    result: payload.result,
-    score: payload.score,
-    viewer: payload.viewer,
+    action_options: actionOptions as GameState['action_options'],
+    routes: routes as GameState['routes'],
+    projects: projects as GameState['projects'],
+    objectives: objectives as GameState['objectives'],
+    feedback_events: feedbackEvents as GameState['feedback_events'],
+    goal_status: goalStatus as GameState['goal_status'],
+    result: result as GameState['result'],
+    score: score as GameState['score'],
+    viewer: viewer as GameState['viewer'],
   };
 }
 

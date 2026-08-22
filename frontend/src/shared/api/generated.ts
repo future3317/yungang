@@ -672,6 +672,131 @@ export interface components {
             /** Description */
             description?: string | null;
         };
+        /** EffectiveRules */
+        EffectiveRules: {
+            /**
+             * Max Rounds
+             * @default 0
+             */
+            max_rounds: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
+             * Event Weight
+             * @default 0
+             */
+            event_weight: number;
+            /**
+             * Node Damage Base
+             * @default 0
+             */
+            node_damage_base: number;
+            /**
+             * Event Preview Count
+             * @default 0
+             */
+            event_preview_count: number;
+            /**
+             * Solo Ap Bonus
+             * @default 0
+             */
+            solo_ap_bonus: number;
+            /**
+             * Planning Marks Per Round
+             * @default 0
+             */
+            planning_marks_per_round: number;
+            /**
+             * Influence Goal
+             * @default 0
+             */
+            influence_goal: number;
+            /** Guidance Level */
+            guidance_level?: string | null;
+            /**
+             * Show Recommendation Reasons
+             * @default false
+             */
+            show_recommendation_reasons: boolean;
+            /**
+             * Show Event Target Details
+             * @default false
+             */
+            show_event_target_details: boolean;
+            /**
+             * Route Action Discount
+             * @default 0
+             */
+            route_action_discount: number;
+        };
+        /** EffectiveRulesPreview */
+        EffectiveRulesPreview: {
+            /**
+             * Max Rounds
+             * @default 0
+             */
+            max_rounds: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
+             * Event Weight
+             * @default 0
+             */
+            event_weight: number;
+            /**
+             * Node Damage Base
+             * @default 0
+             */
+            node_damage_base: number;
+            /**
+             * Event Preview Count
+             * @default 0
+             */
+            event_preview_count: number;
+            /**
+             * Solo Ap Bonus
+             * @default 0
+             */
+            solo_ap_bonus: number;
+            /**
+             * Planning Marks Per Round
+             * @default 0
+             */
+            planning_marks_per_round: number;
+            /**
+             * Influence Goal
+             * @default 0
+             */
+            influence_goal: number;
+            /** Guidance Level */
+            guidance_level?: string | null;
+            /**
+             * Show Recommendation Reasons
+             * @default false
+             */
+            show_recommendation_reasons: boolean;
+            /**
+             * Show Event Target Details
+             * @default false
+             */
+            show_event_target_details: boolean;
+            /**
+             * Route Action Discount
+             * @default 0
+             */
+            route_action_discount: number;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Difficulty Id */
+            difficulty_id: string;
+            play_mode: components["schemas"]["PlayMode"];
+        };
         /** EstablishConnectionEffectContract */
         EstablishConnectionEffectContract: {
             /**
@@ -746,9 +871,7 @@ export interface components {
             /** Resolution */
             resolution?: components["schemas"]["EventRecord"][];
             /** Modifiers */
-            modifiers?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            modifiers?: components["schemas"]["EventModifier"][];
             /**
              * Round
              * @default 0
@@ -773,9 +896,16 @@ export interface components {
             /** Resolution */
             resolution?: components["schemas"]["EventRecord"][];
             /** Modifiers */
-            modifiers?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            modifiers?: components["schemas"]["EventModifier"][];
+        };
+        /** EventModifier */
+        EventModifier: {
+            /** Type */
+            type: string;
+            /** Action */
+            action?: string | null;
+            /** Amount */
+            amount?: number | null;
         };
         /** EventRecord */
         EventRecord: {
@@ -1168,9 +1298,7 @@ export interface components {
             difficulty?: components["schemas"]["DifficultyContract"][];
             /** Effective Rules Preview */
             effective_rules_preview?: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["EffectiveRulesPreview"];
             };
         };
         /** NoArgumentEffectContract */
@@ -1354,14 +1482,8 @@ export interface components {
             required_progress: number;
             /** Stage Text */
             stage_text?: string | null;
-            /** Requirements */
-            requirements?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
-            /** Reward */
-            reward?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            requirements?: components["schemas"]["StageRequirements"];
+            reward?: components["schemas"]["StageReward"];
             /** Choices */
             choices?: {
                 [key: string]: components["schemas"]["JsonValue"];
@@ -1412,9 +1534,7 @@ export interface components {
             /** Contributors */
             contributors?: string[];
             /** Stage Evidence */
-            stage_evidence?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            stage_evidence?: components["schemas"]["StageEvidence"][];
             /** Completed Stages */
             completed_stages?: string[];
             /** Stage Progress */
@@ -1562,10 +1682,7 @@ export interface components {
              * @default 5
              */
             weathering_limit: number;
-            /** Effective Rules */
-            effective_rules?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            effective_rules?: components["schemas"]["EffectiveRules"];
             /**
              * Solo Mode
              * @default false
@@ -2309,9 +2426,7 @@ export interface components {
             /** Domains */
             domains?: string[];
             /** Contributions */
-            contributions?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            contributions?: components["schemas"]["InterpretationPlacement"][];
             /** Active Project Id */
             active_project_id?: string | null;
         };
@@ -2320,6 +2435,87 @@ export interface components {
          * @enum {string}
          */
         SiteStatus: "stable" | "at_risk" | "closed";
+        /** StageEvidence */
+        StageEvidence: {
+            /** Stage Id */
+            stage_id: string;
+            /** Card Id */
+            card_id: string;
+            /** Player Id */
+            player_id: string;
+            /** Action Type */
+            action_type: string;
+        };
+        /** StageRequirements */
+        StageRequirements: {
+            /**
+             * Clues
+             * @default 0
+             */
+            clues: number;
+            /** Domains */
+            domains?: string[];
+            /**
+             * Origin Diversity
+             * @default 0
+             */
+            origin_diversity: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
+             * Contributors
+             * @default 0
+             */
+            contributors: number;
+        };
+        /** StageReward */
+        StageReward: {
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+            /**
+             * Research Clues
+             * @default 0
+             */
+            research_clues: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
+             * Route Connection
+             * @default 0
+             */
+            route_connection: number;
+            /**
+             * Weathering Reduction
+             * @default 0
+             */
+            weathering_reduction: number;
+            /**
+             * Market Reserve
+             * @default 0
+             */
+            market_reserve: number;
+            /**
+             * Archive Retrieve
+             * @default 0
+             */
+            archive_retrieve: number;
+            /**
+             * Finale Unlock
+             * @default false
+             */
+            finale_unlock: boolean;
+            /** Objective Tags */
+            objective_tags?: string[];
+        };
         /** SurveyAndMitigateEffectContract */
         SurveyAndMitigateEffectContract: {
             /**
@@ -2417,6 +2613,36 @@ export interface components {
             /** Missing */
             missing?: string[];
         };
+        /** TaskReward */
+        TaskReward: {
+            /**
+             * Scroll Delta
+             * @default 0
+             */
+            scroll_delta: number;
+            /**
+             * Restoration Delta
+             * @default 0
+             */
+            restoration_delta: number;
+            /** Domain */
+            domain?: string | null;
+            /**
+             * Research Clues
+             * @default 0
+             */
+            research_clues: number;
+            /**
+             * Weathering Reduction
+             * @default 0
+             */
+            weathering_reduction: number;
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+        };
         /** TaskState */
         TaskState: {
             /**
@@ -2447,10 +2673,7 @@ export interface components {
              */
             required_card_count: number;
             combo_requirement?: components["schemas"]["ComboRequirement"];
-            /** Reward */
-            reward?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            reward?: components["schemas"]["TaskReward"];
             /** Contributed Cards */
             contributed_cards?: string[];
             /** Contribution Records */

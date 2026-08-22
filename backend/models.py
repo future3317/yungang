@@ -239,6 +239,12 @@ class EffectiveRules(DictModel):
     route_action_discount: int = 0
 
 
+class EffectiveRulesPreview(EffectiveRules):
+    scenario_id: str
+    difficulty_id: str
+    play_mode: PlayMode
+
+
 class InterpretationPlacement(DictModel):
     card_id: str
     relation: Literal["support", "conflict", "pending"]
@@ -463,7 +469,7 @@ class MetaResponse(BaseModel):
     projects: List[ProjectContract] = Field(default_factory=list)
     objectives: List[ObjectiveContract] = Field(default_factory=list)
     difficulty: List[DifficultyContract] = Field(default_factory=list)
-    effective_rules_preview: Dict[str, JsonObject] = Field(default_factory=dict)
+    effective_rules_preview: Dict[str, EffectiveRulesPreview] = Field(default_factory=dict)
 
 
 class RoomSeat(BaseModel):

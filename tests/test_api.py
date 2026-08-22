@@ -35,6 +35,19 @@ def test_meta_and_v3_game_setup():
     assert state['players']['p1']['location'] == 'pingcheng_ruins'
     assert state['action_options']
 
+
+def test_meta_effective_rules_preview_is_typed_and_keyed():
+    response = client.get('/api/meta')
+    assert response.status_code == 200
+    previews = response.json()['effective_rules_preview']
+    assert previews
+    for key, preview in previews.items():
+        scenario_id, difficulty_id, play_mode = key.split(':')
+        assert preview['scenario_id'] == scenario_id
+        assert preview['difficulty_id'] == difficulty_id
+        assert preview['play_mode'] == play_mode
+        assert isinstance(preview['max_rounds'], int)
+        assert isinstance(preview['restoration_resource'], int)
 @pytest.mark.parametrize('raw_code,base_code', [
     ('invalid_action_card_discard', 'invalid_action_card_discard'),
     ('unsupported_action_card_effect:unknown_effect', 'unsupported_action_card_effect'),
