@@ -51,7 +51,7 @@ export function LandingPage() {
   function resume() {
     const value = roomCode.trim();
     if (!value) return;
-    if (value.startsWith('room-') || /^[a-f0-9]{16}$/i.test(value)) {
+    if (value.startsWith('room-') || /^[a-f0-9]{8,16}$/i.test(value)) {
       navigate(`/room/${value.startsWith('room-') ? value : `room-${value}`}`);
     } else {
       navigate(`/game/${value}`);
