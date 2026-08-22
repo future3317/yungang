@@ -1,8 +1,12 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-async function startSolo(page: Page) {
+async function startSolo(page: Page, seed?: string) {
   await page.goto('/');
+  if (seed) {
+    await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
+    await page.getByLabel('可复现种子').fill(seed);
+  }
   await page.getByRole('button', { name: '进入准备厅' }).click();
   await page.getByLabel('席位 1 角色').selectOption('pingcheng_artisan');
   await page.getByLabel('席位 2 角色').selectOption('grassland_rider');
@@ -103,17 +107,116 @@ test('learning chain explains why interpretation is not ready', async ({ page })
   if (await marketTutorialClose.isVisible()) await marketTutorialClose.click();
   await marketCard.click();
   await confirmPreview();
-  await page.getByRole('tab', { name: '任务' }).click();
+  await page.getByRole('tab', { name: '任务' }).click({ force: true });
 
   const evidence = page.locator('.evidence-choice').first();
   await expect(evidence).toBeVisible();
   await evidence.getByRole('button', { name: /支持/ }).click();
   await confirmPreview();
 
-  const form = page.getByRole('button', { name: '形成当前解释' });
+  const form = page.getByRole('button', { name: '形成当前解释', exact: true });
   await expect(form).toBeVisible();
   await expect(form).toBeDisabled();
   await expect(page.locator('.interpretation-hint')).toBeVisible();
+  await expectNoInternalTerms(page);
+});
+
+test('strict learning chain completes interpretation, strategy response, and round settlement', async ({ page }) => {
+  await startSolo(page, '4');
+
+  const confirmAction = async () => {
+    const contextualTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
+    const preview = page.locator('.action-preview');
+    await expect(preview).toBeVisible();
+    await preview.getByRole('button', { name: '确认行动：踏上这一步' }).click();
+    await expect(preview).toBeHidden();
+  };
+  const finishSeat = async () => {
+    const contextualTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
+    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
+    let endTurn = page.getByRole('button', { name: '结束回合' }).first();
+    if (!await endTurn.isVisible()) {
+      await page.locator('.more-actions > summary').click();
+      endTurn = page.getByRole('button', { name: '结束回合' }).first();
+    }
+    await expect(endTurn).toBeVisible();
+    await endTurn.click();
+    await confirmAction();
+    const handoff = page.getByRole('button', { name: '我已接过席位' });
+    if (await handoff.isVisible()) await handoff.click();
+  };
+  const selectMove = async (name: string) => {
+    const contextualTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
+    const preview = page.locator('.action-preview');
+    if (!await preview.isVisible()) {
+      const target = page.locator('.action-target-guide button').filter({ hasText: name }).first();
+      await expect(target).toBeVisible();
+      await target.evaluate(element => (element as HTMLButtonElement).click());
+    }
+    await confirmAction();
+  };
+  const moveToWorkshop = async () => {
+    await page.getByRole('button', { name: /^移动/ }).first().click();
+    await selectMove('云冈石窟');
+    await page.getByRole('button', { name: /^移动/ }).first().click();
+    await selectMove('北线工坊');
+  };
+
+  await moveToWorkshop();
+  await page.getByRole('button', { name: /^探索/ }).first().click();
+  const exploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await exploreTutorial.isVisible()) await exploreTutorial.click();
+  await page.getByRole('tab', { name: '市场' }).click();
+  await page.locator('[data-card-id="culture_14"]').click();
+  await confirmAction();
+  await finishSeat();
+
+  await moveToWorkshop();
+  await page.getByRole('button', { name: /^探索/ }).first().click();
+  const secondExploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await secondExploreTutorial.isVisible()) await secondExploreTutorial.click();
+  await page.getByRole('tab', { name: '市场' }).click();
+  await page.locator('[data-card-id="culture_27"]').click();
+  await confirmAction();
+  await finishSeat();
+
+  await page.getByRole('tab', { name: '任务' }).click({ force: true });
+  const firstEvidence = page.locator('[data-card-id="culture_14"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
+  await expect(firstEvidence).toBeVisible();
+  await firstEvidence.getByRole('button', { name: /支持/ }).click();
+  await confirmAction();
+  await finishSeat();
+
+  await page.getByRole('tab', { name: '任务' }).click({ force: true });
+  const secondEvidence = page.locator('[data-card-id="culture_27"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
+  await expect(secondEvidence).toBeVisible();
+  await secondEvidence.getByRole('button', { name: /支持/ }).click({ force: true });
+  await confirmAction();
+
+  const form = page.getByRole('button', { name: '形成当前解释', exact: true });
+  await expect(form).toBeEnabled();
+  await form.click();
+  await confirmAction();
+  const minimal = page.getByRole('button', { name: /^最小干预/ });
+  await expect(minimal).toBeVisible();
+  await minimal.click();
+  await confirmAction();
+  await page.getByRole('button', { name: '继续旅程' }).click();
+
+  const strategy = page.locator('[aria-label^="整备行装：事件将影响"]').first();
+  await expect(strategy).toBeVisible();
+  await strategy.click();
+  await expect(page.locator('.strategy-card-dialog')).toBeVisible();
+  await page.getByRole('button', { name: '继续选择目标' }).click();
+  await expect(page.locator('.strategy-card-dialog')).toBeHidden();
+
+  await finishSeat();
+  await finishSeat();
+  await expect(page.locator('.round-summary')).toBeVisible();
+  await expect(page.locator('.round-summary')).toContainText('上一回合');
+  await expect(page.locator('.event-history-bar')).toBeVisible();
   await expectNoInternalTerms(page);
 });
 

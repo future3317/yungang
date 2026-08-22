@@ -950,6 +950,7 @@ class GameEngine:
                 "planning_marks": {key: [dict(item) for item in items] for key, items in state.shared.planning_marks.items()},
                 "weathering_track": state.shared.weathering_track,
                 "restoration_resource": state.shared.restoration_resource,
+                "research_clues": state.shared.research_clues,
                 "influence": state.shared.influence,
                 "site_states": {site.id: {"damage": site.damage, "status": site.status.value if hasattr(site.status, "value") else str(site.status)} for site in state.sites.values()},
                 "route_states": {route.id: {"risk": route.risk, "status": route.status} for route in state.routes.values()},
@@ -1040,11 +1041,13 @@ class GameEngine:
             "before": {
                 "weathering": snapshot.get("weathering_track", state.shared.weathering_track),
                 "restoration_resource": snapshot.get("restoration_resource", state.shared.restoration_resource),
+                "research_clues": snapshot.get("research_clues", state.shared.research_clues),
                 "influence": snapshot.get("influence", state.shared.influence),
             },
             "after": {
                 "weathering": state.shared.weathering_track,
                 "restoration_resource": state.shared.restoration_resource,
+                "research_clues": state.shared.research_clues,
                 "influence": state.shared.influence,
             },
             "event_resolution": list(state.shared.event_instance.get("resolution", [])),

@@ -33,7 +33,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const drag = useDraggablePosition('yungang-journey-timeline-position-v2', { minVisibleWidth: 190, minVisibleHeight: 64, boundToParent: true });
   const visibleEntries = entries.filter(entry => filter === 'all' || entry.type === filter).reverse();
 
-  return <details className="timeline-drawer is-draggable" data-draggable-surface="true" style={drag.style} open>
+  return <details className="timeline-drawer is-draggable" data-draggable-surface="true" style={drag.style}>
     <summary aria-label="旅程时间线"><Clock3 size={15} aria-hidden="true" /><span>旅程时间线</span><span className="timeline-drag-handle" aria-hidden="true" title="拖动旅程时间线" onPointerDown={drag.onPointerDown} onClickCapture={drag.onClickCapture}><img src={assetUrl('game-ui/handles/ui_yungang_timeline_handle_01.webp')} alt="" /></span><small>{entries.length} 条记录</small><ChevronDown size={15} aria-hidden="true" /></summary>
     <div className="timeline-body">
       <div className="timeline-filter" role="tablist" aria-label="时间线筛选">

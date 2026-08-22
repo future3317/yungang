@@ -27,7 +27,7 @@ export function CommandDock({ state, active, cards, actionCards = {}, legal, act
   const ranked = [...actionOptions].sort((left, right) => (right.recommendation_score || 0) - (left.recommendation_score || 0));
   const featured = ranked.filter(item => item.enabled !== false).slice(0, 3);
   const more = ranked.filter(item => !featured.some(feature => feature.id === item.id));
-  const select = (option: ActionOption) => { if (canAct && option.enabled !== false) onChooseOption(option); };
+  const select = (option: ActionOption) => { if (!canAct || option.enabled === false) return; if (option.type === 'use_action_card') setStrategy(option); else onChooseOption(option); };
 
   return <section className={`lower-dock command-deck ${!canAct ? 'waiting-turn' : ''}`} aria-label="行动选择">
     <div className="dock-summary"><span className="section-label"><Hammer size={14} />行动抉择</span><div className="ap-readout"><b>{active.ap}</b><span>AP<br />可用行动点</span></div><span className="dock-team-status">团队修护资源 {state.shared.restoration_resource} · 研究线索 {state.shared.research_clues || 0}</span>{!canAct && <span className="dock-waiting" role="status">等待 {waitingFor} 行动 · 你可以浏览地图和资料</span>}<span className="dock-hint">{!canAct ? '轮到你时，行动按钮会自动恢复。' : actionMode ? `正在选择「${actionLabels[actionMode]}」的落脚处` : featured.length ? `建议先做：${actionLabels[featured[0].type] || featured[0].label}${showRecommendationReasons && featured[0].reason ? ` · ${featured[0].reason}` : ''}` : '此刻风平浪静，等待下一段变化。'}</span>{actionMode && canAct && <button type="button" className="ghost-button" onClick={onCancel}>收回脚步</button>}</div>
