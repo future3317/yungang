@@ -147,3 +147,14 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
     for scenario in scenarios:
         if any(card not in card_ids or count < 1 for card, count in scenario["card_pool"].items()):
             raise ValueError(f"scenario card pool is invalid: {scenario['id']}")
+        if not scenario["card_pool"]:
+            raise ValueError(f"scenario card pool is empty: {scenario['id']}")
+
+    cards = _items(files.get("culture_cards", []), "cards")
+    for scenario in scenarios:
+        enabled_sites = set(scenario["enabled_site_ids"])
+        pool = set(scenario["card_pool"])
+        available_domains = {card.get("domain") for card in cards if card.get("id") in pool}
+        for task in tasks:
+            if task["site_id"] in enabled_sites and not set(task.get("required_domains", [])) & available_domains:
+                raise ValueError(f"scenario task has no matching domain card: {scenario['id']}:{task['id']}")

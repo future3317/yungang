@@ -512,6 +512,31 @@ export interface components {
              * @default 0
              */
             hidden_target_count: number;
+        } & {
+            [key: string]: unknown;
+        };
+        /** EventHistoryRecord */
+        EventHistoryRecord: {
+            /** Event Id */
+            event_id?: string | null;
+            /** @default forecast */
+            status: components["schemas"]["EventStatus"];
+            forecast_scope?: components["schemas"]["EventForecastScope"];
+            /** Revealed Targets */
+            revealed_targets?: string[];
+            /** Resolved Targets */
+            resolved_targets?: string[];
+            /** Mitigation */
+            mitigation?: components["schemas"]["EventRecord"][];
+            /** Resolution */
+            resolution?: components["schemas"]["EventRecord"][];
+            /**
+             * Round
+             * @default 0
+             */
+            round: number;
+        } & {
+            [key: string]: unknown;
         };
         /** EventInstance */
         EventInstance: {
@@ -528,6 +553,8 @@ export interface components {
             mitigation?: components["schemas"]["EventRecord"][];
             /** Resolution */
             resolution?: components["schemas"]["EventRecord"][];
+        } & {
+            [key: string]: unknown;
         };
         /** EventRecord */
         EventRecord: {
@@ -551,6 +578,8 @@ export interface components {
             amount?: number | null;
             /** Trigger */
             trigger?: string | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * EventStatus
@@ -621,9 +650,7 @@ export interface components {
             };
             /** Tasks */
             tasks?: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["TaskState"];
             };
             shared?: components["schemas"]["SharedState"];
             /** Decks */
@@ -770,6 +797,39 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** JournalEntry */
+        JournalEntry: {
+            /** Id */
+            id: string;
+            /**
+             * Round
+             * @default 0
+             */
+            round: number;
+            /**
+             * Type
+             * @default action
+             */
+            type: string;
+            /**
+             * Message
+             * @default
+             */
+            message: string;
+            /** Effects */
+            effects?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /**
+             * Created At
+             * @default
+             */
+            created_at: string;
+            /** Player Id */
+            player_id?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         JsonValue: unknown;
         /** MetaResponse */
         MetaResponse: {
@@ -891,6 +951,8 @@ export interface components {
             resume_choice?: {
                 [key: string]: components["schemas"]["JsonValue"];
             } | null;
+        } & {
+            [key: string]: unknown;
         };
         /** PendingChoiceOption */
         PendingChoiceOption: {
@@ -906,12 +968,30 @@ export interface components {
             trigger?: string | null;
             /** Strategic Direction */
             strategic_direction?: string | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * Phase
          * @enum {string}
          */
         Phase: "round_forecast" | "planning" | "player_action" | "pending_choice" | "event_resolution" | "round_summary" | "game_over";
+        /** PlanningMark */
+        PlanningMark: {
+            /** Target Id */
+            target_id: string;
+            /** Turn */
+            turn: string;
+            /**
+             * Collaborated
+             * @default false
+             */
+            collaborated: boolean;
+            /** Collaboration Action */
+            collaboration_action?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * PlayMode
          * @enum {string}
@@ -973,6 +1053,45 @@ export interface components {
             /** Upgrades */
             upgrades?: string[];
         };
+        /** ProjectStage */
+        ProjectStage: {
+            /**
+             * Id
+             * @default
+             */
+            id: string;
+            /**
+             * Name
+             * @default
+             */
+            name: string;
+            /**
+             * Action Type
+             * @default interpret_evidence
+             */
+            action_type: string;
+            /**
+             * Required Progress
+             * @default 1
+             */
+            required_progress: number;
+            /** Stage Text */
+            stage_text?: string | null;
+            /** Requirements */
+            requirements?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Reward */
+            reward?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Choices */
+            choices?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+        } & {
+            [key: string]: unknown;
+        };
         /** ProjectState */
         ProjectState: {
             /** Id */
@@ -982,9 +1101,7 @@ export interface components {
             /** Name */
             name: string;
             /** Stages */
-            stages?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            stages?: components["schemas"]["ProjectStage"][];
             /**
              * Stage Index
              * @default 0
@@ -1238,6 +1355,8 @@ export interface components {
              * @default 0
              */
             influence: number;
+        } & {
+            [key: string]: unknown;
         };
         /** RoundSummary */
         RoundSummary: {
@@ -1275,6 +1394,8 @@ export interface components {
             };
             /** Round Effects */
             round_effects?: components["schemas"]["EventRecord"][];
+        } & {
+            [key: string]: unknown;
         };
         /** RouteState */
         RouteState: {
@@ -1445,9 +1566,7 @@ export interface components {
             log?: string[];
             /** Planning Marks */
             planning_marks?: {
-                [key: string]: {
-                    [key: string]: string;
-                }[];
+                [key: string]: components["schemas"]["PlanningMark"][];
             };
             /** Node Ability Uses */
             node_ability_uses?: string[];
@@ -1475,16 +1594,12 @@ export interface components {
             /** Controlled Character Ids */
             controlled_character_ids?: string[];
             /** Journal */
-            journal?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            journal?: components["schemas"]["JournalEntry"][];
             /** Event Targets */
             event_targets?: string[];
             event_instance?: components["schemas"]["EventInstance"];
             /** Event History */
-            event_history?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            event_history?: components["schemas"]["EventHistoryRecord"][];
             round_summary?: components["schemas"]["RoundSummary"];
             /** Reserved Market Cards */
             reserved_market_cards?: string[];
@@ -1545,6 +1660,61 @@ export interface components {
          * @enum {string}
          */
         SiteStatus: "stable" | "at_risk" | "closed";
+        /** TaskState */
+        TaskState: {
+            /**
+             * Id
+             * @default
+             */
+            id: string;
+            /**
+             * Site Id
+             * @default
+             */
+            site_id: string;
+            /**
+             * Name
+             * @default
+             */
+            name: string;
+            /** Required Domains */
+            required_domains?: string[];
+            /**
+             * Required Origin Diversity
+             * @default 1
+             */
+            required_origin_diversity: number;
+            /**
+             * Required Card Count
+             * @default 1
+             */
+            required_card_count: number;
+            /** Combo Requirement */
+            combo_requirement?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Reward */
+            reward?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Contributed Cards */
+            contributed_cards?: string[];
+            /** Contribution Records */
+            contribution_records?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Interpretation */
+            interpretation?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /**
+             * Completed
+             * @default false
+             */
+            completed: boolean;
+        } & {
+            [key: string]: unknown;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */

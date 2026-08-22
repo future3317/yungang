@@ -75,7 +75,7 @@ class EventStatus(StrEnum):
 
 class DictModel(BaseModel):
     """Typed runtime records that still need the engine's existing dict access."""
-    model_config = ConfigDict(validate_assignment=True)
+    model_config = ConfigDict(validate_assignment=True, extra="allow")
 
     def __getitem__(self, key: str):
         return getattr(self, key)
@@ -187,6 +187,53 @@ class RoundSummary(DictModel):
     completed_objectives: int = 0
     player_contributions: Dict[str, int] = Field(default_factory=dict)
     round_effects: List[EventRecord] = Field(default_factory=list)
+
+
+class ProjectStage(DictModel):
+    id: str = ""
+    name: str = ""
+    action_type: str = "interpret_evidence"
+    required_progress: int = 1
+    stage_text: Optional[str] = None
+    requirements: JsonObject = Field(default_factory=dict)
+    reward: JsonObject = Field(default_factory=dict)
+    choices: List[JsonObject] = Field(default_factory=list)
+
+
+class TaskState(DictModel):
+    id: str = ""
+    site_id: str = ""
+    name: str = ""
+    required_domains: List[str] = Field(default_factory=list)
+    required_origin_diversity: int = 1
+    required_card_count: int = 1
+    combo_requirement: JsonObject = Field(default_factory=dict)
+    reward: JsonObject = Field(default_factory=dict)
+    contributed_cards: List[str] = Field(default_factory=list)
+    contribution_records: List[JsonObject] = Field(default_factory=list)
+    interpretation: JsonObject = Field(default_factory=dict)
+    completed: bool = False
+
+
+class PlanningMark(DictModel):
+    target_id: str
+    turn: str
+    collaborated: bool = False
+    collaboration_action: Optional[str] = None
+
+
+class JournalEntry(DictModel):
+    id: str
+    round: int = 0
+    type: str = "action"
+    message: str = ""
+    effects: List[JsonObject] = Field(default_factory=list)
+    created_at: str = ""
+    player_id: Optional[str] = None
+
+
+class EventHistoryRecord(EventInstance):
+    round: int = 0
 
 
 class GoalCondition(BaseModel):
@@ -463,7 +510,7 @@ class ProjectState(BaseModel):
     id: str
     site_id: str
     name: str
-    stages: List[JsonObject] = Field(default_factory=list)
+    stages: List[ProjectStage] = Field(default_factory=list)
     stage_index: int = 0
     progress: int = 0
     status: ProjectStatus = ProjectStatus.ACTIVE
@@ -538,7 +585,7 @@ class SharedState(BaseModel):
     prepared_event_ids: List[str] = Field(default_factory=list)
     route_connection_score: int = 0
     log: List[str] = Field(default_factory=list)
-    planning_marks: Dict[str, List[Dict[str, str]]] = Field(default_factory=dict)
+    planning_marks: Dict[str, List[PlanningMark]] = Field(default_factory=dict)
     node_ability_uses: List[str] = Field(default_factory=list)
     phase: Phase = Phase.PLAYER_ACTION
     weathering_track: int = 0
@@ -546,10 +593,10 @@ class SharedState(BaseModel):
     effective_rules: JsonObject = Field(default_factory=dict)
     solo_mode: bool = False
     controlled_character_ids: List[str] = Field(default_factory=list)
-    journal: List[JsonObject] = Field(default_factory=list)
+    journal: List[JournalEntry] = Field(default_factory=list)
     event_targets: List[str] = Field(default_factory=list)
     event_instance: EventInstance = Field(default_factory=EventInstance)
-    event_history: List[JsonObject] = Field(default_factory=list)
+    event_history: List[EventHistoryRecord] = Field(default_factory=list)
     round_summary: RoundSummary = Field(default_factory=RoundSummary)
     round_snapshot: JsonObject = Field(default_factory=dict, exclude=True)
     reserved_market_cards: List[str] = Field(default_factory=list)
@@ -565,7 +612,7 @@ class GameState(BaseModel):
     difficulty_id: str = "normal"
     players: Dict[str, PlayerState]
     sites: Dict[str, SiteState]
-    tasks: Dict[str, JsonObject] = Field(default_factory=dict)
+    tasks: Dict[str, TaskState] = Field(default_factory=dict)
     shared: SharedState = Field(default_factory=SharedState)
     decks: Dict[str, List[str]] = Field(default_factory=lambda: {"culture": [], "events": []})
     market: List[str] = Field(default_factory=list)

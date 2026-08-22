@@ -8,7 +8,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, JournalEntry, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -430,7 +430,7 @@ class GameEngine:
 
     def _record_journal(self, state: GameState, action: str, player_id: str, message: str, changes: list[FeedbackChange] | None = None) -> None:
         kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"
-        state.shared.journal.append({"id": f"journal-{state.revision + len(state.shared.journal) + 1}", "round": state.shared.turn, "type": kind, "message": message, "effects": [change.model_dump() for change in (changes or [])], "created_at": datetime.now(timezone.utc).isoformat(), "player_id": player_id})
+        state.shared.journal.append(JournalEntry(id=f"journal-{state.revision + len(state.shared.journal) + 1}", round=state.shared.turn, type=kind, message=message, effects=[change.model_dump() for change in (changes or [])], created_at=datetime.now(timezone.utc).isoformat(), player_id=player_id))
         del state.shared.journal[:-120]
 
     def _remember_request(self, state, request_id):
@@ -745,8 +745,11 @@ class GameEngine:
             raise ValueError("invalid_action_card_target")
         self._action_card_survey_routes(state, effect, stressed)
     def _action_card_reduce_route_risk(self, state, player, effect, target_id, adjacent, stressed):
-        stressed.risk = max(0, stressed.risk + int(effect.get("risk_delta", -int(effect.get("amount", 1)))))
+        risk_delta = int(effect.get("risk_delta", -int(effect.get("amount", 1))))
+        stressed.risk = max(0, stressed.risk + risk_delta)
         state.shared.research_clues += int(effect.get("clues", 0))
+        state.shared.threat = max(0, state.shared.threat + int(effect.get("threat_delta", 0)))
+        state.shared.weathering_track = state.shared.threat
     def _action_card_survey_routes(self, state, effect, route):
         if route:
             route.status = "strained"
@@ -902,7 +905,7 @@ class GameEngine:
     def _finalize_round(self, state, snapshot):
         """Close one round while the resolved event is still the current instance."""
         if state.shared.event_instance.get("status") == "resolved":
-            state.shared.event_history.append(dict(state.shared.event_instance))
+            state.shared.event_history.append(EventHistoryRecord.model_validate({**state.shared.event_instance.model_dump(mode="json"), "round": int(snapshot.get("round", state.shared.turn - 1))}))
         scenario_context = self._scenario_round_context(state, snapshot)
         scenario_effects = self._emit_scenario_rule(state, "round_end", scenario_context)
         planning_effects = self._settle_planning_marks(state, state.shared.active_player_id)

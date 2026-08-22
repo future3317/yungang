@@ -33,26 +33,28 @@ function intersects(a: LabelBox, b: LabelBox) { return a.left < b.right && a.rig
 export function labelBox(origin: Point, layout: LabelLayout, width: number): LabelBox { const left = layout.anchor === 'end' ? origin.x + layout.x - width : layout.anchor === 'middle' ? origin.x + layout.x - width / 2 : origin.x + layout.x; return { left, right: left + width, top: origin.y + layout.y - 2, bottom: origin.y + layout.y + 1.8 }; }
 export function computeNodePositions(sites: Site[], metas: Record<string, Site>) {
   const output: Record<string, Point> = {};
-  const placed: Point[] = [];
+  const placed: Array<{ point: Point; width: number }> = [];
   const gridFallback: Point[] = [];
   for (let y = 8; y <= 92; y += 9) for (let x = 6; x <= 94; x += 9) gridFallback.push({ x, y });
   [...sites].sort((a, b) => a.id.localeCompare(b.id)).forEach((site, index) => {
     const origin = point(metas[site.id] || site);
+    const width = labelWidth((metas[site.id] || site).name || site.id);
     let candidate = origin;
-    let found = !placed.some(item => distance(candidate, item) < 9);
+    const separated = (next: Point) => !placed.some(item => distance(next, item.point) < Math.max(9, (width + item.width) * .34));
+    let found = separated(candidate);
     for (let attempt = 0; !found && attempt < 128; attempt += 1) {
       const ring = Math.floor(attempt / 16) + 1;
       const angle = ((attempt * 22.5) + index * 17) * Math.PI / 180;
       const radius = 9 + ring * 3.5;
       candidate = { x: Math.max(6, Math.min(94, origin.x + Math.cos(angle) * radius)), y: Math.max(8, Math.min(92, origin.y + Math.sin(angle) * radius)) };
-      found = !placed.some(item => distance(candidate, item) < 9);
+      found = separated(candidate);
     }
     if (!found) {
-      const fallback = [...gridFallback].sort((a, b) => distance(a, origin) - distance(b, origin)).find(item => !placed.some(previous => distance(item, previous) < 9));
+      const fallback = [...gridFallback].sort((a, b) => distance(a, origin) - distance(b, origin)).find(item => separated(item));
       if (fallback) candidate = fallback;
     }
     output[site.id] = candidate;
-    placed.push(candidate);
+    placed.push({ point: candidate, width });
   });
   return output;
 }

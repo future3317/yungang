@@ -1615,6 +1615,63 @@
     border-radius: 999px;
     background-clip: padding-box;
   }
+
+  /* The top rail owns the event summary; it must not use the old bottom HUD coordinates. */
+  .game-header .top-event-summary {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(270px, 24vw);
+    min-width: 170px;
+    max-height: 52px;
+    margin-left: 10px;
+    padding: 6px 9px;
+    overflow: hidden;
+    pointer-events: auto;
+  }
+  .game-header .top-event-summary b,
+  .game-header .top-event-summary span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .game-header .top-event-summary b { font-size: .76rem; }
+  .game-header .top-event-summary span { font-size: .63rem; }
+
+  /* Both side rails are intentional scroll surfaces, including when the browser hides auto bars. */
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column,
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable both-edges;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector .inspector-collapse,
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column .focus-card-toggle,
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column .focus-clear {
+    position: relative;
+    z-index: 20;
+    pointer-events: auto;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column .stage-caption[data-focused="true"] {
+    grid-template-columns: 58px minmax(0, 1fr) auto auto;
+    min-height: 72px;
+    max-height: 104px;
+    overflow: visible;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column .stage-caption[data-focused="true"] p {
+    max-height: 3em;
+    overflow: hidden;
+    line-height: 1.45;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column .focus-clear {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+  }
+  .game-viewport > .game-shell > .hud-slot-top .goal-summary > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .game-viewport > .game-shell > .hud-slot-top .goal-conditions {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
