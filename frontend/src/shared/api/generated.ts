@@ -321,10 +321,16 @@ export interface components {
             type: components["schemas"]["ActionType"];
             /** Label */
             label: string;
-            /** Category Label */
-            category_label?: string;
-            /** Action Label */
-            action_label?: string;
+            /**
+             * Category Label
+             * @default 基础行动
+             */
+            category_label: string;
+            /**
+             * Action Label
+             * @default
+             */
+            action_label: string;
             /**
              * Description
              * @default
@@ -407,10 +413,16 @@ export interface components {
             payload?: {
                 [key: string]: components["schemas"]["JsonValue"];
             };
-            /** Recommendation Score */
-            recommendation_score?: number;
-            /** Reason */
-            reason?: string;
+            /**
+             * Recommendation Score
+             * @default 0
+             */
+            recommendation_score: number;
+            /**
+             * Reason
+             * @default
+             */
+            reason: string;
         };
         /**
          * ActionType
@@ -598,6 +610,8 @@ export interface components {
             status: "incomplete" | "safe" | "warning" | "completed" | "failed";
             /** Related Ids */
             related_ids?: string[];
+            /** Related Labels */
+            related_labels?: string[];
         };
         /** GoalStatus */
         GoalStatus: {
@@ -854,6 +868,12 @@ export interface components {
             /** Stage Contributors */
             stage_contributors?: {
                 [key: string]: string[];
+            };
+            /** Stage Receipts */
+            stage_receipts?: {
+                [key: string]: {
+                    [key: string]: number;
+                };
             };
             /** Available Choices */
             available_choices?: {

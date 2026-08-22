@@ -8,6 +8,7 @@ def test_action_options_are_the_ranked_player_contract():
     assert all(option.type != "contribute" for option in state.action_options)
     assert all(option.reason and option.recommendation_score >= 0 for option in state.action_options)
     assert state.goal_status.weathering_limit == state.shared.weathering_limit
+    assert all(condition.related_labels for condition in state.goal_status.victory_conditions if condition.related_ids)
 
 
 def test_action_feedback_is_returned_by_the_server_state():

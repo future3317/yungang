@@ -13,7 +13,7 @@
 .goal-conditions b { min-width: 42px; color: var(--ink-primary); font-size: .64rem; }
 .goal-conditions span { display: inline-flex; align-items: center; gap: 3px; padding: 3px 6px; border: 1px solid rgba(219, 184, 95, .18); border-radius: 999px; background: rgba(14, 27, 19, .3); }
 .goal-conditions span i { color: var(--connection); font-style: normal; }
-.goal-conditions span small { color: var(--ink-muted); margin-left: 2px; }
+.goal-conditions span small { color: var(--ink-muted); margin-left: 2px; }.goal-conditions span .condition-related { display: block; flex-basis: 100%; margin-left: 22px; color: #c8b98f; font-size: .62rem; }
 .goal-conditions .condition-done { color: #d9c378; border-color: rgba(219, 184, 95, .55); }
 .goal-conditions .condition-danger { color: #e99a75; border-color: rgba(209, 104, 70, .58); }
 .goal-summary { display: grid; grid-template-columns: repeat(4, auto); align-items: center; gap: 8px; color: var(--ink-secondary); font-size: .68rem; }.goal-summary > span { white-space: nowrap; }.goal-summary .progress { grid-column: 1 / -1; height: 4px; margin-top: 1px; }.goal-toggle { justify-self: start; margin-top: 2px; padding: 2px 0; color: var(--connection); background: transparent; border: 0; font: 700 .68rem var(--font-body); cursor: pointer; }.goal-toggle span { margin-left: 5px; font-size: .82rem; }.goal-hud.is-open { max-height: min(280px, calc(100dvh - 128px)); overflow: visible; }.goal-hud.is-open .goal-conditions { max-height: 180px; overflow-y: auto; }

@@ -139,6 +139,7 @@ class GoalCondition(BaseModel):
     operator: Literal['gte', 'lt', 'lte'] = 'gte'
     status: Literal['incomplete', 'safe', 'warning', 'completed', 'failed'] = 'incomplete'
     related_ids: List[str] = Field(default_factory=list)
+    related_labels: List[str] = Field(default_factory=list)
 
 
 class GoalStatus(BaseModel):

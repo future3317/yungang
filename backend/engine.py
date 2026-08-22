@@ -1246,6 +1246,24 @@ class GameEngine:
         scenario = self.content.scenarios.get(state.scenario_id, {})
         core_target = len(core_ids)
         objective_target = len(state.objectives)
+        def related_labels(ids):
+            labels = []
+            for identifier in ids:
+                if identifier in self.content.projects:
+                    labels.append(self.content.projects[identifier].get("name", identifier))
+                elif identifier in self.content.objectives:
+                    labels.append(self.content.objectives[identifier].get("name", identifier))
+                elif identifier in self.content.sites:
+                    labels.append(self.content.sites[identifier].get("name", identifier))
+                else:
+                    route = next((item for item in self.content.routes if item.get("id") == identifier), None)
+                    if route:
+                        from_name = self.content.sites.get(route.get("from"), {}).get("name", route.get("from"))
+                        to_name = self.content.sites.get(route.get("to"), {}).get("name", route.get("to"))
+                        labels.append(route.get("name") or f"{from_name}—{to_name}")
+                    else:
+                        labels.append(identifier)
+            return labels
         state.goal_status = GoalStatus(
             core_projects_completed=sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"),
             core_projects_target=len(core_ids),
@@ -1257,12 +1275,12 @@ class GameEngine:
             weathering_limit=state.shared.weathering_limit,
             rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
             victory_conditions=[
-                {"id": "core_project", "label": "核心项目", "current": sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"), "target": core_target, "remaining": max(0, core_target - sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")), "kind": "progress", "operator": "gte", "status": "completed" if core_target and sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed") >= core_target else "incomplete", "related_ids": sorted(core_ids)},
-                {"id": "objectives", "label": "公共目标", "current": sum(objective.completed for objective in state.objectives.values()), "target": objective_target, "remaining": max(0, objective_target - sum(objective.completed for objective in state.objectives.values())), "kind": "progress", "operator": "gte", "status": "completed" if sum(objective.completed for objective in state.objectives.values()) >= objective_target else "incomplete", "related_ids": list(state.objectives)},
+                {"id": "core_project", "label": "核心项目", "current": sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"), "target": core_target, "remaining": max(0, core_target - sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")), "kind": "progress", "operator": "gte", "status": "completed" if core_target and sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed") >= core_target else "incomplete", "related_ids": sorted(core_ids), "related_labels": related_labels(sorted(core_ids))},
+                {"id": "objectives", "label": "公共目标", "current": sum(objective.completed for objective in state.objectives.values()), "target": objective_target, "remaining": max(0, objective_target - sum(objective.completed for objective in state.objectives.values())), "kind": "progress", "operator": "gte", "status": "completed" if sum(objective.completed for objective in state.objectives.values()) >= objective_target else "incomplete", "related_ids": list(state.objectives), "related_labels": related_labels(list(state.objectives))},
                 {"id": "weathering_control", "label": "风化压力保持在上限以下", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "safe" if state.shared.weathering_track < state.shared.weathering_limit - 1 else "warning", "related_ids": []},
             ],
             failure_conditions=[
-                {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED]},
+                {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED], "related_labels": related_labels([site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED])},
                 {"id": "weathering_limit", "label": "风化压力不达到上限", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "failed" if state.shared.weathering_track >= state.shared.weathering_limit else "safe", "related_ids": []},
                 {"id": "round_limit", "label": "在回合耗尽前完成", "current": state.shared.turn, "target": state.shared.max_rounds, "remaining": max(0, state.shared.max_rounds - state.shared.turn + 1), "kind": "deadline", "operator": "lte", "status": "failed" if state.shared.turn > state.shared.max_rounds else "safe", "related_ids": []},
             ],
