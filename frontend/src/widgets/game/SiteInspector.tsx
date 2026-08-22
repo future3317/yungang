@@ -9,8 +9,8 @@ import { resolveEventSceneAsset } from './eventArtwork';
 type InspectorTab = 'task' | 'project' | 'event' | 'market';
 
 const domainAssets: Partial<Record<string, string>> = {
-  architecture: assetUrl('game-ui/domains/ui_yungang_domain_architecture_01.png'),
-  pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.png'),
+  architecture: assetUrl('game-ui/domains/ui_yungang_domain_architecture_01.webp'),
+  pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.webp'),
 };
 
 export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventTargetIds = [], eventOpenTargetLabels = [], canAct = true, className = '' }: {
@@ -79,7 +79,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <button type="button" className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
     <header className="inspector-summary">
       <span className="eyebrow">当前聚焦地点</span>
-      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.png')} alt="" /></div>
+      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
       <h2>{site.name}</h2>
       <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
@@ -95,7 +95,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       {tab === 'task' && <section id={panelId('task')} className="task-tab" role="tabpanel" aria-labelledby={tabId('task')}>
         {task ? <>
           <div className="tab-kicker"><Target size={14} />节点委托</div>
-          <div className="inspector-title-row"><img className="task-badge-art task-seal-art" src={assetUrl(task.completed ? 'game-ui/seals/ui_yungang_task_seal_complete_01.png' : 'game-ui/seals/ui_yungang_task_seal_idle_01.png')} alt="" /><h3>{task.name}</h3></div>
+          <div className="inspector-title-row"><img className="task-badge-art task-seal-art" src={assetUrl(task.completed ? 'game-ui/seals/ui_yungang_task_seal_complete_01.webp' : 'game-ui/seals/ui_yungang_task_seal_idle_01.webp')} alt="" /><h3>{task.name}</h3></div>
           <p>{recordText(task, 'description') || task.culture_explanation || '把相互印证的文化证据投入节点任务，推动共同目标。'}</p>
           <div className="task-workflow" aria-label="任务完成步骤">
             <div className="task-step"><span className={isCurrentSite ? 'complete' : ''}>{isCurrentSite ? <Check size={13} /> : '1'}</span><div><b>抵达此处</b><small>{isCurrentSite ? '你已来到节点，可以开始寻访。' : `沿路线前往${site.name}，那里正在等待你的脚步。`}</small></div></div>
@@ -164,7 +164,7 @@ function EvidenceLedger({ task, cards, hand, meta, disabled, formAvailable, inte
     <div className="evidence-ledger-track">
       {contributedCards.length ? placements.map(placement => { const item = cards[placement.card_id]; return item ? <span key={placement.card_id} className={`evidence-chip placed ${placement.relation}`}><img src={assetUrl(item.icon_asset)} alt="" />{relationLabel[placement.relation]} · {item.name}</span> : null; }) : <span className="evidence-empty">先把一件证据归入支持、冲突或待确认</span>}
     </div>
-    {requiredTags.length > 0 && <div className="evidence-combo"><img src={assetUrl('game-ui/ribbons/ui_yungang_combo_ribbon_01.png')} alt="" /><b>本委托的关键互证</b><span>{missingTags.length ? `还差：${formatRequirementValues(meta, 'combos', missingTags)}` : '关键互证已经成立'}</span></div>}
+    {requiredTags.length > 0 && <div className="evidence-combo"><img src={assetUrl('game-ui/ribbons/ui_yungang_combo_ribbon_01.webp')} alt="" /><b>本委托的关键互证</b><span>{missingTags.length ? `还差：${formatRequirementValues(meta, 'combos', missingTags)}` : '关键互证已经成立'}</span></div>}
     {!formed && candidates.length > 0 && <div className="evidence-next"><b>选择证据关系</b><div className="evidence-legend"><span><strong>支持</strong><small>与当前解释相符，提高可信度</small></span><span><strong>冲突</strong><small>与当前解释不一致，保留重要矛盾</small></span><span><strong>待确认</strong><small>暂不判断，不改变当前可信度</small></span></div>{candidates.map(item => <div className="evidence-choice" key={item.id}><span><img src={assetUrl(item.icon_asset)} alt="" />{item.name}</span><div><button disabled={disabled} aria-label={`${item.name}：支持，与当前解释相符，提高可信度`} onClick={() => onInterpret(item.id, 'support')}>支持</button><button disabled={disabled} aria-label={`${item.name}：冲突，与当前解释不一致`} onClick={() => onInterpret(item.id, 'conflict')}>冲突</button><button disabled={disabled} aria-label={`${item.name}：待确认，暂不判断`} onClick={() => onInterpret(item.id, 'pending')}>待确认</button></div></div>)}</div>}
     {!formed && contributed.length > 0 && <><button className="interpretation-primary" disabled={disabled || !formAvailable} onClick={onForm}>形成当前解释</button>{!formAvailable && <span className="interpretation-hint">还需要满足上方的领域、来源和组合条件，满足后才能形成解释。</span>}</>}
     {formed && <div className="intervention-choice"><b>解释已形成 · 可信度 {task.interpretation?.confidence || 0}</b><span>{interpretationConfidenceGuidance(task.interpretation?.confidence || 0)}</span><span>现在决定如何对待这处遗产。下面的变化来自当前局面的后端预览。</span><div>{(['act_now', 'minimal', 'record'] as const).map(choice => { const action = interventionActions.find(item => item.target_id === choice); const labels = { act_now: '立即处理', minimal: '最小干预', record: '先记录' }; const hints = { act_now: '推进解释并处理节点', minimal: '稳健修护并降低压力', record: '保留现场并获得研究线索' }; return <button key={choice} disabled={disabled || !action} onClick={() => onIntervene(choice)}>{labels[choice]}<small>{action ? previewDeltaText(action.preview_delta, hints[choice]) : hints[choice]}</small></button>; })}</div></div>}

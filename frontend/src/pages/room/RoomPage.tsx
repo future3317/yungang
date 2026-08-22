@@ -3,7 +3,7 @@ import { ArrowLeft, Check, ChevronRight, Copy, DoorOpen, Flag, LoaderCircle, Map
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
-import { useRoomEvents } from '../../shared/useRoomEvents';
+import { fallbackPollInterval, useRoomEvents, type RoomEventState } from '../../shared/useRoomEvents';
 import { clearRoomToken, getRoomToken, setRoomToken } from '../../shared/roomToken';
 import { assetUrl } from '../../shared/assetUrl';
 import type { ContentRole, Meta, Room, RoomSeat } from '../../types/game';
@@ -11,10 +11,10 @@ import '../../styles/lobby.css';
 
 
 const roleArt: Record<string, { portrait: string; badge: string; accent: string }> = {
-  pingcheng_artisan: { portrait: 'role-badge-artisan.png', badge: 'icon_role_craftsman.png', accent: 'cinnabar' },
-  western_dancer: { portrait: 'role-badge-dancer.png', badge: 'icon_role_diplomat.png', accent: 'teal' },
-  grassland_rider: { portrait: 'role-badge-rider.png', badge: 'icon_role_rider.png', accent: 'green' },
-  central_scribe: { portrait: 'role-badge-scribe.png', badge: 'icon_role_scribe.png', accent: 'blue' },
+  pingcheng_artisan: { portrait: 'role-badge-artisan.webp', badge: 'icon_role_craftsman.webp', accent: 'cinnabar' },
+  western_dancer: { portrait: 'role-badge-dancer.webp', badge: 'icon_role_diplomat.webp', accent: 'teal' },
+  grassland_rider: { portrait: 'role-badge-rider.webp', badge: 'icon_role_rider.webp', accent: 'green' },
+  central_scribe: { portrait: 'role-badge-scribe.webp', badge: 'icon_role_scribe.webp', accent: 'blue' },
 };
 
 function roleAsset(role: ContentRole | undefined) {
@@ -31,9 +31,10 @@ export function RoomPage() {
   const [reconnectSeatId, setReconnectSeatId] = useState('');
   const [activeSeatId, setActiveSeatId] = useState('seat-1');
   const [feedback, setFeedback] = useState('');
+  const [roomEventState, setRoomEventState] = useState<RoomEventState>('connected');
   const metaQuery = useQuery<Meta>({ queryKey: ['meta'], queryFn: api.meta });
-  const roomQuery = useQuery<Room>({ queryKey: ['room', roomId, token], queryFn: () => api.room(roomId, token || undefined), refetchInterval: 1800 });
-  useRoomEvents({ roomId, token, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room', roomId, token] }); } });
+  const roomQuery = useQuery<Room>({ queryKey: ['room', roomId, token], queryFn: () => api.room(roomId, token || undefined), refetchInterval: fallbackPollInterval(roomEventState, roomId) });
+  useRoomEvents({ roomId, token, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room', roomId, token] }); }, onState: setRoomEventState });
   const room = roomQuery.data;
   const viewer = useMemo(() => room?.seats.find(seat => seat.seat_id === room.viewer_seat_id), [room]);
   const isHost = viewer?.seat_id === 'seat-1';

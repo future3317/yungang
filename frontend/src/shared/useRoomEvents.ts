@@ -2,6 +2,9 @@ import { useEffect, useRef } from 'react';
 import { ApiError, api } from './api/client';
 
 export type RoomEventState = 'connected' | 'retrying' | 'ended' | 'unauthorized' | 'room_ended';
+export function fallbackPollInterval(state: RoomEventState, roomId: string): number | false {
+  return roomId && (state === 'retrying' || state === 'ended') ? 10000 : false;
+}
 type RoomEventOptions = {
   roomId: string;
   token: string;

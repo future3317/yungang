@@ -4,7 +4,7 @@
     "name": "平城工匠",
     "origin": "平城",
     "icon": "匠",
-    "icon_asset": "icon_role_craftsman.png",
+    "icon_asset": "icon_role_craftsman.webp",
     "color": "cinnabar",
     "start_site_id": "pingcheng_ruins",
     "ability": {
@@ -28,7 +28,7 @@
     "name": "西域乐舞使者",
     "origin": "丝路",
     "icon": "舞",
-    "icon_asset": "icon_role_diplomat.png",
+    "icon_asset": "icon_role_diplomat.webp",
     "color": "teal",
     "start_site_id": "huayan_temple",
     "ability": {
@@ -52,7 +52,7 @@
     "name": "草原骑行使者",
     "origin": "草原",
     "icon": "骑",
-    "icon_asset": "icon_role_rider.png",
+    "icon_asset": "icon_role_rider.webp",
     "color": "green",
     "start_site_id": "wall_pass",
     "ability": {
@@ -77,7 +77,7 @@
     "name": "中原文书记官",
     "origin": "中原",
     "icon": "文",
-    "icon_asset": "icon_role_scribe.png",
+    "icon_asset": "icon_role_scribe.webp",
     "color": "blue",
     "start_site_id": "trade_post",
     "ability": {

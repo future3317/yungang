@@ -73,6 +73,27 @@ class EventStatus(StrEnum):
     RESOLVED = "resolved"
 
 
+class DictModel(BaseModel):
+    """Typed runtime records that still need the engine's existing dict access."""
+    model_config = ConfigDict(validate_assignment=True)
+
+    def __getitem__(self, key: str):
+        return getattr(self, key)
+
+    def __setitem__(self, key: str, value):
+        setattr(self, key, value)
+
+    def get(self, key: str, default=None):
+        return getattr(self, key, default)
+
+    def setdefault(self, key: str, default=None):
+        value = getattr(self, key, None)
+        if value is None:
+            setattr(self, key, default)
+            return default
+        return value
+
+
 class PlayMode(StrEnum):
     SOLO = "solo"
     LOCAL = "local"
@@ -97,36 +118,75 @@ class FeedbackEvent(BaseModel):
     changes: List[FeedbackChange] = Field(default_factory=list)
 
 
-class EventInstance(BaseModel):
+class EventForecastScope(DictModel):
+    target_rule: Optional[str] = None
+    hidden_target_count: int = 0
+
+
+class EventRecord(DictModel):
+    type: Optional[str] = None
+    target_id: Optional[str] = None
+    route_id: Optional[str] = None
+    result: Optional[str] = None
+    label: Optional[str] = None
+    changes: Dict[str, JsonValue] = Field(default_factory=dict)
+    reason: Optional[str] = None
+    amount: Optional[int] = None
+    trigger: Optional[str] = None
+
+
+class EventInstance(DictModel):
     event_id: Optional[str] = None
     status: EventStatus = EventStatus.FORECAST
-    forecast_scope: JsonObject = Field(default_factory=dict)
+    forecast_scope: EventForecastScope = Field(default_factory=EventForecastScope)
     revealed_targets: List[str] = Field(default_factory=list)
     resolved_targets: List[str] = Field(default_factory=list)
-    mitigation: List[JsonObject] = Field(default_factory=list)
-    resolution: List[JsonObject] = Field(default_factory=list)
+    mitigation: List[EventRecord] = Field(default_factory=list)
+    resolution: List[EventRecord] = Field(default_factory=list)
 
 
-class PendingChoice(BaseModel):
+class PendingChoiceOption(DictModel):
+    id: str
+    label: Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
+    trigger: Optional[str] = None
+    strategic_direction: Optional[str] = None
+
+
+class PendingChoice(DictModel):
     kind: ChoiceKind
-    options: List[JsonObject] = Field(default_factory=list)
+    options: List[PendingChoiceOption] = Field(default_factory=list)
     cards: List[str] = Field(default_factory=list)
     event_id: Optional[str] = None
     card_id: Optional[str] = None
+    player_id: Optional[str] = None
+    site_id: Optional[str] = None
+    next_card_id: Optional[str] = None
+    next_action_card_id: Optional[str] = None
+    resume_choice: Optional[JsonObject] = None
 
 
-class RoundSummary(BaseModel):
+class RoundMetrics(DictModel):
+    weathering: int = 0
+    weathering_track: int = 0
+    restoration_resource: int = 0
+    research_clues: int = 0
+    influence: int = 0
+
+
+class RoundSummary(DictModel):
     round: int = 0
     event_id: Optional[str] = None
     event_targets: List[str] = Field(default_factory=list)
-    event_resolution: List[JsonObject] = Field(default_factory=list)
-    before: Dict[str, int] = Field(default_factory=dict)
-    after: Dict[str, int] = Field(default_factory=dict)
+    event_resolution: List[EventRecord] = Field(default_factory=list)
+    before: RoundMetrics = Field(default_factory=RoundMetrics)
+    after: RoundMetrics = Field(default_factory=RoundMetrics)
     planning_mark_count: int = 0
     completed_projects: int = 0
     completed_objectives: int = 0
     player_contributions: Dict[str, int] = Field(default_factory=dict)
-    round_effects: List[JsonObject] = Field(default_factory=list)
+    round_effects: List[EventRecord] = Field(default_factory=list)
 
 
 class GoalCondition(BaseModel):
@@ -468,14 +528,15 @@ class SharedState(BaseModel):
     controlled_character_ids: List[str] = Field(default_factory=list)
     journal: List[JsonObject] = Field(default_factory=list)
     event_targets: List[str] = Field(default_factory=list)
-    event_instance: JsonObject = Field(default_factory=dict)
+    event_instance: EventInstance = Field(default_factory=EventInstance)
     event_history: List[JsonObject] = Field(default_factory=list)
-    round_summary: JsonObject = Field(default_factory=dict)
+    round_summary: RoundSummary = Field(default_factory=RoundSummary)
     round_snapshot: JsonObject = Field(default_factory=dict, exclude=True)
     reserved_market_cards: List[str] = Field(default_factory=list)
     scenario_rule_uses: List[str] = Field(default_factory=list)
 
 class GameState(BaseModel):
+    model_config = ConfigDict(validate_assignment=True)
     schema_version: int = 3
     revision: int = 0
     session_id: str
@@ -487,7 +548,7 @@ class GameState(BaseModel):
     shared: SharedState = Field(default_factory=SharedState)
     decks: Dict[str, List[str]] = Field(default_factory=lambda: {"culture": [], "events": []})
     market: List[str] = Field(default_factory=list)
-    pending_choice: Optional[JsonObject] = None
+    pending_choice: Optional[PendingChoice] = None
     legal_actions: List[JsonObject] = Field(default_factory=list, exclude=True)
     action_options: List[ActionOption] = Field(default_factory=list)
     scenario_id: str = "sand_and_stone"

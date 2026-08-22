@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from pathlib import Path
 import os
 import sqlite3
+import json
 from typing import Any, Iterator
 
 
@@ -21,8 +22,18 @@ class Database:
         self.target = str(target)
         self.is_postgres = self.target.startswith(("postgres://", "postgresql://"))
         self.path = None if self.is_postgres else Path(self.target)
+        self._pool = None
         if self.path is not None:
             self.path.parent.mkdir(parents=True, exist_ok=True)
+    def _get_pool(self):
+        if self._pool is None:
+            try:
+                from psycopg_pool import ConnectionPool
+            except ImportError as exc:
+                raise RuntimeError("PostgreSQL storage requires psycopg with the pool extra.") from exc
+            self._pool = ConnectionPool(self.target, min_size=1, max_size=10, timeout=10, open=True)
+            self._pool.wait(timeout=10)
+        return self._pool
 
     @property
     def kind(self) -> str:
@@ -34,14 +45,16 @@ class Database:
     @contextmanager
     def connect(self, *, immediate: bool = False) -> Iterator[Any]:
         if self.is_postgres:
-            try:
-                import psycopg
-            except ImportError as exc:
-                raise RuntimeError("PostgreSQL storage requires the psycopg package.") from exc
-            connection = psycopg.connect(self.target)
-        else:
-            connection = sqlite3.connect(self.path, isolation_level="IMMEDIATE" if immediate else None, timeout=10)
-            connection.execute("PRAGMA busy_timeout=10000")
+            with self._get_pool().connection() as connection:
+                try:
+                    yield connection
+                    connection.commit()
+                except BaseException:
+                    connection.rollback()
+                    raise
+            return
+        connection = sqlite3.connect(self.path, isolation_level="IMMEDIATE" if immediate else None, timeout=10)
+        connection.execute("PRAGMA busy_timeout=10000")
         try:
             yield connection
             connection.commit()
@@ -62,7 +75,26 @@ class Database:
             if not self.is_postgres:
                 db.execute("PRAGMA journal_mode=WAL")
             db.execute(self.sql("CREATE TABLE IF NOT EXISTS rooms (room_id TEXT PRIMARY KEY, payload TEXT NOT NULL)"))
+            if self.is_postgres:
+                column = db.execute("SELECT 1 FROM information_schema.columns WHERE table_schema=current_schema() AND table_name=%s AND column_name=%s", ("rooms", "session_id")).fetchone()
+            else:
+                column = next((row for row in db.execute("PRAGMA table_info(rooms)").fetchall() if row[1] == "session_id"), None)
+            if not column:
+                db.execute("ALTER TABLE rooms ADD COLUMN session_id TEXT")
+            db.execute(self.sql("CREATE INDEX IF NOT EXISTS idx_rooms_session_id ON rooms(session_id)"))
+            rows = db.execute(self.sql("SELECT room_id, payload FROM rooms WHERE session_id IS NULL")).fetchall()
+            for room_id, payload in rows:
+                try:
+                    session_id = json.loads(payload).get("session_id")
+                except (TypeError, json.JSONDecodeError):
+                    session_id = None
+                if session_id:
+                    db.execute(self.sql("UPDATE rooms SET session_id=? WHERE room_id=? AND session_id IS NULL"), (session_id, room_id))
 
     def ping(self) -> None:
         with self.connect() as db:
             db.execute(self.sql("SELECT 1")).fetchone()
+
+    def close(self) -> None:
+        if self._pool is not None:
+            self._pool.close()

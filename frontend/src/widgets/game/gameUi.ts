@@ -106,10 +106,10 @@ const actionErrorMessages: Record<string, string> = {
 };
 
 const roleBadgeAssets: Record<string, string> = {
-  pingcheng_artisan: 'role-badge-artisan.png',
-  western_dancer: 'role-badge-dancer.png',
-  grassland_rider: 'role-badge-rider.png',
-  central_scribe: 'role-badge-scribe.png',
+  pingcheng_artisan: 'role-badge-artisan.webp',
+  western_dancer: 'role-badge-dancer.webp',
+  grassland_rider: 'role-badge-rider.webp',
+  central_scribe: 'role-badge-scribe.webp',
 };
 
 export function previewDeltaText(delta: Record<string, unknown> | undefined, fallback: string) {
@@ -188,7 +188,7 @@ export function actionModeLabel(mode: ActionMode) {
 }
 
 export function roleBadgeAsset(roleId: string | undefined, fallback?: string) {
-  return roleBadgeAssets[roleId || ''] ? `ornaments/${roleBadgeAssets[roleId || '']}` : fallback || 'icon_role_scribe.png';
+  return roleBadgeAssets[roleId || ''] ? `ornaments/${roleBadgeAssets[roleId || '']}` : fallback || 'icon_role_scribe.webp';
 }
 
 export function optionAction(option: ActionOption, target?: ActionOption['targets'][number]): Action {

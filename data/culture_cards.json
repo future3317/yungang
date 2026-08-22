@@ -2,7 +2,7 @@
   "cards": [
     {
       "id": "survey",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "行旅札记",
       "domain": "trade",
       "origin_tags": [
@@ -53,7 +53,7 @@
     },
     {
       "id": "craft",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "name": "匠人手稿",
       "domain": "architecture",
       "origin_tags": [
@@ -103,7 +103,7 @@
     },
     {
       "id": "alliance",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "name": "互市盟约",
       "domain": "trade",
       "origin_tags": [
@@ -152,7 +152,7 @@
     },
     {
       "id": "archive",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "name": "石窟档案",
       "domain": "statue",
       "origin_tags": [
@@ -204,7 +204,7 @@
     },
     {
       "id": "motif",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "莲华纹样",
       "domain": "pattern",
       "origin_tags": [
@@ -253,7 +253,7 @@
     },
     {
       "id": "frontier",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "name": "关塞盟书",
       "domain": "frontier",
       "origin_tags": [
@@ -304,7 +304,7 @@
     {
       "id": "culture_07",
       "name": "壁面凿痕",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -354,7 +354,7 @@
     {
       "id": "culture_08",
       "name": "金箔微光",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "pattern",
       "origin_tags": [
         "western",
@@ -403,7 +403,7 @@
     {
       "id": "culture_09",
       "name": "供养人衣纹",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "pattern",
       "origin_tags": [
         "central",
@@ -452,7 +452,7 @@
     {
       "id": "culture_10",
       "name": "莲瓣边饰",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "pattern",
       "origin_tags": [
         "craft",
@@ -503,7 +503,7 @@
     {
       "id": "culture_11",
       "name": "梁架尺度",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "architecture",
       "origin_tags": [
         "northern",
@@ -553,7 +553,7 @@
     {
       "id": "culture_12",
       "name": "行旅驮队",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "trade",
       "origin_tags": [
         "silk",
@@ -602,7 +602,7 @@
     {
       "id": "culture_13",
       "name": "纹样交会",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "pattern",
       "origin_tags": [
         "central",
@@ -653,7 +653,7 @@
     {
       "id": "culture_14",
       "name": "石料肌理",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -700,7 +700,7 @@
     {
       "id": "culture_15",
       "name": "礼仪行列",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "statue",
       "origin_tags": [
         "central",
@@ -749,7 +749,7 @@
     {
       "id": "culture_16",
       "name": "窟门风痕",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -799,7 +799,7 @@
     {
       "id": "culture_17",
       "name": "匠作铭记",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -850,7 +850,7 @@
     {
       "id": "culture_18",
       "name": "彩绘层次",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "pattern",
       "origin_tags": [
         "silk",
@@ -900,7 +900,7 @@
     {
       "id": "culture_19",
       "name": "边塞关隘",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "frontier",
       "origin_tags": [
         "frontier",
@@ -948,7 +948,7 @@
     {
       "id": "culture_20",
       "name": "商旅凭信",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "trade",
       "origin_tags": [
         "western",
@@ -997,7 +997,7 @@
     {
       "id": "culture_21",
       "name": "佛龛光位",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "statue",
       "origin_tags": [
         "central",
@@ -1045,7 +1045,7 @@
     {
       "id": "culture_22",
       "name": "护持修补",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -1095,7 +1095,7 @@
     {
       "id": "culture_23",
       "name": "云气纹带",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "pattern",
       "origin_tags": [
         "northern",
@@ -1144,7 +1144,7 @@
     {
       "id": "culture_24",
       "name": "崖壁排水",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -1194,7 +1194,7 @@
     {
       "id": "culture_25",
       "name": "译经片语",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "trade",
       "origin_tags": [
         "central",
@@ -1245,7 +1245,7 @@
     {
       "id": "culture_26",
       "name": "驻守旗影",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "frontier",
       "origin_tags": [
         "frontier",
@@ -1292,7 +1292,7 @@
     {
       "id": "culture_27",
       "name": "造像比例",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "statue",
       "origin_tags": [
         "craft",
@@ -1341,7 +1341,7 @@
     {
       "id": "culture_28",
       "name": "香火器座",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -1391,7 +1391,7 @@
     {
       "id": "culture_29",
       "name": "连珠纹环",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "pattern",
       "origin_tags": [
         "western",
@@ -1440,7 +1440,7 @@
     {
       "id": "culture_30",
       "name": "石工工具",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -1489,7 +1489,7 @@
     {
       "id": "culture_31",
       "name": "山道驿站",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "trade",
       "origin_tags": [
         "silk",
@@ -1535,7 +1535,7 @@
     {
       "id": "culture_32",
       "name": "龛楣飞天",
-      "icon_asset": "icon_action_restore.png",
+      "icon_asset": "icon_action_restore.webp",
       "domain": "statue",
       "origin_tags": [
         "western",
@@ -1584,7 +1584,7 @@
     {
       "id": "culture_33",
       "name": "残彩花叶",
-      "icon_asset": "icon_resource_influence.png",
+      "icon_asset": "icon_resource_influence.webp",
       "domain": "pattern",
       "origin_tags": [
         "craft",
@@ -1633,7 +1633,7 @@
     {
       "id": "culture_34",
       "name": "共同造作",
-      "icon_asset": "icon_task_statue.png",
+      "icon_asset": "icon_task_statue.webp",
       "domain": "architecture",
       "origin_tags": [
         "craft",
@@ -1686,7 +1686,7 @@
     {
       "id": "culture_35",
       "name": "洞窟回声",
-      "icon_asset": "icon_task_trade.png",
+      "icon_asset": "icon_task_trade.webp",
       "domain": "statue",
       "origin_tags": [
         "northern",
@@ -1735,7 +1735,7 @@
     {
       "id": "culture_36",
       "name": "守望灯火",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "domain": "frontier",
       "origin_tags": [
         "frontier",
@@ -1784,7 +1784,7 @@
     },
     {
       "id": "evidence_37",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "石作工序札",
       "domain": "architecture",
       "origin_tags": [
@@ -1836,7 +1836,7 @@
     },
     {
       "id": "evidence_38",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "衣纹摹本",
       "domain": "statue",
       "origin_tags": [
@@ -1885,7 +1885,7 @@
     },
     {
       "id": "evidence_39",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "关塞值守图",
       "domain": "frontier",
       "origin_tags": [
@@ -1937,7 +1937,7 @@
     },
     {
       "id": "evidence_40",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "莲华纹样谱",
       "domain": "pattern",
       "origin_tags": [
@@ -1989,7 +1989,7 @@
     },
     {
       "id": "evidence_41",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "木构营造档",
       "domain": "architecture",
       "origin_tags": [
@@ -2039,7 +2039,7 @@
     },
     {
       "id": "evidence_42",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "驿路往来簿",
       "domain": "trade",
       "origin_tags": [
@@ -2087,7 +2087,7 @@
     },
     {
       "id": "evidence_43",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "联珠纹样册",
       "domain": "pattern",
       "origin_tags": [
@@ -2139,7 +2139,7 @@
     },
     {
       "id": "evidence_44",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "石窟修护单",
       "domain": "architecture",
       "origin_tags": [
@@ -2188,7 +2188,7 @@
     },
     {
       "id": "evidence_45",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "度量交换记",
       "domain": "trade",
       "origin_tags": [
@@ -2240,7 +2240,7 @@
     },
     {
       "id": "evidence_46",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "边道通行图",
       "domain": "frontier",
       "origin_tags": [
@@ -2288,7 +2288,7 @@
     },
     {
       "id": "evidence_47",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "商路印记",
       "domain": "trade",
       "origin_tags": [
@@ -2340,7 +2340,7 @@
     },
     {
       "id": "evidence_48",
-      "icon_asset": "icon_card_scroll.png",
+      "icon_asset": "icon_card_scroll.webp",
       "name": "往来凭信",
       "domain": "trade",
       "origin_tags": [

@@ -97,8 +97,8 @@ def game_action(session_id: str, request: ActionRequest) -> GameState:
     return _run_action(session_id, request)
 
 
-def _run_action(session_id: str, request: ActionRequest) -> GameState:
-    state = repo.get(session_id)
+def _run_action(session_id: str, request: ActionRequest, state: GameState | None = None) -> GameState:
+    state = state or repo.get(session_id)
     if not state: raise HTTPException(404, {"code": "session_not_found", "message": "找不到这段旅程。", "details": {"session_id": session_id}, "recovery": "return_home"})
     if request.request_id and request.request_id in state.processed_request_ids:
         return state
@@ -303,18 +303,22 @@ def room_game(room_id: str, x_seat_token: str | None = Header(default=None)):
     return state
 
 
-async def _room_revision_stream(room_id: str):
-    last_signature = None
-    for _ in range(90):
-        room = room_service.repository.get(room_id)
-        if not room:
-            break
-        state = repo.get(room.get("session_id")) if room.get("session_id") else None
-        signature = (room.get("updated_at"), state.revision if state else None, room.get("status"))
-        if signature != last_signature:
-            yield f"event: revision\ndata: {json.dumps({'revision': state.revision if state else None, 'status': room.get('status')}, ensure_ascii=False)}\n\n"
-            last_signature = signature
-        await asyncio.sleep(1)
+async def _room_revision_stream(room_id: str, listener):
+    try:
+        deadline = asyncio.get_running_loop().time() + 90
+        while True:
+            remaining = deadline - asyncio.get_running_loop().time()
+            if remaining <= 0:
+                break
+            try:
+                event = await asyncio.wait_for(listener[1].get(), timeout=remaining)
+            except asyncio.TimeoutError:
+                break
+            yield f"event: revision\ndata: {json.dumps(event, ensure_ascii=False)}\n\n"
+            if event.get("status") in {"completed", "abandoned"}:
+                break
+    finally:
+        room_service.repository.unsubscribe(room_id, listener)
     yield "event: close\ndata: {}\n\n"
 
 
@@ -325,7 +329,10 @@ async def room_events(room_id: str, ticket: str | None = None):
         room_service.consume_event_ticket(room_id, ticket or "")
     except ValueError as exc:
         raise _room_token_error(exc) from exc
-    return StreamingResponse(_room_revision_stream(room_id), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})
+    listener = room_service.repository.subscribe(room_id)
+    if room.get("status") in {"completed", "abandoned"}:
+        room_service.repository.notify(room_id, room=room)
+    return StreamingResponse(_room_revision_stream(room_id, listener), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})
 
 
 @app.post("/api/rooms/{room_id}/actions", response_model=GameState)
@@ -347,10 +354,12 @@ def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | No
         raise HTTPException(403, {"code": "not_active_player", "message": "当前由另一位同行者行动。", "details": {}, "recovery": "wait_for_active_player"})
     player_id = current.shared.active_player_id
     action_request = ActionRequest(player_id=player_id, **request.model_dump())
-    result = _run_action(room["session_id"], action_request)
+    result = _run_action(room["session_id"], action_request, current)
     if result.shared.outcome:
         room["status"] = "completed"
-        room_service.repository.save(room)
+        room_service.repository.save(room, revision=result.revision)
+    else:
+        room_service.repository.notify(room_id, revision=result.revision, room=room)
     return result
 
 frontend_root = Path(__file__).resolve().parents[1] / "frontend"
@@ -371,7 +380,7 @@ def ui_asset(asset_name: str):
         asset = (root / "generated" / asset_name).resolve()
     if root not in asset.parents or not asset.is_file():
         raise HTTPException(404, "asset not found")
-    return FileResponse(asset)
+    return FileResponse(asset, headers={"Cache-Control": "public, max-age=86400"})
 
 class SPAStaticFiles(StaticFiles):
     async def get_response(self, path: str, scope: dict) -> Response:
@@ -385,6 +394,8 @@ class SPAStaticFiles(StaticFiles):
             return await super().get_response("index.html", scope)
         if response.status_code == 404:
             return await super().get_response("index.html", scope)
+        if path.startswith("assets/"):
+            response.headers.setdefault("Cache-Control", "public, max-age=31536000, immutable")
         return response
 
 app.mount("/", SPAStaticFiles(directory=frontend, html=True), name="frontend")

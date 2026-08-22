@@ -2,8 +2,8 @@
   {
     "id": "yungang",
     "name": "云冈石窟",
-    "icon_asset": "generated/nodes/icon_node_yungang.png",
-    "scene_asset": "scene_yungang_day.png",
+    "icon_asset": "generated/nodes/icon_node_yungang.webp",
+    "scene_asset": "scene_yungang_day.webp",
     "type": "heritage",
     "x": 50,
     "y": 50,
@@ -46,8 +46,8 @@
   {
     "id": "huayan_temple",
     "name": "华严寺",
-    "icon_asset": "generated/nodes/icon_node_huayan_temple.png",
-    "scene_asset": "scene_yungang_day.png",
+    "icon_asset": "generated/nodes/icon_node_huayan_temple.webp",
+    "scene_asset": "scene_yungang_day.webp",
     "type": "heritage",
     "x": 28,
     "y": 20,
@@ -88,8 +88,8 @@
   {
     "id": "shanhua_temple",
     "name": "善化寺",
-    "icon_asset": "generated/nodes/icon_node_shanhua_temple.png",
-    "scene_asset": "scene_yungang_day.png",
+    "icon_asset": "generated/nodes/icon_node_shanhua_temple.webp",
+    "scene_asset": "scene_yungang_day.webp",
     "type": "heritage",
     "x": 72,
     "y": 22,
@@ -130,8 +130,8 @@
   {
     "id": "wall_pass",
     "name": "长城关隘",
-    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
-    "scene_asset": "scene_frontier_pass.png",
+    "icon_asset": "generated/nodes/icon_node_wall_pass.webp",
+    "scene_asset": "scene_frontier_pass.webp",
     "type": "heritage",
     "x": 48,
     "y": 84,
@@ -173,8 +173,8 @@
   {
     "id": "trade_post",
     "name": "互市驿站",
-    "icon_asset": "generated/nodes/icon_node_trade_post.png",
-    "scene_asset": "scene_trade_meeting.png",
+    "icon_asset": "generated/nodes/icon_node_trade_post.webp",
+    "scene_asset": "scene_trade_meeting.webp",
     "type": "heritage",
     "x": 86,
     "y": 72,
@@ -216,8 +216,8 @@
   {
     "id": "pingcheng_ruins",
     "name": "平城遗址",
-    "icon_asset": "generated/nodes/icon_node_pingcheng_ruins.png",
-    "scene_asset": "scene_silk_road_expedition.png",
+    "icon_asset": "generated/nodes/icon_node_pingcheng_ruins.webp",
+    "scene_asset": "scene_silk_road_expedition.webp",
     "type": "heritage",
     "x": 18,
     "y": 70,
@@ -273,8 +273,8 @@
       "pattern"
     ],
     "summary": "这里聚焦云冈大型石窟营造所需的石作、工具和工匠协作；北线工坊是本局组织工序线索的体验场景。",
-    "icon_asset": "generated/nodes/icon_node_northern_workshop.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "icon_asset": "generated/nodes/icon_node_northern_workshop.webp",
+    "scene_asset": "scene_craft_restoration.webp",
     "region_id": "cave_network",
     "strategic_role": "工艺贡献强化",
     "node_ability": {
@@ -312,8 +312,8 @@
       "pattern"
     ],
     "summary": "这里整理平城遗址中的建筑构件、瓦当、陶片等考古材料，寻找可互相印证的线索。",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_archive_cave.png",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.webp",
+    "scene_asset": "scene_archive_cave.webp",
     "region_id": "pingcheng_network",
     "strategic_role": "档案循环与市场控制",
     "node_ability": {
@@ -351,8 +351,8 @@
       "trade"
     ],
     "summary": "这里关注古建筑保护中的材质、结构、施工工艺和修缮记录。",
-    "icon_asset": "generated/nodes/icon_node_material_yard.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "icon_asset": "generated/nodes/icon_node_material_yard.webp",
+    "scene_asset": "scene_craft_restoration.webp",
     "region_id": "temple_network",
     "strategic_role": "研究线索转修护资源",
     "node_ability": {
@@ -391,8 +391,8 @@
       "architecture"
     ],
     "summary": "这里重现云冈石窟造像开凿、雕刻组织和图像研究的工作线索。",
-    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "icon_asset": "generated/nodes/icon_node_carving_courtyard.webp",
+    "scene_asset": "scene_craft_restoration.webp",
     "region_id": "cave_network",
     "strategic_role": "造像与建筑组合",
     "node_ability": {
@@ -430,8 +430,8 @@
       "statue"
     ],
     "summary": "这里追踪丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收与再创造。",
-    "icon_asset": "generated/nodes/icon_node_motif_gallery.png",
-    "scene_asset": "scene_silk_road_expedition.png",
+    "icon_asset": "generated/nodes/icon_node_motif_gallery.webp",
+    "scene_asset": "scene_silk_road_expedition.webp",
     "region_id": "cave_network",
     "strategic_role": "纹样来源转换",
     "node_ability": {
@@ -469,8 +469,8 @@
       "frontier"
     ],
     "summary": "这里记录历史交通网络中的渡口、补给和人员流动，承担路线风险的判断。",
-    "icon_asset": "generated/nodes/icon_node_river_crossing.png",
-    "scene_asset": "scene_frontier_pass.png",
+    "icon_asset": "generated/nodes/icon_node_river_crossing.webp",
+    "scene_asset": "scene_frontier_pass.webp",
     "region_id": "frontier_network",
     "strategic_role": "路线风险与跨区移动",
     "node_ability": {
@@ -508,8 +508,8 @@
       "frontier"
     ],
     "summary": "这里汇集商旅分段行进、休息补给和转运交换的线索，观察文化信息如何流动。",
-    "icon_asset": "generated/nodes/icon_node_caravan_camp.png",
-    "scene_asset": "scene_silk_road_expedition.png",
+    "icon_asset": "generated/nodes/icon_node_caravan_camp.webp",
+    "scene_asset": "scene_silk_road_expedition.webp",
     "region_id": "frontier_network",
     "strategic_role": "移动后交换",
     "node_ability": {
@@ -547,8 +547,8 @@
       "trade"
     ],
     "summary": "这里汇集大同长城沿线关堡与多民族交往交流交融的线索，处理边塞与互市的协作。",
-    "icon_asset": "generated/nodes/icon_node_border_market.png",
-    "scene_asset": "scene_trade_meeting.png",
+    "icon_asset": "generated/nodes/icon_node_border_market.webp",
+    "scene_asset": "scene_trade_meeting.webp",
     "region_id": "frontier_network",
     "strategic_role": "边塞与互市组合",
     "node_ability": {
@@ -586,8 +586,8 @@
       "architecture"
     ],
     "summary": "这里观察长城防御体系中的烽火台与观察设施，提前识别路线风险。",
-    "icon_asset": "generated/nodes/icon_node_watchtower.png",
-    "scene_asset": "scene_frontier_pass.png",
+    "icon_asset": "generated/nodes/icon_node_watchtower.webp",
+    "scene_asset": "scene_frontier_pass.webp",
     "region_id": "frontier_network",
     "strategic_role": "事件目标预览",
     "node_ability": {
@@ -625,8 +625,8 @@
       "statue"
     ],
     "summary": "这里汇集丝绸之路上的工艺、技术与知识传播线索，支持角色专长成长。",
-    "icon_asset": "generated/nodes/icon_node_craft_school.png",
-    "scene_asset": "scene_craft_restoration.png",
+    "icon_asset": "generated/nodes/icon_node_craft_school.webp",
+    "scene_asset": "scene_craft_restoration.webp",
     "region_id": "pingcheng_network",
     "strategic_role": "角色升级与行动牌",
     "node_ability": {
@@ -664,8 +664,8 @@
       "pattern"
     ],
     "summary": "这里整理交通网络、路线记录与文化证据，寻找可以互相印证的档案线索。",
-    "icon_asset": "generated/nodes/icon_node_river_archive.png",
-    "scene_asset": "scene_archive_cave.png",
+    "icon_asset": "generated/nodes/icon_node_river_archive.webp",
+    "scene_asset": "scene_archive_cave.webp",
     "region_id": "frontier_network",
     "strategic_role": "路线信息与档案",
     "node_ability": {
@@ -703,8 +703,8 @@
       "trade"
     ],
     "summary": "这里呈现丝绸之路多条路线相互连接、随时间变化的治理挑战。",
-    "icon_asset": "generated/nodes/icon_node_route_junction.png",
-    "scene_asset": "scene_frontier_pass.png",
+    "icon_asset": "generated/nodes/icon_node_route_junction.webp",
+    "scene_asset": "scene_frontier_pass.webp",
     "region_id": "frontier_network",
     "strategic_role": "多路线治理与区域连接",
     "node_ability": {
@@ -728,8 +728,8 @@
   {
     "id": "eastern_cave_observatory",
     "name": "东窟观测台",
-    "icon_asset": "generated/nodes/icon_node_carving_courtyard.png",
-    "scene_asset": "scene_yungang_day.png",
+    "icon_asset": "generated/nodes/icon_node_carving_courtyard.webp",
+    "scene_asset": "scene_yungang_day.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 72,
@@ -769,8 +769,8 @@
   {
     "id": "central_cave_observatory",
     "name": "中窟观测台",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_yungang_day.png",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.webp",
+    "scene_asset": "scene_yungang_day.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 58,
@@ -810,8 +810,8 @@
   {
     "id": "western_cave_observatory",
     "name": "西窟观测台",
-    "icon_asset": "generated/nodes/icon_node_wall_pass.png",
-    "scene_asset": "scene_frontier_pass.png",
+    "icon_asset": "generated/nodes/icon_node_wall_pass.webp",
+    "scene_asset": "scene_frontier_pass.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 25,
@@ -851,8 +851,8 @@
   {
     "id": "digital_mapping_station",
     "name": "数字测绘站",
-    "icon_asset": "generated/nodes/icon_node_archive_depot.png",
-    "scene_asset": "scene_archive_cave.png",
+    "icon_asset": "generated/nodes/icon_node_archive_depot.webp",
+    "scene_asset": "scene_archive_cave.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 48,
@@ -892,8 +892,8 @@
   {
     "id": "environmental_monitoring_station",
     "name": "环境监测站",
-    "icon_asset": "generated/nodes/icon_node_material_yard.png",
-    "scene_asset": "scene_archive_cave.png",
+    "icon_asset": "generated/nodes/icon_node_material_yard.webp",
+    "scene_asset": "scene_archive_cave.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 76,
@@ -933,8 +933,8 @@
   {
     "id": "visitor_emergency_point",
     "name": "访客应急点",
-    "icon_asset": "generated/nodes/icon_node_route_junction.png",
-    "scene_asset": "scene_trade_meeting.png",
+    "icon_asset": "generated/nodes/icon_node_route_junction.webp",
+    "scene_asset": "scene_trade_meeting.webp",
     "type": "support",
     "content_class": "gameplay",
     "x": 88,

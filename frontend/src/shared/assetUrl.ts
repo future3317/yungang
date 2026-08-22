@@ -1,6 +1,6 @@
 const generatedPrefixes = ['icon_', 'scene_', 'card_', 'ui_', 'effect_'];
 
-export function assetUrl(asset: string | undefined, fallback = 'generated/icon_card_scroll.png') {
+export function assetUrl(asset: string | undefined, fallback = 'generated/icon_card_scroll.webp') {
   const value = asset?.trim();
   if (!value) return `/ui-assets/${fallback}`;
   if (value.startsWith('/')) return value;

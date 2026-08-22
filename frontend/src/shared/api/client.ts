@@ -1,9 +1,8 @@
-import type { Action, GameState, Meta, PlayMode, Room, RoomCredentials } from '../../types/game';
+import type { Action, GameState, Meta, PlayMode, Room, RoomCredentials, Task } from '../../types/game';
 import type { components } from './generated';
 
 type ActionRequest = components['schemas']['ActionRequest'];
 type ContractGameState = components['schemas']['GameState'];
-type GameStateResponse = GameState & ContractGameState;
 
 export class ApiError extends Error {
   status: number;
@@ -32,11 +31,86 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   return body as T;
 }
 
+function normalizeGameState(payload: ContractGameState): GameState {
+  const players = payload.players || {};
+  const shared = payload.shared || {};
+  const tasks = Object.fromEntries(Object.entries(payload.tasks || {}).map(([id, value]) => {
+    const record = value as Record<string, unknown>;
+    return [id, {
+      ...record,
+      id: typeof record.id === 'string' ? record.id : id,
+      name: typeof record.name === 'string' ? record.name : id,
+      required_domains: Array.isArray(record.required_domains) ? record.required_domains.filter((item): item is string => typeof item === 'string') : [],
+      required_origin_diversity: typeof record.required_origin_diversity === 'number' ? record.required_origin_diversity : 0,
+      required_card_count: typeof record.required_card_count === 'number' ? record.required_card_count : 0,
+      contributed_cards: Array.isArray(record.contributed_cards) ? record.contributed_cards.filter((item): item is string => typeof item === 'string') : [],
+      completed: record.completed === true,
+    } as Task];
+  })) as Record<string, Task>;
+  return {
+    ...payload,
+    players: Object.fromEntries(Object.entries(players).map(([id, player]) => [id, {
+      ...player,
+      hand: player.hand || [],
+      action_hand: player.action_hand || [],
+      flags: player.flags || {},
+      upgrades: player.upgrades || [],
+    }])) as GameState['players'],
+    sites: payload.sites as GameState['sites'],
+    tasks,
+    shared: {
+      turn: 1,
+      max_rounds: 8,
+      active_player_id: Object.keys(players)[0] || 'p1',
+      player_order: Object.keys(players),
+      threat: 0,
+      influence: 0,
+      restoration_resource: 0,
+      completed_domains: [],
+      current_event_id: null,
+      outcome: null,
+      outcome_reason: null,
+      scenario_id: payload.scenario_id,
+      research_clues: 0,
+      prepared_event_ids: [],
+      route_connection_score: 0,
+      phase: 'player_action',
+      weathering_track: 0,
+      weathering_limit: 5,
+      effective_rules: {},
+      solo_mode: false,
+      controlled_character_ids: [],
+      journal: [],
+      event_targets: [],
+      event_history: [],
+      planning_marks: {},
+      log: [],
+      ...shared,
+    } as GameState['shared'],
+    decks: payload.decks || {},
+    market: payload.market || [],
+    pending_choice: payload.pending_choice as GameState['pending_choice'] || null,
+    action_options: (payload.action_options || []) as GameState['action_options'],
+    routes: (payload.routes || {}) as GameState['routes'],
+    projects: (payload.projects || {}) as GameState['projects'],
+    objectives: (payload.objectives || {}) as GameState['objectives'],
+    feedback_events: (payload.feedback_events || []) as GameState['feedback_events'],
+    goal_status: payload.goal_status,
+    result: payload.result,
+    score: payload.score,
+    viewer: payload.viewer,
+  };
+}
+
+function gameRequest(url: string, init?: RequestInit) {
+  return request<ContractGameState>(url, init).then(normalizeGameState);
+}
+
 export const api = {
   meta: () => request<Meta>('/api/meta'),
-  game: (id: string) => request<GameStateResponse>(`/api/games/${encodeURIComponent(id)}`),
-  create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => request<GameStateResponse>('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed }) }),
-  action: (id: string, action: Action, playerId: string, revision: number) => { const payload: ActionRequest = { player_id: playerId, action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }; return request<GameStateResponse>(`/api/games/${encodeURIComponent(id)}/actions`, { method: 'POST', body: JSON.stringify(payload) }); },
+  game: (id: string) => gameRequest(`/api/games/${encodeURIComponent(id)}`),
+  create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => gameRequest('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed }) }),
+  action: (id: string, action: Action, playerId: string, revision: number) => { const payload: ActionRequest = { player_id: playerId, action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }; return gameRequest(`/api/games/${encodeURIComponent(id)}/actions`, { method: 'POST', body: JSON.stringify(payload) }); },
   createRoom: (options: { play_mode: PlayMode; name: string; role_id?: string; scenario_id: string; difficulty_id: string; seed?: number; max_players?: number }) => request<RoomCredentials>('/api/rooms', { method: 'POST', body: JSON.stringify(options) }),
   room: (roomId: string, token?: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}`, { headers: token ? { 'X-Seat-Token': token } : undefined }),
   joinRoom: (roomId: string, name: string, role_id?: string) => request<RoomCredentials>(`/api/rooms/${encodeURIComponent(roomId)}/join`, { method: 'POST', body: JSON.stringify({ name, role_id }) }),
@@ -48,7 +122,7 @@ export const api = {
   roomPause: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/pause`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
   roomResume: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/resume`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
   roomLeave: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/leave`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
-  roomGame: (roomId: string, token: string) => request<GameStateResponse>(`/api/rooms/${encodeURIComponent(roomId)}/game`, { headers: { 'X-Seat-Token': token } }),
+  roomGame: (roomId: string, token: string) => gameRequest(`/api/rooms/${encodeURIComponent(roomId)}/game`, { headers: { 'X-Seat-Token': token } }),
   roomEventTicket: (roomId: string, token: string) => request<{ ticket: string; expires_in: number }>(`/api/rooms/${encodeURIComponent(roomId)}/events-ticket`, { headers: { 'X-Seat-Token': token } }),
-  roomAction: (roomId: string, token: string, action: Action, revision: number) => request<GameStateResponse>(`/api/rooms/${encodeURIComponent(roomId)}/actions`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }) })
+  roomAction: (roomId: string, token: string, action: Action, revision: number) => gameRequest(`/api/rooms/${encodeURIComponent(roomId)}/actions`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }) })
 };

@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import secrets
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,6 +31,8 @@ class RoomRepository:
     def __init__(self, path: str | Path | Database):
         self.database = path if isinstance(path, Database) else Database(path)
         self.path = self.database.path
+        self._listeners: dict[str, set[tuple[asyncio.AbstractEventLoop, asyncio.Queue[dict[str, Any]]]]] = {}
+        self._listener_lock = threading.Lock()
         self.database.ensure_rooms()
 
     def get(self, room_id: str) -> Optional[dict[str, Any]]:
@@ -36,10 +40,41 @@ class RoomRepository:
             row = db.execute(self.database.sql("SELECT payload FROM rooms WHERE room_id=?"), (room_id,)).fetchone()
         return json.loads(row[0]) if row else None
 
-    def save(self, room: dict[str, Any]) -> None:
+    def save(self, room: dict[str, Any], revision: int | None = None) -> None:
         payload = json.dumps(room, ensure_ascii=False, separators=(",", ":"))
         with self.database.connect() as db:
-            db.execute(self.database.sql("INSERT INTO rooms(room_id,payload) VALUES(?,?) ON CONFLICT(room_id) DO UPDATE SET payload=excluded.payload"), (room["room_id"], payload))
+            db.execute(self.database.sql("INSERT INTO rooms(room_id,session_id,payload) VALUES(?,?,?) ON CONFLICT(room_id) DO UPDATE SET session_id=excluded.session_id,payload=excluded.payload"), (room["room_id"], room.get("session_id"), payload))
+        self.notify(room["room_id"], revision=revision, room=room)
+
+    def subscribe(self, room_id: str) -> tuple[asyncio.AbstractEventLoop, asyncio.Queue[dict[str, Any]]]:
+        listener = (asyncio.get_running_loop(), asyncio.Queue(maxsize=8))
+        with self._listener_lock:
+            self._listeners.setdefault(room_id, set()).add(listener)
+        return listener
+
+    def unsubscribe(self, room_id: str, listener: tuple[asyncio.AbstractEventLoop, asyncio.Queue[dict[str, Any]]]) -> None:
+        with self._listener_lock:
+            listeners = self._listeners.get(room_id)
+            if not listeners:
+                return
+            listeners.discard(listener)
+            if not listeners:
+                self._listeners.pop(room_id, None)
+
+    def notify(self, room_id: str, *, revision: int | None = None, room: dict[str, Any] | None = None) -> None:
+        if room is None:
+            room = self.get(room_id)
+        if not room:
+            return
+        event = {"revision": revision, "status": room.get("status"), "updated_at": room.get("updated_at")}
+        with self._listener_lock:
+            listeners = tuple(self._listeners.get(room_id, ()))
+        for loop, queue in listeners:
+            def enqueue(queue=queue, event=event):
+                if queue.full():
+                    queue.get_nowait()
+                queue.put_nowait(event)
+            loop.call_soon_threadsafe(enqueue)
 
 
 class RoomService:
@@ -199,8 +234,8 @@ class RoomService:
 
     def room_for_session(self, session_id: str) -> Optional[dict[str, Any]]:
         with self.repository.database.connect() as db:
-            rows = db.execute(self.repository.database.sql("SELECT payload FROM rooms")).fetchall()
-        return next((room for (payload,) in rows if (room := json.loads(payload)).get("session_id") == session_id), None)
+            row = db.execute(self.repository.database.sql("SELECT payload FROM rooms WHERE session_id=? LIMIT 1"), (session_id,)).fetchone()
+        return json.loads(row[0]) if row else None
 
     @staticmethod
     def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, connected: bool) -> dict[str, Any]:

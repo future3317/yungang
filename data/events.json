@@ -2,7 +2,7 @@
   "events": [
     {
       "id": "sandstorm",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "风沙遮路",
       "description": "持续风沙使露天节点和交通路线承受额外磨蚀。结算时两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -25,7 +25,7 @@
     },
     {
       "id": "pilgrims",
-      "scene_asset": "scene_trade_meeting.png",
+      "scene_asset": "scene_trade_meeting.webp",
       "name": "四方来客",
       "description": "人员往来带来新的观察、记忆与交流机会。所有玩家获得1点个人影响。",
       "target_rule": "all_players",
@@ -48,7 +48,7 @@
     },
     {
       "id": "quiet",
-      "scene_asset": "scene_yungang_night.png",
+      "scene_asset": "scene_yungang_night.webp",
       "name": "静夜守护",
       "description": "巡查与维护工作得以集中开展，团队获得1点共同修护资源。",
       "target_rule": "shared_resource",
@@ -70,7 +70,7 @@
     },
     {
       "id": "route_blocked",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "道路阻断",
       "description": "一段关键通道出现阻碍。团队需要消耗修护资源缓解，或接受风化压力上升。",
       "target_rule": "threat",
@@ -93,7 +93,7 @@
     },
     {
       "id": "event_05",
-      "scene_asset": "scene_craft_restoration.png",
+      "scene_asset": "scene_craft_restoration.webp",
       "name": "岩体裂隙扩展",
       "description": "既有裂隙在环境作用下继续发展，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -116,7 +116,7 @@
     },
     {
       "id": "event_06",
-      "scene_asset": "scene_craft_restoration.png",
+      "scene_asset": "scene_craft_restoration.webp",
       "name": "崖顶渗水",
       "description": "渗水使局部材料状态恶化，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -139,7 +139,7 @@
     },
     {
       "id": "event_07",
-      "scene_asset": "scene_yungang_day.png",
+      "scene_asset": "scene_yungang_day.webp",
       "name": "表层风化加剧",
       "description": "温湿变化与颗粒作用使表层更加脆弱，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -161,7 +161,7 @@
     },
     {
       "id": "event_08",
-      "scene_asset": "scene_archive_cave.png",
+      "scene_asset": "scene_archive_cave.webp",
       "name": "表面附着扩散",
       "description": "表面附着影响观察与记录，团队的风化压力上升1点。",
       "target_rule": "threat",
@@ -184,7 +184,7 @@
     },
     {
       "id": "event_09",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "危岩松动",
       "description": "局部危岩使通行与巡查更困难，团队的风化压力上升1点。",
       "target_rule": "threat",
@@ -207,7 +207,7 @@
     },
     {
       "id": "event_10",
-      "scene_asset": "scene_craft_restoration.png",
+      "scene_asset": "scene_craft_restoration.webp",
       "name": "排水不畅",
       "description": "积水和排水问题增加保护压力，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -230,7 +230,7 @@
     },
     {
       "id": "event_11",
-      "scene_asset": "scene_archive_cave.png",
+      "scene_asset": "scene_archive_cave.webp",
       "name": "监测数据异常",
       "description": "监测记录显示多个指标偏离稳定范围，团队的风化压力上升1点。",
       "target_rule": "threat",
@@ -253,7 +253,7 @@
     },
     {
       "id": "event_12",
-      "scene_asset": "scene_craft_restoration.png",
+      "scene_asset": "scene_craft_restoration.webp",
       "name": "巡查发现隐患",
       "description": "及时巡查发现了可处理的问题，团队获得1点共同修护资源。",
       "target_rule": "shared_resource",
@@ -276,7 +276,7 @@
     },
     {
       "id": "event_13",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "维护排期延误",
       "description": "维护人员和资源调度受阻，团队的风化压力上升1点。",
       "target_rule": "threat",
@@ -299,7 +299,7 @@
     },
     {
       "id": "event_14",
-      "scene_asset": "scene_trade_meeting.png",
+      "scene_asset": "scene_trade_meeting.webp",
       "name": "路径承载增加",
       "description": "人员与物资集中通行使路线承压，团队的风化压力上升1点。",
       "target_rule": "threat",
@@ -322,7 +322,7 @@
     },
     {
       "id": "event_15",
-      "scene_asset": "scene_archive_cave.png",
+      "scene_asset": "scene_archive_cave.webp",
       "name": "记录出现缺口",
       "description": "部分记录无法相互对应，团队需要重新整理线索。风化压力上升1点。",
       "target_rule": "threat",
@@ -345,7 +345,7 @@
     },
     {
       "id": "event_16",
-      "scene_asset": "scene_craft_restoration.png",
+      "scene_asset": "scene_craft_restoration.webp",
       "name": "材料病害扩展",
       "description": "材料病害由局部向周边发展，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -368,7 +368,7 @@
     },
     {
       "id": "event_17",
-      "scene_asset": "scene_yungang_night.png",
+      "scene_asset": "scene_yungang_night.webp",
       "name": "多点告警",
       "description": "多个地点同时发出风险信号，两个未关闭节点各增加1点损伤。",
       "target_rule": "two_open_sites",
@@ -391,7 +391,7 @@
     },
     {
       "id": "event_18",
-      "scene_asset": "scene_trade_meeting.png",
+      "scene_asset": "scene_trade_meeting.webp",
       "name": "联合保护行动",
       "description": "多方协作形成集中保护窗口，所有玩家获得1点个人影响。",
       "target_rule": "all_players",
@@ -414,7 +414,7 @@
     },
     {
       "id": "event_19",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "雨幕压窟",
       "description": "连续降雨让两处开放节点的保护压力同时上升。",
       "target_rule": "two_open_sites",
@@ -436,7 +436,7 @@
     },
     {
       "id": "event_20",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "风沙入道",
       "description": "风沙越过边道，正在把未处理的风险推向整张网络。",
       "target_rule": "threat",
@@ -458,7 +458,7 @@
     },
     {
       "id": "event_21",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "灯会互市",
       "description": "往来者带来新的交换机会，团队可以把关系转化为共同资源。",
       "target_rule": "shared_resource",
@@ -480,7 +480,7 @@
     },
     {
       "id": "event_22",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "访客潮至",
       "description": "一批访客沿着开放路线进入，节点需要更清晰的协作回应。",
       "target_rule": "all_players",
@@ -502,7 +502,7 @@
     },
     {
       "id": "event_23",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "山口回声",
       "description": "山口回声扰动了两处节点的稳定状态，旧有线索需要尽快落地。",
       "target_rule": "two_open_sites",
@@ -524,7 +524,7 @@
     },
     {
       "id": "event_24",
-      "scene_asset": "scene_frontier_pass.png",
+      "scene_asset": "scene_frontier_pass.webp",
       "name": "夜风穿廊",
       "description": "夜间风向改变，尚未治理的风险会再次向网络深处传递。",
       "target_rule": "threat",
