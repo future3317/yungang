@@ -93,7 +93,9 @@ def test_event_choice_is_server_driven():
     state = client.get(f'/api/games/{session}').json()
     ended = action(session, state, 'p1', 'end_turn').json()
     assert ended['pending_choice']['kind'] == 'event'
-    assert {item['type'] for item in ended['action_options']} == {'resolve_event'}
+    option_types = {item['type'] for item in ended['action_options']}
+    assert 'resolve_event' in option_types
+    assert all(item['label'] for item in ended['action_options'] if item['type'] == 'use_action_card')
     resources_before = ended['shared']['restoration_resource']
     resolved = action(session, ended, 'p1', 'resolve_event', target_id='mitigate').json()
     assert resolved['pending_choice'] is None

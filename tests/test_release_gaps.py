@@ -237,3 +237,68 @@ def test_intervention_preview_delta_matches_real_execution():
     expected = {key: after[key] - value for key, value in before.items() if isinstance(value, (int, float)) and after.get(key) != value}
 
     assert option.targets[0].preview_delta == expected
+
+
+def test_strategy_cards_remain_visible_when_their_timing_is_not_available():
+    state = engine.new_game("strategy-card-readable-timing", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    card_id = next(iter(engine.content.action_cards))
+    player.action_hand = [card_id]
+    definition = engine.content.action_cards[card_id]
+    original_timing = definition.get("timing")
+    try:
+        definition["timing"] = "事件响应"
+        state.pending_choice = None
+        engine.refresh(state)
+
+        option = next(item for item in state.action_options if item.type == "use_action_card")
+        assert option.label == definition["name"]
+        assert option.enabled is False
+        assert "事件响应" in (option.disabled_reason or "")
+        assert player.action_hand == [card_id]
+    finally:
+        if original_timing is None:
+            definition.pop("timing", None)
+        else:
+            definition["timing"] = original_timing
+
+
+def test_interpretation_requires_declared_distinct_contributors():
+    state = engine.new_game("interpretation-contributors", ["p1", "p2"], solo_mode=False)
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {"minimum_distinct_players": 2}
+    task["interpretation"]["placements"] = [{"card_id": card, "relation": "support", "player_id": "p1"}]
+
+    evaluation = engine._evaluate_interpretation(task)
+
+    assert evaluation["contributors"] == ["p1"]
+    assert evaluation["missing_contributors"] == 1
+    assert evaluation["can_form"] is False
+    assert "1 位不同同行者" in evaluation["reason"]
+
+
+def test_event_response_keeps_non_response_strategy_cards_readable():
+    state = engine.new_game("event-card-readable-response", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    card_id = next(iter(engine.content.action_cards))
+    player.action_hand = [card_id]
+    definition = engine.content.action_cards[card_id]
+    original_timing = definition.get("timing")
+    try:
+        definition["timing"] = "事件预告"
+        state.pending_choice = {"kind": "event", "options": []}
+        engine.refresh(state)
+        option = next(item for item in state.action_options if item.type == "use_action_card")
+        assert option.label == definition["name"]
+        assert option.enabled is False
+        assert "事件预告" in (option.disabled_reason or "")
+    finally:
+        if original_timing is None:
+            definition.pop("timing", None)
+        else:
+            definition["timing"] = original_timing

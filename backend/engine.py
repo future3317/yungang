@@ -218,7 +218,14 @@ class GameEngine:
             if kind == "event":
                 state.legal_actions = [{"type": ActionType.RESOLVE_EVENT.value, "target_id": option["id"], "label": option["label"]} for option in state.pending_choice["options"]]
                 active_player = state.players[state.shared.active_player_id]
-                state.legal_actions.extend({"type": ActionType.USE_ACTION_CARD.value, "card_id": card, "label": f"使用策略：{self.content.action_cards[card]['name']}", "cost": int(self.content.action_cards[card].get("cost", 1))} for card in active_player.action_hand if self._action_card_timing_allowed(state, self.content.action_cards[card]))
+                state.legal_actions.extend({
+                    "type": ActionType.USE_ACTION_CARD.value,
+                    "card_id": card,
+                    "label": f"使用策略：{self.content.action_cards[card]['name']}",
+                    "cost": int(self.content.action_cards[card].get("cost", 1)),
+                    "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]),
+                    "disabled_reason": f"当前不能使用 · 时机：{self.content.action_cards[card].get('timing', '当前行动阶段')}",
+                } for card in active_player.action_hand)
             elif kind == "view_select":
                 state.legal_actions = [{"type": ActionType.SELECT_MARKET_CARD.value, "card_id": card, "label": f"\u9009\u62e9 {self.content.cards[card]['name']}"} for card in state.pending_choice["cards"]]
             elif kind == "discard":
@@ -297,7 +304,14 @@ class GameEngine:
                 if interpretation["formed"] and not interpretation["intervention"]:
                     actions.extend({"type": ActionType.CHOOSE_INTERVENTION.value, "target_id": choice, "target_site_id": active.location, "label": label, "cost": 0} for choice, label in (("act_now", "立即处理"), ("minimal", "最小干预"), ("record", "先记录")))
             actions.extend({"type": ActionType.PLAY_CARD.value, "card_id": card, "label": f"\u4f7f\u7528 {self.content.cards[card]['name']}"} for card in active.hand)
-            actions.extend({"type": ActionType.USE_ACTION_CARD.value, "card_id": card, "label": f"\u4f7f\u7528\u7b56\u7565\uff1a{self.content.action_cards[card]['name']}", "cost": int(self.content.action_cards[card].get("cost", 1))} for card in active.action_hand if self._action_card_timing_allowed(state, self.content.action_cards[card]))
+            actions.extend({
+                "type": ActionType.USE_ACTION_CARD.value,
+                "card_id": card,
+                "label": f"\u4f7f\u7528\u7b56\u7565\uff1a{self.content.action_cards[card]['name']}",
+                "cost": int(self.content.action_cards[card].get("cost", 1)),
+                "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]),
+                "disabled_reason": f"\u5f53\u524d\u4e0d\u80fd\u4f7f\u7528 \u00b7 \u65f6\u673a\uff1a{self.content.action_cards[card].get('timing', '\u5f53\u524d\u884c\u52a8\u9636\u6bb5')}",
+            } for card in active.action_hand)
             ability = self.content.sites[active.location].get("node_ability", {})
             ability_key = f"{active.location}:use_node_ability:{state.shared.turn}"
             if ability.get("trigger") == "once_per_round" and ability_key not in state.shared.node_ability_uses:
@@ -540,12 +554,14 @@ class GameEngine:
         confidence = max(0, support * 2 - conflict)
         required_domains = set(task.get("required_domains", []))
         contributors = {item.get("player_id") for item in interpretation["placements"] if item.get("player_id")}
+        contributor_target = int(combo.get("minimum_distinct_players", 1))
+        missing_contributors = max(0, contributor_target - len(contributors))
         requirements = [
             {"key": "cards", "label": "证据数量", "current": len(cards), "target": int(task.get("required_card_count", 0)), "complete": len(cards) >= int(task.get("required_card_count", 0))},
             {"key": "domains", "label": "研究领域", "current": len(domains & required_domains), "target": len(required_domains), "complete": not missing_domains, "missing": missing_domains},
             {"key": "origins", "label": "证据来源", "current": len(origins & preferred_origins) if preferred_origins else len(origins), "target": origin_target, "complete": len(origins) >= origin_target and not missing_origins, "missing": missing_origins},
             {"key": "combos", "label": "组合线索", "current": len(tags & set(combo.get("required_combo_tags", []))), "target": len(combo.get("required_combo_tags", [])), "complete": not missing_tags, "missing": missing_tags},
-            {"key": "contributors", "label": "共同参与", "current": len(contributors), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(contributors) >= int(combo.get("minimum_distinct_players", 1))},
+            {"key": "contributors", "label": "共同参与", "current": len(contributors), "target": contributor_target, "complete": missing_contributors == 0, "missing": [f"还需要 {missing_contributors} 位不同同行者"] if missing_contributors else []},
         ]
         reason_parts = []
         if not has_support: reason_parts.append("还需要至少一件支持证据")
@@ -553,15 +569,17 @@ class GameEngine:
         if missing_domains: reason_parts.append("还需要补齐研究领域")
         if missing_origins: reason_parts.append("还需要不同来源的证据")
         if missing_tags: reason_parts.append("还需要完成关键组合互证")
+        if missing_contributors: reason_parts.append(f"还需要 {missing_contributors} 位不同同行者参与")
         if not reason_parts: reason_parts.append("条件已经满足，可以形成解释")
         return {
             "cards": len(cards), "cards_target": int(task.get("required_card_count", 0)),
             "domains": sorted(domains), "missing_domains": missing_domains,
             "origins": sorted(origins), "origins_target": origin_target, "missing_origins": missing_origins,
             "missing_tags": missing_tags, "has_support": has_support,
+            "contributors": sorted(contributors), "contributors_target": contributor_target, "missing_contributors": missing_contributors,
             "support": support, "conflict": conflict, "pending": sum(item.get("relation") == "pending" for item in interpretation["placements"]),
             "confidence": confidence, "requirements": requirements, "reason": "；".join(reason_parts),
-            "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags),
+            "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags and missing_contributors == 0),
         }
 
     def _interpretation_ready(self, task):
@@ -678,6 +696,8 @@ class GameEngine:
 
     def _action_card_timing_allowed(self, state, card):
         timing = str(card.get("timing", "")).strip()
+        if state.pending_choice and state.pending_choice.get("kind") == "event":
+            return "事件响应" in timing
         if "事件响应" in timing: return bool(state.pending_choice and state.pending_choice.get("kind") == "event")
         if "事件预告" in timing: return state.shared.phase == "player_action" and bool(state.shared.current_event_id)
         return state.shared.phase == "player_action" and not state.pending_choice
@@ -1700,8 +1720,8 @@ class GameEngine:
                 "action_label": action_labels_by_type.get(action_type, terminology.get(action_type, {}).get("name", action_type)),
                 "description": descriptions.get(action_type, "执行一项可用行动。"),
                 "cost": {"ap": cost},
-                "enabled": True,
-                "disabled_reason": None,
+                "enabled": action.get("enabled", True),
+                "disabled_reason": action.get("disabled_reason"),
                 "targets": [],
                 "preview_delta": self._action_preview_delta(action, state),
                 "confirmation": f"确认{action.get('label', action_type)}？",
