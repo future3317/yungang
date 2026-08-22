@@ -6,7 +6,7 @@ type StateChange = {
 };
 
 export function StateChangeList({ changes, compact = false }: { changes: StateChange[]; compact?: boolean }) {
-  const visible = changes.filter(change => change.label || change.before !== undefined || change.after !== undefined);
+  const visible = changes.filter(change => change.label || change.before !== undefined || change.after !== undefined || change.delta !== undefined);
   if (!visible.length) return null;
   return <ul className={`state-change-list${compact ? ' compact' : ''}`} aria-label="状态变化">
     {visible.map((change, index) => {

@@ -23,6 +23,7 @@ const filters: Array<{ id: TimelineFilter; label: string }> = [
   { id: 'event', label: '事件' },
   { id: 'project', label: '项目' },
 ];
+const entryTypeLabels: Record<string, string> = { action: '行动', event: '事件', project: '项目', choice: '共同决定', system: '旅程记录' };
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
@@ -36,7 +37,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         {filters.map(item => <button key={item.id} type="button" role="tab" aria-selected={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}
       </div>
       <div className="timeline-events" aria-live="polite">
-        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}</b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}<StateChangeList compact changes={structuredEffects(entry.effects)} /></span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
+        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}<small>{entryTypeLabels[entry.type] || '旅程记录'}</small></b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}<StateChangeList compact changes={structuredEffects(entry.effects)} /></span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
       </div>
     </div>
   </details>;

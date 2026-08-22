@@ -69,6 +69,22 @@ export function previewDeltaText(delta: Record<string, unknown> | undefined, fal
 
 export function localizeActionText(value?: string) {
   return (value || '').replace(/\s+/g, ' ').trim()
+    .replace(/\btwo_open_sites\b/gi, '两处仍可守护的节点')
+    .replace(/\ball_players\b/gi, '所有同行者')
+    .replace(/\bshared_resource\b/gi, '团队修护资源')
+    .replace(/\btarget_site\b/gi, '目标地点')
+    .replace(/\btarget_route\b/gi, '目标路线')
+    .replace(/\bafter_arrival\b/gi, '抵达后')
+    .replace(/\bround_end\b/gi, '回合结束时')
+    .replace(/\bplayer_action\b/gi, '玩家行动阶段')
+    .replace(/\broute_risk\b/gi, '路线风险')
+    .replace(/\bweathering_track\b/gi, '风化压力')
+    .replace(/\bthreat_delta\b/gi, '风化压力变化')
+    .replace(/\brisk_delta\b/gi, '路线风险变化')
+    .replace(/\brestore_discount\b/gi, '修护费用减免')
+    .replace(/\bexchange_discount\b/gi, '交换费用减免')
+    .replace(/\bfree_exchange\b/gi, '本次交换免费')
+    .replace(/\barchive_inspect\b/gi, '查看档案牌')
     .replace(/\b(open|blocked|strained|restored|illuminated)\b/gi, match => ({ open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮' }[match.toLowerCase()] || match))
     .replace(/Use Action Card/gi, '使用策略牌')
     .replace(/\bRoute:\s*/gi, '路线：')
@@ -92,6 +108,7 @@ export function localizeActionError(error: unknown) {
   const message = typeof candidate?.message === 'string' ? candidate.message : '';
   const embeddedCode = Object.keys(actionErrorMessages).find(key => message.includes(key));
   if (embeddedCode) return actionErrorMessages[embeddedCode];
+  if (/network|failed to fetch|fetch|timeout|offline|连接|网络/i.test(message)) return '网络暂时中断，状态未确定。请先重新连接，再继续选择行动。';
   return actionErrorMessages[message] || localizeActionText(message) || '行动暂时无法完成，请重新选择。';
 }
 
