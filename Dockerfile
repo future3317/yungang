@@ -16,6 +16,7 @@ COPY requirements-prod.txt ./
 RUN pip install --no-cache-dir -r requirements-prod.txt
 COPY backend ./backend
 COPY data ./data
+RUN test -f /app/data/game_data.json
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 COPY --from=frontend-build /app/frontend/static/ui-assets ./frontend/static/ui-assets
 
