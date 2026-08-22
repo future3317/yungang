@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { localizeActionText, localizeTimelineMessage, optionAction } from './gameUi';
+import { eventDecisionBrief, interpretationConfidenceGuidance, localizeActionText, localizeTimelineMessage, optionAction } from './gameUi';
 
 describe('game UI localization and previews', () => {
   it('localizes planning target prefixes', () => {
@@ -25,5 +25,17 @@ describe('game UI localization and previews', () => {
 
   it('carries action descriptions into confirmation previews', () => {
     expect(optionAction({ id: 'skill', type: 'use_skill', label: '凿刻辨识', category_label: '角色技能', action_label: '使用角色技能', description: '修护当前节点。', cost: { ap: 1 }, enabled: true, targets: [] }).description).toBe('修护当前节点。');
+  });
+
+  it('explains how interpretation confidence changes intervention choices', () => {
+    expect(interpretationConfidenceGuidance(2)).toContain('立即处理会增加 1 点风化压力');
+    expect(interpretationConfidenceGuidance(5)).toContain('更安心地立即处理');
+  });
+
+  it('keeps event response copy in a three-part decision brief', () => {
+    const brief = eventDecisionBrief({ forecast_text: '回合末影响两处地点。', description: '不处理会增加节点损伤。', mitigation_hint: '优先修护受影响节点。' });
+    expect(brief.whatHappens).toBe('回合末影响两处地点。');
+    expect(brief.ifIgnored).toBe('不处理会增加节点损伤。');
+    expect(brief.whatYouCanDo).toBe('优先修护受影响节点。');
   });
 });

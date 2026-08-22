@@ -32,6 +32,30 @@ test('game page keeps the map inside the viewport', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 
+test('desktop HUD keeps side rails below the top bar and moves the shared goal panel', async ({ page }) => {
+  test.skip(test.info().project.name !== 'desktop', 'This geometry contract is desktop-only.');
+  await startSolo(page);
+  const header = await page.locator('.game-header').boundingBox();
+  const roster = await page.locator('.roster-column').boundingBox();
+  expect(header).not.toBeNull();
+  expect(roster).not.toBeNull();
+  expect(roster!.y).toBeGreaterThanOrEqual(header!.y + header!.height + 12);
+
+  const goal = page.getByRole('region', { name: '共同目标进度' });
+  const handle = page.getByRole('button', { name: '拖动共同目标面板' });
+  const before = await goal.boundingBox();
+  const handleBox = await handle.boundingBox();
+  expect(before).not.toBeNull();
+  expect(handleBox).not.toBeNull();
+  await page.mouse.move(handleBox!.x + 8, handleBox!.y + 8);
+  await page.mouse.down();
+  await page.mouse.move(handleBox!.x + 88, handleBox!.y + 28, { steps: 4 });
+  await page.mouse.up();
+  const after = await goal.boundingBox();
+  expect(after).not.toBeNull();
+  expect(after!.x).toBeGreaterThan(before!.x);
+});
+
 test('game actions expose a guided target mode without internal enums', async ({ page }) => {
   await startSolo(page);
   const move = page.getByRole('button', { name: /^移动/ }).first();

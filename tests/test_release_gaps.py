@@ -198,6 +198,7 @@ def test_interpretation_evaluator_is_single_source_for_progress_and_legality():
     assert evaluation["cards"] == 1
     assert evaluation["origins"] == ["中原"]
     assert evaluation["can_form"] is False
+    assert "还需要" in evaluation["reason"]
     state = engine.refresh(state)
     progress = state.tasks[task["id"]]["progress"]["interpretation"]
     assert progress == engine._evaluate_interpretation(state.tasks[task["id"]])

@@ -1,4 +1,4 @@
-import type { Action, ActionOption, ActionType, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentEvent, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 
@@ -101,6 +101,20 @@ export function previewDeltaText(delta: Record<string, unknown> | undefined, fal
     .map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`)
     .join(' · ');
   return text || fallback;
+}
+
+export function interpretationConfidenceGuidance(confidence = 0) {
+  if (confidence <= 2) return '可信度较低：立即处理会增加 1 点风化压力；先记录可获得 3 点研究线索。';
+  if (confidence <= 4) return '可信度一般：先记录可以保留研究线索，立即处理不会额外增加风化压力。';
+  return '可信度较高：证据互相印证更充分，可以更安心地立即处理。';
+}
+
+export function eventDecisionBrief(event?: Partial<Pick<ContentEvent, 'forecast_text' | 'description' | 'mitigation_hint'>>) {
+  return {
+    whatHappens: event?.forecast_text || event?.description || '回合结束时，事件会按照当前影响范围结算。',
+    ifIgnored: event?.description || '如果不回应，事件会按预告中的风险结算。',
+    whatYouCanDo: event?.mitigation_hint || '从下方应对选项中选择一种处理方式。',
+  };
 }
 
 export function localizeActionText(value?: string) {

@@ -15,7 +15,7 @@ import { ActionPreview } from '../../widgets/game/ActionPreview';
 import { TutorialGuide } from '../../widgets/game/TutorialGuide';
 import { SeatHandoff } from '../../widgets/game/SeatHandoff';
 import { useDialogFocus } from '../../widgets/game/useDialogFocus';
-import { actionFeedback, actionLabels, actionModeLabel, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
+import { actionFeedback, actionLabels, actionModeLabel, eventDecisionBrief, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
 import { useRoomEvents } from '../../shared/useRoomEvents';
 import { getRoomToken } from '../../shared/roomToken';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
@@ -156,6 +156,7 @@ function ChoiceDialog({ state, event, disabled = false, onChoose }: { state: Gam
     choice: { eyebrow: '共同决定 · 需要选择', title: '完成当前选择', body: '这一步会影响团队的资源、风险或证据进度。选择一个选项后，旅程才能继续。' },
   };
   const copy = isEvent ? { eyebrow: '世界事件 · 需要回应', title: event?.name || '线路正在等待回应', body: event?.forecast_text || event?.description || '你的选择会立即改变本回合的风险与资源。' } : pendingCopy[pendingKind] || pendingCopy.choice;
+  const decisionBrief = eventDecisionBrief(event);
   if (state.pending_choice?.kind === 'role_upgrade') return <RoleUpgradeDialog state={state} disabled={disabled} onChoose={onChoose} />;
   const ref = useDialogFocus();
   const choices = (state.action_options || []).flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
@@ -163,8 +164,9 @@ function ChoiceDialog({ state, event, disabled = false, onChoose }: { state: Gam
     <span className="eyebrow">{copy.eyebrow}</span>
     <h2 id="choice-dialog-title">{copy.title}</h2>
     <p>{copy.body}</p>
+    {isEvent && <div className="choice-hint choice-impact"><b>不处理会怎样</b><span>{decisionBrief.ifIgnored}</span></div>}
+    {isEvent && <div className="choice-hint"><b>现在能做什么</b><span>{decisionBrief.whatYouCanDo}</span></div>}
     {isEvent && state.shared.event_targets?.length ? <div className="choice-hint"><b>已锁定影响范围</b><span>{state.shared.event_targets.length} 个目标已由本局种子确定，选择会改变这些目标的结果。</span></div> : null}
-    {event?.mitigation_hint && <div className="choice-hint"><b>应对建议</b><span>{event.mitigation_hint}</span></div>}
     <div className="choice-list">{choices.map((action, index) => <button disabled={disabled} key={`${action.type}-${index}`} onClick={() => onChoose(action)}>
       <span><b>{localizeActionText(action.label)}</b><small>{disabled ? '正在同步回应…' : localizeActionText(action.description) || '确认后查看实际变化'}</small>{<em>{previewDeltaText(action.preview_delta, action.cost ? `消耗 ${action.cost} AP` : '确认后结算')}</em>}</span><ChevronDown size={16} />
     </button>)}</div>

@@ -166,6 +166,47 @@ def test_interpretation_path_requires_a_judgement_before_intervention():
     assert state.shared.research_clues >= 2
 
 
+def test_low_confidence_immediate_intervention_increases_weathering():
+    state = engine.new_game("low-confidence-intervention", ["p1"])
+    player = state.players["p1"]
+    site = state.sites[player.location]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+    site.damage = 1
+    before_weathering = state.shared.weathering_track
+
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    assert task["interpretation"]["confidence"] == 2
+    engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "act_now"})
+
+    assert state.shared.weathering_track == before_weathering + 1
+
+
+def test_low_confidence_recording_grants_extra_research_value():
+    state = engine.new_game("low-confidence-record", ["p1"])
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[card]["domain"]]
+    task["combo_requirement"] = {}
+    player.hand = [card]
+    before_clues = state.shared.research_clues
+
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "record"})
+
+    assert state.shared.research_clues == before_clues + 3
+
+
 def test_direct_contribution_path_is_not_available():
     assert not hasattr(engine, "_contribute")
 

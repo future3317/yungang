@@ -540,13 +540,20 @@ class GameEngine:
             {"key": "combos", "label": "组合线索", "current": len(tags & set(combo.get("required_combo_tags", []))), "target": len(combo.get("required_combo_tags", [])), "complete": not missing_tags, "missing": missing_tags},
             {"key": "contributors", "label": "共同参与", "current": len(contributors), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(contributors) >= int(combo.get("minimum_distinct_players", 1))},
         ]
+        reason_parts = []
+        if not has_support: reason_parts.append("还需要至少一件支持证据")
+        if len(cards) < int(task.get("required_card_count", 0)): reason_parts.append(f"还需要 {int(task.get('required_card_count', 0)) - len(cards)} 件证据")
+        if missing_domains: reason_parts.append("还需要补齐研究领域")
+        if missing_origins: reason_parts.append("还需要不同来源的证据")
+        if missing_tags: reason_parts.append("还需要完成关键组合互证")
+        if not reason_parts: reason_parts.append("条件已经满足，可以形成解释")
         return {
             "cards": len(cards), "cards_target": int(task.get("required_card_count", 0)),
             "domains": sorted(domains), "missing_domains": missing_domains,
             "origins": sorted(origins), "origins_target": origin_target, "missing_origins": missing_origins,
             "missing_tags": missing_tags, "has_support": has_support,
             "support": support, "conflict": conflict, "pending": sum(item.get("relation") == "pending" for item in interpretation["placements"]),
-            "confidence": confidence, "requirements": requirements,
+            "confidence": confidence, "requirements": requirements, "reason": "；".join(reason_parts),
             "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags),
         }
 
@@ -566,16 +573,18 @@ class GameEngine:
         interpretation = self._ensure_interpretation(task)
         if not interpretation["formed"] or interpretation["intervention"]: raise ValueError("intervention_not_available")
         site = state.sites[site_id]; reward = task.get("reward", {})
+        confidence = int(interpretation.get("confidence", self._evaluate_interpretation(task)["confidence"]))
         interpretation["intervention"] = intervention; task["completed"] = True
         domain = reward.get("domain")
         if domain and domain not in state.shared.completed_domains: state.shared.completed_domains.append(domain)
         if intervention == "act_now":
             state.shared.influence += 2; state.shared.restoration_resource += int(reward.get("restoration_delta", 0)); site.damage = max(0, site.damage - 1)
             if any(item.get("relation") == "conflict" for item in interpretation["placements"]): state.shared.threat += 1
+            if confidence <= 2: state.shared.threat += 1
         elif intervention == "minimal":
             state.shared.influence += 1; state.shared.threat = max(0, state.shared.threat - 1); site.damage = max(0, site.damage - 1)
         else:
-            state.shared.research_clues += 2; state.shared.threat = max(0, state.shared.threat - 1)
+            state.shared.research_clues += 3 if confidence <= 2 else 2; state.shared.threat = max(0, state.shared.threat - 1)
         project = state.projects.get(site.active_project_id or "")
         if project and intervention != "record": self._advance_project(state, project, player.id, "choose_intervention")
         self._update_site(site); self._trigger_node_ability(state, player, site_id, trigger="task_completed")

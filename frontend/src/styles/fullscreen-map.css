@@ -919,27 +919,27 @@
   }
   .game-grid.hud-slot-center > .stage-column > .network-stage { pointer-events: auto; }
   .game-grid.hud-slot-center > .roster-column {
-    position: relative !important;
-    inset: auto;
-    grid-column: 1;
-    grid-row: 1;
-    width: auto;
+    position: absolute !important;
+    top: var(--hud-panel-top);
+    right: auto;
+    bottom: var(--hud-panel-bottom);
+    left: 0;
+    width: var(--map-left-clearance);
     height: auto;
-    align-self: stretch;
     min-height: 0;
-    max-height: 100%;
+    max-height: none;
     pointer-events: auto;
   }
   .game-grid.hud-slot-center > .site-inspector {
-    position: relative !important;
-    inset: auto;
-    grid-column: 3;
-    grid-row: 1;
-    width: auto;
-    height: 100%;
-    align-self: stretch;
+    position: absolute !important;
+    top: var(--hud-panel-top);
+    right: 0;
+    bottom: var(--hud-panel-bottom);
+    left: auto;
+    width: var(--map-right-clearance);
+    height: auto;
     min-height: 0;
-    max-height: 100%;
+    max-height: none;
     pointer-events: auto;
   }
   .game-grid.hud-slot-center > .event-history-bar { pointer-events: auto; }
@@ -1338,5 +1338,16 @@
   .goal-hud-body,
   .goal-hud.is-open .goal-hud-body {
     transition: none;
+  }
+}
+
+/* Keep the top bar in its own safe band and make the goal HUD's persisted drag offset visible. */
+@media (min-width: 1101px) {
+  .game-viewport {
+    --hud-panel-top: calc(var(--header-height, 64px) + 20px);
+  }
+
+  .goal-hud {
+    transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
   }
 }
