@@ -280,6 +280,7 @@
     "skill_unavailable": "角色专长本回合不可用。",
     "unknown_action": "这项行动当前不存在。",
     "unsupported_action_card_effect": "这张策略牌的效果暂时无法结算。",
+    "unsupported_content_mechanism": "这项内容机制暂时无法结算，请选择其他行动。",
     "unsupported_effect": "这项行动的效果暂时无法结算。",
     "unsupported_trigger": "这项行动的触发时机暂时无法结算。",
     "upgrade_unavailable": "这项角色专长当前不可用。"

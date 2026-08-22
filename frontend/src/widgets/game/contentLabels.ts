@@ -11,6 +11,16 @@ export function displayText(meta: Meta | undefined, namespace: string, id: strin
   return fallback;
 }
 
+export function errorText(meta: Meta | undefined, code: string | undefined, fallback = '操作暂时无法完成，请重新选择。') {
+  if (!code) return fallback;
+  const terminology = meta?.terminology as Record<string, unknown> | undefined;
+  const catalog = terminology?.errors;
+  const entry = catalog && typeof catalog === 'object' ? (catalog as Record<string, unknown>)[code] : undefined;
+  if (typeof entry === 'string') return entry;
+  if (entry && typeof entry === 'object' && 'message' in entry && typeof entry.message === 'string') return entry.message;
+  return fallback;
+}
+
 const domainLabels: Record<string, string> = {
   architecture: '建筑',
   statue: '造像',

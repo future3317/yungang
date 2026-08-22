@@ -10,6 +10,7 @@ from .actions import dispatch
 from .content import Content
 from .database import database_target_from_environment
 from .engine import GameEngine
+from .errors import error_detail, error_status
 from .models import ActionRequest, ArchiveSummary, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
@@ -141,9 +142,7 @@ def _run_action(session_id: str, request: ActionRequest, state: GameState | None
     except ValueError as exc:
         code = str(exc)
         base_code = code.split(":", 1)[0]
-        recovery = {"not_active_player": "wait_for_active_player", "invalid_route": "choose_another_action", "site_does_not_need_restoration": "inspect_site_status", "planning_not_active": "continue_current_phase", "game_is_over": "open_result"}.get(code, "choose_another_action")
-        message = content.terminology.get("errors", {}).get(base_code, "行动暂时无法完成，请重新选择。")
-        raise HTTPException(400, {"code": code, "message": message, "details": {}, "recovery": recovery}) from exc
+        raise HTTPException(400, error_detail(content.terminology, code)) from exc
     if not repo.save_if_revision(state, expected_revision):
         current = repo.get(session_id)
         raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": current.model_dump() if current else None})
@@ -159,9 +158,7 @@ def _room_or_404(room_id: str) -> dict:
 
 def _room_token_error(exc: ValueError) -> HTTPException:
     code = str(exc)
-    status = 401 if code in {"seat_token_required", "invalid_seat_token"} else 400
-    messages = {"seat_token_required": "请使用席位凭证进入这间旅舍。", "invalid_seat_token": "席位凭证已失效，请重新加入房间。", "room_not_joinable": "这间旅舍已经开始旅程。", "room_not_started": "旅程尚未点亮，当前不能恢复席位。", "room_full": "旅舍席位已满。", "seat_not_found": "找不到要恢复的席位。", "role_already_taken": "这个角色已经被同行者选走。", "room_already_started": "旅程开始后不能离开席位。"}
-    return HTTPException(status, {"code": code, "message": messages.get(code, "房间操作无法完成。"), "details": {}, "recovery": "return_to_room"})
+    return HTTPException(error_status(code), error_detail(content.terminology, code, default_recovery="return_to_room"))
 
 
 @app.post("/api/rooms", response_model=RoomCredentials)

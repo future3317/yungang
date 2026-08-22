@@ -1,4 +1,5 @@
-import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Meta, Player, ProjectState, RouteState, Site } from '../../types/game';
+import { errorText } from './contentLabels';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 export type DisplayContext = { sites: Record<string, Site>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; players?: Record<string, Player> };
@@ -56,55 +57,6 @@ export function feedbackChangeText(changes: FeedbackChange[]) {
     return `${label} ${change.delta && change.delta > 0 ? '+' : ''}${change.delta ?? ''}`;
   });
 }
-
-const actionErrorMessages: Record<string, string> = {
-  action_card_wrong_timing: '当前时机不能使用这张策略牌。',
-  action_card_unavailable: '手中没有这张策略牌。',
-  invalid_action_card_target: '请选择一个合法的策略牌目标。',
-  no_valid_action_card_target: '当前没有可用的策略牌目标。',
-  not_enough_ap: '行动点不足。',
-  not_enough_research_clues: '研究线索不足。',
-  unsupported_action_card_effect: '这张策略牌暂时无法结算。',
-  unsupported_effect: '这项行动的效果暂时无法结算。',
-  unsupported_trigger: '这项行动的触发时机暂时无法结算。',
-  archive_empty: '档案库暂时没有可取回的线索。',
-  archive_retrieve_needs_matching_hand: '手牌中没有可与档案调换的同领域线索。',
-  card_not_in_hand: '这张牌已经不在当前手牌中，请重新读取状态。',
-  evidence_already_placed: '这件证据已经归入研究台，请选择另一件线索。',
-  game_is_over: '这段旅程已经结束，请打开结算记录。',
-  game_needs_one_to_four_players: '旅程需要 1 至 4 位同行者才能开始。',
-  interpretation_already_formed: '当前解释已经形成，请选择后续干预。',
-  interpretation_not_ready: '证据条件尚未满足，请先补齐领域、来源或组合要求。',
-  intervention_not_available: '当前还不能进行干预，请先完成解释。',
-  invalid_archive_choice: '请选择档案中显示的线索。',
-  invalid_connection: '当前两处地点不能建立连接，请选择合法路线。',
-  invalid_discard_choice: '请选择手牌中的一件线索放入弃牌堆。',
-  invalid_event_choice: '请选择当前事件提供的应对方式。',
-  invalid_exchange: '只能与同地点的同行者交换证据。',
-  invalid_explore: '当前不能寻访，请确认已抵达节点且有行动点。',
-  invalid_interpretation_evidence: '这件证据当前不能归入研究台。',
-  invalid_intervention: '请选择当前解释提供的干预方式。',
-  invalid_action_card_discard: '请选择要弃置的策略牌。',
-  invalid_market_choice: '请选择公开市场中仍可取走的线索。',
-  invalid_node_ability_target: '当前地点能力不能作用于这个目标。',
-  invalid_plan_target: '请选择地图上允许规划的地点、路线或项目。',
-  invalid_prepare: '当前没有可准备的事件。',
-  invalid_restore: '当前节点不需要修护，或你还未抵达这里。',
-  invalid_route: '这条路线当前不可通行，请选择地图上高亮的路线。',
-  invalid_route_restoration: '这条路线当前不能修护，请先勘察或选择承压路线。',
-  invalid_route_survey: '当前不能勘察这条路线，请选择相邻路线。',
-  invalid_upgrade_choice: '请选择当前角色提供的专长。',
-  nothing_to_repair: '当前没有需要修护的节点或路线。',
-  node_ability_unavailable: '地点能力本轮已经使用，或当前条件尚未满足。',
-  not_active_player: '现在轮到另一位同行者，请等待行动交接。',
-  not_enough_restoration_resource: '团队修护资源不足，可先交换资源或改做其他行动。',
-  planning_limit_reached: '本轮规划名额已用完，请先执行已有规划。',
-  planning_not_active: '当前不在团队规划阶段，请继续本轮行动。',
-  site_does_not_need_restoration: '这个节点当前不需要修护。',
-  skill_unavailable: '角色专长本轮已经使用，或当前行动点不足。',
-  unknown_action: '这项行动暂时无法识别，请重新选择地图上的合法行动。',
-  upgrade_unavailable: '当前没有可用的角色专长。',
-};
 
 const roleBadgeAssets: Record<string, string> = {
   pingcheng_artisan: 'role-badge-artisan.webp',
@@ -177,15 +129,21 @@ export function localizeTimelineMessage(message: string, context: { sites: Recor
   return localizeActionText(message).replace(/\s*[（(]目标[：:]\s*([^）)]+)[）)]/g, (_, target: string) => `（目标：${resolveTargetName(target.trim(), context.sites, context.routes, context.projects, context.players)}）`);
 }
 
-export function localizeActionError(error: unknown) {
+export function localizeActionError(error: unknown, meta?: Meta) {
   const candidate = error as { code?: unknown; message?: unknown } | null;
   const code = typeof candidate?.code === 'string' ? candidate.code : '';
-  if (code && actionErrorMessages[code]) return actionErrorMessages[code];
+  if (code) {
+    const catalogMessage = errorText(meta, code, '');
+    if (catalogMessage) return catalogMessage;
+  }
   const message = typeof candidate?.message === 'string' ? candidate.message : '';
-  const embeddedCode = Object.keys(actionErrorMessages).find(key => message.includes(key));
-  if (embeddedCode) return actionErrorMessages[embeddedCode];
+  const embeddedCode = message.match(/\b[a-z][a-z0-9_]+\b/i)?.[0];
+  if (embeddedCode) {
+    const catalogMessage = errorText(meta, embeddedCode, '');
+    if (catalogMessage) return catalogMessage;
+  }
   if (/network|failed to fetch|fetch|timeout|offline|连接|网络/i.test(message)) return '网络暂时中断，状态未确定。请先重新连接，再继续选择行动。';
-  return actionErrorMessages[message] || localizeActionText(message) || '行动暂时无法完成，请重新选择。';
+  return localizeActionText(message) || '操作暂时无法完成，请重新选择。';
 }
 
 export function findCardAction(actions: Action[], type: ActionType, cardId: string) {

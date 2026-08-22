@@ -9,6 +9,8 @@ FORBIDDEN = (
     re.compile(r">\s*Route:\s*", re.I),
     re.compile(r">\s*Project:\s*", re.I),
     re.compile(r"（目标：(?:project_|route_)", re.I),
+    re.compile(r">\s*(?:target_rule|effect\.type|weathering_track|threat_delta|use_action_card)\s*<", re.I),
+    re.compile(r"目标\s*[:：]\s*(?:project_|route_|player-seat-)", re.I),
 )
 
 
