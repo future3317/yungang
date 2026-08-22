@@ -752,3 +752,20 @@
     display: none !important;
   }
 }
+.inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+.project-stage-track { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; margin-top: 12px; padding: 9px 10px; color: #eadfc8; background: rgba(15, 24, 18, .3); border: 1px solid rgba(220, 190, 112, .2); border-radius: 7px; }
+.project-stage-track span { min-width: 0; overflow: hidden; color: #cbbd9f; text-overflow: ellipsis; white-space: nowrap; }
+.project-stage-track strong { color: #e3bd69; font: 700 .8rem var(--font-data); }
+.project-stage-card { display: grid; gap: 5px; margin-top: 9px; padding: 10px; background: rgba(178, 139, 70, .12); border-left: 2px solid var(--connection); border-radius: 6px; }
+.project-stage-card b { color: #f1dfb7; font-size: .82rem; }
+.project-stage-card span, .project-stage-card small { color: #cbbd9f; font-size: .72rem; line-height: 1.45; }
+.project-stage-list { display: grid; gap: 5px; margin-top: 10px; }
+.project-stage-list span { padding: 6px 8px; color: #a99e8a; background: rgba(15, 24, 18, .22); border: 1px solid rgba(220, 190, 112, .12); border-radius: 5px; font-size: .72rem; }
+.project-stage-list span.current { color: #f1dfb7; border-color: rgba(220, 190, 112, .45); }
+.project-stage-list span.complete { color: #b9d5b7; border-color: rgba(118, 170, 126, .38); }
+.event-projection { display: grid; gap: 5px; margin-top: 10px; padding: 10px; color: #ecdcc0; background: rgba(114, 54, 38, .2); border: 1px solid rgba(219, 160, 92, .34); border-left: 2px solid var(--risk); border-radius: 7px; }
+.event-projection b { color: #f0c889; font-size: .76rem; }
+.event-projection span { color: #d8c7aa; font-size: .72rem; line-height: 1.4; }
+@media (min-width: 1101px) {
+  .site-inspector .inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}

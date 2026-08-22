@@ -5,14 +5,14 @@ import { comboNames, contentClassName, domainName, eventTargetRuleName, eventTyp
 import { metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
 
-type InspectorTab = 'task' | 'event' | 'market';
+type InspectorTab = 'task' | 'project' | 'event' | 'market';
 
 const domainAssets: Partial<Record<string, string>> = {
   architecture: assetUrl('game-ui/domains/ui_yungang_domain_architecture_01.png'),
   pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.png'),
 };
 
-export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventOpenTargetLabels = [], className = '' }: {
+export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventTargetIds = [], eventOpenTargetLabels = [], canAct = true, className = '' }: {
   state: GameState;
   meta: Meta;
   site: Site;
@@ -30,23 +30,34 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   onFormInterpretation: () => void;
   onChooseIntervention: (choice: 'act_now' | 'minimal' | 'record') => void;
   eventTargetLabels?: string[];
+  eventTargetIds?: string[];
   eventOpenTargetLabels?: string[];
+  canAct?: boolean;
   className?: string;
 }) {
+  canAct = canAct ?? true;
   eventOpenTargetLabels = eventOpenTargetLabels || [];
-  const eventPriority = Boolean(state.pending_choice?.kind === 'event' || state.shared.phase === 'round_forecast' || state.shared.phase === 'event_resolution');
-  const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task';
+  eventTargetLabels = eventTargetLabels || [];
+  eventTargetIds = eventTargetIds || [];
+  const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : 'task';
   const [tab, setTab] = useState<InspectorTab>(initialTab);
 
   useEffect(() => {
-    setTab(actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task');
-  }, [actionMode, eventPriority, site.id, event?.id]);
+    setTab(actionMode === 'explore' ? 'market' : 'task');
+  }, [actionMode, site.id]);
 
   const active = state.players[state.shared.active_player_id];
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
   const eventRecord = event as unknown as Record<string, unknown> | undefined;
   const isCurrentSite = active.location === site.id;
+  const project = Object.values(state.projects || {}).find(projectItem => projectItem.site_id === site.id);
+  const projectMeta = project ? meta.projects?.find(item => item.id === project.id) as (Record<string, unknown> | undefined) : undefined;
+  const eventDamage = Number(recordText(eventRecord, 'damage') || 0);
+  const projectStage = project?.stages?.[project.stage_index];
+  const projectStageId = projectStage?.id || String(project?.stage_index || 0);
+  const projectStageProgress = project ? project.stage_progress?.[projectStageId] || 0 : 0;
+  const projectStageTarget = projectStage?.required_progress || 1;
   const action = legal.find(item => item.target_id === site.id || item.target_site_id === site.id) || legal.find(item => item.type === 'explore' && isCurrentSite);
   const eventResponseAvailable = state.pending_choice?.kind === 'event';
   const interventionActions = actionOptions.filter(item => item.type === 'choose_intervention').flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
@@ -74,6 +85,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     </header>
     <div className="inspector-tabs" role="tablist" aria-label="地点信息">
       <button type="button" id={tabId('task')} role="tab" aria-selected={tab === 'task'} aria-controls={panelId('task')} tabIndex={tab === 'task' ? 0 : -1} onClick={() => setTab('task')}><Target size={15} aria-hidden="true" />任务</button>
+      <button type="button" id={tabId('project')} role="tab" aria-selected={tab === 'project'} aria-controls={panelId('project')} tabIndex={tab === 'project' ? 0 : -1} onClick={() => setTab('project')}><HandHeart size={15} aria-hidden="true" />项目</button>
       <button type="button" id={tabId('event')} role="tab" aria-selected={tab === 'event'} aria-controls={panelId('event')} tabIndex={tab === 'event' ? 0 : -1} onClick={() => setTab('event')}><CircleAlert size={15} aria-hidden="true" />事件</button>
       <button type="button" id={tabId('market')} role="tab" aria-selected={tab === 'market'} aria-controls={panelId('market')} tabIndex={tab === 'market' ? 0 : -1} onClick={() => setTab('market')}><Library size={15} aria-hidden="true" />市场</button>
     </div>
@@ -91,16 +103,20 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此印证。{task.combo_requirement?.preferred_origins?.length ? `指定来源：${formatRequirementValues(meta, 'origins', task.combo_requirement.preferred_origins)}。` : ''}带回不同来处的线索，才能让联系站得住脚。</span></div>}
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
-          <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={interventionActions} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
+          <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!canAct || !isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={interventionActions} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
           {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
-          <div className="task-action-row"><button type="button" disabled={!exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{exploreStatus}</span></div>
+          <div className="task-action-row"><button type="button" disabled={!canAct || !exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{!canAct ? '等待当前行动者完成本轮行动' : exploreStatus}</span></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
         </> : <div className="empty-tab"><Target size={22} /><h3>这里暂时没有开放任务</h3><p>先查看地图上其他节点，或等待事件目标出现。</p></div>}
       </section>}
 
+      {tab === 'project' && <section id={panelId('project')} className="project-tab" role="tabpanel" aria-labelledby={tabId('project')}>
+        {project ? <><div className="tab-kicker"><HandHeart size={14} />当前项目</div><h3>{project.name}</h3><p>{String(projectMeta?.summary || '这个项目把地点行动串成一条共同完成的阶段路线。')}</p><div className="project-stage-track"><b>阶段 {Math.min(project.stage_index + 1, project.stages.length)} / {project.stages.length}</b><span>{project.status === 'completed' ? '项目已完成' : projectStage?.name || '当前阶段'}</span><strong>{project.status === 'completed' ? '✓' : `${projectStageProgress} / ${projectStageTarget}`}</strong></div>{projectStage && <div className="project-stage-card"><b>{projectStage.name}</b><span>{projectStage.stage_text || '按当前阶段要求完成行动。'}</span>{projectStage.requirements && <small>阶段条件：{Object.entries(projectStage.requirements).map(([key, value]) => `${key} ${Array.isArray(value) ? value.join('、') : value}`).join(' · ')}</small>}</div>}{projectMeta?.strategy_note && <div className="task-rule-callout"><Info size={15} /><span>{String(projectMeta.strategy_note)}</span></div>}<div className="project-stage-list">{project.stages.map((stage, index) => <span key={stage.id} className={index < project.stage_index || project.completed_stages?.includes(stage.id) ? 'complete' : index === project.stage_index ? 'current' : ''}>{index < project.stage_index || project.completed_stages?.includes(stage.id) ? '✓' : index + 1} {stage.name}</span>)}</div><div className="task-access-hint"><MapPinned size={15} />项目进度会影响共同目标；先完成当前阶段，再进入下一段。</div></> : <div className="empty-tab"><HandHeart size={22} /><h3>这里暂时没有关联项目</h3><p>地点任务仍可独立推进，完成后会汇入团队的共同目标。</p></div>}
+      </section>}
+
       {tab === 'event' && <section id={panelId('event')} className="event-tab" role="tabpanel" aria-labelledby={tabId('event')}>
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img className="event-art-scene" src={assetUrl(recordText(event, 'scene_asset'), 'generated/scene_yungang_day.png')} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p><div className="event-rule-summary"><b>回合结束时结算</b><span>{event.target_rule ? `影响范围：${eventTargetRuleName(event.target_rule)}` : '影响范围由本局种子锁定'}</span></div>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span>{eventOpenTargetLabels.length > 0 ? <small>仍可守护：{eventOpenTargetLabels.join('、')}</small> : <small>当前没有仍可守护的受影响地点。</small>}</div>}{event.preview_delta && <div className="task-rule-callout"><Info size={15} /><span>预计变化：{Object.entries(event.preview_delta).map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`).join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}{eventResponseAvailable ? <button type="button" className="primary-action" onClick={() => onSelectAction('resolve_event')}>查看应对选项</button> : <details className="event-response-details"><summary>查看影响范围</summary><div className="task-rule-callout"><Info size={15} /><span>当前仍在事件预告阶段。地图上的橙色标记就是本回合的影响范围，回合结算时会开放正式应对选项。</span></div></details>}</> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art"><img className="event-art-scene" src={assetUrl(recordText(event, 'scene_asset'), 'generated/scene_yungang_day.png')} alt="" /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p><div className="event-rule-summary"><b>回合结束时结算</b><span>{event.target_rule ? `影响范围：${eventTargetRuleName(event.target_rule)}` : '影响范围由本局种子锁定'}</span></div>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span>{eventOpenTargetLabels.length > 0 ? <small>仍可守护：{eventOpenTargetLabels.join('、')}</small> : <small>当前没有仍可守护的受影响地点。</small>}</div>}{eventTargetIds.length > 0 && eventDamage > 0 && <div className="event-projection"><b>如果不处理</b>{eventTargetIds.map(id => { const target = state.sites[id]; return target ? <span key={id}>{target.name || id} · 损伤 {target.damage} → {Math.min(target.max_damage, target.damage + eventDamage)}{target.damage + eventDamage >= target.max_damage ? ' · 将关闭' : ''}</span> : null; })}</div>}{event.preview_delta && <div className="task-rule-callout"><Info size={15} /><span>预计变化：{Object.entries(event.preview_delta).map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`).join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}{eventResponseAvailable ? <button type="button" className="primary-action" disabled={!canAct} onClick={() => onSelectAction('resolve_event')}>{canAct ? '查看应对选项' : '等待当前行动者回应'}</button> : <details className="event-response-details"><summary>查看影响范围</summary><div className="task-rule-callout"><Info size={15} /><span>当前仍在事件预告阶段。地图上的橙色标记就是本回合的影响范围，回合结算时会开放正式应对选项。</span></div></details>}</> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section id={panelId('market')} className="market-tab" role="tabpanel" aria-labelledby={tabId('market')}>
