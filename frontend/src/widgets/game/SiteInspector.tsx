@@ -42,7 +42,6 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   eventTargetIds = eventTargetIds || [];
   const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : 'task';
   const [tab, setTab] = useState<InspectorTab>(initialTab);
-
   useEffect(() => {
     setTab(actionMode === 'explore' ? 'market' : 'task');
   }, [actionMode, site.id]);
@@ -82,6 +81,8 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
       <h2>{site.name}</h2>
       <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
+      {site.status === 'at_risk' && <div className="site-alert-explanation"><b>红点提醒</b><span>节点已经承压，再受到一次事件损伤可能关闭。优先修护，或先降低本轮事件影响。</span></div>}
+      {site.status === 'closed' && <div className="site-alert-explanation is-closed"><b>节点已关闭</b><span>这里暂时不能继续行动，需要先通过修护或事件应对恢复网络。</span></div>}
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
       {action && <div className="relevant-action"><span>当前相关行动</span><b>{action.label}</b><small>{action.cost || 0} AP</small></div>}
     </header>

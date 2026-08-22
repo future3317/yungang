@@ -46,4 +46,11 @@ describe('map label layout', () => {
     expect(new Set(values.map(item => `${item.x},${item.y}`)).size).toBe(values.length);
     for (let index = 0; index < values.length; index += 1) for (let next = index + 1; next < values.length; next += 1) expect(Math.hypot(values[index].x - values[next].x, values[index].y - values[next].y)).toBeGreaterThanOrEqual(9);
   });
+
+  it('keeps a dense cluster separated after the radial candidates are exhausted', () => {
+    const sites = Array.from({ length: 24 }, (_, index) => site(`cluster-${index}`, `节点${index}`, 50, 50));
+    const positions = computeNodePositions(sites, Object.fromEntries(sites.map(item => [item.id, item])));
+    const values = Object.values(positions);
+    for (let index = 0; index < values.length; index += 1) for (let next = index + 1; next < values.length; next += 1) expect(Math.hypot(values[index].x - values[next].x, values[index].y - values[next].y)).toBeGreaterThanOrEqual(9);
+  });
 });

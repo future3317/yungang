@@ -69,6 +69,15 @@
 .dialog-backdrop .dialog:not(.card-dialog):not(.choice-dialog):not(.action-preview):not(.role-upgrade-dialog) { background: linear-gradient(145deg, #35493c, #1c2921); color: #f5ead8; border: 1px solid rgba(220, 190, 112, .55); }
 .toast { color: #f7ecd4; background: rgba(24, 39, 29, .96); border: 1px solid rgba(220, 190, 112, .4); box-shadow: 0 14px 32px rgba(0, 0, 0, .34); }
 .roster-column > *, .site-inspector > * { position: relative; flex-shrink: 0; }
+.roster-skill-popover { display: none; position: absolute; z-index: 4; left: 42px; top: calc(100% - 2px); width: min(250px, calc(100% - 48px)); padding: 9px 10px; color: #eadfc8; background: linear-gradient(145deg, rgba(48, 67, 53, .98), rgba(23, 38, 28, .98)); border: 1px solid rgba(219, 192, 126, .48); border-radius: 7px; box-shadow: var(--shadow-lift); font-style: normal; line-height: 1.45; pointer-events: none; }
+.roster-skill-popover b, .roster-skill-popover span { display: block; }
+.roster-skill-popover b { color: #e3bd69; font-size: .72rem; }
+.roster-skill-popover span { color: #d7cfbd; font-size: .7rem; }
+.roster-row:hover .roster-skill-popover, .roster-row:focus-visible .roster-skill-popover { display: block; }
+.site-alert-explanation { display: grid; gap: 3px; margin-top: 9px; padding: 8px 9px; color: #efd29a; background: rgba(187, 118, 81, .13); border-left: 2px solid var(--risk); border-radius: 5px; font-size: .73rem; line-height: 1.45; }
+.site-alert-explanation b { color: #f0bd85; }
+.site-alert-explanation span { color: #d8cdb7; }
+.site-alert-explanation.is-closed { border-left-color: var(--closed); background: rgba(148, 83, 75, .16); }
 .roster-column .current-player { margin-top: 0; }
 .network-tools button { display: grid; place-items: center; padding: 0; line-height: 0; color: #f1e5c9; cursor: pointer; }
 .network-tools button:focus-visible, .network-tools button:hover { color: #fff5d9; background: rgba(101, 83, 43, .86); border-color: #d8b866; }

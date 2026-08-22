@@ -34,14 +34,22 @@ export function labelBox(origin: Point, layout: LabelLayout, width: number): Lab
 export function computeNodePositions(sites: Site[], metas: Record<string, Site>) {
   const output: Record<string, Point> = {};
   const placed: Point[] = [];
+  const gridFallback: Point[] = [];
+  for (let y = 8; y <= 92; y += 9) for (let x = 6; x <= 94; x += 9) gridFallback.push({ x, y });
   [...sites].sort((a, b) => a.id.localeCompare(b.id)).forEach((site, index) => {
     const origin = point(metas[site.id] || site);
     let candidate = origin;
-    for (let attempt = 0; attempt < 48 && placed.some(item => distance(candidate, item) < 9); attempt += 1) {
-      const ring = Math.floor(attempt / 8);
-      const angle = ((attempt * 45) + index * 23) * Math.PI / 180;
-      const radius = 9 + ring * 4;
+    let found = !placed.some(item => distance(candidate, item) < 9);
+    for (let attempt = 0; !found && attempt < 128; attempt += 1) {
+      const ring = Math.floor(attempt / 16) + 1;
+      const angle = ((attempt * 22.5) + index * 17) * Math.PI / 180;
+      const radius = 9 + ring * 3.5;
       candidate = { x: Math.max(6, Math.min(94, origin.x + Math.cos(angle) * radius)), y: Math.max(8, Math.min(92, origin.y + Math.sin(angle) * radius)) };
+      found = !placed.some(item => distance(candidate, item) < 9);
+    }
+    if (!found) {
+      const fallback = [...gridFallback].sort((a, b) => distance(a, origin) - distance(b, origin)).find(item => !placed.some(previous => distance(item, previous) < 9));
+      if (fallback) candidate = fallback;
     }
     output[site.id] = candidate;
     placed.push(candidate);

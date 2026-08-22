@@ -339,14 +339,8 @@ class GameEngine:
             result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes=changes)]
             return result
         pid, action = req["player_id"], req["action"]
-        before = {
-            "ap": state.players.get(pid, PlayerState(id=pid, name=pid, role_id="", location="")).ap if pid in state.players else 0,
-            "research_clues": state.shared.research_clues,
-            "restoration_resource": state.shared.restoration_resource,
-            "weathering": state.shared.weathering_track,
-            "threat": state.shared.threat,
-            "influence": state.shared.influence,
-        }
+        before_threat = state.shared.threat
+        before = self._metric_snapshot(state, pid)
         if pid != state.shared.active_player_id:
             raise ValueError("not_active_player")
         player = state.players[pid]
@@ -373,22 +367,15 @@ class GameEngine:
         else: raise ValueError("unknown_action")
         if action not in {ActionType.PLAN.value, ActionType.END_TURN.value, ActionType.END_PLANNING.value}:
             self._resolve_planning_collaboration(state, player, action, req)
-        self._sync_pressure(state, before["threat"], before["weathering"])
+        self._sync_pressure(state, before_threat, before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
         if not req.get("_preview"):
             self._check_outcome(state)
         result = state if req.get("_preview") else self.refresh(state)
         after_player = result.players.get(pid)
-        after = {
-            "ap": after_player.ap if after_player else before["ap"],
-            "research_clues": result.shared.research_clues,
-            "restoration_resource": result.shared.restoration_resource,
-            "weathering": result.shared.weathering_track,
-            "threat": result.shared.threat,
-            "influence": result.shared.influence,
-        }
-        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "threat": "风化压力", "influence": "共同影响"}
+        after = self._metric_snapshot(result, pid)
+        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "influence": "共同影响"}
         changes = [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
         self._record_journal(state, action, pid, self._journal_message(action, target, req), changes)
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
@@ -1311,7 +1298,6 @@ class GameEngine:
             victory_conditions=[
                 {"id": "core_project", "label": "核心项目", "current": sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"), "target": core_target, "remaining": max(0, core_target - sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")), "kind": "progress", "operator": "gte", "status": "completed" if core_target and sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed") >= core_target else "incomplete", "related_ids": sorted(core_ids), "related_labels": related_labels(sorted(core_ids))},
                 {"id": "objectives", "label": "公共目标", "current": sum(objective.completed for objective in state.objectives.values()), "target": objective_target, "remaining": max(0, objective_target - sum(objective.completed for objective in state.objectives.values())), "kind": "progress", "operator": "gte", "status": "completed" if sum(objective.completed for objective in state.objectives.values()) >= objective_target else "incomplete", "related_ids": list(state.objectives), "related_labels": related_labels(list(state.objectives))},
-                {"id": "weathering_control", "label": "风化压力保持在上限以下", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "safe" if state.shared.weathering_track < state.shared.weathering_limit - 1 else "warning", "related_ids": []},
             ],
             failure_conditions=[
                 {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED], "related_labels": related_labels([site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED])},
