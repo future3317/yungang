@@ -118,6 +118,20 @@ test('single player can follow the learning chain with visible confirmations', a
     await confirmPreview();
   }
 
+  const strategyCard = page.locator('.strategy-card').first();
+  if (await strategyCard.isVisible()) {
+    await strategyCard.click();
+    await expect(page.locator('.strategy-card-dialog')).toBeVisible();
+    await page.getByRole('button', { name: /返回|关闭/ }).last().click();
+  }
+
+  for (let turn = 0; turn < 2; turn += 1) {
+    const endTurn = page.getByRole('button', { name: /^结束行动/ }).first();
+    if (!(await endTurn.isVisible())) break;
+    await endTurn.click();
+    await confirmPreview();
+  }
+
   await expect(page.locator('.toast-queue, .timeline-drawer').first()).toBeVisible();
   const bodyText = await page.locator('body').innerText();
   expect(bodyText).not.toMatch(/player-seat-|target_rule|use_action_card|form_interpretation/);
