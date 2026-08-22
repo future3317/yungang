@@ -134,7 +134,7 @@ export function resolveTargetName(target: string | undefined, sites: Record<stri
 }
 
 export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; players?: Record<string, Player> }) {
-  return localizeActionText(message).replace(/（目标：([^）]+)）/g, (_, target: string) => `（目标：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}）`);
+  return localizeActionText(message).replace(/\s*[（(]目标[：:]\s*([^）)]+)[）)]/g, (_, target: string) => `（目标：${resolveTargetName(target.trim(), context.sites, context.routes, context.projects, context.players)}）`);
 }
 
 export function localizeActionError(error: unknown) {

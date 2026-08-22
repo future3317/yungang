@@ -3,13 +3,14 @@ import { assetUrl } from '../../shared/assetUrl';
 import { useState } from 'react';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
 import { StateChangeList } from './StateChangeList';
+import { metricLabel } from './gameUi';
 
 type TimelineChange = { label?: string; before?: string | number | null; after?: string | number | null; delta?: number | null };
 type TimelineEntry = { id: string; round: number; type: string; message: string; player_name?: string; effects?: unknown[] };
 
 function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
   return (effects || []).filter((effect): effect is Record<string, unknown> => Boolean(effect) && typeof effect === 'object').map(effect => ({
-    label: typeof effect.label === 'string' ? effect.label : undefined,
+    label: typeof effect.label === 'string' ? effect.label : typeof effect.metric === 'string' ? metricLabel(effect.metric) : typeof effect.key === 'string' ? metricLabel(effect.key) : undefined,
     before: typeof effect.before === 'string' || typeof effect.before === 'number' ? effect.before : null,
     after: typeof effect.after === 'string' || typeof effect.after === 'number' ? effect.after : null,
     delta: typeof effect.delta === 'number' ? effect.delta : null,
