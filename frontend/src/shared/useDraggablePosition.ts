@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type MouseEvent as ReactMouseEvent } from 'react';
 
 type Position = { x: number; y: number };
-type DragOptions = { minVisibleWidth?: number; minVisibleHeight?: number };
-type DragState = { startX: number; startY: number; originX: number; originY: number; rect: DOMRect };
+type DragOptions = { minVisibleWidth?: number; minVisibleHeight?: number; boundToParent?: boolean };
+type DragState = { startX: number; startY: number; originX: number; originY: number; rect: DOMRect; bounds: DOMRect };
 
 function loadPosition(storageKey: string): Position {
   try {
@@ -14,7 +14,7 @@ function loadPosition(storageKey: string): Position {
 }
 
 export function useDraggablePosition(storageKey: string, options: DragOptions = {}) {
-  const { minVisibleWidth = 120, minVisibleHeight = 56 } = options;
+  const { minVisibleWidth = 120, minVisibleHeight = 56, boundToParent = false } = options;
   const [position, setPosition] = useState<Position>(() => loadPosition(storageKey));
   const dragRef = useRef<DragState | null>(null);
   const movedRef = useRef(false);
@@ -31,10 +31,10 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
       const deltaX = event.clientX - drag.startX;
       const deltaY = event.clientY - drag.startY;
       if (Math.abs(deltaX) > 4 || Math.abs(deltaY) > 4) movedRef.current = true;
-      const minDeltaX = minVisibleWidth - drag.rect.right;
-      const maxDeltaX = window.innerWidth - minVisibleWidth - drag.rect.left;
-      const minDeltaY = minVisibleHeight - drag.rect.bottom;
-      const maxDeltaY = window.innerHeight - minVisibleHeight - drag.rect.top;
+      const minDeltaX = drag.bounds.left + minVisibleWidth - drag.rect.right;
+      const maxDeltaX = drag.bounds.right - minVisibleWidth - drag.rect.left;
+      const minDeltaY = drag.bounds.top + minVisibleHeight - drag.rect.bottom;
+      const maxDeltaY = drag.bounds.bottom - minVisibleHeight - drag.rect.top;
       const boundedX = Math.max(minDeltaX, Math.min(maxDeltaX, deltaX));
       const boundedY = Math.max(minDeltaY, Math.min(maxDeltaY, deltaY));
       setPosition({ x: drag.originX + boundedX, y: drag.originY + boundedY });
@@ -50,7 +50,10 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
     movedRef.current = false;
     suppressClickRef.current = false;
     const surface = event.currentTarget.closest<HTMLElement>('[data-draggable-surface]') || event.currentTarget.parentElement;
-    dragRef.current = { startX: event.clientX, startY: event.clientY, originX: position.x, originY: position.y, rect: surface?.getBoundingClientRect() || event.currentTarget.getBoundingClientRect() };
+    const rect = surface?.getBoundingClientRect() || event.currentTarget.getBoundingClientRect();
+    const parent = surface?.parentElement?.getBoundingClientRect();
+    const bounds = boundToParent && parent ? parent : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+    dragRef.current = { startX: event.clientX, startY: event.clientY, originX: position.x, originY: position.y, rect, bounds };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };
   const onClickCapture = (event: ReactMouseEvent<HTMLElement>) => {

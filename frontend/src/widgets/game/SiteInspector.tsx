@@ -126,8 +126,8 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
 
       {tab === 'market' && <section id={panelId('market')} className="market-tab" role="tabpanel" aria-labelledby={tabId('market')}>
         <div className="market-heading"><div><div className="tab-kicker"><Library size={14} />行动前先比较</div><h3>公开文化市场</h3></div><span>{marketCards.length} 张候选</span></div>
-        <p className="market-help">三件线索各自指向不同的文化脉络。金边线索能回应眼前的委托，其他线索也许会在下一处节点派上用场；取走一件消耗 1 AP。</p>
-        <div className="market-legend"><span className="legend-match">金边推荐 · 当前委托优先</span><span>普通线索 · 留作后用</span><span>手牌最多 3 件</span></div>
+        <p className="market-help">三件线索各自指向不同的文化脉络。标记为“推荐”的线索更适合回应眼前的委托，其他线索也许会在下一处节点派上用场；取走一件消耗 1 点行动力。</p>
+        <div className="market-legend"><span className="legend-match">推荐线索 · 当前委托优先</span><span>其他线索 · 留作后用</span><span>手牌最多 3 件</span></div>
         {!isCurrentSite && <div className="task-access-hint"><Compass size={15} />你可以先辨认市场中的线索；抵达{site.name}后，才能将它带走，不会提前消耗 AP。</div>}
         {!marketCards.length && <div className="empty-tab"><Library size={22} /><h3>本轮没有可取线索</h3><p>等待下一次市场补充，或先处理手边已有的证据。</p></div>}<div className="market-row">{marketCards.map(item => {
           const explore = legal.find(candidate => candidate.type === 'explore' && candidate.card_id === item.id);

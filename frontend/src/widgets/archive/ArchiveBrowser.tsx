@@ -3,7 +3,6 @@ import { Archive, ArrowRight, CalendarDays, LoaderCircle, Users, X } from 'lucid
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
-import { getRoomToken } from '../../shared/roomToken';
 import type { ArchiveSummary, Meta } from '../../types/game';
 
 const statusLabels: Record<string, string> = { in_progress: '进行中', paused: '已暂停', completed: '已完成', abandoned: '已结束', lobby: '准备中' };
@@ -28,7 +27,8 @@ export function ArchiveBrowser({ meta, onClose }: { meta?: Meta; onClose: () => 
     setError('');
     try {
       if (item.room_id) {
-        await api.room(item.room_id, getRoomToken(item.room_id));
+        // A new browser may not have the old seat token. RoomPage loads the
+        // public room shell and then offers seat recovery.
         navigate(`/room/${item.room_id}`);
       } else {
         await api.game(item.session_id);

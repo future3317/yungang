@@ -1681,3 +1681,114 @@
     transition: none !important;
   }
 }
+
+/* Stable HUD contracts: the header owns the top row and rails own their
+   scroll surfaces. Dragged overlays stay inside their assigned slot. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell > .hud-slot-top > .game-header {
+    grid-template-columns: minmax(0, 1fr) minmax(440px, 680px) minmax(150px, .44fr) !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .header-center {
+    min-width: 0;
+    justify-self: center;
+    width: min(100%, 680px);
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud {
+    width: min(100%, 680px) !important;
+    max-height: min(520px, calc(100dvh - var(--header-height) - 24px));
+    overflow: visible;
+    isolation: isolate;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud.is-open .goal-conditions {
+    max-height: min(360px, calc(100dvh - var(--header-height) - 150px));
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column,
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable both-edges;
+    overscroll-behavior: contain;
+    contain: layout paint;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector .inspector-content {
+    height: max-content !important;
+    min-height: 100%;
+    overflow: visible !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector::-webkit-scrollbar,
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector::-webkit-scrollbar-thumb,
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .7);
+    border: 2px solid rgba(7, 15, 10, .35);
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column > .stage-caption[data-focused="true"] {
+    pointer-events: auto !important;
+    grid-template-columns: 58px minmax(0, 1fr) auto 34px;
+    overflow: visible !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .stage-column > .stage-caption button {
+    position: relative;
+    z-index: 120;
+    pointer-events: auto !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-bottom .timeline-drawer.is-draggable {
+    position: relative;
+    z-index: 120;
+    pointer-events: auto;
+    transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
+  }
+
+  .game-viewport > .game-shell .node-hover-card {
+    pointer-events: none;
+  }
+}
+
+.node-hover-card rect {
+  fill: rgba(17, 35, 25, .96);
+  stroke: rgba(224, 190, 103, .72);
+  stroke-width: .25;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .42));
+}
+
+.node-hover-card text {
+  fill: #f2e5c5;
+  font-size: 1.45px;
+  paint-order: stroke;
+  stroke: rgba(17, 35, 25, .86);
+  stroke-width: .18px;
+}
+
+.node-hover-card text + text {
+  fill: #d7c58d;
+  font-size: 1.05px;
+}
+
+.timeline-drawer.is-draggable summary,
+.goal-drag-handle {
+  cursor: grab;
+}
+
+.timeline-drawer.is-draggable summary:active,
+.goal-drag-handle:active {
+  cursor: grabbing;
+}
