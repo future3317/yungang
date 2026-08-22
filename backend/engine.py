@@ -1296,20 +1296,68 @@ class GameEngine:
                     else:
                         labels.append(identifier)
             return labels
+        core_completed = sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")
+        objectives_completed = sum(1 for objective in state.objectives.values() if objective.completed)
+        victory_conditions = []
+        for project_id in sorted(core_ids):
+            project = state.projects.get(project_id)
+            if not project:
+                continue
+            target = max(1, len(project.stages))
+            current = target if project.status == "completed" else min(project.stage_index, target)
+            site_name = self.content.sites.get(project.site_id, {}).get("name", project.site_id)
+            victory_conditions.append({
+                "id": f"project:{project.id}",
+                "label": f"项目：{project.name}",
+                "current": current,
+                "target": target,
+                "remaining": max(0, target - current),
+                "kind": "progress",
+                "operator": "gte",
+                "status": "completed" if project.status == "completed" else "incomplete",
+                "related_ids": [project.id, project.site_id],
+                "related_labels": [project.name, site_name],
+            })
+        for objective in state.objectives.values():
+            target = max(1, objective.target)
+            current = min(objective.progress, target)
+            objective_name = self.content.objectives.get(objective.id, {}).get("name", objective.name)
+            victory_conditions.append({
+                "id": f"objective:{objective.id}",
+                "label": f"目标：{objective_name}",
+                "current": current,
+                "target": target,
+                "remaining": max(0, target - current),
+                "kind": "progress",
+                "operator": "gte",
+                "status": "completed" if objective.completed else "incomplete",
+                "related_ids": [objective.id],
+                "related_labels": [objective_name],
+            })
+        if not victory_conditions:
+            victory_conditions.append({
+                "id": "journey_progress",
+                "label": "共同旅程进度",
+                "current": 0,
+                "target": 1,
+                "remaining": 1,
+                "kind": "progress",
+                "operator": "gte",
+                "status": "incomplete",
+                "related_ids": [],
+                "related_labels": [],
+            })
         state.goal_status = GoalStatus(
-            core_projects_completed=sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"),
+            core_projects_completed=core_completed,
             core_projects_target=len(core_ids),
-            objectives_completed=sum(1 for objective in state.objectives.values() if objective.completed),
+            objectives_completed=objectives_completed,
             objectives_target=len(state.objectives),
             protected_sites=protected_sites,
             protected_sites_target=int(next((objective.get("target", 0) for objective in self.content.objectives.values() if objective.get("type") == "site_protection"), 0)),
             weathering=state.shared.weathering_track,
             weathering_limit=state.shared.weathering_limit,
             rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
-            victory_conditions=[
-                {"id": "core_project", "label": "核心项目", "current": sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed"), "target": core_target, "remaining": max(0, core_target - sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")), "kind": "progress", "operator": "gte", "status": "completed" if core_target and sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed") >= core_target else "incomplete", "related_ids": sorted(core_ids), "related_labels": related_labels(sorted(core_ids))},
-                {"id": "objectives", "label": "公共目标", "current": sum(objective.completed for objective in state.objectives.values()), "target": objective_target, "remaining": max(0, objective_target - sum(objective.completed for objective in state.objectives.values())), "kind": "progress", "operator": "gte", "status": "completed" if sum(objective.completed for objective in state.objectives.values()) >= objective_target else "incomplete", "related_ids": list(state.objectives), "related_labels": related_labels(list(state.objectives))},
-            ],
+            victory_conditions=victory_conditions,
             failure_conditions=[
                 {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED], "related_labels": related_labels([site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED])},
                 {"id": "weathering_limit", "label": "风化压力不达到上限", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "failed" if state.shared.weathering_track >= state.shared.weathering_limit else "safe", "related_ids": []},
