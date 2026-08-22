@@ -93,3 +93,10 @@
 .event-section > p { margin: 0; color: #d5c9b2; font-size: .78rem; line-height: 1.55; }
 .event-action-section { background: rgba(178, 139, 70, .09); border-color: rgba(220, 190, 112, .28); }
 .event-action-section .primary-action { margin-top: 2px; }.choice-option .choice-reason { color: #d7c187; font-size: .71rem; line-height: 1.35; }
+.card-use-choice { display: grid; gap: 7px; margin-top: 12px; padding: 12px; color: var(--ink-primary); background: linear-gradient(145deg, rgba(51, 67, 55, .84), rgba(25, 39, 29, .92)); border: 1px solid rgba(219, 192, 126, .28); border-radius: var(--radius-sm); }
+.card-use-choice > b { color: var(--connection); font-size: .9rem; }
+.card-use-choice > span { color: var(--ink-secondary); font-size: .8rem; line-height: 1.55; }
+.card-use-choice > small { color: var(--ink-muted); line-height: 1.45; }
+.card-use-choice-immediate { border-color: rgba(115, 159, 161, .38); }
+.card-use-choice-immediate > b { color: var(--discovery); }
+.card-use-choice .primary-cta { justify-self: start; margin-top: 2px; }

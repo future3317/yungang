@@ -58,6 +58,22 @@ def test_action_card_costs_ap_and_applies_declared_route_effect():
     assert resolved["players"]["p1"]["action_hand"] == []
 
 
+def test_culture_card_action_option_exposes_its_declared_immediate_effect():
+    state = engine.new_game("culture-card-preview", ["p1"], solo_mode=True)
+    card_id = next(iter(engine.content.cards))
+    state.players["p1"].hand = [card_id]
+    state.players["p1"].max_ap = 4
+    state.players["p1"].ap = 3
+    card = engine.content.cards[card_id]
+    engine.refresh(state)
+
+    option = next(item for item in state.action_options if item.type == "play_card" and item.label == card["name"])
+
+    assert option.description == card["instant_use_text"]
+    assert option.payload["instant_use_text"] == card["instant_use_text"]
+    assert option.targets[0].preview_delta
+
+
 def test_full_action_hand_requires_discard_before_round_draw():
     state = engine.new_game("action-card-draw", ["p1"], solo_mode=False)
     player = state.players["p1"]

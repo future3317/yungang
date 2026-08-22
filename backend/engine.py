@@ -1628,11 +1628,18 @@ class GameEngine:
                 option["payload"].update({key: card_definition.get(key) for key in ("timing", "effect", "best_use", "limitations", "combo_tags") if card_definition.get(key) is not None})
                 option["confirmation"] = f"确认使用策略牌“{card_definition.get('name', '策略牌')}”吗？"
             elif action_type == ActionType.PLAY_CARD.value and action.get("card_id"):
-                option["label"] = self.content.cards.get(action["card_id"], {}).get("name") or option["label"]
+                card_definition = self.content.cards.get(action["card_id"], {})
+                option["label"] = card_definition.get("name") or option["label"]
+                option["description"] = card_definition.get("instant_use_text") or option["description"]
+                option["confirmation"] = f"确认发动文化牌“{card_definition.get('name', '文化牌')}”的即时效果吗？"
             elif action_type in {ActionType.USE_SKILL.value, ActionType.USE_NODE_ABILITY.value, ActionType.USE_UPGRADE.value}:
                 option["label"] = action.get("label") or option["label"]
             target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
             payload = {key: value for key, value in action.items() if value is not None}
+            if action_type == ActionType.PLAY_CARD.value and action.get("card_id"):
+                card_definition = self.content.cards.get(action["card_id"], {})
+                payload.update({key: card_definition.get(key) for key in ("evidence_use_text", "instant_use_text", "effect") if card_definition.get(key) is not None})
+            option["payload"].update(payload)
             if target:
                 target_key = str(target)
                 if action_type == ActionType.EXCHANGE.value:
