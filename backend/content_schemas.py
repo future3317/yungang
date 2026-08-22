@@ -434,7 +434,7 @@ class EventChainContract(BaseModel):
 class RoleUpgradeContract(ContentItemContract):
     role_id: str
     description: str
-    effect: JsonObject
+    effect: RoleUpgradeEffectContract
     trigger: str
     strategic_direction: str
 

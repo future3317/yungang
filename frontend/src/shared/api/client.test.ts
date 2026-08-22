@@ -8,7 +8,7 @@ describe('API client', () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({ session_id: 'a b' }), { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 
-    await expect(api.game('a b')).resolves.toMatchObject({ session_id: 'a b' });
+    await expect(api.game('a b')).rejects.toThrow('服务器返回缺少 players');
     expect(fetchMock).toHaveBeenCalledWith('/api/games/a%20b', expect.objectContaining({ headers: expect.any(Object) }));
   });
 

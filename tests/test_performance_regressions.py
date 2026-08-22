@@ -164,4 +164,4 @@ def test_action_option_refresh_stays_within_performance_budget():
         started = time.perf_counter()
         engine.refresh(state)
         samples.append((time.perf_counter() - started) * 1000)
-    assert max(samples) < 200, f"refresh exceeded 200ms budget: {samples}"
+    assert max(samples) < 100, f"refresh exceeded 100ms budget: {samples}"

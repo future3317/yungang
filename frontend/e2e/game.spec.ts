@@ -80,10 +80,9 @@ test('learning chain explains why interpretation is not ready', async ({ page })
     const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
     if (await tutorialClose.isVisible()) await tutorialClose.click();
     const preview = page.locator('.action-preview');
-    if (await preview.isVisible()) {
-      await preview.getByRole('button', { name: /踏上这一步/ }).click();
-      await expect(preview).toBeHidden();
-    }
+    await expect(preview).toBeVisible();
+    await preview.getByRole('button', { name: /踏上这一步/ }).click();
+    await expect(preview).toBeHidden();
   };
 
   await page.getByRole('button', { name: /^移动/ }).first().click();
@@ -92,11 +91,11 @@ test('learning chain explains why interpretation is not ready', async ({ page })
   const explore = page.getByRole('button', { name: /^探索/ }).first();
   await expect(explore).toBeVisible();
   await explore.click();
-  await confirmPreview();
-
   await page.locator('.inspector-content').evaluate(element => { element.scrollTop = element.scrollHeight; });
   const marketCard = page.locator('.culture-card').first();
   await expect(marketCard).toBeVisible();
+  const marketTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await marketTutorialClose.isVisible()) await marketTutorialClose.click();
   await marketCard.click();
   await confirmPreview();
   await page.getByRole('tab', { name: '任务' }).click();

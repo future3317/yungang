@@ -67,6 +67,27 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   await expect(guest).toHaveURL(/\/room\/room-.*\/game/);
   await expect(host.locator('.game-viewport')).toBeVisible();
   await expect(guest.locator('.game-viewport')).toBeVisible();
+  const tutorialClose = host.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await tutorialClose.isVisible()) await tutorialClose.click();
+
+  const syncContext = await host.evaluate(() => {
+    const roomId = location.pathname.split('/')[2];
+    const token = sessionStorage.getItem(`yungang-room-token:${roomId}`) || '';
+    return { roomId, token };
+  });
+  const before = await host.evaluate(async ({ roomId, token }) => (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json(), syncContext);
+  const move = host.getByRole('button', { name: /^移动/ }).first();
+  await expect(move).toBeVisible();
+  await move.click();
+  const actionTutorial = host.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await actionTutorial.isVisible()) await actionTutorial.click();
+  const preview = host.locator('.action-preview');
+  await expect(preview).toBeVisible();
+  await preview.getByRole('button', { name: /踏上这一步/ }).click();
+  await expect(preview).toBeHidden();
+  const after = await host.evaluate(async ({ roomId, token }) => (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json(), syncContext);
+  expect(after.revision).toBeGreaterThan(before.revision);
+  expect(after.players[after.shared.active_player_id].location).not.toBe(before.players[before.shared.active_player_id].location);
 
   await guestContext.close();
   const recovered = await recoveredContext.newPage();
@@ -76,6 +97,13 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   await recovered.getByRole('button', { name: '继续这段旅程' }).click();
   await expect(recovered).toHaveURL(/\/room\/room-.*\/game/);
   await expect(recovered.getByText('当前行动者', { exact: true })).toBeVisible();
+  const recoveredContextState = await recovered.evaluate(async ({ roomId, expectedRevision, expectedLocation }) => {
+    const token = sessionStorage.getItem(`yungang-room-token:${roomId}`) || '';
+    const state = await (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json();
+    return { revision: state.revision, location: state.players[state.shared.active_player_id].location, expectedRevision, expectedLocation };
+  }, { roomId: syncContext.roomId, expectedRevision: after.revision, expectedLocation: after.players[after.shared.active_player_id].location });
+  expect(recoveredContextState.revision).toBe(after.revision);
+  expect(recoveredContextState.location).toBe(after.players[after.shared.active_player_id].location);
 
   await hostContext.close();
   await recoveredContext.close();

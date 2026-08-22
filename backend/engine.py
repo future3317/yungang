@@ -1737,6 +1737,16 @@ class GameEngine:
         }
         specific_types = set(category_labels)
         grouped = {}
+        preview_cache = {}
+
+        def preview(action):
+            if state is None:
+                return {}
+            key = repr(sorted((name, repr(value)) for name, value in action.items()))
+            if key not in preview_cache:
+                preview_cache[key] = self._action_preview_delta(action, state)
+            return preview_cache[key]
+
         active = state.players.get(state.shared.active_player_id) if state else None
         for action in actions:
             action_type = action["type"]
@@ -1755,7 +1765,7 @@ class GameEngine:
                 "enabled": action.get("enabled", True),
                 "disabled_reason": action.get("disabled_reason"),
                 "targets": [],
-                "preview_delta": self._action_preview_delta(action, state),
+                "preview_delta": preview(action),
                 "confirmation": f"确认{action.get('label', action_type)}？",
                 "payload": {},
                 "requirements": self._action_requirements(action_type, action, state, active),
@@ -1795,7 +1805,7 @@ class GameEngine:
                 target_key = str(target)
                 if action_type == ActionType.EXCHANGE.value:
                     target_key = f"{target_key}:{action.get('card_id', '')}"
-                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": self._action_preview_delta(action, state), "payload": payload, "recommendation_score": 0, "reason": ""})
+                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": preview(action), "payload": payload, "recommendation_score": 0, "reason": ""})
             else:
                 option["payload"] = payload
         if state is not None and not state.pending_choice and not state.shared.outcome:

@@ -283,6 +283,7 @@
     "unsupported_content_mechanism": "这项内容机制暂时无法结算，请选择其他行动。",
     "unsupported_effect": "这项行动的效果暂时无法结算。",
     "unsupported_trigger": "这项行动的触发时机暂时无法结算。",
-    "upgrade_unavailable": "这项角色专长当前不可用。"
+    "upgrade_unavailable": "这项角色专长当前不可用。",
+    "unsupported_game_schema": "这段存档版本过旧，无法继续读取。"
   }
 }

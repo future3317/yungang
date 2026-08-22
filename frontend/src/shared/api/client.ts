@@ -36,20 +36,40 @@ function requiredArray<T>(value: T[] | undefined, field: string): T[] {
   return value;
 }
 
+function requiredNumber(value: number | undefined, field: string): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) throw new Error(`服务器返回缺少 ${field}，无法继续显示这段旅程。`);
+  return value;
+}
+
+function requiredBoolean(value: boolean | undefined, field: string): boolean {
+  if (typeof value !== 'boolean') throw new Error(`服务器返回缺少 ${field}，无法继续显示这段旅程。`);
+  return value;
+}
+
+function requiredString(value: unknown, field: string): string {
+  if (typeof value !== 'string' || !value) throw new Error(`服务器返回缺少 ${field}，无法继续显示这段旅程。`);
+  return value;
+}
+
+function requiredRecord<T extends object>(value: T | undefined, field: string): T {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`服务器返回缺少 ${field}，无法继续显示这段旅程。`);
+  return value;
+}
+
 function normalizeGameState(payload: ContractGameState): GameState {
-  const players = payload.players || {};
-  const shared = payload.shared || {};
+  const players = requiredRecord(payload.players, 'players');
+  const shared = requiredRecord(payload.shared, 'shared');
   const tasks = Object.fromEntries(Object.entries(payload.tasks || {}).map(([id, value]) => {
     const record = value as Record<string, unknown>;
     return [id, {
       ...record,
-      id: typeof record.id === 'string' ? record.id : id,
-      name: typeof record.name === 'string' ? record.name : id,
-      required_domains: Array.isArray(record.required_domains) ? record.required_domains.filter((item): item is string => typeof item === 'string') : [],
-      required_origin_diversity: typeof record.required_origin_diversity === 'number' ? record.required_origin_diversity : 0,
-      required_card_count: typeof record.required_card_count === 'number' ? record.required_card_count : 0,
-      contributed_cards: Array.isArray(record.contributed_cards) ? record.contributed_cards.filter((item): item is string => typeof item === 'string') : [],
-      completed: record.completed === true,
+      id: requiredString(record.id, `tasks.${id}.id`),
+      name: requiredString(record.name, `tasks.${id}.name`),
+      required_domains: requiredArray(record.required_domains as string[] | undefined, `tasks.${id}.required_domains`),
+      required_origin_diversity: requiredNumber(record.required_origin_diversity as number | undefined, `tasks.${id}.required_origin_diversity`),
+      required_card_count: requiredNumber(record.required_card_count as number | undefined, `tasks.${id}.required_card_count`),
+      contributed_cards: requiredArray(record.contributed_cards as string[] | undefined, `tasks.${id}.contributed_cards`),
+      completed: requiredBoolean(record.completed as boolean | undefined, `tasks.${id}.completed`),
     } as Task];
   })) as Record<string, Task>;
   return {
