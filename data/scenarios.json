@@ -99,7 +99,7 @@
       ],
       "scenario_rule": {
         "description": "每轮首次完成节点修护后，团队可将一个计划标记移动到相邻节点。",
-      "trigger": "round_end",
+      "trigger": "after_restore",
         "effect": {
           "type": "move_planning_mark_adjacent",
           "amount": 1
@@ -477,7 +477,7 @@
       ],
       "scenario_rule": {
         "description": "每轮结束时，若团队完成了一个项目阶段且至少修复一条路线，风化压力降低1点。",
-        "trigger": "after_restore",
+        "trigger": "round_end",
         "effect": {
           "type": "reduce_weathering_if_stage_and_route",
           "amount": 1

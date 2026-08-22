@@ -16,6 +16,7 @@ ChatGPT Image*.png
 
 # Generated temporary assets
 frontend/static/ui-assets/generated/
+yungang_game_ui_assets/
 
 # Runtime databases and local QA artifacts
 data/*.sqlite3

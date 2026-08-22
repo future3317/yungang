@@ -665,3 +665,90 @@
   .timeline-drawer .timeline-body { max-height: 240px; overflow: hidden; }
   .timeline-events { max-height: 160px; overflow-y: auto; }
 }
+/* Canonical desktop HUD geometry: the header owns the goal and theme; the map never clips them. */
+@media (min-width: 1101px) {
+  .game-header {
+    position: relative !important;
+    z-index: 40 !important;
+    display: grid !important;
+    grid-template-columns: minmax(300px, 1fr) minmax(460px, 620px) minmax(110px, 1fr) !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: var(--header-height) !important;
+    box-sizing: border-box;
+    padding: 8px 18px !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    align-items: start;
+  }
+  .game-header .brand-group {
+    min-width: 0;
+    max-width: none !important;
+    min-height: 46px;
+    align-items: center;
+    overflow: visible;
+  }
+  .game-header .brand-scenario {
+    display: inline-flex;
+    max-width: 300px !important;
+  }
+  .game-header .header-center {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    display: block !important;
+  }
+  .game-header .goal-hud {
+    width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .game-header .goal-conditions {
+    max-height: min(360px, calc(100dvh - 150px)) !important;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 188, 105, .55) transparent;
+  }
+  .game-header .goal-conditions::-webkit-scrollbar,
+  .site-inspector .inspector-content::-webkit-scrollbar {
+    width: 9px;
+  }
+  .game-header .goal-conditions::-webkit-scrollbar-thumb,
+  .site-inspector .inspector-content::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .55);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+  .site-inspector {
+    overflow: hidden !important;
+    scrollbar-gutter: stable;
+  }
+  .site-inspector .inspector-content {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(220, 188, 105, .55) transparent;
+    overscroll-behavior: contain;
+  }
+  .event-art {
+    grid-template-columns: 84px minmax(0, 1fr) !important;
+    align-items: center;
+  }
+  .event-art .event-art-scene {
+    grid-column: 1;
+    width: 84px !important;
+    height: 68px !important;
+    object-fit: cover;
+  }
+  .event-art > div {
+    grid-column: 2;
+    min-width: 0;
+  }
+  .event-art-badge {
+    display: none !important;
+  }
+}

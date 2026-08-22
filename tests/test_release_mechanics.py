@@ -55,7 +55,21 @@ def test_action_card_costs_ap_and_applies_declared_route_effect():
     assert resolved["routes"][target]["risk"] == 1
     assert resolved["shared"]["research_clues"] == 1
     assert "action_01" not in resolved["players"]["p1"]["action_hand"]
-    assert len(resolved["players"]["p1"]["action_hand"]) == 1
+    assert resolved["players"]["p1"]["action_hand"] == []
+
+
+def test_full_action_hand_requires_discard_before_round_draw():
+    state = engine.new_game("action-card-draw", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    player.action_hand = ["action_01", "action_02", "action_03"]
+    state.decks["action"] = ["action_04"]
+    state.shared.turn = 2
+    engine._draw_action_card(state, player)
+    assert state.pending_choice["kind"] == "discard"
+    assert state.pending_choice["next_action_card_id"] == "action_04"
+    engine._resolve_choice(state, {"action": "discard", "card_id": "action_01"})
+    assert player.action_hand == ["action_02", "action_03", "action_04"]
+    assert "action_01" in state.decks["action_discard"]
 
 
 def test_pingcheng_artisan_upgrade_fine_repair_threat_bonus():

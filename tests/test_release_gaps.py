@@ -35,7 +35,8 @@ def test_event_response_action_card_keeps_timing_and_declared_mitigation():
     assert route.risk == 1
     assert state.shared.threat == 1
     assert "action_09" in state.decks["action_discard"]
-    assert player.action_hand
+    assert player.action_hand == []
+    assert "action_10" in state.decks["action"]
 
 
 def test_room_session_cannot_be_read_through_legacy_game_endpoint():

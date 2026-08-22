@@ -126,6 +126,7 @@ class RoundSummary(BaseModel):
     completed_projects: int = 0
     completed_objectives: int = 0
     player_contributions: Dict[str, int] = Field(default_factory=dict)
+    round_effects: List[JsonObject] = Field(default_factory=list)
 
 
 class GoalCondition(BaseModel):
@@ -377,6 +378,7 @@ class ProjectState(BaseModel):
     completed_stages: List[str] = Field(default_factory=list)
     stage_progress: Dict[str, int] = Field(default_factory=dict)
     stage_contributors: Dict[str, List[str]] = Field(default_factory=dict)
+    stage_receipts: Dict[str, Dict[str, int]] = Field(default_factory=dict)
     available_choices: List[JsonObject] = Field(default_factory=list)
 
 
