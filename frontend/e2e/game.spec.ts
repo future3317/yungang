@@ -19,8 +19,14 @@ async function startSolo(page: Page) {
   if (await tutorialClose.isVisible()) await tutorialClose.click();
 }
 
+async function expectNoInternalTerms(page: Page) {
+  const bodyText = await page.locator('body').innerText();
+  expect(bodyText).not.toMatch(/target_rule|effect\.type|player-seat-|\bRoute:\s|\bProject:\s|use_action_card|form_interpretation|weathering_track/);
+}
+
 test('game HUD and map have no serious axe findings', async ({ page }) => {
   await startSolo(page);
+  await expectNoInternalTerms(page);
   const results = await new AxeBuilder({ page }).analyze();
   const serious = results.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
   expect(serious, serious.map(item => `${item.id}: ${item.help}`).join('\n')).toEqual([]);
@@ -64,8 +70,7 @@ test('game actions expose a guided target mode without internal enums', async ({
   const actionTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await actionTutorialClose.isVisible()) await actionTutorialClose.click();
   await expect(page.locator('.action-preview')).toBeVisible();
-  const bodyText = await page.locator('body').innerText();
-  expect(bodyText).not.toMatch(/use_action_card|form_interpretation|project_[0-9]+/);
+  await expectNoInternalTerms(page);
 });
 
 test('single player can follow the learning chain with visible confirmations', async ({ page }) => {
@@ -133,8 +138,7 @@ test('single player can follow the learning chain with visible confirmations', a
   }
 
   await expect(page.locator('.toast-queue, .timeline-drawer').first()).toBeVisible();
-  const bodyText = await page.locator('body').innerText();
-  expect(bodyText).not.toMatch(/player-seat-|target_rule|use_action_card|form_interpretation/);
+  await expectNoInternalTerms(page);
 });
 
 test('decision surfaces remain accessible when opened', async ({ page }) => {
