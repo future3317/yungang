@@ -152,3 +152,39 @@
     .command-deck .hand-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 }
+
+/* Stable desktop HUD geometry: scroll inside a slot, never through the map. */
+@layer components {
+  .hud-slot-top { position: relative; z-index: 12; min-width: 0; }
+  .hud-slot-left,
+  .hud-slot-right {
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-color: rgba(214, 180, 103, .62) rgba(16, 28, 20, .42);
+  }
+  .hud-slot-left::-webkit-scrollbar,
+  .hud-slot-right::-webkit-scrollbar,
+  .timeline-body::-webkit-scrollbar,
+  .goal-conditions::-webkit-scrollbar { width: 8px; }
+  .hud-slot-left::-webkit-scrollbar-thumb,
+  .hud-slot-right::-webkit-scrollbar-thumb,
+  .timeline-body::-webkit-scrollbar-thumb,
+  .goal-conditions::-webkit-scrollbar-thumb { background: rgba(214, 180, 103, .62); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+  .site-inspector { min-height: 0; max-height: 100%; overflow: visible; }
+  .timeline-drawer { max-width: min(620px, calc(100vw - 32px)); max-height: min(62dvh, 640px); overflow: hidden; }
+  .timeline-body { min-height: 0; max-height: min(54dvh, 540px); overflow-y: auto; overscroll-behavior: contain; }
+  .goal-hud { width: min(100%, 720px); max-height: min(72dvh, 720px); overflow: hidden; }
+  .goal-conditions { max-height: min(52dvh, 520px); overflow-y: auto; overscroll-behavior: contain; }
+  .event-art { background-image: none !important; }
+  .event-art-scene { display: block; opacity: 1; }
+  @media (max-width: 760px) {
+    .hud-slot-left, .hud-slot-right { max-height: none; overflow: visible; }
+    .timeline-drawer { max-width: calc(100vw - 24px); max-height: 58dvh; }
+    .timeline-body { max-height: 48dvh; }
+    .goal-hud { max-height: 64dvh; }
+  }
+}
