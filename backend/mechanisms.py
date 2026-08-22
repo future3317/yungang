@@ -90,6 +90,13 @@ SCENARIO_RULE_EFFECT_HANDLERS = {
     "event_diversity_pressure": "_scenario_event_diversity_pressure",
 }
 
+EVENT_MODIFIER_ACTIONS = {
+    "route_action_cost": {"move", "survey_route", "restore_route", "establish_connection"},
+    "exchange_cost": {"exchange"},
+    "restoration_cost": {"restore"},
+    "research_cost": {"interpret_evidence", "form_interpretation"},
+}
+
 EFFECT_HANDLERS = {
     **CULTURE_EFFECT_HANDLERS,
     **NODE_EFFECT_HANDLERS,

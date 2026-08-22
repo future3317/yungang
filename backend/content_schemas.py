@@ -133,6 +133,7 @@ class EventContract(ContentItemContract):
     forecast_text: str | None = None
     mitigation_hint: str | None = None
     modifier: JsonValue | None = None
+    modifiers: list[JsonObject] = Field(default_factory=list)
     name: str
     scene_asset: str | None = None
     severity: int | None = None

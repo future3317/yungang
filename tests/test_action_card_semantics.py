@@ -147,3 +147,25 @@ def test_project_progress_effect_grants_the_completed_stage_reward():
     engine._apply_node_effect(state, player, player.location, {"type": "project_progress", "amount": 1})
 
     assert state.shared.research_clues == before_clues + 2
+
+
+def test_using_strategy_card_does_not_draw_again_until_the_next_round():
+    engine = GameEngine()
+    state = engine.new_game("action-card-no-refill", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    player.action_hand = ["action_08"]
+    player.ap = 5
+    state.decks["action"] = ["action_01"]
+    state.shared.phase = "player_action"
+    state.shared.current_event_id = "sandstorm"
+
+    engine._use_action_card(state, player, "action_08")
+
+    assert player.action_hand == []
+    assert state.decks["action"] == ["action_01"]
+    assert engine._draw_action_card(state, player) is False
+    assert player.action_hand == []
+
+    state.shared.turn += 1
+    assert engine._draw_action_card(state, player) is True
+    assert player.action_hand == ["action_01"]

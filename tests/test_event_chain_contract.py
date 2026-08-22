@@ -112,3 +112,17 @@ def test_scenario_rules_apply_their_declared_runtime_effects():
             assert state.shared.weathering_track == before_weathering - 1
         elif scenario_id == "rainy_season":
             assert state.shared.weathering_track == before_weathering + 1
+
+
+def test_event_modifier_registry_changes_only_the_declared_action_cost():
+    engine = GameEngine()
+    state = engine.new_game("event-modifier-contract", ["p1"], scenario_id="market_reopening")
+    state.shared.current_event_id = None
+    state.shared.event_instance["modifiers"] = [
+        {"type": "route_action_cost", "action": "move", "amount": 1},
+        {"type": "exchange_cost", "action": "exchange", "amount": -1},
+    ]
+
+    assert engine._event_action_cost(state, "move", 1) == 2
+    assert engine._event_action_cost(state, "exchange", 1) == 0
+    assert engine._event_action_cost(state, "restore", 1) == 1

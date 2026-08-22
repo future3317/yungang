@@ -81,6 +81,13 @@
         "type": "weathering",
         "amount": 1
       },
+      "modifiers": [
+        {
+          "type": "route_action_cost",
+          "action": "move",
+          "amount": 1
+        }
+      ],
       "forecast_text": "回合末将出现一次团队选择。",
       "mitigation_hint": "保留至少1点修护资源，或提前建立替代路线。",
       "tags": [

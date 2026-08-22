@@ -260,6 +260,17 @@ def test_recommendation_explains_when_the_active_role_fits_the_action():
     assert "精修" in restore.reason
 
 
+def test_guided_difficulty_exposes_more_decision_guidance_than_standard():
+    engine = GameEngine()
+    guided = engine.new_game("guided-information", ["p1"], difficulty_id="guided", solo_mode=True)
+    standard = engine.new_game("standard-information", ["p1"], difficulty_id="normal", solo_mode=True)
+
+    assert guided.shared.effective_rules["guidance_level"] == "full"
+    assert guided.shared.effective_rules["show_recommendation_reasons"] is True
+    assert standard.shared.effective_rules["guidance_level"] == "standard"
+    assert standard.shared.effective_rules["show_recommendation_reasons"] is False
+
+
 def test_result_state_is_structured_and_survives_game_serialization():
     engine = GameEngine()
     state = engine.new_game("contract-result-state", ["p1"], solo_mode=False)
