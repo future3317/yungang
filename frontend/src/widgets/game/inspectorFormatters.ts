@@ -1,8 +1,9 @@
 import type { ContentCard, Meta, Task } from '../../types/game';
-import { comboNames, domainName } from './contentLabels';
+import { comboNames, contentTagName, domainName } from './contentLabels';
+import { actionLabels } from './gameUi';
 
 export type CardRecord = Record<string, unknown>;
-export { comboNames, domainName } from './contentLabels';
+export { comboNames, contentTagName, domainName } from './contentLabels';
 
 const originNames: Record<string, string> = {
   central: '中原',
@@ -28,6 +29,16 @@ export function formatRequirementValues(meta: Meta, key: string, values: string[
     if (key.includes('origin')) return originName(value);
     return requirementNames[value] || comboNames[value] || '未标注条件';
   }).join('、');
+}
+
+export function formatProjectRequirements(meta: Meta, requirements: Record<string, unknown>) {
+  const labels: Record<string, string> = { clues: '研究线索', domains: '领域', origin_diversity: '来源数量', restoration_resource: '修护资源', action_type: '行动' };
+  return Object.entries(requirements).map(([key, value]) => {
+    if (key === 'domains' && Array.isArray(value)) return `${labels[key]}：${formatRequirementValues(meta, key, value.map(String))}`;
+    if (key === 'action_type' && typeof value === 'string') return `${labels[key]}：${actionLabels[value as keyof typeof actionLabels] || '当前行动'}`;
+    if (key === 'origin_diversity') return `${labels[key]}：至少 ${String(value)} 种`;
+    return `${labels[key] || '阶段条件'}：${Array.isArray(value) ? value.join('、') : String(value)}`;
+  }).join(' · ');
 }
 
 export function statusName(status?: string) {
@@ -108,11 +119,12 @@ export function recordText(value: unknown, ...keys: string[]) {
   return '';
 }
 
-export function marketReason(card: ContentCard | undefined, task?: Task, useful = false) {
+export function marketReason(card: ContentCard | undefined, task?: Task, useful = false, meta?: Meta) {
   const domain = card?.domain;
-  if (useful && domain) return `回应此处委托的「${domain}」线索，适合优先交付。`;
+  const label = domain ? (meta ? domainName(meta, domain) : domain) : '';
+  if (useful && domain) return `回应此处委托的「${label}」线索，适合优先交付。`;
   if (task?.required_origin_diversity && task.required_origin_diversity > 1) return '来自另一条脉络，可补足这段故事的互证。';
-  return domain ? `属于「${domain}」线索，也许会在后续节点显出意义。` : '先收进手中，等待合适的节点召唤它。';
+  return domain ? `属于「${label}」线索，也许会在后续节点显出意义。` : '先收进手中，等待合适的节点召唤它。';
 }
 
 export function marketOutcome(card: ContentCard | undefined) {

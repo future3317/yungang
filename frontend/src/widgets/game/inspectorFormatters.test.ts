@@ -1,0 +1,32 @@
+import { describe, expect, it } from 'vitest';
+import type { ContentCard, Meta } from '../../types/game';
+import { contentTagName, formatProjectRequirements, marketReason } from './inspectorFormatters';
+
+const meta = {
+  domain_meta: {
+    statue: { name: '造像', short_name: '造像' },
+    pattern: { name: '纹样', short_name: '纹样' },
+  },
+} as unknown as Meta;
+
+describe('inspector player-facing labels', () => {
+  it('formats project requirements without exposing internal keys', () => {
+    const text = formatProjectRequirements(meta, {
+      domains: ['statue', 'pattern'],
+      origin_diversity: 2,
+      action_type: 'interpret_evidence',
+    });
+
+    expect(text).toContain('领域：造像、纹样');
+    expect(text).toContain('来源数量：至少 2 种');
+    expect(text).toContain('行动：研判证据');
+    expect(text).not.toContain('origin_diversity');
+    expect(text).not.toContain('interpret_evidence');
+  });
+
+  it('uses Chinese labels for market domains and unknown combo tags', () => {
+    expect(marketReason({ domain: 'statue' } as ContentCard, undefined, false, meta)).toContain('造像');
+    expect(marketReason({ domain: 'statue' } as ContentCard, undefined, false, meta)).not.toContain('statue');
+    expect(contentTagName('unknown_combo')).toBe('未标注组合');
+  });
+});

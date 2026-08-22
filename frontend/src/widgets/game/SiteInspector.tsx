@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target, X } from 'lucide-react';
 import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, Site, Task } from '../../types/game';
-import { comboNames, contentClassName, domainName, eventTargetRuleName, eventTypeName, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
+import { contentClassName, contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
 import { interpretationConfidenceGuidance, metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
 import { resolveEventSceneAsset } from './eventArtwork';
@@ -115,7 +115,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'project' && <section id={panelId('project')} className="project-tab" role="tabpanel" aria-labelledby={tabId('project')}>
-        {project ? <><div className="tab-kicker"><HandHeart size={14} />当前项目</div><h3>{project.name}</h3><p>{String(projectMeta?.summary || '这个项目把地点行动串成一条共同完成的阶段路线。')}</p><div className="project-stage-track"><b>阶段 {Math.min(project.stage_index + 1, project.stages.length)} / {project.stages.length}</b><span>{project.status === 'completed' ? '项目已完成' : projectStage?.name || '当前阶段'}</span><strong>{project.status === 'completed' ? '✓' : `${projectStageProgress} / ${projectStageTarget}`}</strong></div>{projectStage && <div className="project-stage-card"><b>{projectStage.name}</b><span>{projectStage.stage_text || '按当前阶段要求完成行动。'}</span>{projectStage.requirements && <small>阶段条件：{Object.entries(projectStage.requirements).map(([key, value]) => `${key} ${Array.isArray(value) ? value.join('、') : value}`).join(' · ')}</small>}</div>}{projectMeta?.strategy_note && <div className="task-rule-callout"><Info size={15} /><span>{String(projectMeta.strategy_note)}</span></div>}<div className="project-stage-list">{project.stages.map((stage, index) => <span key={stage.id} className={index < project.stage_index || project.completed_stages?.includes(stage.id) ? 'complete' : index === project.stage_index ? 'current' : ''}>{index < project.stage_index || project.completed_stages?.includes(stage.id) ? '✓' : index + 1} {stage.name}</span>)}</div><div className="task-access-hint"><MapPinned size={15} />项目进度会影响共同目标；先完成当前阶段，再进入下一段。</div></> : <div className="empty-tab"><HandHeart size={22} /><h3>这里暂时没有关联项目</h3><p>地点任务仍可独立推进，完成后会汇入团队的共同目标。</p></div>}
+        {project ? <><div className="tab-kicker"><HandHeart size={14} />当前项目</div><h3>{project.name}</h3><p>{String(projectMeta?.summary || '这个项目把地点行动串成一条共同完成的阶段路线。')}</p><div className="project-stage-track"><b>阶段 {Math.min(project.stage_index + 1, project.stages.length)} / {project.stages.length}</b><span>{project.status === 'completed' ? '项目已完成' : projectStage?.name || '当前阶段'}</span><strong>{project.status === 'completed' ? '✓' : `${projectStageProgress} / ${projectStageTarget}`}</strong></div>{projectStage && <div className="project-stage-card"><b>{projectStage.name}</b><span>{projectStage.stage_text || '按当前阶段要求完成行动。'}</span>{projectStage.requirements && <small>阶段条件：{formatProjectRequirements(meta, projectStage.requirements)}</small>}</div>}{projectMeta?.strategy_note && <div className="task-rule-callout"><Info size={15} /><span>{String(projectMeta.strategy_note)}</span></div>}<div className="project-stage-list">{project.stages.map((stage, index) => <span key={stage.id} className={index < project.stage_index || project.completed_stages?.includes(stage.id) ? 'complete' : index === project.stage_index ? 'current' : ''}>{index < project.stage_index || project.completed_stages?.includes(stage.id) ? '✓' : index + 1} {stage.name}</span>)}</div><div className="task-access-hint"><MapPinned size={15} />项目进度会影响共同目标；先完成当前阶段，再进入下一段。</div></> : <div className="empty-tab"><HandHeart size={22} /><h3>这里暂时没有关联项目</h3><p>地点任务仍可独立推进，完成后会汇入团队的共同目标。</p></div>}
       </section>}
 
       {tab === 'event' && <section id={panelId('event')} className="event-tab" role="tabpanel" aria-labelledby={tabId('event')}>
@@ -133,13 +133,13 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           const description = textField(item, 'description', 'summary') || '一条等待被放入更大文化脉络的线索。';
           const combo = textField(item, 'combo_name');
           const displayDomain = item.domain ? domainName(meta, item.domain) : '文化证据';
-          const reason = marketReason({ ...item, domain: displayDomain }, task, useful);
+          const reason = marketReason(item, task, useful, meta);
           return <button type="button" key={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`}>
             <img src={assetUrl(item.icon_asset)} alt="" />
-            <span className="culture-card-copy"><b>{item.name}</b><small>{displayDomain} · {reason}</small><em>{description}</em>{combo && <i>{comboNames[combo] || combo} · 组合后获得额外影响</i>}</span>
+            <span className="culture-card-copy"><b>{item.name}</b><small>{displayDomain} · {reason}</small><em>{description}</em>{combo && <i>{contentTagName(combo)} · 组合后获得额外影响</i>}</span>
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这件' : '不可选'}<small>{explore ? `${explore.cost || 1} AP` : ''}</small></strong>
             {useful && <em className="market-match-badge">推荐</em>}
-            <span className="market-card-tooltip" role="tooltip"><b>{item.name}</b><span>{description}</span>{combo && <small>{comboNames[combo] || combo} · 组合后获得额外影响。</small>}</span>
+            <span className="market-card-tooltip" role="tooltip"><b>{item.name}</b><span>{description}</span>{combo && <small>{contentTagName(combo)} · 组合后获得额外影响。</small>}</span>
           </button>;
         })}</div>
         {marketCards.length > 0 && <div className="market-outcome"><b>带走线索后</b><span>{marketOutcome(marketCards[0])}</span><small>确认之前不会消耗 AP；交付时再回到“节点委托”查看它是否合用。</small></div>}
