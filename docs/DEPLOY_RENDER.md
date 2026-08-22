@@ -9,4 +9,21 @@
 
 免费实例在一段时间无人访问后会休眠，第一次重新打开通常需要几十秒。正式答辩前请提前打开一次，并在服务页确认 `/api/meta` 健康检查为正常。
 
-运行数据默认保存在服务实例内部。免费服务重启后，正在进行的房间和本地存档可能会清空；给同学试玩和答辩演示没有影响。
+## 存档持久化是发布前置条件
+
+游戏状态、房间席位、旅程时间线和事件历史都写入同一个 SQLite 文件。运行时数据库不提交到 GitHub，也不会复制进 Docker 镜像；否则每次构建都会覆盖成旧快照。
+
+要让重新部署、实例重启和免费实例休眠后的存档继续可读，Render 服务必须使用支持持久磁盘的付费计划，并挂载：
+
+```yaml
+plan: starter
+disk:
+  name: yungang-runtime-data
+  mountPath: /var/lib/yungang
+  sizeGB: 1
+envVars:
+  - key: YUNGANG_DATABASE_PATH
+    value: /var/lib/yungang/games.sqlite3
+```
+
+持久磁盘只保证同一个 Render 服务实例的运行数据跨部署保留。删除服务、删除磁盘或没有完成数据库备份时，不能把存档视为可恢复。发布前应先确认磁盘已挂载，并通过 `/healthz` 检查数据库状态。
