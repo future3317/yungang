@@ -7,3 +7,5 @@
 .scenario-options button i { color: #718074; font-size: .68rem; font-style: normal; }
 .scenario-detail { display: grid; gap: 4px; margin-top: 8px; padding: 10px 12px; color: #47574b; background: #eee8d8; border-left: 2px solid #b58b3d; font-size: .76rem; line-height: 1.45; }
 .scenario-detail small, .field-note { color: #66746a; font-size: .7rem; font-weight: 500; line-height: 1.45; }
+.landing-feedback { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; color: #713b2e; background: #f1ddd0; border: 1px solid #d19a83; border-radius: 7px; font-size: .78rem; line-height: 1.4; }
+.landing-feedback button { flex: none; padding: 4px 8px; color: #713b2e; background: transparent; border: 1px solid currentColor; border-radius: 5px; font-size: .72rem; }
