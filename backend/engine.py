@@ -279,13 +279,17 @@ class GameEngine:
         if state.shared.outcome:
             raise ValueError("game_is_over")
         if state.pending_choice:
+            pid = req.get("player_id", state.shared.active_player_id)
+            before = self._metric_snapshot(state, pid)
             before_threat = state.shared.threat
             before_weathering = state.shared.weathering_track
             result = self._resolve_choice(state, req)
             self._sync_pressure(result, before_threat, before_weathering)
-            self._record_journal(state, req.get("action", "choice"), req.get("player_id", state.shared.active_player_id), "共同决定已结算")
+            after = self._metric_snapshot(result, pid)
+            changes = self._feedback_changes(before, after)
+            self._record_journal(state, req.get("action", "choice"), pid, "共同决定已结算", changes)
             self._remember_request(state, request_id)
-            result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。")]
+            result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes=changes)]
             return result
         pid, action = req["player_id"], req["action"]
         before = {
@@ -320,7 +324,6 @@ class GameEngine:
         elif action == ActionType.PLAN.value: self._plan(state, player, target)
         elif action == ActionType.END_PLANNING.value: self._end_planning(state, player)
         else: raise ValueError("unknown_action")
-        self._record_journal(state, action, pid, self._journal_message(action, target, req))
         self._sync_pressure(state, before["threat"], before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
@@ -337,6 +340,7 @@ class GameEngine:
         }
         labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "threat": "风化压力", "influence": "共同影响"}
         changes = [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
+        self._record_journal(state, action, pid, self._journal_message(action, target, req), changes)
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
         return result
 
@@ -366,9 +370,19 @@ class GameEngine:
             "end_turn": "本角色行动结束，旅程正在交接给下一位同行者。",
         }.get(action, "行动已记录，世界状态已经更新。")
 
-    def _record_journal(self, state: GameState, action: str, player_id: str, message: str) -> None:
+    @staticmethod
+    def _metric_snapshot(state: GameState, player_id: str) -> dict[str, int]:
+        player = state.players.get(player_id)
+        return {"ap": player.ap if player else 0, "research_clues": state.shared.research_clues, "restoration_resource": state.shared.restoration_resource, "weathering": state.shared.weathering_track, "influence": state.shared.influence}
+
+    @staticmethod
+    def _feedback_changes(before: dict[str, int], after: dict[str, int]) -> list[FeedbackChange]:
+        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "influence": "共同影响"}
+        return [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
+
+    def _record_journal(self, state: GameState, action: str, player_id: str, message: str, changes: list[FeedbackChange] | None = None) -> None:
         kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"
-        state.shared.journal.append({"id": f"journal-{state.revision + len(state.shared.journal) + 1}", "round": state.shared.turn, "type": kind, "message": message, "effects": [], "created_at": datetime.now(timezone.utc).isoformat(), "player_id": player_id})
+        state.shared.journal.append({"id": f"journal-{state.revision + len(state.shared.journal) + 1}", "round": state.shared.turn, "type": kind, "message": message, "effects": [change.model_dump() for change in (changes or [])], "created_at": datetime.now(timezone.utc).isoformat(), "player_id": player_id})
         del state.shared.journal[:-120]
 
     def _remember_request(self, state, request_id):
