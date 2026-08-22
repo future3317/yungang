@@ -1656,3 +1656,152 @@
     margin: 0 auto !important;
   }
 }
+
+/* Final desktop HUD contract: the header owns its row; side rails begin below it. */
+@media (min-width: 1101px) {
+  .hud-slot-top {
+    position: relative !important;
+    z-index: 70 !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    margin: 0 !important;
+  }
+
+  .hud-slot-top > .game-header {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(360px, 1.2fr) minmax(360px, 1.4fr) minmax(84px, .4fr) !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    padding: 8px 20px !important;
+    box-sizing: border-box;
+    overflow: visible !important;
+  }
+
+  .hud-slot-top .brand-group {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow: visible !important;
+  }
+
+  .hud-slot-top .brand-mark,
+  .hud-slot-top .brand-scenario,
+  .hud-slot-top .top-event-summary {
+    position: static !important;
+    inset: auto !important;
+  }
+
+  .hud-slot-top .brand-scenario {
+    flex: 0 1 auto !important;
+    max-width: min(170px, 14vw) !important;
+  }
+
+  .hud-slot-top .top-event-summary {
+    flex: 1 1 210px !important;
+    width: auto !important;
+    min-width: 170px !important;
+    max-width: 280px !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  .hud-slot-top .header-center {
+    position: static !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: 0 !important;
+    transform: none !important;
+  }
+
+  .hud-slot-top .header-center > .goal-hud {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 620px !important;
+  }
+
+  .game-grid.hud-slot-center {
+    position: absolute !important;
+    top: 72px !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none;
+  }
+
+  .game-grid.hud-slot-center > .roster-column,
+  .game-grid.hud-slot-center > .site-inspector {
+    top: 16px !important;
+    bottom: 16px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    pointer-events: auto;
+  }
+
+  .game-grid.hud-slot-center > .roster-column {
+    left: 0 !important;
+    right: auto !important;
+    width: var(--map-left-clearance) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 188, 105, .56) rgba(7, 15, 10, .24);
+  }
+
+  .game-grid.hud-slot-center > .site-inspector {
+    right: 0 !important;
+    left: auto !important;
+    width: var(--map-right-clearance) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content {
+    flex: 1 1 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(220, 188, 105, .56) rgba(7, 15, 10, .24);
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar { width: 10px; }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar-track,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-track { background: rgba(7, 15, 10, .24); }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar-thumb,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .56);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-heading {
+    top: 18px !important;
+    right: calc(var(--map-right-clearance) + var(--hud-center-gutter)) !important;
+    left: calc(var(--map-left-clearance) + var(--hud-center-gutter)) !important;
+  }
+
+  /* The event summary is a top-bar item. The map keeps only its target rings. */
+  .game-grid.hud-slot-center .event-map-notice { display: none !important; }
+}
