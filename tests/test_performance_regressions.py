@@ -12,6 +12,19 @@ from backend.engine import GameEngine
 from backend.rooms import RoomRepository, RoomService
 
 
+def test_rate_limit_categories_cover_all_state_mutations():
+    assert app_module._rate_limit_category("/api/games") == "game-create"
+    assert app_module._rate_limit_category("/api/rooms") == "room-create"
+    assert app_module._rate_limit_category("/api/rooms/room-1/join") == "room-join"
+    assert app_module._rate_limit_category("/api/rooms/room-1/reconnect") == "room-auth"
+    assert app_module._rate_limit_category("/api/rooms/room-1/events-ticket") == "room-auth"
+    assert app_module._rate_limit_category("/api/rooms/room-1/start") == "room-start"
+    assert app_module._rate_limit_category("/api/rooms/room-1/actions") == "room-action"
+    assert app_module._rate_limit_category("/api/rooms/room-1/ready") == "room-control"
+    assert app_module._rate_limit_category("/api/rooms/room-1/seats/seat-2") == "room-control"
+    assert app_module._rate_limit_category("/api/rooms/room-1/pause") == "room-control"
+
+
 def test_room_for_session_uses_the_session_indexed_lookup(tmp_path):
     database = Database(tmp_path / "rooms.sqlite3")
     repository = RoomRepository(database)

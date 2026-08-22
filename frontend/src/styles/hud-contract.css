@@ -110,3 +110,13 @@
 
 .hud-overlay-layer > * { pointer-events: auto; }
 .hud-overlay-layer .toast { pointer-events: none; }
+
+/* Dialogs own the interaction surface while open. Never let the persistent
+   tutorial entry point cover a dialog action on compact screens. */
+.hud-overlay-layer .dialog-backdrop {
+  z-index: 90;
+}
+.hud-overlay-layer:has(.dialog-backdrop) .tutorial-trigger {
+  visibility: hidden;
+  pointer-events: none;
+}

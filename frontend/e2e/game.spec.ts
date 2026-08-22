@@ -135,6 +135,7 @@ test('strict learning chain completes interpretation, strategy response, and rou
   const finishSeat = async () => {
     const contextualTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
     if (await contextualTutorial.isVisible()) await contextualTutorial.click();
+    if (test.info().project.name === 'mobile') await page.getByRole('tab', { name: '地图' }).click();
     let endTurn = page.getByRole('button', { name: '结束回合' }).first();
     if (!await endTurn.isVisible()) {
       await page.locator('.more-actions > summary').click();
@@ -145,6 +146,10 @@ test('strict learning chain completes interpretation, strategy response, and rou
     await confirmAction();
     const handoff = page.getByRole('button', { name: '我已接过席位' });
     if (await handoff.isVisible()) await handoff.click();
+  };
+  const openInspectorTab = async (name: '任务' | '市场') => {
+    if (test.info().project.name === 'mobile') await page.getByRole('tab', { name: '地点' }).click();
+    await page.getByRole('tab', { name }).click({ force: true });
   };
   const selectMove = async (name: string) => {
     const contextualTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
@@ -168,7 +173,7 @@ test('strict learning chain completes interpretation, strategy response, and rou
   await page.getByRole('button', { name: /^探索/ }).first().click();
   const exploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await exploreTutorial.isVisible()) await exploreTutorial.click();
-  await page.getByRole('tab', { name: '市场' }).click();
+  await openInspectorTab('市场');
   await page.locator('[data-card-id="culture_14"]').click();
   await confirmAction();
   await finishSeat();
@@ -177,19 +182,19 @@ test('strict learning chain completes interpretation, strategy response, and rou
   await page.getByRole('button', { name: /^探索/ }).first().click();
   const secondExploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await secondExploreTutorial.isVisible()) await secondExploreTutorial.click();
-  await page.getByRole('tab', { name: '市场' }).click();
+  await openInspectorTab('市场');
   await page.locator('[data-card-id="culture_27"]').click();
   await confirmAction();
   await finishSeat();
 
-  await page.getByRole('tab', { name: '任务' }).click({ force: true });
+  await openInspectorTab('任务');
   const firstEvidence = page.locator('[data-card-id="culture_14"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
   await expect(firstEvidence).toBeVisible();
   await firstEvidence.getByRole('button', { name: /支持/ }).click();
   await confirmAction();
   await finishSeat();
 
-  await page.getByRole('tab', { name: '任务' }).click({ force: true });
+  await openInspectorTab('任务');
   const secondEvidence = page.locator('[data-card-id="culture_27"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
   await expect(secondEvidence).toBeVisible();
   await secondEvidence.getByRole('button', { name: /支持/ }).click({ force: true });
@@ -205,9 +210,15 @@ test('strict learning chain completes interpretation, strategy response, and rou
   await confirmAction();
   await page.getByRole('button', { name: '继续旅程' }).click();
 
-  const strategy = page.locator('[aria-label^="整备行装：事件将影响"]').first();
+  let strategy = page.locator('[aria-label^="整备行装：事件将影响"]').first();
+  if (test.info().project.name === 'mobile') {
+    await page.getByRole('tab', { name: '手牌' }).click();
+    strategy = page.locator('.strategy-card:visible').filter({ hasText: '整备行装' }).first();
+  }
   await expect(strategy).toBeVisible();
   await strategy.click();
+  const strategyTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
+  if (await strategyTutorial.isVisible()) await strategyTutorial.click();
   await expect(page.locator('.strategy-card-dialog')).toBeVisible();
   await page.getByRole('button', { name: '继续选择目标' }).click();
   await expect(page.locator('.strategy-card-dialog')).toBeHidden();
@@ -241,5 +252,5 @@ test('decision surfaces remain accessible when opened', async ({ page }) => {
   const strategyResults = await new AxeBuilder({ page }).include('.strategy-card-dialog').analyze();
   const strategySerious = strategyResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
   expect(strategySerious, strategySerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
-  await page.getByRole('button', { name: /返回|关闭/ }).last().click();
+  await page.locator('.strategy-card-dialog').getByRole('button', { name: /返回浏览|关闭策略牌说明/ }).first().click();
 });

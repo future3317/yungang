@@ -64,7 +64,14 @@ export function GamePage() {
       setTutorialIntent('resolve_event');
       setTutorialOpen(true);
     }
-  }, [state?.shared.current_event_id, tutorialProgress.hasSeenContext]);  const actionOptions = state?.action_options || [];
+  }, [state?.shared.current_event_id, tutorialProgress.hasSeenContext]);
+  useEffect(() => {
+    if (tutorialOpen && (preview || card || strategyOption || selectedOption || completedTask || handoffName || state?.pending_choice)) {
+      setTutorialOpen(false);
+      setTutorialIntent(null);
+    }
+  }, [tutorialOpen, preview, card, strategyOption, selectedOption, completedTask, handoffName, state?.pending_choice]);
+  const actionOptions = state?.action_options || [];
   const legal = actionOptions.flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
   const canAct = state?.viewer?.can_act ?? true;
   const mutation = useMutation({
@@ -99,7 +106,7 @@ export function GamePage() {
     const context = tutorialContextForAction(type);
     if (context && !tutorialProgress.hasSeenContext(context)) { setTutorialIntent(context); setTutorialOpen(true); }
   };
- const chooseOption = (option: ActionOption) => { if (!canAct || option.enabled === false) return; announceIntent(option.type); if (option.type === 'explore' && option.targets.length !== 1) { setSelectedOption(null); setActionMode('explore'); setInspectorOpen(true); return; } if (option.targets.length === 1) { selectAction(optionAction(option, option.targets[0])); return; } if (option.targets.length) { setSelectedOption(option); if (['move', 'restore', 'survey_route', 'restore_route', 'establish_connection'].includes(option.type)) { setActionMode(option.type as ActionMode); setFocus(active.location); } else setActionMode(null); return; } const action = optionAction(option); if (option.type === 'end_turn') { const weathering = state.shared.weathering_track ?? state.shared.weathering_track ?? 0; const isFinalPlayer = state.shared.player_order[state.shared.player_order.length - 1] === active.id; const warnings = [active.ap > 0 ? `你还有 ${active.ap} 点行动力未使用` : '', isFinalPlayer && state.shared.current_event_id ? '当前事件将在回合结束时结算' : '', weathering >= Math.max(0, (state.shared.weathering_limit || 5) - 1) ? '风化压力已经接近上限' : ''].filter(Boolean); const handoff = isFinalPlayer ? '确认结束团队本轮行动，随后进入事件结算。' : '确认结束这位角色的行动，交给下一位同行者；事件暂不结算。'; setPreview({ ...action, description: warnings.length ? `${warnings.join('；')}。${handoff}` : handoff }); return; } if (['use_skill', 'use_node_ability', 'use_upgrade', 'end_planning', 'prepare'].includes(option.type)) setPreview(action); else run(action); };
+ const chooseOption = (option: ActionOption) => { if (!canAct || option.enabled === false) return; announceIntent(option.type); if (option.type === 'explore' && option.targets.length !== 1) { setSelectedOption(null); setActionMode('explore'); setInspectorOpen(true); return; } if (option.targets.length === 1) { selectAction(optionAction(option, option.targets[0])); return; } if (option.targets.length) { setSelectedOption(option); if (['move', 'restore', 'survey_route', 'restore_route', 'establish_connection'].includes(option.type)) { setActionMode(option.type as ActionMode); setFocus(active.location); } else setActionMode(null); return; } const action = optionAction(option); if (option.type === 'end_turn') { const weathering = state.shared.weathering_track; const isFinalPlayer = state.shared.player_order[state.shared.player_order.length - 1] === active.id; const warnings = [active.ap > 0 ? `你还有 ${active.ap} 点行动力未使用` : '', isFinalPlayer && state.shared.current_event_id ? '当前事件将在回合结束时结算' : '', weathering >= Math.max(0, (state.shared.weathering_limit || 5) - 1) ? '风化压力已经接近上限' : ''].filter(Boolean); const handoff = isFinalPlayer ? '确认结束团队本轮行动，随后进入事件结算。' : '确认结束这位角色的行动，交给下一位同行者；事件暂不结算。'; setPreview({ ...action, description: warnings.length ? `${warnings.join('；')}。${handoff}` : handoff }); return; } if (['use_skill', 'use_node_ability', 'use_upgrade', 'end_planning', 'prepare'].includes(option.type)) setPreview(action); else run(action); };
   const chooseAction = (type: ActionType) => { const option = state.action_options?.find(item => item.type === type && item.enabled !== false); if (option) chooseOption(option); };
   const selectAction = (action: Action) => { setActionMode(null); setSelectedOption(null); setPreview(action); };
   const selectNode = (id: string) => { const target = mapActionMode && selectedOption?.type === actionMode ? selectedOption.targets.find(item => { const payload = item.payload || {}; return item.id === id || payload.target_id === id || payload.target_site_id === id || payload.route_id === id; }) : undefined; if (target && selectedOption) { selectAction(optionAction(selectedOption, target)); return; } setFocus(id); setFocusCardOpen(true); setInspectorOpen(true); };

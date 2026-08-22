@@ -23,6 +23,30 @@ room_service = RoomService(RoomRepository(repo.database))
 _rate_buckets: dict[tuple[str, str], list[float]] = {}
 
 
+def _rate_limit_category(path: str) -> str:
+    if path == "/api/games":
+        return "game-create"
+    if path == "/api/rooms":
+        return "room-create"
+    if not path.startswith("/api/rooms/"):
+        return ""
+    endpoint = path.rsplit("/", 1)[-1]
+    if "/seats/" in path:
+        return "room-control"
+    return {
+        "join": "room-join",
+        "reconnect": "room-auth",
+        "events-ticket": "room-auth",
+        "start": "room-start",
+        "ready": "room-control",
+        "role": "room-control",
+        "leave": "room-control",
+        "pause": "room-control",
+        "resume": "room-control",
+        "actions": "room-action",
+    }.get(endpoint, "")
+
+
 def _public_state_payload(state: GameState | None) -> dict | None:
     """Keep conflict recovery responses on the same public DTO boundary as 200 responses."""
     return GameStateResponse.model_validate(state.model_dump()).model_dump(mode="json") if state is not None else None
@@ -44,8 +68,7 @@ async def security_and_rate_limit(request: Request, call_next):
     now = __import__("time").monotonic()
     if len(_rate_buckets) > 2048:
         _rate_buckets.update({key: stamps for key, stamps in _rate_buckets.items() if stamps and now - stamps[-1] < 60})
-    path = request.url.path
-    category = "room-create" if path == "/api/rooms" else "room-join" if path.endswith("/join") else "room-action" if path.endswith("/actions") else ""
+    category = _rate_limit_category(request.url.path)
     key = (request.client.host if request.client else "unknown", category)
     if request.method in {"POST", "PUT", "PATCH"} and category:
         bucket = [stamp for stamp in _rate_buckets.get(key, []) if now - stamp < 60]

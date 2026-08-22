@@ -60,7 +60,7 @@ export type FeedbackChange = components['schemas']['FeedbackChange'];
 export type FeedbackEvent = components['schemas']['FeedbackEvent'];
 export type ResultState = components['schemas']['ResultState'];
 export type ViewerState = components['schemas']['ViewerState'];
-export type GameState = Omit<components['schemas']['GameStateResponse'], 'players' | 'sites' | 'tasks' | 'shared' | 'action_options' | 'routes' | 'projects' | 'objectives' | 'market' | 'decks'> & { players: Record<string, Player>; sites: Record<string, Site>; tasks: Record<string, Task>; shared: Shared; decks: Record<string, string[]>; market: string[]; action_options?: ActionOption[]; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; objectives?: Record<string, ObjectiveState>; };
+export type GameState = Omit<components['schemas']['GameStateResponse'], 'players' | 'sites' | 'tasks' | 'shared' | 'action_options' | 'routes' | 'projects' | 'objectives' | 'market' | 'decks'> & { players: Record<string, Player>; sites: Record<string, Site>; tasks: Record<string, Task>; shared: Shared; decks: Record<string, string[]>; market: string[]; action_options: ActionOption[]; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; objectives: Record<string, ObjectiveState>; };
 
 // Actions are a UI command model, not a second server state model.
 export interface Action { type: ActionType; label?: string; description?: string; cost?: number; target_id?: string; target_site_id?: string; target_ids?: string[]; card_id?: string; recipient_id?: string; route_id?: string; upgrade_id?: string; skill?: string; request_id?: string; preview_delta?: Record<string, unknown>; requirements?: string[]; }
