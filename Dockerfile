@@ -15,6 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 COPY requirements-prod.txt ./
 RUN pip install --no-cache-dir -r requirements-prod.txt
 COPY backend ./backend
+COPY data ./data
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 COPY --from=frontend-build /app/frontend/static/ui-assets ./frontend/static/ui-assets
 
