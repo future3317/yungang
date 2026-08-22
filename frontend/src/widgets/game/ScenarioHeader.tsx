@@ -7,7 +7,7 @@ import { Progress } from '../ui/Primitives';
 
 export function ScenarioHeader({ state, scenarioName, connection, gameReference, eventSummary, onFocusGoal }: { state: GameState; scenarioName: string; connection: string; gameReference?: string; eventSummary?: { name?: string; targets?: string[]; historyCount?: number }; onFocusGoal?: (ids: string[]) => void }) {
   const [goalsOpen, setGoalsOpen] = useState(false);
-  const goalDrag = useDraggablePosition('yungang-goal-hud-position-v2', { minVisibleWidth: 320, minVisibleHeight: 58, boundToParent: true });
+  const goalDrag = useDraggablePosition('yungang-goal-hud-position-v2', { minVisibleWidth: 320, minVisibleHeight: 58 });
   const projects = Object.values(state.projects || {}); const objectives = Object.values(state.objectives || {}); const goal = state.goal_status;
   const completedProjects = goal?.core_projects_completed ?? projects.filter(project => project.status === 'completed').length; const completedObjectives = goal?.objectives_completed ?? objectives.filter(objective => objective.completed).length;
   const phase = state.shared.phase === 'planning' ? '规划阶段' : state.shared.phase === 'pending_choice' ? '等待回应' : '行动阶段';

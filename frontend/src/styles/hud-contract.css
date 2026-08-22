@@ -4,11 +4,13 @@
   @media (min-width: 1101px) {
     .game-viewport {
       --hud-header-height: 76px;
-      --hud-panel-top: 16px;
+      --hud-panel-top: 40px;
       --hud-panel-bottom: 16px;
       --hud-center-gutter: 28px;
       --hud-left-width: clamp(268px, 20vw, 326px);
       --hud-right-width: clamp(344px, 25vw, 410px);
+      --map-left-clearance: var(--hud-left-width);
+      --map-right-clearance: var(--hud-right-width);
       position: relative;
       min-height: 100dvh;
       overflow: hidden;
@@ -47,10 +49,16 @@
     .game-viewport > .game-shell > .hud-slot-top .header-actions,
     .game-viewport > .game-shell > .hud-slot-top .header-center { min-width: 0; }
     .game-viewport > .game-shell > .hud-slot-top .header-center {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 50%;
       display: flex;
+      align-items: center;
       justify-content: center;
-      width: 100%;
+      width: min(700px, calc(100% - var(--hud-left-width) - var(--hud-right-width) - 2 * var(--hud-center-gutter)));
+      height: 100%;
+      transform: translateX(-50%);
+      pointer-events: auto;
     }
     .game-viewport > .game-shell > .hud-slot-top .goal-hud {
       position: relative;
@@ -59,6 +67,8 @@
       max-width: 700px;
       min-width: 0;
       box-sizing: border-box;
+      pointer-events: auto;
+      transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
     }
     .game-viewport > .game-shell > .hud-slot-top .goal-hud.is-open {
       position: absolute;
@@ -71,6 +81,7 @@
       transform: translate(calc(-50% + var(--drag-x, 0px)), var(--drag-y, 0px));
       overflow: hidden;
     }
+    .game-viewport > .game-shell > .hud-slot-top .goal-drag-handle { pointer-events: auto; }
     .game-viewport > .game-shell > .hud-slot-top .goal-hud.is-open .goal-conditions {
       max-height: min(360px, calc(100dvh - var(--hud-header-height) - 150px));
       overflow-y: auto;
@@ -92,7 +103,7 @@
       padding: 0;
       pointer-events: none;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid {
       position: absolute;
       inset: 0;
       display: block;
@@ -102,14 +113,14 @@
       margin: 0;
       padding: 0;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column {
       position: absolute;
       inset: 0;
       display: block;
       min-height: 0;
       pointer-events: none;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column > .network-stage {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column > .network-stage {
       position: absolute;
       inset: 0;
       min-height: 0;
@@ -117,10 +128,10 @@
       pointer-events: auto;
     }
 
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .roster-column,
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column,
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector {
       position: absolute;
-      top: var(--hud-panel-top);
+      top: calc(var(--hud-panel-top) + 8px);
       bottom: var(--hud-panel-bottom);
       z-index: 80;
       display: flex;
@@ -133,33 +144,35 @@
       overscroll-behavior: contain;
       pointer-events: auto;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .roster-column {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column {
       left: 0;
+      right: auto !important;
       width: var(--hud-left-width);
       flex-direction: column;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector {
+      left: auto !important;
       right: 0;
       width: var(--hud-right-width);
       flex-direction: column;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector .inspector-content {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector .inspector-content {
       min-height: max-content;
       overflow: visible;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .roster-column::-webkit-scrollbar,
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector::-webkit-scrollbar { width: 10px; }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .roster-column::-webkit-scrollbar-track,
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector::-webkit-scrollbar-track { background: rgba(7, 15, 10, .3); }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .roster-column::-webkit-scrollbar-thumb,
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .site-inspector::-webkit-scrollbar-thumb {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column::-webkit-scrollbar,
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector::-webkit-scrollbar { width: 10px; }
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column::-webkit-scrollbar-track,
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector::-webkit-scrollbar-track { background: rgba(7, 15, 10, .3); }
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column::-webkit-scrollbar-thumb,
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector::-webkit-scrollbar-thumb {
       background: rgba(220, 188, 105, .68);
       border: 2px solid rgba(7, 15, 10, .3);
       border-radius: 999px;
       background-clip: padding-box;
     }
 
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column > .stage-heading {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column > .stage-heading {
       position: absolute;
       z-index: 12;
       top: 18px;
@@ -167,7 +180,7 @@
       left: calc(var(--hud-left-width) + var(--hud-center-gutter));
       pointer-events: none;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column > .round-summary {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column > .round-summary {
       position: absolute;
       z-index: 13;
       top: 88px;
@@ -177,7 +190,7 @@
       margin: 0 auto;
       pointer-events: auto;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column > .stage-caption {
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column > .stage-caption {
       position: absolute;
       z-index: 90;
       right: calc(var(--hud-right-width) + var(--hud-center-gutter));
@@ -188,7 +201,7 @@
       margin: 0 auto;
       pointer-events: auto;
     }
-    .game-viewport > .game-shell > .hud-slot-center > .game-grid > .stage-column > .stage-caption button { position: relative; z-index: 3; pointer-events: auto; }
+    .game-viewport > .game-shell > .hud-slot-center.game-grid > .stage-column > .stage-caption button { position: relative; z-index: 3; pointer-events: auto; }
 
     .game-viewport > .game-shell > .hud-slot-bottom {
       position: absolute;
@@ -209,5 +222,36 @@
       overflow-y: auto;
       scrollbar-gutter: stable;
     }
+  }
+}
+
+/* Final unlayered boundary: legacy map rules must not move a HUD rail across the world. */
+@media (min-width: 1101px) {
+  .game-viewport {
+    --hud-panel-top: 24px !important;
+    --hud-panel-bottom: 16px !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center.game-grid > .roster-column {
+    position: absolute !important;
+    top: calc(var(--hud-header-height) + var(--hud-panel-top)) !important;
+    right: auto !important;
+    bottom: var(--hud-panel-bottom) !important;
+    left: 0 !important;
+    width: var(--hud-left-width) !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center.game-grid > .site-inspector {
+    position: absolute !important;
+    top: calc(var(--hud-header-height) + var(--hud-panel-top)) !important;
+    right: 0 !important;
+    bottom: var(--hud-panel-bottom) !important;
+    left: auto !important;
+    width: var(--hud-right-width) !important;
+    z-index: 80 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
   }
 }

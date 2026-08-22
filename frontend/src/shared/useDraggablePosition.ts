@@ -54,7 +54,7 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
     const parent = surface?.parentElement?.getBoundingClientRect();
     const bounds = boundToParent && parent ? parent : new DOMRect(0, 0, window.innerWidth, window.innerHeight);
     dragRef.current = { startX: event.clientX, startY: event.clientY, originX: position.x, originY: position.y, rect, bounds };
-    event.currentTarget.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
   };
   const onClickCapture = (event: ReactMouseEvent<HTMLElement>) => {
     if (!movedRef.current && !suppressClickRef.current) return;
