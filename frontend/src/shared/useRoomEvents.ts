@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ApiError, api } from './api/client';
 
-type RoomEventState = 'connected' | 'retrying' | 'ended' | 'unauthorized';
+export type RoomEventState = 'connected' | 'retrying' | 'ended' | 'unauthorized' | 'room_ended';
 type RoomEventOptions = {
   roomId: string;
   token: string;
@@ -10,6 +10,15 @@ type RoomEventOptions = {
 };
 
 const MAX_RETRY_DELAY = 8000;
+
+export function roomStatusFromEvent(data: string): string | undefined {
+  try {
+    const payload = JSON.parse(data) as { status?: unknown };
+    return typeof payload.status === 'string' ? payload.status : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventOptions) {
   const onRevisionRef = useRef(onRevision);
@@ -25,6 +34,7 @@ export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventO
     let retryTimer: number | undefined;
     let retryCount = 0;
     let connecting = false;
+    let lastRoomStatus: string | undefined;
 
     const clearRetryTimer = () => {
       if (retryTimer !== undefined) {
@@ -57,7 +67,8 @@ export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventO
           retryCount = 0;
           onStateRef.current?.('connected');
         };
-        stream.addEventListener('revision', () => {
+        stream.addEventListener('revision', event => {
+          lastRoomStatus = roomStatusFromEvent((event as MessageEvent<string>).data);
           retryCount = 0;
           onStateRef.current?.('connected');
           onRevisionRef.current();
@@ -65,6 +76,10 @@ export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventO
         stream.addEventListener('close', () => {
           stream?.close();
           stream = undefined;
+          if (lastRoomStatus === 'completed' || lastRoomStatus === 'abandoned') {
+            onStateRef.current?.('room_ended');
+            return;
+          }
           scheduleReconnect(true);
         });
         stream.onerror = () => {
@@ -76,6 +91,10 @@ export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventO
         if (cancelled) return;
         if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
           onStateRef.current?.('unauthorized');
+          return;
+        }
+        if (error instanceof ApiError && error.status === 404) {
+          onStateRef.current?.('room_ended');
           return;
         }
         scheduleReconnect(false);

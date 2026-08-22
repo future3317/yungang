@@ -16,7 +16,7 @@ import { TutorialGuide } from '../../widgets/game/TutorialGuide';
 import { SeatHandoff } from '../../widgets/game/SeatHandoff';
 import { useDialogFocus } from '../../widgets/game/useDialogFocus';
 import { actionFeedback, actionLabels, actionModeLabel, eventDecisionBrief, feedbackChangeText, findCardAction, localizeActionError, localizeActionText, localizeTimelineMessage, optionAction, previewDeltaText, roleBadgeAsset, type ActionMode } from '../../widgets/game/gameUi';
-import { useRoomEvents } from '../../shared/useRoomEvents';
+import { useRoomEvents, type RoomEventState } from '../../shared/useRoomEvents';
 import { getRoomToken } from '../../shared/roomToken';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
 import { GameViewport } from '../../widgets/game/GameViewport';
@@ -50,7 +50,7 @@ export function GamePage() {
   const [tutorialIntent, setTutorialIntent] = useState<TutorialContext | null>(null);
   const tutorialProgress = useTutorialProgress();
   const [roomToken] = useState(() => roomId ? getRoomToken(roomId) : '');
-  const [roomEventState, setRoomEventState] = useState<'connected' | 'retrying' | 'ended' | 'unauthorized'>('connected');
+  const [roomEventState, setRoomEventState] = useState<RoomEventState>('connected');
   const enqueueToast = (text: string) => { const id = crypto.randomUUID(); setToasts(items => [...items.slice(-3), { id, text }]); window.setTimeout(() => setToasts(items => items.filter(item => item.id !== id)), 4800); };
   const gameQuery = useQuery<GameState>({ queryKey: [roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], queryFn: () => roomId ? api.roomGame(roomId, roomToken) : api.game(sessionId), refetchOnWindowFocus: false, refetchInterval: roomId ? 2500 : false });
   useRoomEvents({ roomId, token: roomToken, onRevision: () => { void queryClient.invalidateQueries({ queryKey: ['room-game', roomId, roomToken] }); }, onState: setRoomEventState });
@@ -90,7 +90,7 @@ export function GamePage() {
   const eventOpenTargetLabels = eventTargetIds.filter(id => state.routes?.[id] ? state.routes[id].status !== 'blocked' : state.sites[id]?.status !== 'closed').map(id => sites[id]?.name || state.routes?.[id]?.name || '事件目标');
   const targetIds = new Set((selectedOption?.type === actionMode ? selectedOption.targets : []).map(target => String(target.payload?.target_id || target.payload?.target_site_id || target.id)));
   const modeStatus = actionMode === 'explore' ? `正在选择文化线索 · 公开市场显示 ${state.market.length} 张可取线索 · Escape 取消` : `正在选择${actionModeLabel(actionMode)}目标 · 已显示 ${targetIds.size} 个合法目标 · Escape 取消`;
-  const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : roomEventState === 'unauthorized' ? '席位失效' : roomEventState === 'retrying' ? '重连中' : roomEventState === 'ended' ? '重新连接' : '已连接';
+  const connection = mutation.isPending || gameQuery.isFetching || metaQuery.isFetching ? '同步中' : roomEventState === 'unauthorized' ? '席位失效' : roomEventState === 'room_ended' ? '旅程已结束' : roomEventState === 'retrying' ? '重连中' : roomEventState === 'ended' ? '重新连接' : '已连接';
   const run = (action?: Action) => { if (roomId && roomEventState === 'unauthorized') { enqueueToast('\u5e2d\u4f4d\u51ed\u8bc1\u5df2\u5931\u6548\uff0c\u8bf7\u8fd4\u56de\u623f\u95f4\u6062\u590d\u3002'); return; } if (action && canAct && !mutation.isPending) mutation.mutate({ ...action, request_id: action.request_id || crypto.randomUUID() }); };
   const announceIntent = (type: ActionType) => {
     const context = tutorialContextForAction(type);
