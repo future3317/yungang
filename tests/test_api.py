@@ -191,6 +191,19 @@ def test_card_has_archive_and_discard_paths():
     played = action(session, explored, 'p1', 'play_card', card_id=card).json()
     assert card in played['decks']['discard']
 
+
+def test_revision_conflict_returns_public_state_without_persistence_fields():
+    created = client.post('/api/games', json={'player_ids': ['p1'], 'difficulty_id': 'guided', 'scenario_id': 'sand_and_stone'})
+    session_id = created.json()['session_id']
+    response = client.post(f'/api/games/{session_id}/actions', json={'player_id': 'p1', 'action': 'end_turn', 'expected_revision': -1})
+
+    assert response.status_code == 409
+    current = response.json()['detail']['current_state']
+    assert current['session_id'] == session_id
+    assert 'flags' not in current['players']['p1']
+    assert 'rng_state' not in current
+    assert 'processed_request_ids' not in current
+
 def test_round_enters_player_action_without_manual_planning_step():
     session = 'test-planning-phase'
     state = create(session)

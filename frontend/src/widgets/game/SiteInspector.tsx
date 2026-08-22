@@ -79,7 +79,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
 
   return <aside className={`site-inspector ${className}`.trim()} aria-label="地点详情">
     <button type="button" className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
-    <header className="inspector-summary">
+      <header className="inspector-summary" tabIndex={0} aria-label="地点摘要，可滚动查看">
       <span className="eyebrow">当前聚焦地点</span>
       <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
       <h2>{site.name}</h2>

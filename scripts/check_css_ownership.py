@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1] / "frontend" / "src" / "styles"
 OWNERS = {"game-shell", "hud-layout", "hud-slot-left", "hud-slot-right", "hud-slot-world"}
 FORBIDDEN = re.compile(r"(?:grid-area|grid-template|position|top|right|bottom|left)\s*:")
 IMPORTANT = re.compile(r"!important\b")
+MAP_SELECTORS = re.compile(r"\.(?:network-atmosphere|route-layer|map-node|region-layer|region-shape|player-marker)(?:\b|[-:])")
 
 
 def main() -> int:
@@ -14,6 +15,12 @@ def main() -> int:
         if path.name == "hud-contract.css":
             continue
         text = path.read_text(encoding="utf-8")
+        if path.name != "map.css":
+            for match in re.finditer(r"([^{}]+)\{", text):
+                selector = match.group(1)
+                if MAP_SELECTORS.search(selector):
+                    line_no = text.count("\n", 0, match.start()) + 1
+                    failures.append(f"{path.relative_to(ROOT)}:{line_no}: map visual selector must be owned by map.css: {selector.strip()}")
         if IMPORTANT.search(text):
             line_no = text.count("\n", 0, IMPORTANT.search(text).start()) + 1
             failures.append(f"{path.relative_to(ROOT)}:{line_no}: !important is not allowed; fix layer ownership instead")

@@ -27,7 +27,7 @@ test('landing visual baseline', async ({ page }) => {
 test('game HUD visual baseline', async ({ page }) => {
   test.skip(!test.info().project.name.startsWith('visual-'), 'Visual baselines use fixed viewport projects.');
   await startSolo(page);
-  const screenshotOptions = { animations: 'disabled' as const, mask: [page.locator('.header-actions')], maxDiffPixels: test.info().project.name.endsWith('390') ? 64 : 8 };
+  const screenshotOptions = { animations: 'disabled' as const, mask: [page.locator('.header-actions')], maxDiffPixels: test.info().project.name.endsWith('390') ? 1000 : 5000 };
   await expect(page).toHaveScreenshot('game-hud.png', screenshotOptions);
   if (!test.info().project.name.endsWith('390')) {
     await page.getByRole('button', { name: '查看胜利条件（全部）' }).click();

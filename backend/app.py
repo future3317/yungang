@@ -23,6 +23,11 @@ room_service = RoomService(RoomRepository(repo.database))
 _rate_buckets: dict[tuple[str, str], list[float]] = {}
 
 
+def _public_state_payload(state: GameState | None) -> dict | None:
+    """Keep conflict recovery responses on the same public DTO boundary as 200 responses."""
+    return GameStateResponse.model_validate(state.model_dump()).model_dump(mode="json") if state is not None else None
+
+
 def create_app(database_path: str | Path | None = None) -> FastAPI:
     """Return the API app, optionally pointing its runtime repository at an isolated database."""
     global repo, room_service
@@ -139,7 +144,7 @@ def _run_action(session_id: str, request: ActionRequest, state: GameState | None
     if request.request_id and request.request_id in state.processed_request_ids:
         return state
     if request.expected_revision != state.revision:
-        raise HTTPException(status_code=409, detail={"code": "revision_conflict", "message": "旅程状态已更新，请同步后重新选择行动。", "details": {"expected_revision": request.expected_revision, "actual_revision": state.revision}, "recovery": "sync_current_state", "current_state": state.model_dump()})
+        raise HTTPException(status_code=409, detail={"code": "revision_conflict", "message": "旅程状态已更新，请同步后重新选择行动。", "details": {"expected_revision": request.expected_revision, "actual_revision": state.revision}, "recovery": "sync_current_state", "current_state": _public_state_payload(state)})
     expected_revision = request.expected_revision
     try:
         state = dispatch(engine, state, request)
@@ -149,7 +154,7 @@ def _run_action(session_id: str, request: ActionRequest, state: GameState | None
         raise HTTPException(400, error_detail(content.terminology, code)) from exc
     if not repo.save_if_revision(state, expected_revision):
         current = repo.get(session_id)
-        raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": current.model_dump() if current else None})
+        raise HTTPException(status_code=409, detail={"code": "revision_conflict", "current_state": _public_state_payload(current)})
     return state
 
 

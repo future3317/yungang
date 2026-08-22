@@ -91,9 +91,14 @@ test('learning chain explains why interpretation is not ready', async ({ page })
   const explore = page.getByRole('button', { name: /^探索/ }).first();
   await expect(explore).toBeVisible();
   await explore.click();
+  const explorationTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await explorationTutorialClose.isVisible()) await explorationTutorialClose.click();
+  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点' }).click();
+  await page.getByRole('tab', { name: '市场' }).click();
   await page.locator('.inspector-content').evaluate(element => { element.scrollTop = element.scrollHeight; });
   const marketCard = page.locator('.culture-card').first();
   await expect(marketCard).toBeVisible();
+  await marketCard.scrollIntoViewIfNeeded();
   const marketTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await marketTutorialClose.isVisible()) await marketTutorialClose.click();
   await marketCard.click();
