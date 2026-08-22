@@ -870,6 +870,8 @@
 .project-stage-card span, .project-stage-card small { color: #cbbd9f; font-size: .72rem; line-height: 1.45; }
 .project-stage-list { display: grid; gap: 5px; margin-top: 10px; }
 .project-stage-list span { padding: 6px 8px; color: #a99e8a; background: rgba(15, 24, 18, .22); border: 1px solid rgba(220, 190, 112, .12); border-radius: 5px; font-size: .72rem; }
+.project-stage-list span b, .project-stage-list span small { display: block; }
+.project-stage-list span small { margin-top: 3px; color: #c4b68f; font-size: .64rem; line-height: 1.35; }
 .project-stage-list span.current { color: #f1dfb7; border-color: rgba(220, 190, 112, .45); }
 .project-stage-list span.complete { color: #b9d5b7; border-color: rgba(118, 170, 126, .38); }
 .event-projection { display: grid; gap: 5px; margin-top: 10px; padding: 10px; color: #ecdcc0; background: rgba(114, 54, 38, .2); border: 1px solid rgba(219, 160, 92, .34); border-left: 2px solid var(--risk); border-radius: 7px; }

@@ -41,6 +41,25 @@ export function formatProjectRequirements(meta: Meta, requirements: Record<strin
   }).join(' · ');
 }
 
+export function formatProjectReward(reward?: Record<string, unknown>) {
+  if (!reward) return '完成后获得阶段奖励';
+  const labels: Record<string, (value: unknown) => string> = {
+    research_clues: value => `研究线索 +${String(value)}`,
+    restoration_resource: value => `修护资源 +${String(value)}`,
+    influence: value => `共同影响 +${String(value)}`,
+    route_connection: value => `路线连接 +${String(value)}`,
+    threat_reduction: value => `风化压力 -${String(value)}`,
+    market_reserve: value => `保留市场线索机会 ×${String(value)}`,
+    archive_retrieve: value => `获得档案回收机会 ×${String(value)}`,
+    finale_unlock: value => value ? '解锁终局' : '',
+  };
+  const text = Object.entries(reward).flatMap(([key, value]) => {
+    const formatter = labels[key];
+    return formatter ? [formatter(value)] : [];
+  }).filter(Boolean);
+  return text.length ? text.join(' · ') : '完成后获得阶段奖励';
+}
+
 export function statusName(status?: string) {
   const labels: Record<string, string> = {
     stable: '稳定',

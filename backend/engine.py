@@ -161,7 +161,16 @@ class GameEngine:
         for route_id in blockable_route_ids[: scenario.get("blocked_route_count", 0)]:
             routes[route_id].status = "blocked"
         enabled_project_ids = set(scenario.get("enabled_project_ids", self.content.projects))
-        projects = {project_id: ProjectState(id=project_id, site_id=project["site_id"], name=project["name"], stages=project.get("stages", [])) for project_id, project in self.content.projects.items() if project_id in enabled_project_ids and project.get("site_id") in sites}
+        projects = {
+            project_id: ProjectState(
+                id=project_id,
+                site_id=project["site_id"],
+                name=project["name"],
+                stages=[{**stage, "reward": stage.get("reward") or self._default_stage_reward(stage)} for stage in project.get("stages", [])],
+            )
+            for project_id, project in self.content.projects.items()
+            if project_id in enabled_project_ids and project.get("site_id") in sites
+        }
         objectives = {objective_id: ObjectiveState(id=objective_id, name=objective["name"], type=objective["type"], target=objective.get("target", 1)) for objective_id, objective in self.content.objectives.items() if not scenario.get("objective_ids") or objective_id in scenario["objective_ids"]}
         card_pool = scenario.get("card_pool", {})
         culture_deck = [card_id for card_id, copies in card_pool.items() for _ in range(int(copies))] if card_pool else list(self.content.cards)
@@ -1431,8 +1440,12 @@ class GameEngine:
 
         role_action = self.content.roles.get(active.role_id, {}).get("ability", {}).get("action")
         role_fit = {"fine_repair": ActionType.RESTORE.value, "sprint_move": ActionType.MOVE.value, "view_select": ActionType.EXPLORE.value, "harmony_hint": ActionType.INTERPRET_EVIDENCE.value}
+        role_fit_reason = ""
         if role_fit.get(role_action) == action_type:
             score += 14
+            role_name = self.content.roles.get(active.role_id, {}).get("ability", {}).get("name")
+            if role_name:
+                role_fit_reason = f"当前角色的「{role_name}」正适合处理这类行动。"
 
         if action_type == ActionType.CHOOSE_INTERVENTION.value:
             score += 52; reason = "解释已经形成，选择干预会直接推进当前委托。"
@@ -1471,6 +1484,9 @@ class GameEngine:
             reason = option.get("reason") or "策略牌适合在当前风险或目标缺口出现时使用。"
         elif action_type == ActionType.END_TURN.value:
             score = max(0, 10 - pressure); reason = "当前没有更高优先级的行动，结束行动让下一位同行者接手。"
+
+        if role_fit_reason:
+            reason = f"{reason} {role_fit_reason}"
 
         raw_cost = candidate.get("cost", option.get("cost", {}).get("ap", 0))
         cost = int(raw_cost.get("ap", 0) if isinstance(raw_cost, dict) else raw_cost or 0)

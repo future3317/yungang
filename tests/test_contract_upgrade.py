@@ -161,6 +161,28 @@ def test_action_option_keeps_specific_name_above_action_category():
     assert skill.action_label == "使用角色技能"
 
 
+def test_project_stage_exposes_the_reward_that_will_be_granted():
+    engine = GameEngine()
+    state = engine.new_game("project-stage-reward-contract", ["p1"], solo_mode=False)
+    project = next(iter(state.projects.values()))
+    stage = project.stages[project.stage_index]
+
+    assert stage["reward"]
+    if stage["action_type"] == "explore":
+        assert stage["reward"].get("research_clues") == 1
+
+
+def test_recommendation_explains_when_the_active_role_fits_the_action():
+    engine = GameEngine()
+    state = engine.new_game("role-fit-recommendation", ["p1"], solo_mode=False)
+    site = state.sites[state.players["p1"].location]
+    site.damage = 1
+    engine.refresh(state)
+    restore = next(option for option in state.action_options if option.type == "restore")
+
+    assert "精修" in restore.reason
+
+
 def test_result_state_is_structured_and_survives_game_serialization():
     engine = GameEngine()
     state = engine.new_game("contract-result-state", ["p1"], solo_mode=False)
