@@ -32,6 +32,7 @@ describe('ScenarioHeader', () => {
     expect(screen.getByText('风沙与石')).toBeVisible();
     const goal = screen.getByLabelText('共同目标进度');
     expect(goal.parentElement?.className).toContain('header-actions');
+    expect(screen.getByLabelText('拖动共同目标面板')).toBeVisible();
 
     fireEvent.click(screen.getByRole('button', { name: /查看胜利条件/ }));
 

@@ -1240,3 +1240,103 @@
     overflow: visible;
   }
 }
+/* Production HUD anchors: keep the world title and round summary in separate slots. */
+.stage-column > .stage-heading {
+  position: fixed;
+  top: calc(var(--header-height, 64px) + 18px);
+  left: 50%;
+  z-index: 14;
+  width: min(560px, calc(100vw - 48px));
+  margin: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.stage-column > .round-summary {
+  position: fixed;
+  top: calc(var(--header-height, 64px) + 78px);
+  left: 50%;
+  z-index: 13;
+  width: min(620px, calc(100vw - 48px));
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.goal-hud {
+  color: var(--ink-strong, #f3ead8);
+  background: linear-gradient(145deg, rgba(18, 48, 40, 0.96), rgba(10, 31, 27, 0.98));
+  border: 1px solid rgba(205, 169, 91, 0.34);
+  box-shadow: 0 14px 34px rgba(3, 18, 15, 0.28), inset 0 1px 0 rgba(255, 244, 210, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.goal-hud-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.goal-drag-handle {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: rgba(236, 208, 139, 0.8);
+  cursor: grab;
+  touch-action: none;
+  background: rgba(205, 169, 91, 0.08);
+  border: 1px solid rgba(205, 169, 91, 0.22);
+  border-radius: 7px;
+}
+
+.goal-drag-handle:hover,
+.goal-drag-handle:focus-visible {
+  color: #f0cf82;
+  background: rgba(205, 169, 91, 0.18);
+  border-color: rgba(240, 207, 130, 0.55);
+  outline: none;
+}
+
+.goal-drag-handle:active {
+  cursor: grabbing;
+}
+
+.goal-hud:not(.is-open) .goal-hud-body {
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.goal-hud.is-open .goal-hud-body {
+  max-height: 420px;
+  overflow: hidden;
+  opacity: 1;
+  transition: max-height 240ms ease, opacity 180ms ease, margin-top 240ms ease;
+}
+
+.goal-hud-body {
+  transition: max-height 200ms ease, opacity 150ms ease, margin-top 200ms ease;
+}
+
+@media (max-width: 900px) {
+  .stage-column > .stage-heading {
+    top: calc(var(--header-height, 58px) + 12px);
+    width: min(480px, calc(100vw - 32px));
+  }
+
+  .stage-column > .round-summary {
+    top: calc(var(--header-height, 58px) + 68px);
+    width: min(520px, calc(100vw - 32px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goal-hud-body,
+  .goal-hud.is-open .goal-hud-body {
+    transition: none;
+  }
+}
