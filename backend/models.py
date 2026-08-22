@@ -175,6 +175,17 @@ class RoundMetrics(DictModel):
     influence: int = 0
 
 
+class RoundEntityChange(DictModel):
+    id: str = ""
+    label: str = ""
+    kind: str = "site"
+    before: int = 0
+    after: int = 0
+    delta: int = 0
+    status_before: Optional[str] = None
+    status_after: Optional[str] = None
+
+
 class RoundSummary(DictModel):
     round: int = 0
     event_id: Optional[str] = None
@@ -187,6 +198,9 @@ class RoundSummary(DictModel):
     completed_objectives: int = 0
     player_contributions: Dict[str, int] = Field(default_factory=dict)
     round_effects: List[EventRecord] = Field(default_factory=list)
+    site_changes: List[RoundEntityChange] = Field(default_factory=list)
+    route_changes: List[RoundEntityChange] = Field(default_factory=list)
+    next_priority: Optional[str] = None
 
 
 class ProjectStage(DictModel):

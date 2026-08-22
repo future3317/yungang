@@ -16,13 +16,15 @@ function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
     delta: typeof effect.delta === 'number' ? effect.delta : null,
   })).filter(effect => effect.label || effect.before !== null || effect.after !== null || effect.delta !== null);
 }
-type TimelineFilter = 'all' | 'action' | 'event' | 'project';
+type TimelineFilter = 'all' | 'action' | 'event' | 'project' | 'choice' | 'system';
 
 const filters: Array<{ id: TimelineFilter; label: string }> = [
   { id: 'all', label: '全部' },
   { id: 'action', label: '行动' },
   { id: 'event', label: '事件' },
   { id: 'project', label: '项目' },
+  { id: 'choice', label: '共同决定' },
+  { id: 'system', label: '旅程记录' },
 ];
 const entryTypeLabels: Record<string, string> = { action: '行动', event: '事件', project: '项目', choice: '共同决定', system: '旅程记录' };
 

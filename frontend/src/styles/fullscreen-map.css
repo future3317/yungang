@@ -1806,3 +1806,8 @@
 .goal-drag-handle:active {
   cursor: grabbing;
 }
+
+.round-summary-next {
+  color: #e8cb86;
+  font-weight: 700;
+}

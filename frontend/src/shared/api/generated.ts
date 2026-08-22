@@ -1328,6 +1328,45 @@ export interface components {
             /** Session Id */
             session_id: string;
         };
+        /** RoundEntityChange */
+        RoundEntityChange: {
+            /**
+             * Id
+             * @default
+             */
+            id: string;
+            /**
+             * Label
+             * @default
+             */
+            label: string;
+            /**
+             * Kind
+             * @default site
+             */
+            kind: string;
+            /**
+             * Before
+             * @default 0
+             */
+            before: number;
+            /**
+             * After
+             * @default 0
+             */
+            after: number;
+            /**
+             * Delta
+             * @default 0
+             */
+            delta: number;
+            /** Status Before */
+            status_before?: string | null;
+            /** Status After */
+            status_after?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** RoundMetrics */
         RoundMetrics: {
             /**
@@ -1394,6 +1433,12 @@ export interface components {
             };
             /** Round Effects */
             round_effects?: components["schemas"]["EventRecord"][];
+            /** Site Changes */
+            site_changes?: components["schemas"]["RoundEntityChange"][];
+            /** Route Changes */
+            route_changes?: components["schemas"]["RoundEntityChange"][];
+            /** Next Priority */
+            next_priority?: string | null;
         } & {
             [key: string]: unknown;
         };

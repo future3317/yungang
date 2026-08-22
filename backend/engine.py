@@ -878,6 +878,8 @@ class GameEngine:
                 "weathering_track": state.shared.weathering_track,
                 "restoration_resource": state.shared.restoration_resource,
                 "influence": state.shared.influence,
+                "site_states": {site.id: {"damage": site.damage, "status": site.status.value if hasattr(site.status, "value") else str(site.status)} for site in state.sites.values()},
+                "route_states": {route.id: {"risk": route.risk, "status": route.status} for route in state.routes.values()},
             }
             state.shared.round_snapshot = snapshot
             state.shared.phase = "event_resolution"; state.shared.turn += 1; self._settle_event(state)
@@ -936,10 +938,30 @@ class GameEngine:
 
     def _build_round_summary(self, state, snapshot=None, round_effects=None):
         snapshot = snapshot or {}
+        event_targets = list(snapshot.get("event_targets", state.shared.event_targets))
+        site_changes = []
+        route_changes = []
+        for target_id in event_targets:
+            if target_id in state.sites:
+                site = state.sites[target_id]
+                before = snapshot.get("site_states", {}).get(target_id, {})
+                current_status = site.status.value if hasattr(site.status, "value") else str(site.status)
+                before_damage = int(before.get("damage", site.damage))
+                if before_damage != site.damage or before.get("status") != current_status:
+                    site_changes.append({"id": target_id, "label": self.content.sites.get(target_id, {}).get("name", target_id), "kind": "site", "before": before_damage, "after": int(site.damage), "delta": int(site.damage) - before_damage, "status_before": before.get("status"), "status_after": current_status})
+            elif target_id in state.routes:
+                route = state.routes[target_id]
+                before = snapshot.get("route_states", {}).get(target_id, {})
+                if int(before.get("risk", route.risk)) != route.risk or before.get("status") != route.status:
+                    from_name = self.content.sites.get(route.from_site, {}).get("name", route.from_site)
+                    to_name = self.content.sites.get(route.to_site, {}).get("name", route.to_site)
+                    before_risk = int(before.get("risk", route.risk))
+                    route_changes.append({"id": target_id, "label": route.name or f"{from_name}—{to_name}", "kind": "route", "before": before_risk, "after": int(route.risk), "delta": int(route.risk) - before_risk, "status_before": before.get("status"), "status_after": route.status})
+        priority = next((self.content.sites.get(site.id, {}).get("name", site.id) for site in state.sites.values() if site.status == SiteStatus.AT_RISK), "继续补齐胜利清单")
         return {
             "round": snapshot.get("round", state.shared.turn - 1),
             "event_id": snapshot.get("event_id", state.shared.current_event_id),
-            "event_targets": list(snapshot.get("event_targets", state.shared.event_targets)),
+            "event_targets": event_targets,
             "planning_marks": sum(len(items) for items in snapshot.get("planning_marks", state.shared.planning_marks).values()),
             "planning_mark_count": sum(len(items) for items in snapshot.get("planning_marks", state.shared.planning_marks).values()),
             "before": {
@@ -956,6 +978,9 @@ class GameEngine:
             "weathering_track": state.shared.weathering_track,
             "restoration_resource": state.shared.restoration_resource,
             "round_effects": list(round_effects or []),
+            "site_changes": site_changes,
+            "route_changes": route_changes,
+            "next_priority": priority,
         }
 
     def _settle_event(self, state):
