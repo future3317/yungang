@@ -157,6 +157,8 @@ function metaResponse(body: components['schemas']['MetaResponse']): Meta {
   };
   // Content contracts and runtime site ViewModels intentionally meet at this one boundary.
   // No server state is defaulted here; nullability is normalized only for content presentation.
+  // Content contracts and runtime site ViewModels intentionally meet at this one boundary.
+  // No server state is defaulted here; nullability is normalized only for content presentation.
   return normalized as unknown as Meta;
 }
 
