@@ -226,8 +226,11 @@ class GameEngine:
             state.action_options = self._build_action_options(state.legal_actions, state)
             return state
 
+        # The intent board is part of the normal action phase. Older persisted
+        # states may still carry the removed planning phase, but their marks
+        # must survive until the end-of-round settlement.
         if state.shared.phase == "planning":
-            self._settle_planning_marks(state, state.shared.active_player_id)
+            state.shared.phase = "player_action"
         has_current_plan = any(str(mark.get("turn")) == str(state.shared.turn) for mark in state.shared.planning_marks.get(active.id, []))
         actions: list[dict[str, Any]] = [{"type": ActionType.END_TURN.value, "label": "\u7ed3\u675f\u56de\u5408"}]
         if not has_current_plan:
@@ -905,8 +908,20 @@ class GameEngine:
         effects = []
         collaborated_count = 0
         for mark in marks:
-            if mark.get("collaborated"):
+            collaborated = mark.get("collaborated") is True or str(mark.get("collaborated", "")).lower() == "true"
+            if collaborated:
                 collaborated_count += 1
+                target_id = mark.get("target_id")
+                route = state.routes.get(target_id) if target_id else None
+                if route:
+                    from_name = self.content.sites.get(route.from_site, {}).get("name", route.from_site)
+                    to_name = self.content.sites.get(route.to_site, {}).get("name", route.to_site)
+                    target_name = f"{from_name}—{to_name}"
+                    changes = {"行动点": 1, "研究线索": 1, "路线风险": -1}
+                else:
+                    target_name = self.content.sites.get(target_id, {}).get("name") or self.content.projects.get(target_id, {}).get("name") or target_id or "已声明目标"
+                    changes = {"行动点": 1, "研究线索": 1}
+                effects.append({"type": "planning_collaboration", "target_id": target_id, "label": f"协作接续：{target_name}", "changes": changes, "reason": "另一位同行者完成了这枚规划标记"})
                 continue
         state.shared.planning_marks = {}
         state.shared.phase = "player_action"

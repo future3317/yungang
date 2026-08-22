@@ -122,6 +122,17 @@ def test_route_plan_collaboration_reduces_risk_beyond_route_survey():
     assert result.shared.planning_marks["p2"][0]["collaborated"] is True
 
 
+def test_refresh_keeps_intent_board_marks_until_round_settlement():
+    state = engine.new_game("planning-board-persistence", ["p1", "p2"], scenario_id="sand_and_stone")
+    target = next(iter(state.sites))
+    state.shared.planning_marks = {"p2": [{"target_id": target, "turn": str(state.shared.turn)}]}
+
+    engine.refresh(state)
+
+    assert state.shared.phase == "player_action"
+    assert state.shared.planning_marks["p2"][0]["target_id"] == target
+
+
 def test_room_session_cannot_be_read_through_legacy_game_endpoint():
     created = client.post("/api/rooms", json={"play_mode": "multi_device", "name": "测试者", "role_id": "pingcheng_artisan", "scenario_id": "sand_and_stone", "difficulty_id": "normal", "max_players": 2})
     assert created.status_code == 200
