@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
+from copy import deepcopy
 from datetime import datetime, timezone
 from typing import Any
 
@@ -327,8 +328,9 @@ class GameEngine:
         self._sync_pressure(state, before["threat"], before["weathering"])
         state.revision += 1
         self._remember_request(state, request_id)
-        self._check_outcome(state)
-        result = self.refresh(state)
+        if not req.get("_preview"):
+            self._check_outcome(state)
+        result = state if req.get("_preview") else self.refresh(state)
         after_player = result.players.get(pid)
         after = {
             "ap": after_player.ap if after_player else before["ap"],
@@ -492,11 +494,25 @@ class GameEngine:
         origin_target = len(preferred_origins) or int(task.get("required_origin_diversity", 0))
         missing_tags = sorted(set(combo.get("required_combo_tags", [])) - tags)
         has_support = any(item.get("relation") == "support" for item in usable)
+        support = sum(item.get("relation") == "support" for item in interpretation["placements"])
+        conflict = sum(item.get("relation") == "conflict" for item in interpretation["placements"])
+        confidence = max(0, support * 2 - conflict)
+        required_domains = set(task.get("required_domains", []))
+        contributors = {item.get("player_id") for item in interpretation["placements"] if item.get("player_id")}
+        requirements = [
+            {"key": "cards", "label": "证据数量", "current": len(cards), "target": int(task.get("required_card_count", 0)), "complete": len(cards) >= int(task.get("required_card_count", 0))},
+            {"key": "domains", "label": "研究领域", "current": len(domains & required_domains), "target": len(required_domains), "complete": not missing_domains, "missing": missing_domains},
+            {"key": "origins", "label": "证据来源", "current": len(origins & preferred_origins) if preferred_origins else len(origins), "target": origin_target, "complete": len(origins) >= origin_target and not missing_origins, "missing": missing_origins},
+            {"key": "combos", "label": "组合线索", "current": len(tags & set(combo.get("required_combo_tags", []))), "target": len(combo.get("required_combo_tags", [])), "complete": not missing_tags, "missing": missing_tags},
+            {"key": "contributors", "label": "共同参与", "current": len(contributors), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(contributors) >= int(combo.get("minimum_distinct_players", 1))},
+        ]
         return {
             "cards": len(cards), "cards_target": int(task.get("required_card_count", 0)),
             "domains": sorted(domains), "missing_domains": missing_domains,
             "origins": sorted(origins), "origins_target": origin_target, "missing_origins": missing_origins,
             "missing_tags": missing_tags, "has_support": has_support,
+            "support": support, "conflict": conflict, "pending": sum(item.get("relation") == "pending" for item in interpretation["placements"]),
+            "confidence": confidence, "requirements": requirements,
             "can_form": bool(has_support and len(cards) >= int(task.get("required_card_count", 0)) and not missing_domains and len(origins) >= origin_target and not missing_origins and not missing_tags),
         }
 
@@ -508,10 +524,7 @@ class GameEngine:
         if player.location != site_id or not task or task["completed"] or not self._interpretation_ready(task): raise ValueError("interpretation_not_ready")
         interpretation = self._ensure_interpretation(task)
         if interpretation["formed"]: raise ValueError("interpretation_already_formed")
-        support = sum(item.get("relation") == "support" for item in interpretation["placements"])
-        conflict = sum(item.get("relation") == "conflict" for item in interpretation["placements"])
-        pending = sum(item.get("relation") == "pending" for item in interpretation["placements"])
-        interpretation["formed"] = True; interpretation["confidence"] = max(1, support * 2 + pending - conflict)
+        interpretation["formed"] = True; interpretation["confidence"] = self._evaluate_interpretation(task)["confidence"]
 
     def _choose_intervention(self, state, player, site_id, intervention):
         task = state.tasks.get(self.content.sites.get(site_id, {}).get("active_task_id"))
@@ -1086,35 +1099,11 @@ class GameEngine:
         return definition.get("domain") in task.get("required_domains", []) or bool(required_tags & set(definition.get("combo_tags", [])))
 
     def _task_complete(self, task):
-        cards = [self.content.cards[c] for c in task["contributed_cards"]]
-        records = task.get("contribution_records", [])
-        domains = {c.get("domain") for c in cards}; origins = {origin for record, card in zip(records, cards) for origin in record.get("origin_tags", card.get("origin_tags", []))}
-        combo = task.get("combo_requirement", {}); combo_tags = {tag for record, card in zip(records, cards) for tag in record.get("combo_tags", card.get("combo_tags", []))}; players = set(task.get("contributing_player_ids", []))
-        per_player = task.get("contributed_by_player", {})
-        minimum_per_player = int(task.get("required_cards_per_player_min", 0))
-        return len(cards) >= task["required_card_count"] and len(origins) >= task["required_origin_diversity"] and set(task["required_domains"]).issubset(domains) and set(combo.get("required_combo_tags", [])).issubset(combo_tags) and set(combo.get("preferred_origins", [])).issubset(origins) and len(players) >= combo.get("minimum_distinct_players", 1) and (not minimum_per_player or all(count >= minimum_per_player for count in per_player.values()))
+        return bool(self._evaluate_interpretation(task)["can_form"])
 
     def _task_progress(self, task):
-        cards = [self.content.cards[c] for c in task.get("contributed_cards", []) if c in self.content.cards]
-        records = task.get("contribution_records", [])
-        domains = {c.get("domain") for c in cards}; origins = {origin for record, card in zip(records, cards) for origin in record.get("origin_tags", card.get("origin_tags", []))}
-        combo = task.get("combo_requirement", {}); combo_tags = {tag for record, card in zip(records, cards) for tag in record.get("combo_tags", card.get("combo_tags", []))}; players = set(task.get("contributing_player_ids", []))
-        required_domains = set(task.get("required_domains", [])); required_origins = set(combo.get("preferred_origins", [])); required_tags = set(combo.get("required_combo_tags", []))
-        requirements = [
-            {"key": "cards", "label": "证据数量", "current": len(cards), "target": int(task.get("required_card_count", 0)), "complete": len(cards) >= int(task.get("required_card_count", 0))},
-            {"key": "domains", "label": "研究领域", "current": len(domains & required_domains), "target": len(required_domains), "complete": required_domains.issubset(domains), "missing": sorted(required_domains - domains)},
-            {"key": "origins", "label": "指定来源", "current": len(origins & required_origins) if required_origins else len(origins), "target": len(required_origins) if required_origins else int(task.get("required_origin_diversity", 0)), "complete": (required_origins.issubset(origins) if required_origins else len(origins) >= int(task.get("required_origin_diversity", 0))), "missing": sorted(required_origins - origins)},
-            {"key": "contributors", "label": "贡献者", "current": len(players), "target": int(combo.get("minimum_distinct_players", 1)), "complete": len(players) >= int(combo.get("minimum_distinct_players", 1))},
-            {"key": "combos", "label": "组合线索", "current": len(combo_tags & required_tags), "target": len(required_tags), "complete": required_tags.issubset(combo_tags), "missing": sorted(required_tags - combo_tags)},
-        ]
-        if required_origins:
-            requirements.append({"key": "preferred_origins", "label": "指定来源", "current": len(origins & required_origins), "target": len(required_origins), "complete": required_origins.issubset(origins), "missing": sorted(required_origins - origins)})
-        minimum_per_player = int(task.get("required_cards_per_player_min", 0))
-        if minimum_per_player:
-            counts = task.get("contributed_by_player", {})
-            requirements.append({"key": "cards_per_player", "label": "参与者最低贡献", "current": min(counts.values(), default=0), "target": minimum_per_player, "complete": bool(counts) and all(count >= minimum_per_player for count in counts.values())})
         evaluation = self._evaluate_interpretation(task)
-        return {"requirements": requirements, "complete": self._task_complete(task), "interpretation": evaluation}
+        return {"requirements": evaluation["requirements"], "complete": evaluation["can_form"], "interpretation": evaluation}
 
     def _reachable(self, state, start, hops):
         found = {start}; queue = deque([(start, 0)])
@@ -1211,28 +1200,54 @@ class GameEngine:
                 project = next((item for item in state.projects.values() if item.site_id == site.id), None)
                 site.active_project_id = project.id if project else None
 
-    @staticmethod
-    def _action_preview_delta(action, state=None):
-        cost = int(action.get("cost", 0))
-        delta = {"ap": -cost} if cost else {}
-        action_type = action.get("type")
-        if action_type == ActionType.RESTORE.value:
-            delta["restoration_resource"] = -1
-            delta["damage"] = -1
-        elif action_type == ActionType.RESTORE_ROUTE.value:
-            delta.update({"research_clues": -1, "risk": -1})
-        elif action_type == ActionType.SURVEY_ROUTE.value:
-            delta.update({"research_clues": 1, "risk": -1})
-        elif action_type == ActionType.INTERPRET_EVIDENCE.value:
-            delta["site_influence"] = 1
-        elif action_type == ActionType.CHOOSE_INTERVENTION.value:
-            choice = action.get("target_id")
-            if choice == "act_now": delta.update({"influence": 2, "damage": -1})
-            elif choice == "minimal": delta.update({"influence": 1, "weathering": -1, "damage": -1})
-            elif choice == "record": delta.update({"research_clues": 2, "weathering": -1})
-        elif action_type == ActionType.ESTABLISH_CONNECTION.value:
-            delta["route_connection_score"] = 1
-        return delta
+    def _preview_snapshot(self, state, req):
+        player = state.players.get(req.get("player_id"))
+        site_id = req.get("target_site_id")
+        if not site_id and req.get("action") in {ActionType.INTERPRET_EVIDENCE.value, ActionType.FORM_INTERPRETATION.value, ActionType.CHOOSE_INTERVENTION.value, ActionType.RESTORE.value, ActionType.USE_NODE_ABILITY.value}:
+            site_id = player.location if player else None
+        route_id = req.get("route_id")
+        snapshot = {
+            "ap": player.ap if player else 0,
+            "research_clues": state.shared.research_clues,
+            "restoration_resource": state.shared.restoration_resource,
+            "weathering": state.shared.weathering_track,
+            "influence": state.shared.influence,
+            "route_connection_score": state.shared.route_connection_score,
+        }
+        if site_id in state.sites:
+            snapshot["site_influence"] = state.sites[site_id].influence
+            snapshot["damage"] = state.sites[site_id].damage
+        if route_id in state.routes:
+            snapshot["risk"] = state.routes[route_id].risk
+        return snapshot
+
+    def simulate_action(self, state, action):
+        """Run the production handler on a disposable copy and return its numeric state delta."""
+        request = {
+            "player_id": action.get("player_id") or state.shared.active_player_id,
+            "action": action["type"],
+            "target_id": action.get("target_id"),
+            "target_site_id": action.get("target_site_id"),
+            "card_id": action.get("card_id"),
+            "recipient_id": action.get("recipient_id"),
+            "route_id": action.get("route_id"),
+            "upgrade_id": action.get("upgrade_id"),
+            "target_ids": action.get("target_ids"),
+            "_preview": True,
+        }
+        simulated = deepcopy(state)
+        before = self._preview_snapshot(simulated, request)
+        self.apply(simulated, request)
+        after = self._preview_snapshot(simulated, request)
+        return {key: after[key] - value for key, value in before.items() if isinstance(value, (int, float)) and after.get(key) != value}
+
+    def _action_preview_delta(self, action, state=None):
+        if state is None:
+            return {}
+        try:
+            return self.simulate_action(state, action)
+        except ValueError:
+            return {}
 
     def _recommendation_for_option(self, option, state, active):
         action_type = option["type"]

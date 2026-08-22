@@ -547,7 +547,7 @@
         3,
         4
       ],
-      "recommended_minutes": "25–35 分钟",
+      "recommended_minutes": "25–35",
       "core_project_id": "project_10",
       "scenario_rule": {
         "description": "回合结束时环境压力增加 1；完成两项修护可显著降低连锁风险。",
@@ -646,7 +646,7 @@
         3,
         4
       ],
-      "recommended_minutes": "20–30 分钟",
+      "recommended_minutes": "20–30",
       "core_project_id": "project_09",
       "scenario_rule": {
         "description": "研究线索更容易获得，但每轮事件会考验团队的来源多样性。",

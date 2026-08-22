@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Archive, ArrowRight, CircleAlert, Compass, Flag, HelpCircle, Library, MapPinned, Sparkles, Target, X } from 'lucide-react';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
-import { useTutorialProgress } from '../../shared/useTutorialProgress';
+import type { TutorialProgress } from '../../shared/useTutorialProgress';
 import type { ActionOption, GameState } from '../../types/game';
 
 const steps = [
@@ -20,10 +20,10 @@ const contextualSteps: Record<string, { icon: typeof Flag; eyebrow: string; titl
   use_action_card: { icon: Sparkles, eyebrow: '第一次策略牌', title: '把策略留给关键时刻', body: '策略牌是一次性的团队手段。先查看使用时机、目标和预计变化，再确认；它不会替你完成任务，但能改变一处紧要局面。', cue: '使用时机 · 合法目标 · 预计变化' },
 };
 
-export function TutorialGuide({ open, onOpenChange, state, actionOptions = [], triggerAction }: { open: boolean; onOpenChange: (open: boolean) => void; state?: GameState; actionOptions?: ActionOption[]; triggerAction?: string | null }) {
+export function TutorialGuide({ open, onOpenChange, state, actionOptions = [], triggerAction, progress }: { open: boolean; onOpenChange: (open: boolean) => void; state?: GameState; actionOptions?: ActionOption[]; triggerAction?: string | null; progress: TutorialProgress }) {
   const [step, setStep] = useState(0);
   const drag = useDraggablePosition('yungang-tutorial-trigger-position', { minVisibleWidth: 96, minVisibleHeight: 52 });
-  const { markManualSeen, hasSeenContext, markContextSeen } = useTutorialProgress();
+  const { markManualSeen, hasSeenContext, markContextSeen } = progress;
   const contextual = triggerAction ? contextualSteps[triggerAction] : undefined;
   useEffect(() => { if (contextual && !hasSeenContext(triggerAction || '')) { markContextSeen(triggerAction || ''); onOpenChange(true); } }, [contextual, triggerAction, hasSeenContext, markContextSeen, onOpenChange]);
   const journeySteps = state ? steps.map((item, index) => index === 0 ? { ...item, body: `当前旅程需要在 ${state.goal_status?.rounds_remaining ?? state.shared.max_rounds - state.shared.turn + 1} 个回合内完成共同目标；风化压力达到上限会导致失败。` } : index === 1 ? { ...item, body: actionOptions.find(option => option.enabled && (option.recommendation_score || 0) > 0)?.reason || item.body } : index === 4 ? { ...item, body: actionOptions.some(option => option.type === 'choose_intervention' && option.enabled) ? '研究台条件已经接近满足：先完成证据关系判断，再形成解释并选择干预。' : item.body } : item) : steps;

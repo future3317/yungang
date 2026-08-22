@@ -2,6 +2,12 @@ import { useCallback, useState } from 'react';
 
 const STORAGE_KEY = 'yungang-journey-tutorial-v2';
 type Progress = { manual: boolean; contexts: string[] };
+export type TutorialProgress = {
+  hasSeenManual: boolean;
+  hasSeenContext: (context: string) => boolean;
+  markManualSeen: () => void;
+  markContextSeen: (context: string) => void;
+};
 
 function readProgress(): Progress {
   try {
@@ -16,7 +22,7 @@ function writeProgress(value: Progress) {
   try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value)); } catch { /* private browsing can reject storage */ }
 }
 
-export function useTutorialProgress() {
+export function useTutorialProgress(): TutorialProgress {
   const [progress, setProgress] = useState(readProgress);
   const markManualSeen = useCallback(() => setProgress(current => { const next = { ...current, manual: true }; writeProgress(next); return next; }), []);
   const markContextSeen = useCallback((context: string) => setProgress(current => { if (current.contexts.includes(context)) return current; const next = { ...current, contexts: [...current.contexts, context] }; writeProgress(next); return next; }), []);

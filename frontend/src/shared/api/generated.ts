@@ -715,6 +715,12 @@ export interface components {
             difficulty?: {
                 [key: string]: components["schemas"]["JsonValue"];
             }[];
+            /** Effective Rules Preview */
+            effective_rules_preview?: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
         };
         /** ObjectiveState */
         ObjectiveState: {

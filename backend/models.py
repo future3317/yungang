@@ -192,6 +192,7 @@ class MetaResponse(BaseModel):
     projects: List[JsonObject] = Field(default_factory=list)
     objectives: List[JsonObject] = Field(default_factory=list)
     difficulty: List[JsonObject] = Field(default_factory=list)
+    effective_rules_preview: Dict[str, JsonObject] = Field(default_factory=dict)
 
 
 class RoomSeat(BaseModel):
