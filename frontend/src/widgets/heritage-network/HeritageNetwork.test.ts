@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Site } from '../../types/game';
-import { computeLabelLayouts, labelBox } from './HeritageNetwork';
+import { computeLabelLayouts, computeNodePositions, labelBox } from './HeritageNetwork';
 
 const site = (id: string, name: string, x: number, y: number): Site => ({
   id,
@@ -38,5 +38,12 @@ describe('map label layout', () => {
         expect(boxes[index].left >= boxes[next].right || boxes[next].left >= boxes[index].right || boxes[index].top >= boxes[next].bottom || boxes[next].top >= boxes[index].bottom).toBe(true);
       }
     }
+  });
+
+  it('separates coincident node coordinates before rendering the map', () => {
+    const positions = computeNodePositions([site('a', '华严寺', 48, 48), site('b', '云冈石窟', 48, 48), site('c', '善化寺', 48, 48)], { a: site('a', '华严寺', 48, 48), b: site('b', '云冈石窟', 48, 48), c: site('c', '善化寺', 48, 48) });
+    const values = Object.values(positions);
+    expect(new Set(values.map(item => `${item.x},${item.y}`)).size).toBe(values.length);
+    for (let index = 0; index < values.length; index += 1) for (let next = index + 1; next < values.length; next += 1) expect(Math.hypot(values[index].x - values[next].x, values[index].y - values[next].y)).toBeGreaterThanOrEqual(9);
   });
 });

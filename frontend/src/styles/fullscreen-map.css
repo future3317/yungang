@@ -1895,3 +1895,35 @@
   .goal-hud.is-open { max-height: min(520px, calc(100dvh - 104px)); }
   .goal-hud.is-open .goal-conditions { max-height: min(390px, calc(100dvh - 190px)); overflow-y: auto; scrollbar-gutter: stable; }
 }
+
+/* Final HUD contract: one top band, two independently scrollable side rails,
+   and map-attached cards that never steal the rails' geometry. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell { min-height: 100dvh; padding: 0; }
+  .game-viewport > .game-shell > .hud-slot-top { height: 78px !important; min-height: 78px !important; overflow: visible !important; }
+  .game-viewport > .game-shell > .hud-slot-top > .game-header { height: 78px !important; min-height: 78px !important; padding: 8px 20px !important; }
+  .game-viewport > .game-shell > .hud-slot-center { top: 78px !important; height: calc(100dvh - 78px) !important; }
+  .game-grid.hud-slot-center > .roster-column,
+  .game-grid.hud-slot-center > .site-inspector { top: 16px !important; bottom: 16px !important; height: auto !important; min-height: 0 !important; max-height: none !important; }
+  .game-grid.hud-slot-center > .roster-column { overflow-y: auto !important; overflow-x: hidden !important; scrollbar-gutter: stable; scrollbar-width: auto; }
+  .game-grid.hud-slot-center > .site-inspector { display: flex !important; flex-direction: column !important; overflow: hidden !important; scrollbar-gutter: stable; }
+  .game-grid.hud-slot-center > .site-inspector .inspector-content { flex: 1 1 auto !important; height: 0 !important; min-height: 0 !important; overflow-y: auto !important; overflow-x: hidden !important; overscroll-behavior: contain; scrollbar-gutter: stable; scrollbar-width: auto; }
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar,
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar { width: 10px; }
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-track,
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar-track { background: rgba(7, 15, 10, .32); }
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-thumb,
+  .game-grid.hud-slot-center > .site-inspector .inspector-content::-webkit-scrollbar-thumb { background: rgba(220, 188, 105, .62); border: 2px solid rgba(7, 15, 10, .32); border-radius: 999px; background-clip: padding-box; }
+  .game-grid.hud-slot-center > .stage-column > .stage-caption { z-index: 80 !important; pointer-events: auto !important; }
+  .game-grid.hud-slot-center > .stage-column > .stage-caption button { position: relative; z-index: 81; pointer-events: auto; }
+  .goal-hud { width: min(740px, 100%) !important; max-width: 740px !important; transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)); }
+  .goal-summary { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .goal-summary > span { min-width: 0; white-space: normal !important; overflow-wrap: anywhere; line-height: 1.35; }
+  .goal-hud.is-open { max-height: min(560px, calc(100dvh - 96px)) !important; overflow: visible !important; }
+  .goal-hud.is-open .goal-conditions { max-height: min(410px, calc(100dvh - 184px)) !important; overflow-y: auto !important; padding-right: 5px; }
+  .goal-conditions > div { display: grid !important; grid-template-columns: 56px minmax(0, 1fr); align-items: start; gap: 6px; }
+  .goal-conditions > div > b { padding-top: 5px; }
+  .goal-conditions > div > span { min-width: 0; justify-content: flex-start; flex-wrap: wrap; line-height: 1.4; overflow-wrap: anywhere; }
+  .timeline-drawer { transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)); }
+  .timeline-drawer .timeline-events { scrollbar-width: auto; }
+}
