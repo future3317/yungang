@@ -1,4 +1,4 @@
-import type { Action, ActionOption, ActionType, ContentEvent, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Player, ProjectState, RouteState, Site } from '../../types/game';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
 
@@ -41,6 +41,20 @@ const previewDeltaLabels: Record<string, string> = {
 };
 
 export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', threat: '风化压力', 威胁: '风化压力', route_status: '路线状态', 路线状态: '路线状态', site_status: '节点状态', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
+
+export function feedbackChangeText(changes: FeedbackChange[]) {
+  const seen = new Set<string>();
+  return changes.filter(change => {
+    const key = change.metric === 'threat' ? 'weathering' : change.metric || change.label || '状态变化';
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).map(change => {
+    const label = change.label || metricLabel(change.metric || '');
+    if (change.before !== undefined && change.before !== null && change.after !== undefined && change.after !== null) return `${label} ${change.before}→${change.after}`;
+    return `${label} ${change.delta && change.delta > 0 ? '+' : ''}${change.delta ?? ''}`;
+  });
+}
 
 const actionErrorMessages: Record<string, string> = {
   action_card_wrong_timing: '当前时机不能使用这张策略牌。',

@@ -1477,3 +1477,182 @@
   .game-grid.hud-slot-center > .stage-column > .stage-heading { position: absolute; z-index: 5; top: 18px; right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); pointer-events: none; }
   .game-grid.hud-slot-center > .stage-column > .stage-heading h1 { font-size: clamp(1.35rem, 2.2vw, 2rem); }
 }
+/* Canonical desktop geometry: keep the header and side rails in separate layers. */
+@media (min-width: 1101px) {
+  .hud-slot-top {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 70 !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  .hud-slot-top > .game-header {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 620px) minmax(96px, auto) !important;
+    align-items: start !important;
+    width: 100% !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    padding: 8px 20px !important;
+    box-sizing: border-box;
+    overflow: visible !important;
+  }
+
+  .hud-slot-top .brand-group {
+    min-width: 0;
+    max-width: none !important;
+    display: flex !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 10px;
+    overflow: visible !important;
+  }
+
+  .hud-slot-top .brand-mark,
+  .hud-slot-top .brand-scenario,
+  .hud-slot-top .top-event-summary {
+    position: static !important;
+    inset: auto !important;
+    flex: 0 1 auto;
+  }
+
+  .hud-slot-top .brand-scenario {
+    max-width: min(220px, 18vw) !important;
+  }
+
+  .hud-slot-top .top-event-summary {
+    min-width: 210px;
+    max-width: 330px;
+    width: auto !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  .hud-slot-top .header-center {
+    position: static !important;
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: center;
+    width: auto !important;
+    min-width: 0 !important;
+    transform: none !important;
+  }
+
+  .hud-slot-top .header-center > .goal-hud {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 620px;
+    pointer-events: auto;
+  }
+
+  .hud-slot-top .header-actions {
+    position: static !important;
+    display: flex !important;
+    min-width: 96px !important;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .game-grid.hud-slot-center {
+    position: absolute !important;
+    top: 72px !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    inset-block-start: 72px !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none;
+  }
+
+  .game-grid.hud-slot-center > .stage-column {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    pointer-events: none;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .network-stage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    pointer-events: auto;
+  }
+
+  .game-grid.hud-slot-center > .roster-column,
+  .game-grid.hud-slot-center > .site-inspector {
+    position: absolute !important;
+    top: 16px !important;
+    bottom: 16px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    pointer-events: auto;
+  }
+
+  .game-grid.hud-slot-center > .roster-column {
+    left: 0 !important;
+    right: auto !important;
+    width: var(--map-left-clearance) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector {
+    right: 0 !important;
+    left: auto !important;
+    width: var(--map-right-clearance) !important;
+    display: block !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-summary,
+  .game-grid.hud-slot-center > .site-inspector .inspector-tabs {
+    position: relative;
+    z-index: 1;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-heading {
+    position: absolute !important;
+    top: 18px !important;
+    right: calc(var(--map-right-clearance) + var(--hud-center-gutter)) !important;
+    left: calc(var(--map-left-clearance) + var(--hud-center-gutter)) !important;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .round-summary {
+    position: absolute !important;
+    top: 88px !important;
+    right: calc(var(--map-right-clearance) + var(--hud-center-gutter)) !important;
+    left: calc(var(--map-left-clearance) + var(--hud-center-gutter)) !important;
+    z-index: 6;
+    width: min(620px, calc(100% - 2 * var(--hud-center-gutter))) !important;
+    margin: 0 auto !important;
+  }
+}

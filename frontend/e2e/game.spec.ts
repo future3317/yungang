@@ -14,7 +14,7 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
-  await expect(page.getByRole('heading', { name: '遗产节点网络' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '本局地图' })).toBeVisible();
   const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await tutorialClose.isVisible()) await tutorialClose.click();
 }
