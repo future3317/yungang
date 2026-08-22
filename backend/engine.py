@@ -1393,6 +1393,19 @@ class GameEngine:
         score = 8 + pressure + time_pressure + event_urgency
         reason = option.get("description", "执行一项可用行动。")
 
+        target_project = next((project for project in state.projects.values() if project.status == "active" and project.site_id == target_id), None) if target_id else None
+        project_gap = 0
+        if target_project and target_project.stage_index < len(target_project.stages):
+            stage = target_project.stages[target_project.stage_index]
+            stage_id = stage.get("id", str(target_project.stage_index))
+            project_gap = max(0, int(stage.get("required_progress", 1)) - int(target_project.stage_progress.get(stage_id, 0)))
+            score += min(20, project_gap * 5)
+        target_task_id = self.content.sites.get(target_id, {}).get("active_task_id") if target_id else None
+        target_task = state.tasks.get(target_task_id, {}) if target_task_id else {}
+        target_task_gap = sum(1 for item in target_task.get("progress", {}).get("requirements", []) if not item.get("complete"))
+        if target_task_gap:
+            score += min(16, target_task_gap * 4)
+
         role_action = self.content.roles.get(active.role_id, {}).get("ability", {}).get("action")
         role_fit = {"fine_repair": ActionType.RESTORE.value, "sprint_move": ActionType.MOVE.value, "view_select": ActionType.EXPLORE.value, "harmony_hint": ActionType.INTERPRET_EVIDENCE.value}
         if role_fit.get(role_action) == action_type:
@@ -1414,7 +1427,8 @@ class GameEngine:
             damage = target_site.damage if target_site else state.sites[active.location].damage
             score += int(32 * damage / max(1, target_site.max_damage if target_site else state.sites[active.location].max_damage))
             if target_id in event_targets: score += 18
-            reason = f"推荐修护{target_name or self.content.sites.get(active.location, {}).get('name', active.location)}：节点越接近关闭，越需要先稳住现场。"
+            risk_text = "节点已接近关闭，必须优先稳住现场" if damage >= max(1, (target_site.max_damage if target_site else state.sites[active.location].max_damage) - 1) else "先降低节点损伤，避免事件结算扩大风险"
+            reason = f"推荐修护{target_name or self.content.sites.get(active.location, {}).get('name', active.location)}：{risk_text}。"
         elif action_type in route_actions:
             risk = target_route.risk if target_route else 0
             score += risk * 12 + (18 if target_route and target_route.status == "blocked" else 0)
@@ -1437,8 +1451,7 @@ class GameEngine:
 
         raw_cost = candidate.get("cost", option.get("cost", {}).get("ap", 0))
         cost = int(raw_cost.get("ap", 0) if isinstance(raw_cost, dict) else raw_cost or 0)
-        if cost:
-            score += min(12, max(0, 18 - cost * 6))
+        score += 8 if cost == 0 else min(12, max(0, 18 - cost * 6))
         return max(0, min(100, int(score))), reason
 
     def _action_requirements(self, action_type, action, state=None, active=None):

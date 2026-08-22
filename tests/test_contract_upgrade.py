@@ -146,6 +146,8 @@ def test_action_option_scores_each_target_and_promotes_best_target():
     assert all(target.recommendation_score >= 0 and target.reason for target in move.targets)
     assert move.recommendation_score == max(target.recommendation_score for target in move.targets)
     assert max(target.recommendation_score for target in move.targets) > min(target.recommendation_score for target in move.targets)
+    high_risk = next(target for target in move.targets if target.payload["target_id"] == candidates[0].id)
+    assert "接近关闭" in high_risk.reason or high_risk.recommendation_score > next(target for target in move.targets if target.payload["target_id"] == candidates[1].id).recommendation_score
 
 
 def test_action_option_keeps_specific_name_above_action_category():

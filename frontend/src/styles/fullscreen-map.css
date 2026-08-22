@@ -1395,4 +1395,68 @@
   .game-grid.hud-slot-center > .site-inspector {
     top: var(--hud-panel-top);
   }
+
+  /* Event context belongs to the title rail, beside the brand, not inside the map. */
+  .hud-slot-top .brand-group {
+    max-width: none !important;
+    overflow: visible !important;
+  }
+
+  .top-event-summary {
+    flex: 0 1 310px;
+    min-width: 190px;
+    max-width: 310px;
+    min-height: 42px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1px 9px;
+    margin-left: 12px;
+    padding: 6px 10px;
+    overflow: hidden;
+    color: #f3e2c0;
+    background: linear-gradient(145deg, rgba(75, 50, 32, .94), rgba(48, 38, 28, .96));
+    border: 1px solid rgba(216, 126, 75, .7);
+    border-left: 3px solid #d98a58;
+    border-radius: 9px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+  }
+
+  .top-event-summary .event-history-kicker {
+    grid-row: 1 / span 2;
+    align-self: center;
+    color: #e4ad74;
+    font-size: .62rem;
+    white-space: nowrap;
+  }
+
+  .top-event-summary b,
+  .top-event-summary > span:not(.event-history-kicker) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .top-event-summary b { color: #f4d39e; font-size: .78rem; }
+  .top-event-summary > span:not(.event-history-kicker) { color: #d7c3a4; font-size: .64rem; }
+
+  /* Absolute side HUDs need a definite height. Otherwise old height:100% rules
+     make the Inspector extend beneath the title rail and steal its scroll area. */
+  .game-grid.hud-slot-center > .site-inspector {
+    top: var(--hud-panel-top) !important;
+    bottom: var(--hud-panel-bottom) !important;
+    height: auto !important;
+    max-height: calc(100dvh - var(--hud-panel-top) - var(--hud-panel-bottom)) !important;
+    overflow: hidden !important;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    overscroll-behavior: contain;
+  }
 }
