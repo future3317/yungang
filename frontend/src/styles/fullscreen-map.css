@@ -80,12 +80,12 @@
   .stage-heading h1 { margin-top: 3px; color: #f3e6ca; font-size: clamp(1.2rem, 1.6vw, 1.65rem); text-shadow: 0 2px 18px rgba(2, 8, 5, .78); }
   .stage-heading .eyebrow { opacity: .74; }
   .stage-heading .turn-badge { background: rgba(14, 28, 20, .7) !important; border-color: rgba(220, 190, 113, .34) !important; backdrop-filter: blur(8px); }
-  .round-summary { position: absolute !important; z-index: 5; top: calc(var(--hud-panel-top) + 64px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); width: min(620px, 100%); margin: 0 auto; pointer-events: auto; background: rgba(20, 34, 25, .88) !important; border: 1px solid rgba(219, 192, 126, .25) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .18) !important; }
+  .round-summary { position: absolute !important; z-index: 5; top: calc(var(--hud-panel-top) + 112px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); width: min(620px, 100%); margin: 0 auto; pointer-events: auto; background: rgba(20, 34, 25, .88) !important; border: 1px solid rgba(219, 192, 126, .25) !important; box-shadow: 0 10px 24px rgba(0, 0, 0, .18) !important; }
   .round-summary > * { pointer-events: auto; }
 
   .network-tools { position: absolute !important; z-index: 8 !important; top: calc(var(--hud-panel-top) + 12px) !important; right: calc(var(--map-right-clearance) + var(--hud-center-gutter) - 2px) !important; }
   .network-corner { position: absolute !important; z-index: 6 !important; bottom: calc(var(--hud-footer-bottom) - 2px) !important; left: calc(var(--map-left-clearance) + var(--hud-center-gutter) - 2px) !important; }
-  .network-stage .mode-strip { position: absolute !important; z-index: 30 !important; top: calc(var(--hud-panel-top) + 104px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); }
+  .network-stage .mode-strip { position: absolute !important; z-index: 30 !important; top: calc(var(--hud-panel-top) + 176px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); }
   .action-target-guide { position: absolute !important; z-index: 30 !important; right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); bottom: calc(var(--hud-footer-bottom) + 2px); left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); width: min(470px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - var(--hud-center-gutter) - var(--hud-center-gutter))); margin: 0 auto; }
 
   .timeline-drawer { position: absolute !important; z-index: 20 !important; right: 16px; bottom: calc(var(--hud-footer-bottom) - 4px); left: auto; width: min(290px, calc(var(--map-right-clearance) - 26px)); max-height: min(230px, calc(100dvh - 150px)); margin: 0 !important; padding: 8px 10px; color: var(--ink-secondary); background: rgba(14, 28, 20, .88); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; backdrop-filter: blur(12px); }
@@ -887,11 +887,14 @@
   .hud-slot-top .goal-hud { position: relative; z-index: 102; }
   .hud-slot-top .goal-hud.is-open { position: absolute; z-index: 110; top: calc(100% + 6px); left: 0; width: 100%; max-height: min(440px, calc(100dvh - 96px)); overflow: visible; background: rgba(16, 31, 22, .98); box-shadow: 0 18px 36px rgba(0, 0, 0, .34); }
   .hud-slot-top .goal-hud.is-open .goal-conditions { max-height: min(300px, calc(100dvh - 190px)); overflow-y: auto; padding-right: 4px; scrollbar-gutter: stable; }
-  .site-inspector { display: flex !important; flex-direction: column !important; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-gutter: stable; }
+  .site-inspector { display: flex !important; flex-direction: column !important; overflow: hidden !important; scrollbar-gutter: stable; }
   .site-inspector .inspector-summary, .site-inspector .inspector-tabs { flex: 0 0 auto; }
   .site-inspector .inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-  .site-inspector { height: 100%; min-height: 0; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-gutter: stable; }
-  .site-inspector .inspector-content { flex: 0 0 auto; min-height: 0; overflow: visible !important; }
+  .site-inspector { height: 100%; min-height: 0; overflow: hidden !important; scrollbar-gutter: stable; }
+  .site-inspector .inspector-content { flex: 1 1 auto; min-height: 0; overflow-y: auto !important; overflow-x: hidden; scrollbar-gutter: stable; scrollbar-width: auto; scrollbar-color: rgba(220, 188, 105, .45) transparent; }
+  .site-inspector .inspector-content::-webkit-scrollbar { width: 10px; }
+  .site-inspector .inspector-content::-webkit-scrollbar-track { background: rgba(7, 15, 10, .28); }
+  .site-inspector .inspector-content::-webkit-scrollbar-thumb { background: rgba(220, 188, 105, .48); border: 2px solid transparent; border-radius: 999px; background-clip: padding-box; }
   .route-inspector { top: calc(var(--hud-panel-top) + 116px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); width: min(292px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 3 * var(--hud-center-gutter))); max-height: min(250px, calc(100dvh - 240px)); overflow-y: auto; }
 }
 /* The desktop HUD is a three-slot grid over one world layer. */
@@ -964,6 +967,51 @@
     min-width: 0;
     max-width: 48%;
     align-items: center;
+  }
+
+  .hud-slot-top .header-center {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .hud-slot-top .header-context {
+    color: rgba(229, 211, 167, .58);
+    font-size: .76rem;
+    letter-spacing: .04em;
+  }
+
+  .hud-slot-top .header-actions {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hud-slot-top .header-actions > .goal-hud {
+    width: min(540px, 42vw) !important;
+  }
+
+  .hud-slot-top .header-actions > .goal-hud.is-open {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: auto;
+    right: 0;
+    z-index: 110;
+    width: min(600px, calc(100vw - 40px)) !important;
+    max-height: min(440px, calc(100dvh - 96px));
+    overflow: visible;
+    background: rgba(16, 31, 22, .98);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, .34);
+  }
+
+  .hud-slot-top .header-actions > .goal-hud.is-open .goal-conditions {
+    max-height: min(300px, calc(100dvh - 190px));
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-gutter: stable;
   }
 
   .hud-slot-top .brand-scenario {

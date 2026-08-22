@@ -4,19 +4,13 @@ import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameS
 import { comboNames, contentClassName, domainName, eventTargetRuleName, eventTypeName, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
 import { metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
+import { resolveEventSceneAsset } from './eventArtwork';
 
 type InspectorTab = 'task' | 'project' | 'event' | 'market';
 
 const domainAssets: Partial<Record<string, string>> = {
   architecture: assetUrl('game-ui/domains/ui_yungang_domain_architecture_01.png'),
   pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.png'),
-};
-
-const eventSceneFallbacks: Record<string, string> = {
-  weathering: 'generated/scene_craft_restoration.png',
-  route: 'generated/scene_frontier_pass.png',
-  exchange: 'generated/scene_trade_meeting.png',
-  research: 'generated/scene_archive_cave.png',
 };
 
 export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventTargetIds = [], eventOpenTargetLabels = [], canAct = true, className = '' }: {
@@ -57,7 +51,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
   const eventRecord = event as unknown as Record<string, unknown> | undefined;
-  const eventSceneAsset = recordText(event, 'scene_asset') || eventSceneFallbacks[recordText(event, 'type')] || 'generated/scene_yungang_night.png';
+  const eventSceneAsset = resolveEventSceneAsset(event ? { id: event.id, scene_asset: recordText(eventRecord, 'scene_asset'), type: recordText(eventRecord, 'type') } : undefined);
   const isCurrentSite = active.location === site.id;
   const project = Object.values(state.projects || {}).find(projectItem => projectItem.site_id === site.id);
   const projectMeta = project ? meta.projects?.find(item => item.id === project.id) as (Record<string, unknown> | undefined) : undefined;
