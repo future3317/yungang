@@ -76,7 +76,7 @@ class EventStatus(StrEnum):
 
 class DictModel(BaseModel):
     """Typed runtime records that still need the engine's existing dict access."""
-    model_config = ConfigDict(validate_assignment=True, extra="allow")
+    model_config = ConfigDict(validate_assignment=True, extra="forbid")
 
     def __getitem__(self, key: str):
         return getattr(self, key)
@@ -151,6 +151,7 @@ class EventInstance(DictModel):
     resolved_targets: List[str] = Field(default_factory=list)
     mitigation: List[EventRecord] = Field(default_factory=list)
     resolution: List[EventRecord] = Field(default_factory=list)
+    modifiers: List[JsonObject] = Field(default_factory=list)
 
 
 class PendingChoiceOption(DictModel):
@@ -202,6 +203,9 @@ class RoundSummary(DictModel):
     before: RoundMetrics = Field(default_factory=RoundMetrics)
     after: RoundMetrics = Field(default_factory=RoundMetrics)
     planning_mark_count: int = 0
+    planning_marks: int = 0
+    weathering_track: int = 0
+    restoration_resource: int = 0
     completed_projects: int = 0
     completed_objectives: int = 0
     player_contributions: Dict[str, int] = Field(default_factory=dict)
@@ -234,6 +238,17 @@ class TaskState(DictModel):
     contributed_cards: List[str] = Field(default_factory=list)
     contribution_records: List[JsonObject] = Field(default_factory=list)
     interpretation: JsonObject = Field(default_factory=dict)
+    progress: JsonObject = Field(default_factory=dict)
+    contributed_by_player: Dict[str, int] = Field(default_factory=dict)
+    contributing_player_ids: List[str] = Field(default_factory=list)
+    content_class: Optional[str] = None
+    description: Optional[str] = None
+    culture_explanation: Optional[str] = None
+    learning_objective: Optional[str] = None
+    required_cards_per_player_min: Optional[int] = None
+    route_synergy: Optional[str] = None
+    strategic_role: Optional[str] = None
+    ui_instruction: Optional[str] = None
     completed: bool = False
 
 
@@ -256,6 +271,7 @@ class JournalEntry(DictModel):
 
 class EventHistoryRecord(EventInstance):
     round: int = 0
+    event_targets: List[str] = Field(default_factory=list)
 
 
 class GoalCondition(BaseModel):

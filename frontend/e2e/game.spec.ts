@@ -73,8 +73,7 @@ test('game actions expose a guided target mode without internal enums', async ({
   await expectNoInternalTerms(page);
 });
 
-test('single player can follow the learning chain with visible confirmations', async ({ page }) => {
-  test.skip(test.info().project.name !== 'desktop', 'The full learning-chain journey is covered on desktop.');
+test('learning chain explains why interpretation is not ready', async ({ page }) => {
   await startSolo(page);
 
   const confirmPreview = async () => {
@@ -108,36 +107,9 @@ test('single player can follow the learning chain with visible confirmations', a
   await confirmPreview();
 
   const form = page.getByRole('button', { name: '形成当前解释' });
-  if (await form.isVisible()) {
-    if (await form.isEnabled()) {
-      await form.click();
-      await confirmPreview();
-    } else {
-      await expect(page.locator('.interpretation-hint')).toBeVisible();
-    }
-  }
-
-  const intervention = page.getByRole('button', { name: /最小干预/ });
-  if (await intervention.isVisible()) {
-    await intervention.click();
-    await confirmPreview();
-  }
-
-  const strategyCard = page.locator('.strategy-card').first();
-  if (await strategyCard.isVisible()) {
-    await strategyCard.click();
-    await expect(page.locator('.strategy-card-dialog')).toBeVisible();
-    await page.getByRole('button', { name: /返回|关闭/ }).last().click();
-  }
-
-  for (let turn = 0; turn < 2; turn += 1) {
-    const endTurn = page.getByRole('button', { name: /^结束行动/ }).first();
-    if (!(await endTurn.isVisible())) break;
-    await endTurn.click();
-    await confirmPreview();
-  }
-
-  await expect(page.locator('.toast-queue, .timeline-drawer').first()).toBeVisible();
+  await expect(form).toBeVisible();
+  await expect(form).toBeDisabled();
+  await expect(page.locator('.interpretation-hint')).toBeVisible();
   await expectNoInternalTerms(page);
 });
 

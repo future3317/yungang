@@ -44,6 +44,8 @@
 .scene-thumb img, .inspector-scene-art img { position: relative; z-index: 1; }
 .scene-thumb.scene-art-failed img, .inspector-scene-art.scene-art-failed img { display: none; }
 .event-history-bar { position: absolute; z-index: 35; right: 16px; bottom: 18px; width: min(390px, calc(100% - 32px)); display: grid; gap: 3px; padding: 10px 13px; color: #eadfc8; background: linear-gradient(145deg, rgba(43, 53, 42, .94), rgba(18, 31, 22, .96)); border: 1px solid rgba(219, 160, 92, .42); border-left: 3px solid var(--risk); border-radius: 10px; box-shadow: 0 12px 28px rgba(0, 0, 0, .32); backdrop-filter: blur(12px); pointer-events: none; }
+.game-header .top-event-summary { position: static; z-index: auto; width: min(190px, 100%); min-width: 0; margin-left: 8px; padding: 5px 8px; border-left-width: 2px; border-radius: 7px; box-shadow: none; backdrop-filter: none; }
+.game-header .top-event-summary b, .game-header .top-event-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .event-history-bar b { color: #f1d39a; font-size: .86rem; }
 .event-history-bar span { color: #cfc4aa; font-size: .72rem; line-height: 1.4; }
 .event-history-bar .event-history-kicker { color: #d9b866; font-size: .66rem; font-weight: 700; letter-spacing: .08em; }
