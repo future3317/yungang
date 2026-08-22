@@ -33,7 +33,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   className?: string;
 }) {
   eventOpenTargetLabels = eventOpenTargetLabels || [];
-  const eventPriority = Boolean(state.pending_choice || state.shared.current_event_id);
+  const eventPriority = Boolean(state.pending_choice?.kind === 'event' || state.shared.phase === 'round_forecast' || state.shared.phase === 'event_resolution');
   const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : eventPriority ? 'event' : 'task';
   const [tab, setTab] = useState<InspectorTab>(initialTab);
 
