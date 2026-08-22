@@ -941,3 +941,167 @@
   }
   .game-grid.hud-slot-center > .event-history-bar { pointer-events: auto; }
 }
+
+
+/* One desktop HUD contract: brand/theme stay at the top left, goals stay in the title bar,
+   and Inspector content owns the only right-side scroll surface. */
+@media (min-width: 1101px) {
+  .hud-slot-top > .game-header {
+    position: relative !important;
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: var(--header-height);
+    height: auto !important;
+    padding: 8px 20px !important;
+    overflow: visible !important;
+    pointer-events: auto;
+  }
+
+  .hud-slot-top .brand-group {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 48%;
+    align-items: center;
+  }
+
+  .hud-slot-top .brand-scenario {
+    display: grid;
+    gap: 2px;
+    max-width: min(320px, 30vw) !important;
+    padding-left: 14px;
+    overflow: hidden;
+    white-space: normal;
+  }
+
+  .hud-slot-top .brand-scenario small {
+    color: rgba(229, 211, 167, .65);
+    font-size: .66rem;
+    letter-spacing: .1em;
+  }
+
+  .hud-slot-top .brand-scenario b {
+    overflow: hidden;
+    color: #f0dfb6;
+    font-size: .94rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hud-slot-top .header-center {
+    position: static !important;
+    flex: 0 1 min(620px, 44vw);
+    width: auto !important;
+    min-width: min(420px, 42vw);
+    margin-left: auto;
+    transform: none !important;
+  }
+
+  .hud-slot-top .goal-hud {
+    width: 100% !important;
+    pointer-events: auto;
+  }
+
+  .hud-slot-top .goal-hud.is-open {
+    position: absolute;
+    z-index: 110;
+    top: calc(100% + 8px);
+    right: 20px;
+    left: auto;
+    width: min(620px, 44vw);
+    max-height: min(430px, calc(100dvh - 96px));
+    overflow: visible;
+    background: rgba(16, 31, 22, .98);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, .34);
+  }
+
+  .hud-slot-top .goal-toggle {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .hud-slot-top .goal-hud.is-open .goal-conditions {
+    max-height: min(300px, calc(100dvh - 190px));
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-gutter: stable;
+  }
+
+  .hud-slot-top .header-actions {
+    flex: 0 0 96px;
+    min-width: 96px;
+  }
+
+  .site-inspector {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden !important;
+    scrollbar-gutter: stable;
+  }
+
+  .site-inspector .inspector-summary,
+  .site-inspector .inspector-tabs {
+    flex: 0 0 auto;
+  }
+
+  .site-inspector .inspector-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    overscroll-behavior: contain;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(220, 188, 105, .48) transparent;
+  }
+
+  .site-inspector .inspector-content::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .site-inspector .inspector-content::-webkit-scrollbar-track {
+    background: rgba(7, 15, 10, .28);
+  }
+
+  .site-inspector .inspector-content::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .48);
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+
+  .event-art {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 8px;
+  }
+
+  .event-art .event-art-scene {
+    grid-column: 1;
+    width: 100% !important;
+    height: 112px !important;
+    object-fit: cover;
+  }
+
+  .event-art-copy {
+    grid-column: 1;
+    min-width: 0;
+    display: grid;
+    gap: 2px;
+  }
+
+  .event-art-copy h3 {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

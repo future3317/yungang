@@ -12,6 +12,13 @@ const domainAssets: Partial<Record<string, string>> = {
   pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.png'),
 };
 
+const eventSceneFallbacks: Record<string, string> = {
+  weathering: 'generated/scene_craft_restoration.png',
+  route: 'generated/scene_frontier_pass.png',
+  exchange: 'generated/scene_trade_meeting.png',
+  research: 'generated/scene_archive_cave.png',
+};
+
 export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventTargetIds = [], eventOpenTargetLabels = [], canAct = true, className = '' }: {
   state: GameState;
   meta: Meta;
@@ -50,6 +57,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
   const eventRecord = event as unknown as Record<string, unknown> | undefined;
+  const eventSceneAsset = recordText(event, 'scene_asset') || eventSceneFallbacks[recordText(event, 'type')] || 'generated/scene_yungang_night.png';
   const isCurrentSite = active.location === site.id;
   const project = Object.values(state.projects || {}).find(projectItem => projectItem.site_id === site.id);
   const projectMeta = project ? meta.projects?.find(item => item.id === project.id) as (Record<string, unknown> | undefined) : undefined;
@@ -116,7 +124,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       </section>}
 
       {tab === 'event' && <section id={panelId('event')} className="event-tab" role="tabpanel" aria-labelledby={tabId('event')}>
-        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art" data-event-id={event.id}><img className="event-art-scene" src={assetUrl(recordText(event, 'scene_asset'), 'generated/scene_yungang_day.png')} alt={`${event.name}场景`} /><div><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p><div className="event-rule-summary"><b>回合结束时结算</b><span>{event.target_rule ? `影响范围：${eventTargetRuleName(event.target_rule)}` : '影响范围由本局种子锁定'}</span></div>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span>{eventOpenTargetLabels.length > 0 ? <small>仍可守护：{eventOpenTargetLabels.join('、')}</small> : <small>当前没有仍可守护的受影响地点。</small>}</div>}{eventTargetIds.length > 0 && eventDamage > 0 && <div className="event-projection"><b>如果不处理</b>{eventTargetIds.map(id => { const target = state.sites[id]; return target ? <span key={id}>{target.name || id} · 损伤 {target.damage} → {Math.min(target.max_damage, target.damage + eventDamage)}{target.damage + eventDamage >= target.max_damage ? ' · 将关闭' : ''}</span> : null; })}</div>}{event.preview_delta && <div className="task-rule-callout"><Info size={15} /><span>预计变化：{Object.entries(event.preview_delta).map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`).join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}{eventResponseAvailable ? <button type="button" className="primary-action" disabled={!canAct} onClick={() => onSelectAction('resolve_event')}>{canAct ? '查看应对选项' : '等待当前行动者回应'}</button> : <details className="event-response-details"><summary>查看影响范围</summary><div className="task-rule-callout"><Info size={15} /><span>当前仍在事件预告阶段。地图上的橙色标记就是本回合的影响范围，回合结算时会开放正式应对选项。</span></div></details>}</> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
+        {event ? <><div className="tab-kicker"><CircleAlert size={14} />需要回应的世界变化</div><div className="event-art" data-event-id={event.id}><img className="event-art-scene" src={assetUrl(eventSceneAsset)} alt={`${event.name}场景`} /><div className="event-art-copy"><h3>{event.name}</h3><span>{eventTypeName(recordText(event, 'type'))}</span></div></div><p>{recordText(eventRecord, 'description') || event.forecast_text}</p><div className="event-rule-summary"><b>回合结束时结算</b><span>{event.target_rule ? `影响范围：${eventTargetRuleName(event.target_rule)}` : '影响范围由本局种子锁定'}</span></div>{eventTargetLabels.length > 0 && <div className="event-brief"><b>影响范围</b><span>{eventTargetLabels.join('、')}</span>{eventOpenTargetLabels.length > 0 ? <small>仍可守护：{eventOpenTargetLabels.join('、')}</small> : <small>当前没有仍可守护的受影响地点。</small>}</div>}{eventTargetIds.length > 0 && eventDamage > 0 && <div className="event-projection"><b>如果不处理</b>{eventTargetIds.map(id => { const target = state.sites[id]; return target ? <span key={id}>{target.name || id} · 损伤 {target.damage} → {Math.min(target.max_damage, target.damage + eventDamage)}{target.damage + eventDamage >= target.max_damage ? ' · 将关闭' : ''}</span> : null; })}</div>}{event.preview_delta && <div className="task-rule-callout"><Info size={15} /><span>预计变化：{Object.entries(event.preview_delta).map(([key, value]) => `${metricLabel(key)} ${Number(value) > 0 ? '+' : ''}${value}`).join('、')}</span></div>}{event.mitigation_hint && <div className="task-rule-callout"><Info size={15} /><span>{event.mitigation_hint}</span></div>}{eventResponseAvailable ? <button type="button" className="primary-action" disabled={!canAct} onClick={() => onSelectAction('resolve_event')}>{canAct ? '查看应对选项' : '等待当前行动者回应'}</button> : <details className="event-response-details"><summary>查看影响范围</summary><div className="task-rule-callout"><Info size={15} /><span>当前仍在事件预告阶段。地图上的橙色标记就是本回合的影响范围，回合结算时会开放正式应对选项。</span></div></details>}</> : <div className="empty-tab"><CircleAlert size={22} /><h3>本回合没有待处理事件</h3><p>事件出现时，这里会告诉你影响范围、风险和可选回应。</p></div>}
       </section>}
 
       {tab === 'market' && <section id={panelId('market')} className="market-tab" role="tabpanel" aria-labelledby={tabId('market')}>
