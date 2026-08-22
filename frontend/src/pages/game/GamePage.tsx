@@ -158,7 +158,3 @@ function ChoiceDialog({ state, event, disabled = false, onChoose }: { state: Gam
   </section></div>;
 }
 function RoleUpgradeDialog({ state, disabled = false, onChoose }: { state: GameState; disabled?: boolean; onChoose: (action: Action) => void }) { const options = (state.pending_choice?.options || []) as Array<{ id: string; name?: string; description?: string; trigger?: string; strategic_direction?: string; label?: string }>; const ref = useDialogFocus(); const choices = (state.action_options || []).flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]); return <div className="dialog-backdrop"><section ref={ref} className="dialog role-upgrade-dialog" role="dialog" aria-modal="true" aria-labelledby="upgrade-dialog-title"><span className="eyebrow"><ShieldCheck size={15} />角色专长</span><h2 id="upgrade-dialog-title">为下一段旅程选择持续专长</h2><p>专长会保留到本局结束，并在描述的触发条件满足时生效。</p><div className="upgrade-options">{options.map(option => { const action = choices.find(item => item.upgrade_id === option.id); return <button key={option.id} disabled={disabled || !action} onClick={() => action && onChoose(action)}><span><b>{option.name || option.label || '角色专长'}</b><small>{disabled ? '正在同步选择…' : option.description || '选择后会持续改变该角色的行动方式。'}</small>{option.trigger && <i>触发：{option.trigger}</i>}</span><em>{option.strategic_direction || '长期协作'}</em></button>; })}</div></section></div>; }
-
-
-
-
