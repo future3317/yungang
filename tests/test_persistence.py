@@ -1,4 +1,6 @@
-from backend.database import Database
+import pytest
+
+from backend.database import Database, database_target_from_environment
 from backend.content import Content
 from backend.engine import GameEngine
 from backend.repository import GameRepository
@@ -14,6 +16,15 @@ def test_database_target_supports_sqlite_for_local_and_postgres_url_for_cloud(tm
     assert sqlite_db.path == tmp_path / "runtime.sqlite3"
     assert postgres_db.is_postgres is True
     assert postgres_db.path is None
+
+
+def test_render_requires_external_database_instead_of_silent_sqlite_fallback(monkeypatch):
+    monkeypatch.setenv("YUNGANG_REQUIRE_EXTERNAL_DATABASE", "true")
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    monkeypatch.delenv("YUNGANG_DATABASE_PATH", raising=False)
+
+    with pytest.raises(RuntimeError, match="DATABASE_URL"):
+        database_target_from_environment()
 
 
 def test_migration_copies_games_and_rooms_to_the_new_database_target(tmp_path):

@@ -2,21 +2,20 @@ from pathlib import Path
 from uuid import uuid4
 import asyncio
 import json
-import os
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from .actions import dispatch
 from .content import Content
+from .database import database_target_from_environment
 from .engine import GameEngine
 from .models import ActionRequest, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
 app = FastAPI(title="Yungang Heritage Network", version="3.0")
-database_target = os.getenv("DATABASE_URL") or os.getenv("YUNGANG_DATABASE_PATH")
-repo = GameRepository(database_target)
+repo = GameRepository(database_target_from_environment())
 content = Content()
 engine = GameEngine(content)
 room_service = RoomService(RoomRepository(repo.database))

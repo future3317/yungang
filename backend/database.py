@@ -2,8 +2,16 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
+import os
 import sqlite3
 from typing import Any, Iterator
+
+
+def database_target_from_environment(default: str | Path | None = None) -> str | Path | None:
+    database_url = os.getenv("DATABASE_URL")
+    if os.getenv("YUNGANG_REQUIRE_EXTERNAL_DATABASE", "false").lower() == "true" and not database_url:
+        raise RuntimeError("DATABASE_URL must be configured when external database storage is required.")
+    return database_url or os.getenv("YUNGANG_DATABASE_PATH") or default
 
 
 class Database:
