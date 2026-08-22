@@ -514,6 +514,91 @@
   .network-stage .action-target-guide { bottom: 112px !important; z-index: 38 !important; }
 }
 
+/* Desktop HUD safe zones: every persistent surface owns a separate anchor. */
+@media (min-width: 1101px) {
+  .game-header .header-center {
+    top: 8px;
+    width: min(540px, calc(100% - var(--map-left-clearance) - var(--map-right-clearance) - 72px));
+  }
+  .game-header .goal-hud {
+    max-height: 84px;
+    overflow: hidden;
+  }
+  .game-header .goal-conditions {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    max-height: 37px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .game-header .goal-conditions > div {
+    min-width: 0;
+    align-content: start;
+  }
+  .game-header .goal-conditions span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .game-header .goal-context {
+    max-height: 20px;
+    overflow: hidden;
+  }
+  .roster-column,
+  .site-inspector {
+    top: 104px;
+    bottom: 18px;
+    height: auto;
+  }
+  .stage-caption[data-focused="true"] {
+    right: auto !important;
+    bottom: 18px !important;
+    left: calc(var(--map-left-clearance) + 28px) !important;
+    width: min(450px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 84px));
+    box-sizing: border-box;
+  }
+  .event-history-bar {
+    right: calc(var(--map-right-clearance) + 28px);
+    bottom: 18px;
+    width: min(360px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 84px));
+  }
+  .timeline-drawer {
+    right: calc(var(--map-right-clearance) + 28px);
+    bottom: 106px;
+    width: min(360px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 84px));
+    max-height: min(210px, calc(100dvh - 250px));
+  }
+}
+
+.scene-thumb,
+.inspector-scene-art {
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(196, 164, 89, .18), transparent 45%),
+    repeating-linear-gradient(135deg, rgba(220, 190, 112, .08) 0 1px, transparent 1px 9px),
+    #15261b;
+}
+.scene-thumb::after,
+.inspector-scene-art::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(226, 201, 145, .55);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  content: '遗产图卷';
+}
+.scene-thumb img,
+.inspector-scene-art img {
+  position: relative;
+  z-index: 1;
+}
+.scene-thumb.scene-art-failed img,
+.inspector-scene-art.scene-art-failed img {
+  display: none;
+}
+
 /* The timeline is a docked instrument: it opens upward from one stable map anchor. */
 @media (min-width: 1101px) {
   .timeline-drawer {
