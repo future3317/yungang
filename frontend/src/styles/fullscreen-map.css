@@ -33,6 +33,8 @@
     box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
     backdrop-filter: blur(12px);
   }
+  .game-header .header-center { position: absolute; top: 8px; left: 50%; width: min(620px, calc(100% - 440px)); transform: translateX(-50%); }
+  .game-header .goal-hud { width: 100%; box-sizing: border-box; }
 
   .game-grid { position: absolute; inset: 0; display: block !important; min-height: 100dvh; margin: 0; padding: 0 !important; }
   .stage-column { position: absolute; inset: 0; display: block !important; min-height: 100dvh !important; padding: 0 !important; }
@@ -233,7 +235,7 @@
   .network-tools button svg, .network-tools button svg * { display: block !important; width: 19px !important; height: 19px !important; color: #f1e5c9 !important; fill: none !important; stroke: #f1e5c9 !important; stroke-width: 2 !important; visibility: visible !important; opacity: 1 !important; }
   .network-access-list { position: absolute; z-index: 6; top: calc(var(--hud-panel-top) + 62px); left: calc(var(--map-left-clearance) + var(--hud-center-gutter) - 2px); width: min(230px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - var(--hud-center-gutter) - var(--hud-center-gutter))); max-height: 184px; overflow: hidden; color: #ded3b9; background: rgba(14, 28, 20, .9); border: 1px solid rgba(219, 192, 126, .25); border-radius: 10px; box-shadow: 0 10px 24px rgba(0, 0, 0, .18); backdrop-filter: blur(12px); }
   .network-access-list > div { max-height: 138px; overflow-y: auto; }
-  .route-inspector { top: calc(var(--hud-panel-top) + 122px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter) + 12px); width: min(330px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 72px)); max-height: min(330px, calc(100dvh - var(--hud-panel-top) - 180px)); overflow-y: auto; color: #eadfc8; background: linear-gradient(145deg, rgba(39, 57, 44, .96), rgba(14, 28, 20, .97)); border: 1px solid rgba(219, 192, 126, .38); border-radius: 12px; box-shadow: 0 18px 42px rgba(0, 0, 0, .34); backdrop-filter: blur(14px); }
+  .route-inspector { top: 118px; right: 20px; width: min(340px, calc(100% - 40px)); max-height: min(330px, calc(100dvh - 190px)); overflow-y: auto; color: #eadfc8; background: linear-gradient(145deg, rgba(39, 57, 44, .96), rgba(14, 28, 20, .97)); border: 1px solid rgba(219, 192, 126, .38); border-radius: 12px; box-shadow: 0 18px 42px rgba(0, 0, 0, .34); backdrop-filter: blur(14px); }
   .roster-row > strong small, .player-resources small, .sync-state { font-size: .6875rem; }
   .network-access-list summary, .network-access-list button, .route-inspector dt { font-size: .75rem; }
 }
@@ -459,6 +461,51 @@
 
 .stage-caption[data-focused="false"] { display: none !important; }
 .stage-caption[data-focused="true"] { display: grid !important; }
+.event-history-bar {
+  position: absolute;
+  z-index: 35;
+  right: calc(var(--hud-right-width) + 28px);
+  bottom: 18px;
+  width: min(390px, calc(100vw - var(--hud-left-width) - var(--hud-right-width) - 84px));
+  display: grid;
+  gap: 3px;
+  padding: 10px 13px;
+  color: #eadfc8;
+  background: linear-gradient(145deg, rgba(43, 53, 42, .94), rgba(18, 31, 22, .96));
+  border: 1px solid rgba(219, 160, 92, .42);
+  border-left: 3px solid var(--risk);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .32);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+.event-history-bar b { color: #f1d39a; font-size: .86rem; }
+.event-history-bar span { color: #cfc4aa; font-size: .72rem; line-height: 1.4; }
+.event-history-bar .event-history-kicker { color: #d9b866; font-size: .66rem; font-weight: 700; letter-spacing: .08em; }
+.event-map-notice {
+  position: absolute;
+  z-index: 9;
+  top: calc(var(--hud-panel-top) + 12px);
+  left: calc(var(--map-left-clearance) + 28px);
+  display: grid;
+  gap: 3px;
+  max-width: 310px;
+  padding: 8px 11px;
+  color: #eadfc8;
+  background: rgba(61, 45, 33, .88);
+  border: 1px solid rgba(219, 160, 92, .46);
+  border-left: 3px solid var(--risk);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .26);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+.event-map-notice b { color: #f0c889; font-size: .76rem; }
+.event-map-notice span { color: #e0d2b7; font-size: .7rem; line-height: 1.4; }
+@media (max-width: 1100px) {
+  .event-history-bar { right: 16px; bottom: 76px; left: 16px; width: auto; }
+  .event-map-notice { top: 62px; left: 16px; max-width: calc(100% - 90px); }
+}
 @media (min-width: 761px) {
   .network-stage .action-target-guide { bottom: 112px !important; z-index: 38 !important; }
 }
