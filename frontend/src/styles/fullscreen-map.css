@@ -1824,3 +1824,73 @@
   color: #e8cb86;
   font-weight: 700;
 }
+
+.condition-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 7px;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.condition-row:not(:disabled):hover,
+.condition-row:not(:disabled):focus-visible {
+  background: rgba(219, 192, 126, .12);
+  border-color: rgba(219, 192, 126, .36);
+}
+
+.condition-row:disabled { cursor: default; }
+
+/* Final desktop HUD contract: each side rail scrolls independently, while
+   draggable drawers reserve their own handle instead of hijacking disclosure. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column,
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    display: block !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector .inspector-content {
+    overflow: visible !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud {
+    width: min(100%, 760px) !important;
+    max-width: 760px !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-conditions .condition-row {
+    min-width: 0;
+    align-items: start;
+    white-space: normal;
+  }
+
+  .timeline-drawer summary {
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .timeline-drawer .timeline-drag-handle {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .timeline-drawer .timeline-drag-handle:active { cursor: grabbing; }
+  .timeline-drawer .timeline-drag-handle img { width: 18px; height: 18px; object-fit: contain; }
+}

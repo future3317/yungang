@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ScenarioHeader } from './ScenarioHeader';
 import type { GameState } from '../../types/game';
 
@@ -16,7 +16,7 @@ const state = {
     core_projects_target: 1,
     objectives_completed: 0,
     objectives_target: 2,
-    victory_conditions: [{ id: 'project', kind: 'progress', label: '完成核心项目', current: 0, target: 1, remaining: 1, status: 'incomplete', related_labels: ['云冈多域总汇'] }],
+    victory_conditions: [{ id: 'project', kind: 'progress', label: '完成核心项目', current: 0, target: 1, remaining: 1, status: 'incomplete', related_ids: ['site_yungang'], related_labels: ['云冈多域总汇'] }],
     failure_conditions: [{ id: 'weathering_control', kind: 'limit', label: '风化压力', current: 1, target: 5, remaining: 4, operator: 'lt' }],
     weathering: 1,
     weathering_limit: 5,
@@ -39,5 +39,17 @@ describe('ScenarioHeader', () => {
     expect(screen.getAllByText(/完成核心项目/).length).toBeGreaterThanOrEqual(2);
     expect(screen.getByRole('button', { name: /收起胜利条件/ })).toBeVisible();
     expect(screen.getByText('关联：云冈多域总汇')).toBeVisible();
+  });
+
+  it('focuses a related map target when a victory condition is selected', () => {
+    const onFocusGoal = vi.fn();
+    render(<ScenarioHeader state={state} scenarioName="风沙与石" connection="已连接" onFocusGoal={onFocusGoal} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /查看胜利条件/ }));
+    const goalButton = screen.getAllByRole('button', { name: /完成核心项目/ }).find(button => !button.hasAttribute('disabled'));
+    expect(goalButton).toBeDefined();
+    fireEvent.click(goalButton!);
+
+    expect(onFocusGoal).toHaveBeenCalledWith(['site_yungang']);
   });
 });
