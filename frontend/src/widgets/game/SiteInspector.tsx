@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target, X } from 'lucide-react';
-import type { Action, ActionType, ContentCard, ContentEvent, GameState, Meta, Site, Task } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, Site, Task } from '../../types/game';
 import { comboNames, contentClassName, domainName, eventTargetRuleName, eventTypeName, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
-import { metricLabel, previewDeltaText } from './gameUi';
+import { metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
 
 type InspectorTab = 'task' | 'event' | 'market';
@@ -12,7 +12,7 @@ const domainAssets: Partial<Record<string, string>> = {
   pattern: assetUrl('game-ui/domains/ui_yungang_domain_pattern_01.png'),
 };
 
-export function SiteInspector({ state, meta, site, task, event, cards, legal, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventOpenTargetLabels = [], className = '' }: {
+export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventOpenTargetLabels = [], className = '' }: {
   state: GameState;
   meta: Meta;
   site: Site;
@@ -20,6 +20,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   event?: ContentEvent;
   cards: Record<string, ContentCard>;
   legal: Action[];
+  actionOptions: ActionOption[];
   actionMode: ActionType | null;
   collapsed: boolean;
   onCollapsedChange: (next: boolean) => void;
@@ -48,6 +49,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const isCurrentSite = active.location === site.id;
   const action = legal.find(item => item.target_id === site.id || item.target_site_id === site.id) || legal.find(item => item.type === 'explore' && isCurrentSite);
   const eventResponseAvailable = state.pending_choice?.kind === 'event';
+  const interventionActions = actionOptions.filter(item => item.type === 'choose_intervention').flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
   const contributions = task?.contributed_cards || [];
   const matchingHand = active.hand.filter(id => task?.required_domains.includes(cards[id]?.domain || '')).length;
   const marketCards = state.market.map(id => cards[id]).filter(Boolean);
@@ -89,7 +91,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           </div>
           {task.required_origin_diversity > 1 && <div className="task-rule-callout"><Info size={15} /><span>这段故事需要 {task.required_origin_diversity} 种来源彼此印证。{task.combo_requirement?.preferred_origins?.length ? `指定来源：${formatRequirementValues(meta, 'origins', task.combo_requirement.preferred_origins)}。` : ''}带回不同来处的线索，才能让联系站得住脚。</span></div>}
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
-          <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={legal.filter(item => item.type === 'choose_intervention')} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
+          <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={interventionActions} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
           {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
           <div className="task-action-row"><button type="button" disabled={!exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{exploreStatus}</span></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
