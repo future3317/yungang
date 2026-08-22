@@ -51,6 +51,8 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const contributions = task?.contributed_cards || [];
   const matchingHand = active.hand.filter(id => task?.required_domains.includes(cards[id]?.domain || '')).length;
   const marketCards = state.market.map(id => cards[id]).filter(Boolean);
+  const exploreAvailable = isCurrentSite && legal.some(item => item.type === 'explore');
+  const exploreStatus = !isCurrentSite ? '抵达节点后才能寻访' : !marketCards.length ? '本轮市场暂时没有可取线索' : !exploreAvailable ? '行动点不足或当前阶段不可寻访' : matchingHand ? '手牌里已有待归类证据' : '从市场挑选与委托相关的线索';
   const tabId = (name: InspectorTab) => `inspector-tab-${site.id}-${name}`;
   const panelId = (name: InspectorTab) => `inspector-panel-${site.id}-${name}`;
 
@@ -89,7 +91,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           <div className="domain-list">{task.required_domains.map(domain => <span key={domain}>{domainAssets[domain] && <img src={domainAssets[domain]} alt="" />}{domainName(meta, domain)}</span>)}</div>
           <EvidenceLedger task={task} cards={cards} hand={active.hand} meta={meta} disabled={!isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={legal.filter(item => item.type === 'choose_intervention')} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
           {task.progress?.requirements?.length ? <div className="requirement-list" aria-label="任务条件进度">{task.progress.requirements.map(requirement => <div key={requirement.key} className={requirement.complete ? 'complete' : ''}><span>{requirement.complete ? <Check size={12} /> : <Info size={12} />}</span><b>{requirement.label}</b><small>{requirement.missing?.length ? `还需要：${formatRequirementValues(meta, requirement.key, requirement.missing)}` : typeof requirement.current === 'number' && typeof requirement.target === 'number' ? `${requirement.current} / ${requirement.target}` : requirement.complete ? '已满足' : '尚未满足'}</small></div>)}</div> : null}
-          <div className="task-action-row"><button type="button" disabled={!isCurrentSite} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{matchingHand ? '手牌里已有待归类证据' : '从市场挑选与委托相关的线索'}</span></div>
+          <div className="task-action-row"><button type="button" disabled={!exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{exploreStatus}</span></div>
           {!isCurrentSite && <div className="task-access-hint"><MapPinned size={15} />你可以先读完这里的记载；抵达节点后，才能亲自寻访和交付。</div>}
           {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
         </> : <div className="empty-tab"><Target size={22} /><h3>这里暂时没有开放任务</h3><p>先查看地图上其他节点，或等待事件目标出现。</p></div>}
@@ -104,7 +106,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
         <p className="market-help">三件线索各自指向不同的文化脉络。金边线索能回应眼前的委托，其他线索也许会在下一处节点派上用场；取走一件消耗 1 AP。</p>
         <div className="market-legend"><span className="legend-match">金边推荐 · 当前委托优先</span><span>普通线索 · 留作后用</span><span>手牌最多 3 件</span></div>
         {!isCurrentSite && <div className="task-access-hint"><Compass size={15} />你可以先辨认市场中的线索；抵达{site.name}后，才能将它带走，不会提前消耗 AP。</div>}
-        <div className="market-row">{marketCards.map(item => {
+        {!marketCards.length && <div className="empty-tab"><Library size={22} /><h3>本轮没有可取线索</h3><p>等待下一次市场补充，或先处理手边已有的证据。</p></div>}<div className="market-row">{marketCards.map(item => {
           const explore = legal.find(candidate => candidate.type === 'explore' && candidate.card_id === item.id);
           const useful = Boolean(task?.required_domains.includes(item.domain || ''));
           const description = textField(item, 'description', 'summary') || '一条等待被放入更大文化脉络的线索。';
