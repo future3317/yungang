@@ -1,4 +1,4 @@
-import type { Action, GameState, Meta, PlayMode, Room, RoomCredentials, Task } from '../../types/game';
+import type { Action, ArchiveSummary, GameState, Meta, PlayMode, Room, RoomCredentials, Task } from '../../types/game';
 import type { components } from './generated';
 
 type ActionRequest = components['schemas']['ActionRequest'];
@@ -108,6 +108,7 @@ function gameRequest(url: string, init?: RequestInit) {
 
 export const api = {
   meta: () => request<Meta>('/api/meta'),
+  archives: () => request<ArchiveSummary[]>('/api/archives'),
   game: (id: string) => gameRequest(`/api/games/${encodeURIComponent(id)}`),
   create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => gameRequest('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed }) }),
   action: (id: string, action: Action, playerId: string, revision: number) => { const payload: ActionRequest = { player_id: playerId, action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }; return gameRequest(`/api/games/${encodeURIComponent(id)}/actions`, { method: 'POST', body: JSON.stringify(payload) }); },

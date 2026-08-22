@@ -100,3 +100,7 @@
 .card-use-choice-immediate { border-color: rgba(115, 159, 161, .38); }
 .card-use-choice-immediate > b { color: var(--discovery); }
 .card-use-choice .primary-cta { justify-self: start; margin-top: 2px; }
+.dialog { position: relative; }
+.dialog > .dialog-close { position: absolute; z-index: 2; top: 11px; right: 11px; width: 34px; height: 34px; display: grid; place-items: center; padding: 0; color: #f1e5ca; background: rgba(19, 31, 23, .86); border: 1px solid rgba(225, 205, 159, .34); border-radius: 50%; line-height: 1; }
+.dialog > .dialog-close:hover:not(:disabled), .dialog > .dialog-close:focus-visible { color: #fff8e6; background: rgba(89, 70, 39, .9); border-color: var(--connection); }
+.dialog > .dialog-close:disabled { cursor: not-allowed; opacity: .55; }

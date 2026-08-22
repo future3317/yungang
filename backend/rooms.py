@@ -237,6 +237,17 @@ class RoomService:
             row = db.execute(self.repository.database.sql("SELECT payload FROM rooms WHERE session_id=? LIMIT 1"), (session_id,)).fetchone()
         return json.loads(row[0]) if row else None
 
+    def rooms_by_session(self) -> dict[str, dict[str, Any]]:
+        with self.repository.database.connect() as db:
+            rows = db.execute(self.repository.database.sql("SELECT session_id, payload FROM rooms WHERE session_id IS NOT NULL")).fetchall()
+        result: dict[str, dict[str, Any]] = {}
+        for session_id, payload in rows:
+            try:
+                result[str(session_id)] = json.loads(payload)
+            except (TypeError, json.JSONDecodeError):
+                continue
+        return result
+
     @staticmethod
     def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, connected: bool) -> dict[str, Any]:
         return {"seat_id": seat_id, "player_id": f"player-{seat_id}", "name": name.strip()[:24] or "同行者", "role_id": role_id, "ready": False, "connected": connected, "role_locked": False, "token_hash": _digest(token)}

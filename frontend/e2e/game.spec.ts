@@ -14,7 +14,7 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
-  await expect(page.getByRole('heading', { name: '本局地图' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '云冈行旅地图' })).toBeVisible();
   const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await tutorialClose.isVisible()) await tutorialClose.click();
 }
@@ -41,8 +41,8 @@ test('desktop HUD keeps side rails below the top bar and moves the shared goal p
   expect(roster).not.toBeNull();
   expect(roster!.y).toBeGreaterThanOrEqual(header!.y + header!.height + 12);
 
-  const goal = page.getByRole('region', { name: '共同目标进度' });
-  const handle = page.getByRole('button', { name: '拖动共同目标面板' });
+  const goal = page.getByRole('region', { name: '胜利清单' });
+  const handle = page.getByRole('button', { name: '拖动胜利清单面板' });
   const before = await goal.boundingBox();
   const handleBox = await handle.boundingBox();
   expect(before).not.toBeNull();
@@ -61,7 +61,9 @@ test('game actions expose a guided target mode without internal enums', async ({
   const move = page.getByRole('button', { name: /^移动/ }).first();
   await expect(move).toBeVisible();
   await move.click();
-  await expect(page.getByRole('status').filter({ hasText: /正在选择.*目标/ })).toBeVisible();
+  const actionTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await actionTutorialClose.isVisible()) await actionTutorialClose.click();
+  await expect(page.locator('.action-preview')).toBeVisible();
   const bodyText = await page.locator('body').innerText();
   expect(bodyText).not.toMatch(/use_action_card|form_interpretation|project_[0-9]+/);
 });

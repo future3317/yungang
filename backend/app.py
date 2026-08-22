@@ -10,7 +10,7 @@ from .actions import dispatch
 from .content import Content
 from .database import database_target_from_environment
 from .engine import GameEngine
-from .models import ActionRequest, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
+from .models import ActionRequest, ArchiveSummary, CreateGameRequest, GameState, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
 from .repository import GameRepository
 from .rooms import RoomRepository, RoomService
 
@@ -81,6 +81,37 @@ def create_game(request: CreateGameRequest) -> GameState:
     state = engine.new_game(session_id, request.player_ids, request.difficulty_id, request.scenario_id, seed)
     repo.save(state)
     return state
+
+
+@app.get("/api/archives", response_model=list[ArchiveSummary])
+def list_archives() -> list[ArchiveSummary]:
+    rooms = room_service.rooms_by_session()
+    archives: list[ArchiveSummary] = []
+    for session_id, raw_state in repo.list_raw():
+        try:
+            state = GameState.model_validate(json.loads(raw_state))
+        except (TypeError, json.JSONDecodeError, ValueError):
+            continue
+        room = rooms.get(session_id)
+        journal = state.shared.journal or []
+        timestamps = [entry.get("created_at") for entry in journal if isinstance(entry, dict) and entry.get("created_at")]
+        updated_at = max(timestamps) if timestamps else None
+        status = str(room.get("status")) if room else ("completed" if state.shared.outcome else "in_progress")
+        archives.append(ArchiveSummary(
+            archive_id=str(room.get("room_id")) if room else session_id,
+            session_id=session_id,
+            room_id=str(room.get("room_id")) if room else None,
+            mode=str(room.get("play_mode")) if room else "solo",
+            status=status,
+            scenario_id=state.scenario_id or state.shared.scenario_id,
+            difficulty_id=state.difficulty_id,
+            turn=state.shared.turn,
+            max_rounds=state.shared.max_rounds,
+            updated_at=updated_at,
+            outcome=state.shared.outcome,
+            players=[{"name": player.name, "role_id": player.role_id} for player in state.players.values()],
+        ))
+    return sorted(archives, key=lambda item: item.updated_at or "", reverse=True)
 
 @app.get("/api/games/{session_id}", response_model=GameState)
 def get_game(session_id: str) -> GameState:

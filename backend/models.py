@@ -304,6 +304,26 @@ class RoomEventTicket(BaseModel):
     ticket: str
     expires_in: int
 
+
+class ArchivePlayer(BaseModel):
+    name: str
+    role_id: Optional[str] = None
+
+
+class ArchiveSummary(BaseModel):
+    archive_id: str
+    session_id: str
+    room_id: Optional[str] = None
+    mode: str
+    status: str
+    scenario_id: str
+    difficulty_id: str
+    turn: int
+    max_rounds: int
+    updated_at: Optional[str] = None
+    outcome: Optional[GameOutcome] = None
+    players: List[ArchivePlayer] = Field(default_factory=list)
+
 class ActionRequest(BaseModel):
     player_id: str
     action: ActionType

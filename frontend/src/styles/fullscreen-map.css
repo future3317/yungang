@@ -1831,3 +1831,33 @@
   /* The event summary is a top-bar item. The map keeps only its target rings. */
   .game-grid.hud-slot-center .event-map-notice { display: none !important; }
 }
+@media (min-width: 1101px) {
+  .game-header .brand-group { min-width: 0; }
+  .header-turn, .game-reference { flex: 0 0 auto; padding: 5px 8px; color: #e8cf97; background: rgba(20, 42, 28, .68); border: 1px solid rgba(216, 184, 102, .28); border-radius: 7px; font: 700 .68rem var(--font-data); white-space: nowrap; }
+  .game-reference { color: #bfcab5; font-weight: 500; }
+  .role-skill-tip { position: relative; display: inline-flex; align-items: center; gap: 5px; width: fit-content; margin: 5px 0 8px; padding: 5px 8px; color: #efd59a; background: rgba(24, 49, 32, .7); border: 1px solid rgba(216, 184, 102, .28); border-radius: 7px; cursor: help; font-size: .74rem; }
+  .role-skill-popover { position: absolute; z-index: 90; bottom: calc(100% + 8px); left: 0; display: grid; gap: 4px; width: 230px; padding: 10px; color: #e8dfcc; background: linear-gradient(145deg, rgba(22, 48, 32, .98), rgba(10, 25, 16, .98)); border: 1px solid rgba(216, 184, 102, .55); border-radius: 9px; box-shadow: 0 12px 28px rgba(0, 0, 0, .38); opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 140ms ease, transform 140ms ease; }
+  .role-skill-popover b { color: #f5dfaa; }
+  .role-skill-popover span { color: #c7c4b5; line-height: 1.5; }
+  .role-skill-tip:hover .role-skill-popover, .role-skill-tip:focus-visible .role-skill-popover { opacity: 1; transform: translateY(0); }
+  .stage-caption[data-focused="true"] { display: grid !important; grid-template-columns: 64px minmax(0, 1fr) auto auto; align-items: center; gap: 10px; max-width: min(700px, calc(100% - 40px)); }
+  .stage-column > .stage-caption[data-focused="true"] { bottom: calc(var(--hud-footer-bottom) + 82px) !important; }
+  .stage-column > .stage-caption[data-focused="false"] { bottom: calc(var(--hud-footer-bottom) + 82px) !important; }
+  .stage-caption[data-focused="false"] { display: inline-flex !important; align-items: center; width: auto; max-width: min(360px, calc(100% - 40px)); cursor: pointer; }
+  .focus-card-toggle { padding: 6px 8px; color: #d9c18a; background: rgba(20, 43, 28, .7); border: 1px solid rgba(216, 184, 102, .3); border-radius: 6px; white-space: nowrap; }
+  .focus-card-collapsed { color: #e4cf9a; }
+  .hud-slot-bottom { position: fixed !important; z-index: 76 !important; right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); bottom: 14px; left: calc(var(--map-left-clearance) + var(--hud-center-gutter)); pointer-events: none; }
+  .hud-slot-bottom .timeline-drawer { width: min(760px, 100%); margin: 0 auto; pointer-events: auto; }
+  .timeline-drawer > .timeline-body { max-height: min(300px, 34dvh); overflow-y: auto; scrollbar-color: rgba(220, 188, 105, .58) rgba(7, 15, 10, .28); }
+  .game-grid.hud-slot-center > .site-inspector { display: block !important; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-width: thin; scrollbar-color: rgba(220, 188, 105, .58) rgba(7, 15, 10, .28); }
+  .game-grid.hud-slot-center > .site-inspector .inspector-content { height: auto !important; overflow: visible !important; }
+  .game-grid.hud-slot-center > .site-inspector::-webkit-scrollbar,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar { width: 10px; }
+  .game-grid.hud-slot-center > .site-inspector::-webkit-scrollbar-track,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-track { background: rgba(7, 15, 10, .36); border-left: 1px solid rgba(220, 188, 105, .12); }
+  .game-grid.hud-slot-center > .site-inspector::-webkit-scrollbar-thumb,
+  .game-grid.hud-slot-center > .roster-column::-webkit-scrollbar-thumb { min-height: 42px; background: rgba(220, 188, 105, .62); border: 2px solid rgba(7, 15, 10, .36); border-radius: 999px; }
+  .goal-hud { width: min(100%, 700px) !important; }
+  .goal-hud.is-open { max-height: min(520px, calc(100dvh - 104px)); }
+  .goal-hud.is-open .goal-conditions { max-height: min(390px, calc(100dvh - 190px)); overflow-y: auto; scrollbar-gutter: stable; }
+}

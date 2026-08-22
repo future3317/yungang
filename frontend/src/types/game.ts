@@ -34,4 +34,5 @@ export type PlayMode = 'solo' | 'local' | 'multi_device';
 export interface RoomSeat { seat_id: string; name: string; role_id?: string | null; ready: boolean; connected: boolean; role_locked?: boolean; }
 export interface Room { room_id: string; status: 'lobby' | 'in_progress' | 'paused' | 'completed' | 'abandoned' | string; play_mode: PlayMode; scenario_id: string; difficulty_id: string; max_players: number; session_id?: string | null; viewer_seat_id?: string | null; seats: RoomSeat[]; created_at?: string; updated_at?: string; }
 export interface RoomCredentials { room: Room; host_token?: string; seat_token: string; session_id?: string; }
+export interface ArchiveSummary { archive_id: string; session_id: string; room_id?: string | null; mode: PlayMode | string; status: string; scenario_id: string; difficulty_id: string; turn: number; max_rounds: number; updated_at?: string | null; outcome?: GameOutcome; players: Array<{ name: string; role_id?: string | null }>; }
 

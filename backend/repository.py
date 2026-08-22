@@ -46,3 +46,8 @@ class GameRepository:
         with self.database.connect() as db:
             row = db.execute(self.database.sql("SELECT COUNT(*) FROM games")).fetchone()
         return row[0] + 1
+
+    def list_raw(self) -> list[tuple[str, str]]:
+        with self.database.connect() as db:
+            rows = db.execute(self.database.sql("SELECT session_id, state FROM games")).fetchall()
+        return [(str(session_id), str(state)) for session_id, state in rows]

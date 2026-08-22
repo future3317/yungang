@@ -38,6 +38,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/archives": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Archives */
+        get: operations["list_archives_api_archives_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/games/{session_id}": {
         parameters: {
             query?: never;
@@ -429,6 +446,44 @@ export interface components {
          * @enum {string}
          */
         ActionType: "move" | "explore" | "interpret_evidence" | "form_interpretation" | "choose_intervention" | "restore" | "exchange" | "use_skill" | "play_card" | "end_turn" | "resolve_event" | "select_market_card" | "discard" | "survey_route" | "restore_route" | "establish_connection" | "prepare" | "select_upgrade" | "plan" | "use_action_card" | "use_node_ability" | "use_upgrade" | "end_planning";
+        /** ArchivePlayer */
+        ArchivePlayer: {
+            /** Name */
+            name: string;
+            /** Role Id */
+            role_id?: string | null;
+        };
+        /** ArchiveSummary */
+        ArchiveSummary: {
+            /** Archive Id */
+            archive_id: string;
+            /** Session Id */
+            session_id: string;
+            /** Room Id */
+            room_id?: string | null;
+            /** Mode */
+            mode: string;
+            /** Status */
+            status: string;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Difficulty Id */
+            difficulty_id: string;
+            /** Turn */
+            turn: number;
+            /** Max Rounds */
+            max_rounds: number;
+            /** Updated At */
+            updated_at?: string | null;
+            outcome?: components["schemas"]["GameOutcome"] | null;
+            /** Players */
+            players?: components["schemas"]["ArchivePlayer"][];
+        };
+        /**
+         * ChoiceKind
+         * @enum {string}
+         */
+        ChoiceKind: "event" | "view_select" | "discard" | "action_card" | "archive_select" | "archive_retrieve" | "role_upgrade";
         /** CreateGameRequest */
         CreateGameRequest: {
             /** Player Ids */
@@ -448,6 +503,60 @@ export interface components {
             /** Daily Seed */
             daily_seed?: string | null;
         };
+        /** EventForecastScope */
+        EventForecastScope: {
+            /** Target Rule */
+            target_rule?: string | null;
+            /**
+             * Hidden Target Count
+             * @default 0
+             */
+            hidden_target_count: number;
+        };
+        /** EventInstance */
+        EventInstance: {
+            /** Event Id */
+            event_id?: string | null;
+            /** @default forecast */
+            status: components["schemas"]["EventStatus"];
+            forecast_scope?: components["schemas"]["EventForecastScope"];
+            /** Revealed Targets */
+            revealed_targets?: string[];
+            /** Resolved Targets */
+            resolved_targets?: string[];
+            /** Mitigation */
+            mitigation?: components["schemas"]["EventRecord"][];
+            /** Resolution */
+            resolution?: components["schemas"]["EventRecord"][];
+        };
+        /** EventRecord */
+        EventRecord: {
+            /** Type */
+            type?: string | null;
+            /** Target Id */
+            target_id?: string | null;
+            /** Route Id */
+            route_id?: string | null;
+            /** Result */
+            result?: string | null;
+            /** Label */
+            label?: string | null;
+            /** Changes */
+            changes?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Reason */
+            reason?: string | null;
+            /** Amount */
+            amount?: number | null;
+            /** Trigger */
+            trigger?: string | null;
+        };
+        /**
+         * EventStatus
+         * @enum {string}
+         */
+        EventStatus: "forecast" | "resolved";
         /** FeedbackChange */
         FeedbackChange: {
             /** Metric */
@@ -523,10 +632,7 @@ export interface components {
             };
             /** Market */
             market?: string[];
-            /** Pending Choice */
-            pending_choice?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            } | null;
+            pending_choice?: components["schemas"]["PendingChoice"] | null;
             /** Action Options */
             action_options?: components["schemas"]["ActionOption"][];
             /**
@@ -761,6 +867,45 @@ export interface components {
              * @default false
              */
             completed: boolean;
+        };
+        /** PendingChoice */
+        PendingChoice: {
+            kind: components["schemas"]["ChoiceKind"];
+            /** Options */
+            options?: components["schemas"]["PendingChoiceOption"][];
+            /** Cards */
+            cards?: string[];
+            /** Event Id */
+            event_id?: string | null;
+            /** Card Id */
+            card_id?: string | null;
+            /** Player Id */
+            player_id?: string | null;
+            /** Site Id */
+            site_id?: string | null;
+            /** Next Card Id */
+            next_card_id?: string | null;
+            /** Next Action Card Id */
+            next_action_card_id?: string | null;
+            /** Resume Choice */
+            resume_choice?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+        };
+        /** PendingChoiceOption */
+        PendingChoiceOption: {
+            /** Id */
+            id: string;
+            /** Label */
+            label?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Trigger */
+            trigger?: string | null;
+            /** Strategic Direction */
+            strategic_direction?: string | null;
         };
         /**
          * Phase
@@ -1066,6 +1211,71 @@ export interface components {
             /** Session Id */
             session_id: string;
         };
+        /** RoundMetrics */
+        RoundMetrics: {
+            /**
+             * Weathering
+             * @default 0
+             */
+            weathering: number;
+            /**
+             * Weathering Track
+             * @default 0
+             */
+            weathering_track: number;
+            /**
+             * Restoration Resource
+             * @default 0
+             */
+            restoration_resource: number;
+            /**
+             * Research Clues
+             * @default 0
+             */
+            research_clues: number;
+            /**
+             * Influence
+             * @default 0
+             */
+            influence: number;
+        };
+        /** RoundSummary */
+        RoundSummary: {
+            /**
+             * Round
+             * @default 0
+             */
+            round: number;
+            /** Event Id */
+            event_id?: string | null;
+            /** Event Targets */
+            event_targets?: string[];
+            /** Event Resolution */
+            event_resolution?: components["schemas"]["EventRecord"][];
+            before?: components["schemas"]["RoundMetrics"];
+            after?: components["schemas"]["RoundMetrics"];
+            /**
+             * Planning Mark Count
+             * @default 0
+             */
+            planning_mark_count: number;
+            /**
+             * Completed Projects
+             * @default 0
+             */
+            completed_projects: number;
+            /**
+             * Completed Objectives
+             * @default 0
+             */
+            completed_objectives: number;
+            /** Player Contributions */
+            player_contributions?: {
+                [key: string]: number;
+            };
+            /** Round Effects */
+            round_effects?: components["schemas"]["EventRecord"][];
+        };
         /** RouteState */
         RouteState: {
             /** Id */
@@ -1270,22 +1480,20 @@ export interface components {
             }[];
             /** Event Targets */
             event_targets?: string[];
-            /** Event Instance */
-            event_instance?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            event_instance?: components["schemas"]["EventInstance"];
             /** Event History */
             event_history?: {
                 [key: string]: components["schemas"]["JsonValue"];
             }[];
-            /** Round Summary */
-            round_summary?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            round_summary?: components["schemas"]["RoundSummary"];
             /** Reserved Market Cards */
             reserved_market_cards?: string[];
             /** Scenario Rule Uses */
             scenario_rule_uses?: string[];
+            /** Scenario Round Baseline */
+            scenario_round_baseline?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
         };
         /** SiteState */
         SiteState: {
@@ -1461,6 +1669,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_archives_api_archives_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ArchiveSummary"][];
                 };
             };
         };
