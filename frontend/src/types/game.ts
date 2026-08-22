@@ -27,6 +27,24 @@ export type Site = components['schemas']['SiteState'] & {
   connections?: string[]; node_ability?: { name: string; description: string };
   active_task_id?: string | null;
 };
+export type ContentSite = {
+  id: string;
+  name?: string;
+  content_class?: string;
+  x: number;
+  y: number;
+  connections?: string[];
+  domains?: string[];
+  node_ability?: components['schemas']['NodeAbilityContract'] | null;
+  active_task_id?: string | null;
+  gameplay_hint?: string | null;
+  icon_asset?: string | null;
+  scene_asset?: string | null;
+  summary?: string | null;
+  node_kind?: 'core' | 'support' | 'event';
+  layout?: { x?: number; y?: number; anchor?: 'start' | 'middle' | 'end'; labelAnchor?: 'left' | 'right' | 'above' | 'below' } | null;
+};
+export type SiteReference = (Site | ContentSite) & { status?: SiteStatus; node_kind?: 'core' | 'support' | 'event' };
 export type Task = components['schemas']['TaskState'];
 export type Shared = Omit<components['schemas']['PublicSharedState'], 'player_order' | 'completed_domains' | 'log' | 'planning_marks' | 'journal' | 'event_targets' | 'event_history'> & { player_order: string[]; completed_domains: string[]; log: string[]; planning_marks?: Record<string, Array<{ target_id: string; turn: string; collaborated?: boolean; collaboration_action?: string | null }>>; journal?: Array<{ id: string; round: number; type: string; message: string; effects?: unknown[]; created_at: string; player_id?: string | null }>; event_targets?: string[]; event_history?: Array<{ event_id?: string | null; round: number; resolution?: Array<{ changes?: Record<string, string | number> }> }>; };
 export type RouteState = components['schemas']['RouteState'];
@@ -50,11 +68,11 @@ export interface Action { type: ActionType; label?: string; description?: string
 export interface TaskRequirement { key: string; label: string; current?: number; target?: number; complete: boolean; missing?: string[]; }
 export type ContentCard = components['schemas']['CultureCardContract'] & { summary?: string; };
 export type ContentEvent = components['schemas']['EventContract'] & { summary?: string; action_cost_modifiers?: Record<string, number>; mitigation?: Array<Record<string, unknown>>; };
-export type ContentRole = Omit<components['schemas']['RoleContract'], 'ability' | 'icon_asset'> & { icon_asset?: string; summary?: string; ability: { name: string; action?: string; description?: string; ap_cost?: number; max_hops?: number; [key: string]: unknown; }; };
+export type ContentRole = components['schemas']['RoleContract'] & { summary?: string };
 export type DomainMeta = components['schemas']['DomainMetaContract'];
-export type Region = components['schemas']['RegionContract'] & { hull_points?: Array<{ x: number; y: number }>; label_position?: { x: number; y: number }; content_review_status?: string; };
-export type Scenario = Omit<components['schemas']['ScenarioContract'], 'scenario_rule'> & { scenario_rule?: { description: string; trigger: string; effect: { type?: string; amount?: number }; additional_effects?: Array<{ trigger?: string; effect?: { type?: string; amount?: number } }>; } | null; };
-export type Meta = Omit<components['schemas']['MetaResponse'], 'terminology' | 'domain_meta' | 'regions' | 'scenarios' | 'roles' | 'sites' | 'cards' | 'events' | 'tasks' | 'projects' | 'objectives' | 'difficulty'> & { terminology?: Partial<components['schemas']['TerminologyContract']>; domain_meta: Record<string, DomainMeta>; regions: Region[]; scenarios: Scenario[]; roles: ContentRole[]; sites: Site[]; cards: ContentCard[]; action_cards: components['schemas']['ActionCardContract'][]; events: ContentEvent[]; tasks: Task[]; projects: components['schemas']['ProjectContract'][]; objectives: components['schemas']['ObjectiveContract'][]; facets: components['schemas']['SiteFacetContract'][]; difficulty: components['schemas']['DifficultyContract'][]; effective_rules_preview?: Record<string, Record<string, unknown>>; };
+export type Region = components['schemas']['RegionContract'] & { hull_points?: Array<{ x: number; y: number }>; content_review_status?: string; };
+export type Scenario = components['schemas']['ScenarioContract'];
+export type Meta = Omit<components['schemas']['MetaResponse'], 'terminology' | 'domain_meta' | 'regions' | 'scenarios' | 'roles' | 'sites' | 'cards' | 'events' | 'tasks' | 'projects' | 'objectives' | 'difficulty'> & { terminology?: Partial<components['schemas']['TerminologyContract']>; domain_meta: Record<string, DomainMeta>; regions: Region[]; scenarios: Scenario[]; roles: ContentRole[]; sites: ContentSite[]; cards: ContentCard[]; action_cards: components['schemas']['ActionCardContract'][]; events: ContentEvent[]; tasks: components['schemas']['TaskContract'][]; projects: components['schemas']['ProjectContract'][]; objectives: components['schemas']['ObjectiveContract'][]; facets: components['schemas']['SiteFacetContract'][]; difficulty: components['schemas']['DifficultyContract'][]; effective_rules_preview?: Record<string, Record<string, unknown>>; };
 export type RoomSeat = components['schemas']['RoomSeat'];
 export type Room = components['schemas']['RoomPublic'] & { play_mode: PlayMode; seats: RoomSeat[]; session_id?: string | null; };
 export type RoomCredentials = components['schemas']['RoomCredentials'];

@@ -1,9 +1,9 @@
 import { Flag, Plus, Users } from 'lucide-react';
-import type { Action, GameState, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, GameState, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
 import { localizeActionText, resolveTargetName } from './gameUi';
 import { Panel } from '../ui/Primitives';
 
-export function PlanningPhase({ state, sites, routes = {}, projects = {}, actions, canAct = true, onChoose }: { state: GameState; sites: Record<string, Site>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; actions: Action[]; canAct?: boolean; onChoose: (action: Action) => void }) {
+export function PlanningPhase({ state, sites, routes = {}, projects = {}, actions, canAct = true, onChoose }: { state: GameState; sites: Record<string, SiteReference>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; actions: Action[]; canAct?: boolean; onChoose: (action: Action) => void }) {
   const marks = Object.entries(state.shared.planning_marks || {}).flatMap(([playerId, items]) => items.map(item => ({ ...item, playerId })));
   const targets = actions.filter(action => action.type === 'plan' && action.target_id);
   const hasCurrentDeclaration = Boolean(state.shared.active_player_id && marks.some(mark => mark.playerId === state.shared.active_player_id && String(mark.turn) === String(state.shared.turn)));

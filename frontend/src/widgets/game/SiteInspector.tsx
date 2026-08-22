@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target, X } from 'lucide-react';
-import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, Site, Task } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, SiteReference, Task } from '../../types/game';
 import { contentClassName, contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatProjectReward, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
 import { interpretationConfidenceGuidance, metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
@@ -16,7 +16,7 @@ const domainAssets: Partial<Record<string, string>> = {
 export function SiteInspector({ state, meta, site, task, event, cards, legal, actionOptions, actionMode, collapsed, onCollapsedChange, onExplore, onSelectAction, onInterpret, onFormInterpretation, onChooseIntervention, eventTargetLabels = [], eventTargetIds = [], eventOpenTargetLabels = [], canAct = true, className = '' }: {
   state: GameState;
   meta: Meta;
-  site: Site;
+  site: SiteReference;
   task?: Task;
   event?: ContentEvent;
   cards: Record<string, ContentCard>;
@@ -81,7 +81,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <button type="button" className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
       <header className="inspector-summary" tabIndex={0} aria-label="地点摘要，可滚动查看">
       <span className="eyebrow">当前聚焦地点</span>
-      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
+      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset || undefined, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
       <h2>{site.name}</h2>
       <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
       {site.status === 'at_risk' && <div className="site-alert-explanation"><b>红点提醒</b><span>节点已经承压，再受到一次事件损伤可能关闭。优先修护，或先降低本轮事件影响。</span></div>}

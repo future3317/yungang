@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { LocateFixed, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
-import type { ActionType, Player, Region, RouteState, Site } from '../../types/game';
+import type { ActionType, ContentSite, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 
 type MapActionMode = Extract<ActionType, 'move' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection'> | null;
@@ -15,7 +15,7 @@ const siteStatusNames: Record<string, string> = { stable: '稳定', at_risk: '�
 function routeRoadName(value?: string) { return routeRoadNames[value || ''] || '支路'; }
 function routeStatusName(value?: string) { return routeStatusNames[value || ''] || '通行'; }
 function siteStatusName(value?: string) { return siteStatusNames[value || ''] || '稳定'; }
-function nodeReason(site: Site, meta: Site, current: boolean, target: boolean, eventTarget: boolean) {
+function nodeReason(site: Site, meta: SiteReference, current: boolean, target: boolean, eventTarget: boolean) {
   if (site.status === 'closed') return '红点：这个节点已经关闭，先完成修护才能继续推进。';
   if (site.status === 'at_risk') return '红点：节点接近关闭，优先修护可避免回合结算后失去它。';
   if (eventTarget) return '橙色标记：本轮事件可能影响这里，提前准备可以降低损伤。';
@@ -31,14 +31,14 @@ function wrapMapText(value: string, maxChars = 18) {
   return lines.slice(0, 4);
 }
 
-function point(site: Site | undefined): Point { return { x: site?.layout?.x ?? site?.x ?? 50, y: site?.layout?.y ?? site?.y ?? 50 }; }
+function point(site: Site | ContentSite | undefined): Point { return { x: site?.layout && typeof site.layout === 'object' && !Array.isArray(site.layout) && typeof site.layout.x === 'number' ? site.layout.x : site?.x ?? 50, y: site?.layout && typeof site.layout === 'object' && !Array.isArray(site.layout) && typeof site.layout.y === 'number' ? site.layout.y : site?.y ?? 50 }; }
 function distance(a: Point, b: Point) { return Math.hypot(a.x - b.x, a.y - b.y); }
 type LabelLayout = { x: number; y: number; anchor: 'start' | 'middle' | 'end' };
 type LabelBox = { left: number; right: number; top: number; bottom: number };
 function labelWidth(name: string) { return Math.min(25, Math.max(8, [...name].length * 1.75)); }
 function intersects(a: LabelBox, b: LabelBox) { return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top; }
 export function labelBox(origin: Point, layout: LabelLayout, width: number): LabelBox { const left = layout.anchor === 'end' ? origin.x + layout.x - width : layout.anchor === 'middle' ? origin.x + layout.x - width / 2 : origin.x + layout.x; return { left, right: left + width, top: origin.y + layout.y - 2, bottom: origin.y + layout.y + 1.8 }; }
-export function computeNodePositions(sites: Site[], metas: Record<string, Site>) {
+export function computeNodePositions(sites: Site[], metas: Record<string, SiteReference>) {
   const output: Record<string, Point> = {};
   const placed: Array<{ point: Point; width: number }> = [];
   const gridFallback: Point[] = [];
@@ -73,7 +73,7 @@ function labelCandidates(preferred?: string): LabelLayout[] {
   radii.forEach(radius => orderedDirections.forEach(([dx, dy, anchor]) => candidates.push({ x: dx * radius, y: dy * radius * (Math.abs(dy) ? .72 : .18), anchor })));
   return candidates;
 }
-export function computeLabelLayouts(sites: Site[], metas: Record<string, Site>, lod: string, focusedId: string | null, nodePositions: Record<string, Point> = {}) {
+export function computeLabelLayouts(sites: Site[], metas: Record<string, SiteReference>, lod: string, focusedId: string | null, nodePositions: Record<string, Point> = {}) {
   const visible = sites.filter(site => (metas[site.id]?.node_kind || 'core') === 'core' || lod === 'detail' || focusedId === site.id);
   const occupied: LabelBox[] = sites.map(site => { const p = nodePositions[site.id] || point(metas[site.id] || site); return { left: p.x - 3.6, right: p.x + 3.6, top: p.y - 3.6, bottom: p.y + 3.6 }; });
   const output: Record<string, LabelLayout> = {};
@@ -89,13 +89,13 @@ export function computeLabelLayouts(sites: Site[], metas: Record<string, Site>, 
   });
   return output;
 }
-function regionLabelPosition(region: Region, sites: Record<string, Site>) { return region.label_position || region.site_ids.map(id => point(sites[id])).filter(Boolean)[0] || { x: 50, y: 50 }; }
+function regionLabelPosition(region: Region, sites: Record<string, SiteReference>) { const label = region.label_position; return label && typeof label.x === 'number' && typeof label.y === 'number' ? label : region.site_ids.map(id => point(sites[id])).filter(Boolean)[0] || { x: 50, y: 50 }; }
 function convexHull(points: Point[]) { if (points.length < 3) return points; const sorted = [...points].sort((a, b) => a.x - b.x || a.y - b.y); const cross = (a: Point, b: Point, c: Point) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x); const half = (values: Point[]) => values.reduce<Point[]>((stack, item) => { while (stack.length > 1 && cross(stack[stack.length - 2], stack[stack.length - 1], item) <= 0) stack.pop(); stack.push(item); return stack; }, []); const lower = half(sorted); const upper = half([...sorted].reverse()); return [...lower.slice(0, -1), ...upper.slice(0, -1)]; }
 function softHull(points: Point[]) { const hull = convexHull(points); if (hull.length < 3) return ''; const expanded = hull.map((item, index) => { const prev = hull[(index + hull.length - 1) % hull.length]; const next = hull[(index + 1) % hull.length]; return { x: Math.max(2, Math.min(98, item.x + (item.x - (prev.x + next.x) / 2) * .22)), y: Math.max(4, Math.min(96, item.y + (item.y - (prev.y + next.y) / 2) * .22)) }; }); return expanded.map((item, index) => { const next = expanded[(index + 1) % expanded.length]; const mid = { x: (item.x + next.x) / 2, y: (item.y + next.y) / 2 }; return index ? `Q ${item.x} ${item.y} ${mid.x} ${mid.y}` : `M ${mid.x} ${mid.y} Q ${item.x} ${item.y} ${mid.x} ${mid.y}`; }).join(' ') + ' Z'; }
-function routePath(from: Site, to: Site, route: RouteState) { const points = [point(from), ...(route.waypoints || []).map(([x, y]) => ({ x, y })), point(to)]; return points.reduce((path, item, index) => index === 0 ? `M ${item.x} ${item.y}` : `${path} L ${item.x} ${item.y}`, ''); }
+function routePath(from: Site | ContentSite, to: Site | ContentSite, route: RouteState) { const points = [point(from), ...(route.waypoints || []).map(([x, y]) => ({ x, y })), point(to)]; return points.reduce((path, item, index) => index === 0 ? `M ${item.x} ${item.y}` : `${path} L ${item.x} ${item.y}`, ''); }
 function fitTransform(sites: Site[]) { const points = sites.map(point); if (!points.length) return zoomIdentity; const minX = Math.min(...points.map(item => item.x)) - 5; const maxX = Math.max(...points.map(item => item.x)) + 5; const minY = Math.min(...points.map(item => item.y)) - 7; const maxY = Math.max(...points.map(item => item.y)) + 7; const span = Math.max(maxX - minX, maxY - minY, 1); const scale = Math.max(.78, Math.min(1.32, 76 / span)); return zoomIdentity.translate(50 - (minX + maxX) / 2 * scale, 50 - (minY + maxY) / 2 * scale).scale(scale); }
 
-export function HeritageNetwork({ sites, metaSites, regions = [], routes = {}, players, active, focusedId, reachableIds, actionMode, eventTargetIds = [], eventTargetLabels = [], eventName, onFocus }: { sites: Record<string, Site>; metaSites: Record<string, Site>; regions?: Region[]; routes?: Record<string, RouteState>; players: Player[]; active: Player; focusedId: string | null; reachableIds: ReadonlySet<string>; actionMode: MapActionMode; eventTargetIds?: ReadonlyArray<string>; eventTargetLabels?: string[]; eventName?: string; onFocus: (id: string) => void }) {
+export function HeritageNetwork({ sites, metaSites, regions = [], routes = {}, players, active, focusedId, reachableIds, actionMode, eventTargetIds = [], eventTargetLabels = [], eventName, onFocus }: { sites: Record<string, Site>; metaSites: Record<string, SiteReference>; regions?: Region[]; routes?: Record<string, RouteState>; players: Player[]; active: Player; focusedId: string | null; reachableIds: ReadonlySet<string>; actionMode: MapActionMode; eventTargetIds?: ReadonlyArray<string>; eventTargetLabels?: string[]; eventName?: string; onFocus: (id: string) => void }) {
   const svgRef = useRef<SVGSVGElement | null>(null); const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null); const transformRef = useRef<ZoomTransform>(zoomIdentity); const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null); const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity); const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null); const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null); const [hoveredSiteId, setHoveredSiteId] = useState<string | null>(null);
   const enabledSites = useMemo(() => Object.values(sites).filter(site => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(() => enabledSites.map(site => site.id).sort().join('|'), [enabledSites]);

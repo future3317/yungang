@@ -1,8 +1,8 @@
 import { AlertTriangle, Check, X } from 'lucide-react';
-import type { Action, ContentCard, Player, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ContentCard, Player, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
 import { actionLabels, localizeActionText, previewDeltaText, resolveTargetName } from './gameUi';
 
-export function resolveActionTargetName(action: Action, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, players: Record<string, Player> = {}) {
+export function resolveActionTargetName(action: Action, sites: Record<string, SiteReference>, routes: Record<string, RouteState> = {}, players: Record<string, Player> = {}) {
   const locationFirst = action.type === 'interpret_evidence' || action.type === 'form_interpretation' || action.type === 'choose_intervention';
   const target = locationFirst ? action.target_site_id || action.target_id || action.route_id : action.target_id || action.target_site_id || action.route_id;
   if (locationFirst && (!target || !sites[target])) return '当前地点';
@@ -10,7 +10,7 @@ export function resolveActionTargetName(action: Action, sites: Record<string, Si
   return resolveTargetName(target, sites, routes, {}, players);
 }
 
-export function ActionPreview({ action, sites, routes, projects = {}, cards, players = {}, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; cards: Record<string, ContentCard>; players?: Record<string, Player>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
+export function ActionPreview({ action, sites, routes, projects = {}, cards, players = {}, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, SiteReference>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; cards: Record<string, ContentCard>; players?: Record<string, Player>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
   const targetName = resolveActionTargetName(action, sites, routes, players);
   const cardName = action.card_id ? cards[action.card_id]?.name : undefined;
   const relation = action.type === 'interpret_evidence' ? (({ support: '支持', conflict: '冲突', pending: '待确认' } as Record<string, string>)[action.target_id || ''] || '') : '';

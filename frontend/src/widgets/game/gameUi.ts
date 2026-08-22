@@ -1,8 +1,8 @@
-import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Meta, Player, ProjectState, RouteState, Site } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentEvent, FeedbackChange, GameState, Meta, Player, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
 import { errorText } from './contentLabels';
 
 export type ActionMode = Extract<ActionType, 'move' | 'explore' | 'interpret_evidence' | 'restore' | 'survey_route' | 'restore_route' | 'establish_connection' | 'exchange' | 'plan'> | null;
-export type DisplayContext = { sites: Record<string, Site>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; players?: Record<string, Player> };
+export type DisplayContext = { sites: Record<string, SiteReference>; routes?: Record<string, RouteState>; projects?: Record<string, ProjectState>; players?: Record<string, Player> };
 
 export const actionLabels: Partial<Record<ActionType, string>> = {
   move: '移动',
@@ -119,12 +119,12 @@ export function localizeActionText(value?: string, context?: DisplayContext) {
   return text;
 }
 
-export function resolveTargetName(target: string | undefined, sites: Record<string, Site>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}, players: Record<string, Player> = {}) {
+export function resolveTargetName(target: string | undefined, sites: Record<string, SiteReference>, routes: Record<string, RouteState> = {}, projects: Record<string, ProjectState> = {}, players: Record<string, Player> = {}) {
   if (!target) return '当前地点';
   return routes[target]?.name || sites[target]?.name || projects[target]?.name || players[target]?.name || '未知目标';
 }
 
-export function localizeTimelineMessage(message: string, context: { sites: Record<string, Site>; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; players?: Record<string, Player> }) {
+export function localizeTimelineMessage(message: string, context: { sites: Record<string, SiteReference>; routes: Record<string, RouteState>; projects: Record<string, ProjectState>; players?: Record<string, Player> }) {
   return localizeActionText(message).replace(/\s*[（(]目标[：:]\s*([^）)]+)[）)]/g, (_, target: string) => `（目标：${resolveTargetName(target.trim(), context.sites, context.routes, context.projects, context.players)}）`);
 }
 
