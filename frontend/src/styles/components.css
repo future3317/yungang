@@ -92,4 +92,4 @@
 .event-section > b { color: #e4c57f; font-size: .76rem; letter-spacing: .04em; }
 .event-section > p { margin: 0; color: #d5c9b2; font-size: .78rem; line-height: 1.55; }
 .event-action-section { background: rgba(178, 139, 70, .09); border-color: rgba(220, 190, 112, .28); }
-.event-action-section .primary-action { margin-top: 2px; }
+.event-action-section .primary-action { margin-top: 2px; }.choice-option .choice-reason { color: #d7c187; font-size: .71rem; line-height: 1.35; }
