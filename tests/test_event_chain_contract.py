@@ -1,6 +1,10 @@
 from backend.content import Content
 from backend.engine import GameEngine
 from backend.mechanisms import ACTION_CARD_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS
+from backend.content_schemas import validate_content_contracts
+from pydantic import ValidationError
+from copy import deepcopy
+import pytest
 
 
 def test_event_chain_preserves_previous_event_before_revealing_next():
@@ -27,6 +31,21 @@ def test_all_action_cards_and_node_abilities_have_registered_effects():
         ability = site.get("node_ability") or {}
         if ability:
             assert ability.get("effect", {}).get("type") in NODE_EFFECT_HANDLERS, site["id"]
+
+
+def test_extended_content_collections_are_typed_and_cross_referenced():
+    content = Content()
+    assert content.regions and content.site_facets and content.task_templates
+    assert content.event_chains and content.role_upgrades and content.achievements
+    assert content.terminology["errors"]
+
+
+def test_extended_content_contract_rejects_unknown_top_level_fields():
+    content = Content()
+    files = deepcopy(content.files)
+    files["regions"]["regions"][0]["unexpected"] = True
+    with pytest.raises(ValidationError):
+        validate_content_contracts(files)
 
 
 def test_panorama_reduction_uses_current_round_progress_not_historical_state():

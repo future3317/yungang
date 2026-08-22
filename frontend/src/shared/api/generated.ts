@@ -331,6 +331,37 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ActionCardContract */
+        ActionCardContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** Cost */
+            cost: number;
+            /** Timing */
+            timing: string;
+            /** Action Type */
+            action_type: string;
+            /** Best Use */
+            best_use: string;
+            /** Limitations */
+            limitations: string;
+            /** Combo Tags */
+            combo_tags?: string[];
+            /** Effect */
+            effect: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Description */
+            description?: string | null;
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Target Rule */
+            target_rule?: string | null;
+        };
         /** ActionOption */
         ActionOption: {
             /** Id */
@@ -502,6 +533,125 @@ export interface components {
             seed?: number | null;
             /** Daily Seed */
             daily_seed?: string | null;
+        };
+        /** CultureCardContract */
+        CultureCardContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** Domain */
+            domain: string;
+            /** Description */
+            description: string;
+            /** Icon Asset */
+            icon_asset: string;
+            /** Origin Tags */
+            origin_tags: string[];
+            /** Combo Name */
+            combo_name?: string | null;
+            /** Combo Reward Text */
+            combo_reward_text?: string | null;
+            /** Combo Tags */
+            combo_tags?: string[];
+            /** Combo With Domains */
+            combo_with_domains?: string[];
+            /** Culture Note */
+            culture_note?: string | null;
+            /** Effect */
+            effect?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Era Tags */
+            era_tags?: string[];
+            /** Event Option Tags */
+            event_option_tags?: string[];
+            /** Evidence Use Text */
+            evidence_use_text?: string | null;
+            /** Finale Tags */
+            finale_tags?: string[];
+            /** Instant Use Text */
+            instant_use_text?: string | null;
+            /** Rarity */
+            rarity?: string | null;
+            /** Site Tags */
+            site_tags?: string[];
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Technique Tags */
+            technique_tags?: string[];
+        };
+        /** DifficultyContract */
+        DifficultyContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Max Rounds */
+            max_rounds: number;
+            /** Restoration Resource */
+            restoration_resource: number;
+            /** Event Weight */
+            event_weight: number;
+            /** Node Damage Base */
+            node_damage_base: number;
+            /** Event Preview Count */
+            event_preview_count: number;
+            /** Recommended Experience */
+            recommended_experience: string;
+            /** Solo Ap Bonus */
+            solo_ap_bonus: number;
+        };
+        /** DomainMetaContract */
+        DomainMetaContract: {
+            /** Name */
+            name: string;
+            /** Short Name */
+            short_name: string;
+            /** Color Token */
+            color_token?: string | null;
+            /** Description */
+            description?: string | null;
+        };
+        /** EventContract */
+        EventContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** Target Rule */
+            target_rule: string;
+            /** Preview Delta */
+            preview_delta?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Mitigation Hint */
+            mitigation_hint?: string | null;
+            /** Effect */
+            effect: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Damage */
+            damage?: number | null;
+            /** Description */
+            description?: string | null;
+            /** Difficulty Weight */
+            difficulty_weight?: number | null;
+            /** Forecast Text */
+            forecast_text?: string | null;
+            modifier?: components["schemas"]["JsonValue"] | null;
+            /** Scene Asset */
+            scene_asset?: string | null;
+            /** Severity */
+            severity?: number | null;
+            /** Tags */
+            tags?: string[];
         };
         /** EventForecastScope */
         EventForecastScope: {
@@ -841,68 +991,65 @@ export interface components {
             domains: string[];
             /** Domain Meta */
             domain_meta?: {
-                [key: string]: {
-                    [key: string]: components["schemas"]["JsonValue"];
-                };
+                [key: string]: components["schemas"]["DomainMetaContract"];
             };
-            /** Terminology */
-            terminology?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            terminology?: components["schemas"]["TerminologyContract"];
             /** Regions */
-            regions?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            regions?: components["schemas"]["RegionContract"][];
             /** Scenarios */
-            scenarios?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            scenarios?: components["schemas"]["ScenarioContract"][];
             /** Roles */
-            roles?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            roles?: components["schemas"]["RoleContract"][];
             /** Sites */
-            sites?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            sites?: components["schemas"]["SiteContract"][];
             /** Facets */
-            facets?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            facets?: components["schemas"]["SiteFacetContract"][];
             /** Cards */
-            cards?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            cards?: components["schemas"]["CultureCardContract"][];
             /** Action Cards */
-            action_cards?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            action_cards?: components["schemas"]["ActionCardContract"][];
             /** Events */
-            events?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            events?: components["schemas"]["EventContract"][];
             /** Tasks */
-            tasks?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            tasks?: components["schemas"]["TaskContract"][];
             /** Projects */
-            projects?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            projects?: components["schemas"]["ProjectContract"][];
             /** Objectives */
-            objectives?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            objectives?: components["schemas"]["ObjectiveContract"][];
             /** Difficulty */
-            difficulty?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            }[];
+            difficulty?: components["schemas"]["DifficultyContract"][];
             /** Effective Rules Preview */
             effective_rules_preview?: {
                 [key: string]: {
                     [key: string]: components["schemas"]["JsonValue"];
                 };
             };
+        };
+        /** ObjectiveContract */
+        ObjectiveContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Content Class
+             * @default gameplay
+             */
+            content_class: string;
+            /** Type */
+            type: string;
+            /** Target */
+            target: number;
+            /** Completion Text */
+            completion_text?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Progress Text */
+            progress_text?: string | null;
+            /** Scoring Weight */
+            scoring_weight?: number | null;
+            /** Strategy Hint */
+            strategy_hint?: string | null;
         };
         /** ObjectiveState */
         ObjectiveState: {
@@ -1053,6 +1200,31 @@ export interface components {
             /** Upgrades */
             upgrades?: string[];
         };
+        /** ProjectContract */
+        ProjectContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** Site Id */
+            site_id: string;
+            /** Stages */
+            stages: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** Project Type */
+            project_type?: string | null;
+            /** Reward */
+            reward?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Strategy Note */
+            strategy_note?: string | null;
+            /** Summary */
+            summary?: string | null;
+        };
         /** ProjectStage */
         ProjectStage: {
             /**
@@ -1146,6 +1318,29 @@ export interface components {
          * @enum {string}
          */
         ProjectStatus: "active" | "completed";
+        /** RegionContract */
+        RegionContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Site Ids */
+            site_ids: string[];
+            /** Label Position */
+            label_position?: {
+                [key: string]: number;
+            } | null;
+            /** Visual Token */
+            visual_token?: string | null;
+            /** Description */
+            description: string;
+            /** Gameplay Focus */
+            gameplay_focus: string;
+            /** Entry Hint */
+            entry_hint: string;
+            /** Risk Profile */
+            risk_profile: string;
+        };
         /** ResultState */
         ResultState: {
             outcome?: components["schemas"]["GameOutcome"] | null;
@@ -1166,6 +1361,44 @@ export interface components {
              * @default 0
              */
             seed: number;
+        };
+        /** RoleContract */
+        RoleContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Content Class
+             * @default gameplay
+             */
+            content_class: string;
+            /** Start Site Id */
+            start_site_id: string;
+            /** Upgrade Ids */
+            upgrade_ids?: string[];
+            /** Ability */
+            ability: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Color */
+            color?: string | null;
+            /** Icon */
+            icon?: string | null;
+            /** Icon Asset */
+            icon_asset?: string | null;
+            /** Meaning */
+            meaning?: string | null;
+            /** Origin */
+            origin?: string | null;
+            /** Play Style */
+            play_style?: string | null;
+            /** Solo Rule */
+            solo_rule?: string | null;
+            /** Starting Hint */
+            starting_hint?: string | null;
+            /** Team Role */
+            team_role?: string | null;
         };
         /** RoomActionRequest */
         RoomActionRequest: {
@@ -1501,6 +1734,82 @@ export interface components {
          * @enum {string}
          */
         RouteStatus: "open" | "strained" | "blocked" | "restored" | "illuminated";
+        /** ScenarioContract */
+        ScenarioContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Content Class
+             * @default gameplay
+             */
+            content_class: string;
+            /** Enabled Site Ids */
+            enabled_site_ids: string[];
+            /** Card Pool */
+            card_pool: {
+                [key: string]: number;
+            };
+            scenario_rule?: components["schemas"]["ScenarioRuleContract"] | null;
+            /** Action Card Pool */
+            action_card_pool?: {
+                [key: string]: number;
+            };
+            /** Blocked Route Count */
+            blocked_route_count?: number | null;
+            /** Closed Site Limit */
+            closed_site_limit?: number | null;
+            /** Core Project Id */
+            core_project_id?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Enabled Project Ids */
+            enabled_project_ids?: string[];
+            /** Event Chain Ids */
+            event_chain_ids?: string[];
+            /** Event Deck */
+            event_deck?: string[];
+            /** Failure Brief */
+            failure_brief?: string | null;
+            /** Victory Brief */
+            victory_brief?: string | null;
+            /** Influence Goal */
+            influence_goal?: number | null;
+            /** Initial Damage */
+            initial_damage?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+            /** Max Rounds */
+            max_rounds?: number | null;
+            /** Objective Ids */
+            objective_ids?: string[];
+            /** Recommended Minutes */
+            recommended_minutes?: string | number | null;
+            /** Recommended Players */
+            recommended_players?: number[];
+            /** Restoration Resource */
+            restoration_resource?: number | null;
+            /** Solo Rules */
+            solo_rules?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+            /** Starting Clues */
+            starting_clues?: number | null;
+            /** Starting Weathering */
+            starting_weathering?: number | null;
+        };
+        /** ScenarioRuleContract */
+        ScenarioRuleContract: {
+            /** Description */
+            description: string;
+            /** Trigger */
+            trigger: string;
+            /** Effect */
+            effect: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+        };
         /** ScoreState */
         ScoreState: {
             /**
@@ -1650,6 +1959,70 @@ export interface components {
                 [key: string]: components["schemas"]["JsonValue"];
             };
         };
+        /** SiteContract */
+        SiteContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** X */
+            x: number;
+            /** Y */
+            y: number;
+            /** Connections */
+            connections?: string[];
+            /** Domains */
+            domains?: string[];
+            /** Node Ability */
+            node_ability?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+            /** Active Task Id */
+            active_task_id?: string | null;
+            /** Gameplay Hint */
+            gameplay_hint?: string | null;
+            /** Icon Asset */
+            icon_asset?: string | null;
+            /** Layout */
+            layout?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
+            /** Max Damage */
+            max_damage?: number | null;
+            /** Region Id */
+            region_id?: string | null;
+            /** Scene Asset */
+            scene_asset?: string | null;
+            /** Site Tags */
+            site_tags?: string[];
+            /** Start Damage */
+            start_damage?: number | null;
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Summary */
+            summary?: string | null;
+            /** Type */
+            type?: string | null;
+        };
+        /** SiteFacetContract */
+        SiteFacetContract: {
+            /** Id */
+            id: string;
+            /** Site Id */
+            site_id: string;
+            /** Kind */
+            kind: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Evidence Domains */
+            evidence_domains: string[];
+            /** Gameplay Hint */
+            gameplay_hint: string;
+        };
         /** SiteState */
         SiteState: {
             /** Id */
@@ -1700,6 +2073,43 @@ export interface components {
          * @enum {string}
          */
         SiteStatus: "stable" | "at_risk" | "closed";
+        /** TaskContract */
+        TaskContract: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Content Class */
+            content_class: string;
+            /** Site Id */
+            site_id: string;
+            /** Required Domains */
+            required_domains: string[];
+            /** Required Origin Diversity */
+            required_origin_diversity: number;
+            /** Required Card Count */
+            required_card_count: number;
+            /** Combo Requirement */
+            combo_requirement?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Reward */
+            reward?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            };
+            /** Culture Explanation */
+            culture_explanation?: string | null;
+            /** Learning Objective */
+            learning_objective?: string | null;
+            /** Required Cards Per Player Min */
+            required_cards_per_player_min?: number | null;
+            /** Route Synergy */
+            route_synergy?: string | null;
+            /** Strategic Role */
+            strategic_role?: string | null;
+            /** Ui Instruction */
+            ui_instruction?: string | null;
+        };
         /** TaskState */
         TaskState: {
             /**
@@ -1754,6 +2164,55 @@ export interface components {
             completed: boolean;
         } & {
             [key: string]: unknown;
+        };
+        /** TerminologyContract */
+        TerminologyContract: {
+            /** Domains */
+            domains: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Origins */
+            origins: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Statuses */
+            statuses: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Actions */
+            actions: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Resources */
+            resources: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Event Target Rules */
+            event_target_rules: {
+                [key: string]: string;
+            };
+            /** Combo Tags */
+            combo_tags: {
+                [key: string]: {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
+            /** Errors */
+            errors: {
+                [key: string]: string | {
+                    [key: string]: components["schemas"]["JsonValue"];
+                };
+            };
         };
         /** ValidationError */
         ValidationError: {

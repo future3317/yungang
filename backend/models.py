@@ -1,6 +1,7 @@
 from enum import StrEnum
 from typing import Dict, List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field, JsonValue
+from .content_schemas import AchievementContract, ActionCardContract, CultureCardContract, DifficultyContract, DomainMetaContract, EventChainContract, EventContract, ObjectiveContract, ProjectContract, RegionContract, RoleContract, RoleUpgradeContract, ScenarioContract, SiteContract, SiteFacetContract, TaskContract, TerminologyContract
 
 JsonObject = Dict[str, JsonValue]
 
@@ -310,20 +311,20 @@ class MetaResponse(BaseModel):
     schema_version: int
     mode: str
     domains: List[str]
-    domain_meta: Dict[str, JsonObject] = Field(default_factory=dict)
-    terminology: JsonObject = Field(default_factory=dict)
-    regions: List[JsonObject] = Field(default_factory=list)
-    scenarios: List[JsonObject] = Field(default_factory=list)
-    roles: List[JsonObject] = Field(default_factory=list)
-    sites: List[JsonObject] = Field(default_factory=list)
-    facets: List[JsonObject] = Field(default_factory=list)
-    cards: List[JsonObject] = Field(default_factory=list)
-    action_cards: List[JsonObject] = Field(default_factory=list)
-    events: List[JsonObject] = Field(default_factory=list)
-    tasks: List[JsonObject] = Field(default_factory=list)
-    projects: List[JsonObject] = Field(default_factory=list)
-    objectives: List[JsonObject] = Field(default_factory=list)
-    difficulty: List[JsonObject] = Field(default_factory=list)
+    domain_meta: Dict[str, DomainMetaContract] = Field(default_factory=dict)
+    terminology: TerminologyContract = Field(default_factory=lambda: TerminologyContract(domains={}, origins={}, statuses={}, actions={}, resources={}, event_target_rules={}, combo_tags={}, errors={}))
+    regions: List[RegionContract] = Field(default_factory=list)
+    scenarios: List[ScenarioContract] = Field(default_factory=list)
+    roles: List[RoleContract] = Field(default_factory=list)
+    sites: List[SiteContract] = Field(default_factory=list)
+    facets: List[SiteFacetContract] = Field(default_factory=list)
+    cards: List[CultureCardContract] = Field(default_factory=list)
+    action_cards: List[ActionCardContract] = Field(default_factory=list)
+    events: List[EventContract] = Field(default_factory=list)
+    tasks: List[TaskContract] = Field(default_factory=list)
+    projects: List[ProjectContract] = Field(default_factory=list)
+    objectives: List[ObjectiveContract] = Field(default_factory=list)
+    difficulty: List[DifficultyContract] = Field(default_factory=list)
     effective_rules_preview: Dict[str, JsonObject] = Field(default_factory=dict)
 
 

@@ -196,6 +196,104 @@ class RouteContract(BaseModel):
     waypoints: list[float] = Field(default_factory=list)
 
 
+class RegionContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    name: str
+    site_ids: list[str] = Field(min_length=1)
+    label_position: dict[str, float] | None = None
+    visual_token: str | None = None
+    description: str
+    gameplay_focus: str
+    entry_hint: str
+    risk_profile: str
+
+
+class SiteFacetContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    site_id: str
+    kind: str
+    name: str
+    description: str
+    evidence_domains: list[str] = Field(min_length=1)
+    gameplay_hint: str
+
+
+class TaskTemplateContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    name: str
+    stage_types: list[str] = Field(min_length=1)
+    required_progress: list[int] = Field(min_length=1)
+    recommended_domains: int | list[str] | None = None
+    recommended_origins: int | list[str] | None = None
+    recommended_tags: str | list[str] | None = None
+    rule_text: str
+    complexity: str
+    minimum_players: int | None = Field(default=None, ge=1)
+
+
+class EventChainContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    name: str
+    event_ids: list[str] = Field(min_length=1)
+    description: str
+    entry_tags: list[str] = Field(default_factory=list)
+    resolution_hint: str
+
+
+class RoleUpgradeContract(ContentItemContract):
+    role_id: str
+    description: str
+    effect: JsonObject
+    trigger: str
+    strategic_direction: str
+
+
+class AchievementContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    name: str
+    condition: str
+    description: str
+
+
+class TerminologyContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    domains: dict[str, JsonObject]
+    origins: dict[str, JsonObject]
+    statuses: dict[str, JsonObject]
+    actions: dict[str, JsonObject]
+    resources: dict[str, JsonObject]
+    event_target_rules: dict[str, str]
+    combo_tags: dict[str, JsonObject]
+    errors: dict[str, str | JsonObject]
+
+
+class DomainMetaContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    name: str
+    short_name: str
+    color_token: str | None = None
+    description: str | None = None
+
+
+class DifficultyContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str
+    name: str
+    description: str
+    max_rounds: int = Field(ge=1)
+    restoration_resource: int = Field(ge=0)
+    event_weight: float = Field(ge=0)
+    node_damage_base: int = Field(ge=0)
+    event_preview_count: int = Field(ge=0)
+    recommended_experience: str
+    solo_ap_bonus: int = Field(ge=0)
+
+
 def _items(value: object, key: str) -> list[dict]:
     if isinstance(value, list):
         return value
@@ -231,6 +329,12 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
     events = _items(files.get("events", []), "events")
     objectives = _items(files.get("objectives", []), "objectives")
     cards = _items(files.get("culture_cards", []), "cards")
+    regions = _items(files.get("regions", []), "regions")
+    facets = _items(files.get("site_facets", []), "facets")
+    task_templates = _items(files.get("task_templates", []), "task_templates")
+    event_chains = _items(files.get("event_chains", []), "event_chains")
+    role_upgrades = _items(files.get("role_upgrades", []), "role_upgrades")
+    achievements = _items(files.get("achievements", []), "achievements")
     site_ids = {item["id"] for item in sites}
     card_ids = {item["id"] for item in _items(files.get("culture_cards", []), "cards")}
     upgrade_ids = {item["id"] for item in _items(files.get("role_upgrades", []), "role_upgrades")}
@@ -245,12 +349,32 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
     TypeAdapter(list[ObjectiveContract]).validate_python(objectives)
     TypeAdapter(list[CultureCardContract]).validate_python(cards)
     TypeAdapter(list[RouteContract]).validate_python(routes)
+    TypeAdapter(list[RegionContract]).validate_python(regions)
+    TypeAdapter(list[SiteFacetContract]).validate_python(facets)
+    TypeAdapter(list[TaskTemplateContract]).validate_python(task_templates)
+    TypeAdapter(list[EventChainContract]).validate_python(event_chains)
+    TypeAdapter(list[RoleUpgradeContract]).validate_python(role_upgrades)
+    TypeAdapter(list[AchievementContract]).validate_python(achievements)
+    if files.get("terminology"):
+        TerminologyContract.model_validate(files["terminology"])
 
     for route in routes:
         start = route.get("from") or route.get("from_site")
         end = route.get("to") or route.get("to_site")
         if start not in site_ids or end not in site_ids:
             raise ValueError(f"route references unknown site: {route.get('id')}")
+    for region in regions:
+        if any(site_id not in site_ids for site_id in region.get("site_ids", [])):
+            raise ValueError(f"region references unknown site: {region.get('id')}")
+    for facet in facets:
+        if facet.get("site_id") not in site_ids:
+            raise ValueError(f"site facet references unknown site: {facet.get('id')}")
+    for chain in event_chains:
+        if any(event_id not in {event.get("id") for event in events} for event_id in chain.get("event_ids", [])):
+            raise ValueError(f"event chain references unknown event: {chain.get('id')}")
+    for upgrade in role_upgrades:
+        if upgrade.get("role_id") not in {role.get("id") for role in roles}:
+            raise ValueError(f"role upgrade references unknown role: {upgrade.get('id')}")
     for role in roles:
         if role["start_site_id"] not in site_ids:
             raise ValueError(f"role references unknown start site: {role['id']}")
