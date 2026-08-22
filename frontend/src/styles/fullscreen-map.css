@@ -516,6 +516,8 @@
 
 /* Desktop HUD safe zones: every persistent surface owns a separate anchor. */
 @media (min-width: 1101px) {
+  .game-header .brand-group { max-width: calc(var(--map-left-clearance) - 18px); }
+  .game-header .brand-scenario { max-width: 150px; }
   .game-header .header-center {
     top: 8px;
     width: min(540px, calc(100% - var(--map-left-clearance) - var(--map-right-clearance) - 72px));
@@ -524,6 +526,7 @@
     max-height: 84px;
     overflow: hidden;
   }
+  .game-header .goal-hud.is-open { max-height: min(280px, calc(100dvh - 128px)); overflow: visible; }
   .game-header .goal-conditions {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     max-height: 37px;
@@ -568,6 +571,13 @@
     width: min(360px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 84px));
     max-height: min(210px, calc(100dvh - 250px));
   }
+}
+
+@media (max-width: 760px) {
+  .game-header .brand-group { gap: 8px; }
+  .game-header .brand-scenario { max-width: 125px; padding-left: 8px; font-size: .68rem; }
+  .game-header .goal-summary { grid-template-columns: repeat(2, auto); gap: 4px 8px; }
+  .game-header .goal-summary > span:nth-child(n + 3) { display: none; }
 }
 
 .scene-thumb,

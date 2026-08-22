@@ -40,7 +40,7 @@ const previewDeltaLabels: Record<string, string> = {
   route_connection_score: '区域连接',
 };
 
-export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', route_status: '路线状态', site_status: '节点状态' }[metric] || '状态变化'); }
+export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', threat: '风化压力', 威胁: '风化压力', route_status: '路线状态', 路线状态: '路线状态', site_status: '节点状态', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
 
 const actionErrorMessages: Record<string, string> = {
   action_card_wrong_timing: '当前时机不能使用这张策略牌。',

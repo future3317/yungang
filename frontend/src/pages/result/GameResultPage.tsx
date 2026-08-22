@@ -44,7 +44,7 @@ export function GameResultPage() {
     const targetIds = (record.resolved_targets || record.revealed_targets || record.event_targets || []) as string[];
     const resolution = Array.isArray(record.resolution) ? record.resolution as Array<Record<string, unknown>> : [];
     const changes = resolution.flatMap(result => Object.entries((result.changes || {}) as Record<string, string | number>).map(([metric, value]) => typeof value === 'number' ? ({ label: metricLabel(metric), delta: value }) : ({ label: metricLabel(metric), after: value })));
-    return { name: event?.name || '世界事件', targets: targetIds.map(id => siteNames[id] || id).filter(Boolean), changes, reason: resolution.map(result => typeof result.reason === 'string' ? localizeActionText(result.reason) : '').filter(Boolean).join('；') };
+    return { name: event?.name || '世界事件', targets: targetIds.map(id => siteNames[id] || state.routes?.[id]?.name || '受影响路线').filter(Boolean), changes, reason: resolution.map(result => typeof result.reason === 'string' ? localizeActionText(result.reason) : '').filter(Boolean).join('；') };
   });
   const eventNames = eventDetails.map(item => item.name);
   const seatSummary = roomSeats.map(seat => `${seat.name || '同行者'} · ${roles[seat.role_id || '']?.name || '尚未选择角色'}`).join('　');
