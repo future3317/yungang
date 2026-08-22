@@ -81,6 +81,15 @@ class RoleUpgradeEffectContract(BaseModel):
     value: int = 0
 
 
+class TerminologyEntryContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    short_name: str | None = None
+    color_token: str | None = None
+    description: str | None = None
+
+
 class ContentItemContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
     id: str
@@ -337,13 +346,13 @@ class AchievementContract(BaseModel):
 
 class TerminologyContract(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    domains: dict[str, JsonObject]
-    origins: dict[str, JsonObject]
-    statuses: dict[str, JsonObject]
-    actions: dict[str, JsonObject]
-    resources: dict[str, JsonObject]
+    domains: dict[str, TerminologyEntryContract]
+    origins: dict[str, TerminologyEntryContract]
+    statuses: dict[str, TerminologyEntryContract]
+    actions: dict[str, TerminologyEntryContract]
+    resources: dict[str, TerminologyEntryContract]
     event_target_rules: dict[str, str]
-    combo_tags: dict[str, JsonObject]
+    combo_tags: dict[str, TerminologyEntryContract]
     errors: dict[str, str | JsonObject]
 
 

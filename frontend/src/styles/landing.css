@@ -17,3 +17,11 @@
 .difficulty-detail > div { display: flex; flex-wrap: wrap; gap: 5px; }
 .difficulty-detail > div span { padding: 3px 6px; color: #526656; background: rgba(255, 252, 242, .62); border: 1px solid rgba(109, 132, 108, .26); border-radius: 999px; font-size: .68rem; }
 .difficulty-detail small, .difficulty-detail em { color: #66746a; font-size: .7rem; font-style: normal; }
+
+/* The landing screen is a balanced two-column composition, not a full-page form. */
+@media (min-width: 901px) {
+  .landing { grid-template-columns: minmax(0, 1.12fr) minmax(520px, .88fr); gap: clamp(32px, 5vw, 76px); padding-inline: max(32px, 6vw); }
+  .landing-copy { width: min(680px, 100%); justify-self: end; }
+  .start-panel { width: min(560px, 100%); max-height: min(780px, calc(100dvh - 64px)); box-sizing: border-box; overflow: hidden; }
+  .scenario-options { max-height: 238px; overflow-y: auto; padding: 2px 7px 4px 2px; scrollbar-gutter: stable; }
+}
