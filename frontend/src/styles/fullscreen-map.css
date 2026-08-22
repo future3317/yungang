@@ -103,6 +103,8 @@
   @keyframes map-focus-breathe { 0%, 100% { opacity: .62; } 50% { opacity: 1; } }
   @keyframes map-selection-reveal { from { opacity: 0; stroke-dashoffset: 8; } to { opacity: 1; stroke-dashoffset: 0; } }
   .player-marker { pointer-events: none; }.player-marker-halo { fill: rgba(9, 20, 13, .78); stroke: rgba(240, 226, 184, .62); stroke-width: .34; }.player-marker-core { stroke: rgba(255, 246, 220, .88); stroke-width: .25; }.player-marker text { fill: #15271b; text-anchor: middle; font: 700 1.15px var(--font-data); }.marker-0 .player-marker-core { fill: #d7b866; }.marker-1 .player-marker-core { fill: #7fb4a0; }.marker-2 .player-marker-core { fill: #c98a66; }.marker-3 .player-marker-core { fill: #8ca7c5; }.marker-idle { opacity: .48; filter: saturate(.56); }.marker-active { opacity: 1; filter: saturate(1.24); }.marker-active .player-marker-halo { stroke: #f2d787; stroke-width: .52; }.marker-active .player-marker-core { filter: drop-shadow(0 0 1px rgba(238, 200, 96, .7)); }
+  .event-target-layer { pointer-events: none; }.event-target-ring { fill: none; stroke: rgba(213, 132, 83, .7); stroke-width: .42; stroke-dasharray: 1.4 1.1; animation: event-target-pulse 2.4s ease-in-out infinite; }.event-target-dot { fill: #d58a59; opacity: .9; }.event-target-layer + .player-marker-layer { position: relative; }
+  @keyframes event-target-pulse { 0%, 100% { opacity: .42; transform: scale(.94); } 50% { opacity: .95; transform: scale(1.04); } }
   .route-layer path.is-blocked, .route-layer path.is-closed { stroke: var(--closed); stroke-dasharray: 1.2 1.4; }
   .route-layer path.is-strained { stroke: var(--risk); stroke-dasharray: 3 1; }
   .route-layer path.is-restored, .route-layer path.is-illuminated { stroke: var(--repair); stroke-width: .9; }
