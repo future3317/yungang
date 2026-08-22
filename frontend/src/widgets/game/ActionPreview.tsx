@@ -13,7 +13,7 @@ export function resolveActionTargetName(action: Action, sites: Record<string, Si
 export function ActionPreview({ action, sites, routes, cards, players = {}, isPending = false, onConfirm, onCancel }: { action: Action; sites: Record<string, Site>; routes?: Record<string, RouteState>; cards: Record<string, ContentCard>; players?: Record<string, Player>; isPending?: boolean; onConfirm: () => void; onCancel: () => void }) {
   const targetName = resolveActionTargetName(action, sites, routes, players);
   const cardName = action.card_id ? cards[action.card_id]?.name : undefined;
-  const heading = action.type === 'move' && targetName !== '当前地点' ? `移动到${targetName}` : actionLabels[action.type] || localizeActionText(action.label);
+  const heading = action.type === 'move' && targetName !== '当前地点' ? `移动到${targetName}` : localizeActionText(action.label) || actionLabels[action.type] || '确认行动';
   return <div className="dialog-backdrop"><section className="dialog action-preview" role="dialog" aria-modal="true" aria-labelledby="action-preview-title">
     <button className="dialog-close" disabled={isPending} onClick={onCancel} aria-label="取消行动"><X /></button>
     <span className="eyebrow"><AlertTriangle size={14} />行动确认</span><h2 id="action-preview-title">{heading}</h2>
