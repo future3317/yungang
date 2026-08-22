@@ -646,6 +646,10 @@ export interface components {
             /** Forecast Text */
             forecast_text?: string | null;
             modifier?: components["schemas"]["JsonValue"] | null;
+            /** Modifiers */
+            modifiers?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
             /** Scene Asset */
             scene_asset?: string | null;
             /** Severity */
@@ -1424,11 +1428,8 @@ export interface components {
         };
         /** RoomCreateRequest */
         RoomCreateRequest: {
-            /**
-             * Play Mode
-             * @default solo
-             */
-            play_mode: string;
+            /** @default solo */
+            play_mode: components["schemas"]["PlayMode"];
             /**
              * Name
              * @default 同行者
@@ -1485,10 +1486,8 @@ export interface components {
         RoomPublic: {
             /** Room Id */
             room_id: string;
-            /** Status */
-            status: string;
-            /** Play Mode */
-            play_mode: string;
+            status: components["schemas"]["RoomStatus"];
+            play_mode: components["schemas"]["PlayMode"];
             /** Scenario Id */
             scenario_id: string;
             /** Difficulty Id */
@@ -1561,6 +1560,11 @@ export interface components {
             /** Session Id */
             session_id: string;
         };
+        /**
+         * RoomStatus
+         * @enum {string}
+         */
+        RoomStatus: "lobby" | "in_progress" | "paused" | "completed" | "abandoned";
         /** RoundEntityChange */
         RoundEntityChange: {
             /**
@@ -2275,8 +2279,7 @@ export interface components {
             paused: boolean;
             /** Room Id */
             room_id?: string | null;
-            /** Room Status */
-            room_status?: string | null;
+            room_status?: components["schemas"]["RoomStatus"] | null;
             /** Seats */
             seats?: components["schemas"]["ViewerSeat"][];
         };

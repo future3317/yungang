@@ -100,6 +100,13 @@ class PlayMode(StrEnum):
     LOCAL = "local"
     MULTI_DEVICE = "multi_device"
 
+class RoomStatus(StrEnum):
+    LOBBY = "lobby"
+    IN_PROGRESS = "in_progress"
+    PAUSED = "paused"
+    COMPLETED = "completed"
+    ABANDONED = "abandoned"
+
 class GameOutcome(StrEnum):
     VICTORY = "victory"
     DEFEAT = "defeat"
@@ -296,7 +303,7 @@ class ViewerState(BaseModel):
     play_mode: PlayMode = PlayMode.SOLO
     paused: bool = False
     room_id: Optional[str] = None
-    room_status: Optional[str] = None
+    room_status: Optional[RoomStatus] = None
     seats: List[ViewerSeat] = Field(default_factory=list)
 
 
@@ -339,8 +346,8 @@ class RoomSeat(BaseModel):
 
 class RoomPublic(BaseModel):
     room_id: str
-    status: str
-    play_mode: str
+    status: RoomStatus
+    play_mode: PlayMode
     scenario_id: str
     difficulty_id: str
     max_players: int
@@ -436,7 +443,7 @@ class CreateGameRequest(BaseModel):
 
 
 class RoomCreateRequest(BaseModel):
-    play_mode: str = "solo"
+    play_mode: PlayMode = PlayMode.SOLO
     name: str = "同行者"
     role_id: Optional[str] = None
     scenario_id: str = "sand_and_stone"

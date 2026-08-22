@@ -6,7 +6,7 @@ import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
 
 type TimelineChange = { label?: string; before?: string | number | null; after?: string | number | null; delta?: number | null };
-type TimelineEntry = { id: string; round: number; type: string; message: string; player_name?: string; effects?: unknown[] };
+type TimelineEntry = { id: string; round: number; type: string; message: string; player_name?: string; effects?: unknown[]; changes?: unknown[] };
 
 function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
   return (effects || []).filter((effect): effect is Record<string, unknown> => Boolean(effect) && typeof effect === 'object').map(effect => ({
@@ -40,7 +40,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         {filters.map(item => <button key={item.id} type="button" role="tab" aria-selected={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}
       </div>
       <div className="timeline-events" aria-live="polite">
-        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}<small>{entryTypeLabels[entry.type] || '旅程记录'}</small></b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}<StateChangeList compact changes={structuredEffects(entry.effects)} /></span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
+        {visibleEntries.length ? visibleEntries.map((entry, index) => <p key={`${entry.id}-${index}`}><b>回合 {entry.round}<small>{entryTypeLabels[entry.type] || '旅程记录'}</small></b><span>{entry.player_name ? `${entry.player_name} · ` : ''}{entry.message}<StateChangeList compact changes={structuredEffects(entry.effects || entry.changes)} /></span></p>) : <p className="timeline-empty">这个筛选下还没有记录。</p>}
       </div>
     </div>
   </details>;

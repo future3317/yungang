@@ -4,7 +4,7 @@ type TextEntry = string | { name?: string; short_name?: string };
 
 export function displayText(meta: Meta | undefined, namespace: string, id: string | undefined, fallback = '未标注') {
   if (!id) return fallback;
-  const section = meta?.terminology?.[namespace];
+  const section = (meta?.terminology as Record<string, unknown> | undefined)?.[namespace];
   const entry = section && typeof section === 'object' ? (section as Record<string, unknown>)[id] as TextEntry | undefined : undefined;
   if (typeof entry === 'string' && entry.trim()) return entry;
   if (entry && typeof entry === 'object') return entry.short_name || entry.name || fallback;

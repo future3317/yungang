@@ -391,6 +391,17 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
             if not stage.get("id") or not stage.get("action_type"):
                 raise ValueError(f"project stage is incomplete: {project['id']}")
     for scenario in scenarios:
+        if any(site_id not in site_ids for site_id in scenario.get("enabled_site_ids", [])):
+            raise ValueError(f"scenario references unknown site: {scenario['id']}")
+        if any(project_id not in {project.get("id") for project in projects} for project_id in scenario.get("enabled_project_ids", [])):
+            raise ValueError(f"scenario references unknown project: {scenario['id']}")
+        if scenario.get("core_project_id") and scenario["core_project_id"] not in {project.get("id") for project in projects}:
+            raise ValueError(f"scenario references unknown core project: {scenario['id']}")
+        if any(objective_id not in {objective.get("id") for objective in objectives} for objective_id in scenario.get("objective_ids", [])):
+            raise ValueError(f"scenario references unknown objective: {scenario['id']}")
+        event_ids = {event.get("id") for event in events}
+        if any(event_id not in event_ids for event_id in scenario.get("event_deck", [])):
+            raise ValueError(f"scenario references unknown event: {scenario['id']}")
         if any(card not in card_ids or count < 1 for card, count in scenario["card_pool"].items()):
             raise ValueError(f"scenario card pool is invalid: {scenario['id']}")
         if not scenario["card_pool"]:
@@ -398,8 +409,22 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
 
     for scenario in scenarios:
         enabled_sites = set(scenario["enabled_site_ids"])
-        pool = set(scenario["card_pool"])
-        available_domains = {card.get("domain") for card in cards if card.get("id") in pool}
+        pool = {card_id: count for card_id, count in scenario["card_pool"].items()}
+        pool_cards = [card for card in cards if card.get("id") in pool]
+        available_domains = {card.get("domain") for card in pool_cards}
+        available_origins = {origin for card in pool_cards for origin in card.get("origin_tags", [])}
+        available_combos = {tag for card in pool_cards for tag in card.get("combo_tags", [])}
+        available_card_count = sum(pool.values())
         for task in tasks:
-            if task["site_id"] in enabled_sites and not set(task.get("required_domains", [])) & available_domains:
+            if task["site_id"] not in enabled_sites:
+                continue
+            required_domains = set(task.get("required_domains", []))
+            if not required_domains.issubset(available_domains):
                 raise ValueError(f"scenario task has no matching domain card: {scenario['id']}:{task['id']}")
+            if task.get("required_origin_diversity", 1) > len(available_origins):
+                raise ValueError(f"scenario task has insufficient source diversity: {scenario['id']}:{task['id']}")
+            required_combos = set((task.get("combo_requirement") or {}).get("required_combo_tags", []))
+            if not required_combos.issubset(available_combos):
+                raise ValueError(f"scenario task has no matching combo card: {scenario['id']}:{task['id']}")
+            if task.get("required_card_count", 1) > available_card_count:
+                raise ValueError(f"scenario task has insufficient cards: {scenario['id']}:{task['id']}")
