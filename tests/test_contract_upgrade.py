@@ -65,6 +65,23 @@ def test_success_path_writes_a_specific_result():
     assert state.result is not None
 
 
+def test_feedback_includes_target_site_state_changes():
+    engine = GameEngine()
+    state = engine.new_game("feedback-target-state", ["p1"], scenario_id="sand_and_stone")
+    player = state.players[state.shared.active_player_id]
+    site = state.sites[player.location]
+    site.damage = 2
+    site.status = SiteStatus.AT_RISK
+    state.shared.restoration_resource = 1
+
+    result = engine.apply(state, {"player_id": player.id, "action": "restore", "target_site_id": site.id})
+    changes = {change.metric: change for event in result.feedback_events for change in event.changes}
+
+    assert changes["site_damage"].before == 2
+    assert changes["site_damage"].after == 1
+    assert changes["site_damage"].delta == -1
+
+
 def test_each_player_can_declare_only_one_planning_target_per_round():
     engine = GameEngine()
     state = engine.new_game("planning-one-target", ["p1", "p2"], scenario_id="sand_and_stone")

@@ -337,7 +337,11 @@ class GameEngine:
             result.feedback_events = [FeedbackEvent(message="共同决定已结算，事件、证据或角色状态已经更新。", changes=changes)]
             return result
         pid, action = req["player_id"], req["action"]
-        before = self._metric_snapshot(state, pid)
+        site_id = req.get("target_site_id")
+        if not site_id and action in {ActionType.RESTORE.value, ActionType.USE_NODE_ABILITY.value}:
+            site_id = state.players[pid].location
+        route_id = req.get("route_id")
+        before = self._metric_snapshot(state, pid, site_id=site_id, route_id=route_id)
         if pid != state.shared.active_player_id:
             raise ValueError("not_active_player")
         player = state.players[pid]
@@ -370,9 +374,8 @@ class GameEngine:
             self._check_outcome(state)
         result = state if req.get("_preview") else self.refresh(state)
         after_player = result.players.get(pid)
-        after = self._metric_snapshot(result, pid)
-        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "influence": "共同影响"}
-        changes = [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
+        after = self._metric_snapshot(result, pid, site_id=site_id, route_id=route_id)
+        changes = self._feedback_changes(before, after)
         self._record_journal(state, action, pid, self._journal_message(action, target, req), changes)
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
         return result
@@ -405,14 +408,20 @@ class GameEngine:
         }.get(action, "行动已记录，世界状态已经更新。")
 
     @staticmethod
-    def _metric_snapshot(state: GameState, player_id: str) -> dict[str, int]:
+    def _metric_snapshot(state: GameState, player_id: str, site_id: str | None = None, route_id: str | None = None) -> dict[str, int]:
         player = state.players.get(player_id)
-        return {"ap": player.ap if player else 0, "research_clues": state.shared.research_clues, "restoration_resource": state.shared.restoration_resource, "weathering": state.shared.weathering_track, "influence": state.shared.influence}
+        snapshot = {"ap": player.ap if player else 0, "research_clues": state.shared.research_clues, "restoration_resource": state.shared.restoration_resource, "weathering": state.shared.weathering_track, "influence": state.shared.influence}
+        if site_id and site_id in state.sites:
+            snapshot["site_damage"] = state.sites[site_id].damage
+            snapshot["site_influence"] = state.sites[site_id].influence
+        if route_id and route_id in state.routes:
+            snapshot["route_risk"] = state.routes[route_id].risk
+        return snapshot
 
     @staticmethod
     def _feedback_changes(before: dict[str, int], after: dict[str, int]) -> list[FeedbackChange]:
-        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "influence": "共同影响"}
-        return [FeedbackChange(metric=key, label=labels[key], before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after[key] != before[key]]
+        labels = {"ap": "行动点", "research_clues": "研究线索", "restoration_resource": "修护资源", "weathering": "风化压力", "influence": "共同影响", "site_damage": "节点损伤", "site_influence": "地点影响", "route_risk": "路线风险"}
+        return [FeedbackChange(metric=key, label=labels.get(key, key), before=before[key], after=after[key], delta=after[key] - before[key]) for key in before if after.get(key) != before[key]]
 
     def _record_journal(self, state: GameState, action: str, player_id: str, message: str, changes: list[FeedbackChange] | None = None) -> None:
         kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"

@@ -41,7 +41,7 @@ const previewDeltaLabels: Record<string, string> = {
   route_connection_score: '区域连接',
 };
 
-export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', weathering: '风化压力', route_status: '路线状态', 路线状态: '路线状态', site_status: '节点状态', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
+export function metricLabel(metric: string) { return previewDeltaLabels[metric] || ({ weathering_track: '风化压力', weathering: '风化压力', route_status: '路线状态', route_risk: '路线风险', 路线状态: '路线状态', site_status: '节点状态', site_damage: '节点损伤', site_influence: '地点影响', 节点状态: '节点状态', 修护资源: '修护资源', 共同修护资源: '修护资源', 路线风险: '路线风险', 节点损伤: '节点损伤', 个人影响: '个人影响' }[metric] || '状态变化'); }
 
 export function feedbackChangeText(changes: FeedbackChange[]) {
   const seen = new Set<string>();
