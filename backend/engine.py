@@ -1346,48 +1346,77 @@ class GameEngine:
         except ValueError:
             return {}
 
-    def _recommendation_for_option(self, option, state, active):
+    def _recommendation_for_option(self, option, state, active, target=None):
         action_type = option["type"]
-        urgency = int((state.shared.weathering_track / max(1, state.shared.weathering_limit)) * 24)
-        rounds_remaining = max(0, int(state.shared.max_rounds) - state.shared.turn + 1)
-        time_pressure = max(0, 4 - rounds_remaining) * 8
-        task = state.tasks.get(self.content.sites.get(active.location, {}).get("active_task_id"), {})
-        progress = task.get("progress", {})
-        missing = sum(1 for item in progress.get("requirements", []) if not item.get("complete"))
-        target_id = option.get("target_id") or option.get("target_site_id") or option.get("route_id")
-        target_site = state.sites.get(target_id) if target_id else None
+        candidate = target or option
+        route_actions = {ActionType.SURVEY_ROUTE.value, ActionType.RESTORE_ROUTE.value, ActionType.ESTABLISH_CONNECTION.value}
+        target_id = candidate.get("route_id") if action_type in route_actions else candidate.get("target_site_id") or candidate.get("target_id")
         target_route = state.routes.get(target_id) if target_id else None
+        target_site = state.sites.get(target_id) if target_id else None
         target_name = self.content.sites.get(target_id, {}).get("name") if target_id else None
         if target_route:
             target_name = f"{self.content.sites.get(target_route.from_site, {}).get('name', target_route.from_site)}—{self.content.sites.get(target_route.to_site, {}).get('name', target_route.to_site)}"
-        score = 18 + urgency + time_pressure
+
+        pressure = int((state.shared.weathering_track / max(1, state.shared.weathering_limit)) * 28)
+        rounds_remaining = max(0, int(state.shared.max_rounds) - state.shared.turn + 1)
+        time_pressure = max(0, 5 - rounds_remaining) * 7
+        event_targets = set(state.shared.event_targets or [])
+        if not event_targets and state.shared.event_instance:
+            event_targets = set(state.shared.event_instance.get("revealed_targets", []))
+        event_urgency = 18 if state.shared.current_event_id else 0
+        task = state.tasks.get(self.content.sites.get(active.location, {}).get("active_task_id"), {})
+        requirements = task.get("progress", {}).get("requirements", [])
+        missing = sum(1 for item in requirements if not item.get("complete"))
+        score = 8 + pressure + time_pressure + event_urgency
         reason = option.get("description", "执行一项可用行动。")
+
         role_action = self.content.roles.get(active.role_id, {}).get("ability", {}).get("action")
         role_fit = {"fine_repair": ActionType.RESTORE.value, "sprint_move": ActionType.MOVE.value, "view_select": ActionType.EXPLORE.value, "harmony_hint": ActionType.INTERPRET_EVIDENCE.value}
         if role_fit.get(role_action) == action_type:
-            score += 12
+            score += 14
+
         if action_type == ActionType.CHOOSE_INTERVENTION.value:
-            score += 62; reason = "解释已经形成，选择干预会直接推进当前委托。"
+            score += 52; reason = "解释已经形成，选择干预会直接推进当前委托。"
         elif action_type == ActionType.FORM_INTERPRETATION.value:
-            score += 54; reason = "研究台条件已满足，现在形成解释不会再消耗行动点。"
+            score += 46; reason = "研究台条件已经满足，现在形成解释不会再消耗行动点。"
         elif action_type == ActionType.INTERPRET_EVIDENCE.value:
-            score += 34 + missing * 5; reason = "这一步会填补当前委托的证据条件。"
+            score += 28 + missing * 7; reason = "这一步会填补当前委托的证据条件。"
         elif action_type == ActionType.EXPLORE.value:
-            score += 26 + missing * 4; reason = "优先选择能补足当前委托领域或来源的线索。"
+            score += 22 + missing * 6
+            card = self.content.cards.get(candidate.get("card_id"), {})
+            if card.get("domain") in task.get("required_domains", []): score += 18
+            if set(card.get("origin_tags", [])) & set(task.get("combo_requirement", {}).get("preferred_origins", [])): score += 10
+            reason = f"推荐带回{card.get('name', '这件线索')}：它能补足当前委托的证据缺口。"
         elif action_type == ActionType.RESTORE.value:
-            score += (target_site.damage if target_site else state.sites[active.location].damage) * 14
-            reason = f"推荐修护{target_name or self.content.sites.get(active.location, {}).get('name', active.location)}：再受损伤将更接近关闭。"
-        elif action_type in {ActionType.SURVEY_ROUTE.value, ActionType.RESTORE_ROUTE.value}:
-            score += 18 + urgency + ((target_route.risk * 8) if target_route else 0)
-            reason = f"推荐处理{target_name or '这条路线'}：降低风险可以保留后续移动空间。"
+            damage = target_site.damage if target_site else state.sites[active.location].damage
+            score += int(32 * damage / max(1, target_site.max_damage if target_site else state.sites[active.location].max_damage))
+            if target_id in event_targets: score += 18
+            reason = f"推荐修护{target_name or self.content.sites.get(active.location, {}).get('name', active.location)}：节点越接近关闭，越需要先稳住现场。"
+        elif action_type in route_actions:
+            risk = target_route.risk if target_route else 0
+            score += risk * 12 + (18 if target_route and target_route.status == "blocked" else 0)
+            if target_id in event_targets: score += 16
+            reason = f"推荐处理{target_name or '这条路线'}：降低路线风险可以保留后续移动空间。"
         elif action_type == ActionType.MOVE.value:
-            score += 12 + ((target_site.damage * 6) if target_site else 0)
-            reason = f"推荐前往{target_name or '新的节点'}：寻找能填补当前委托缺口的证据。"
+            if target_site:
+                score += int(24 * target_site.damage / max(1, target_site.max_damage))
+                if target_site.id in event_targets: score += 20
+                target_task = self.content.sites.get(target_site.id, {}).get("active_task_id")
+                if target_task and not state.tasks.get(target_task, {}).get("completed"): score += 10
+            movement_cost = int(candidate.get("cost", option.get("cost", {}).get("ap", 0)) or 0)
+            score -= movement_cost * 8
+            reason = f"推荐前往{target_name or '新的节点'}：这里的风险或委托缺口值得优先处理。"
         elif action_type == ActionType.USE_ACTION_CARD.value:
-            score += 20; reason = option.get("reason") or "策略牌适合在当前风险或目标出现缺口时使用。"
+            score += 18 + (12 if target_id in event_targets else 0)
+            reason = option.get("reason") or "策略牌适合在当前风险或目标缺口出现时使用。"
         elif action_type == ActionType.END_TURN.value:
-            score = max(0, 12 - urgency); reason = "行动点已接近耗尽，结束行动让下一位同行者接手。"
-        return min(100, score), reason
+            score = max(0, 10 - pressure); reason = "当前没有更高优先级的行动，结束行动让下一位同行者接手。"
+
+        raw_cost = candidate.get("cost", option.get("cost", {}).get("ap", 0))
+        cost = int(raw_cost.get("ap", 0) if isinstance(raw_cost, dict) else raw_cost or 0)
+        if cost:
+            score += min(12, max(0, 18 - cost * 6))
+        return max(0, min(100, int(score))), reason
 
     def _build_action_options(self, actions, state=None):
         terminology = self.content.terminology.get("actions", {})
@@ -1410,6 +1439,21 @@ class GameEngine:
             ActionType.END_TURN.value: "结束当前角色的行动，把回合交给下一位同行者。",
             ActionType.END_PLANNING.value: "结算本轮协作标记，进入行动阶段。",
         }
+        category_labels = {
+            ActionType.USE_SKILL.value: "角色技能",
+            ActionType.USE_NODE_ABILITY.value: "地点能力",
+            ActionType.USE_UPGRADE.value: "角色专长",
+            ActionType.USE_ACTION_CARD.value: "策略牌",
+            ActionType.PLAY_CARD.value: "文化证据",
+        }
+        action_labels_by_type = {
+            ActionType.USE_SKILL.value: "使用角色技能",
+            ActionType.USE_NODE_ABILITY.value: "使用地点能力",
+            ActionType.USE_UPGRADE.value: "使用角色专长",
+            ActionType.USE_ACTION_CARD.value: "使用策略牌",
+            ActionType.PLAY_CARD.value: "使用文化牌",
+        }
+        specific_types = set(category_labels)
         grouped = {}
         for action in actions:
             action_type = action["type"]
@@ -1421,6 +1465,8 @@ class GameEngine:
                 "id": f"action:{group_key}",
                 "type": action_type,
                 "label": action.get("label", action_type),
+                "category_label": category_labels.get(action_type, "基础行动"),
+                "action_label": action_labels_by_type.get(action_type, terminology.get(action_type, {}).get("name", action_type)),
                 "description": descriptions.get(action_type, "执行一项可用行动。"),
                 "cost": {"ap": cost},
                 "enabled": True,
@@ -1434,12 +1480,14 @@ class GameEngine:
                 "reason": "",
             })
             term = terminology.get(action_type, {})
-            option["label"] = term.get("name") or option["label"]
+            if action_type not in specific_types:
+                option["label"] = term.get("name") or option["label"]
+            option["action_label"] = action_labels_by_type.get(action_type, term.get("name") or option["action_label"])
             option["description"] = term.get("description") or option["description"]
             if action_type == ActionType.USE_ACTION_CARD.value and action.get("card_id"):
                 card_definition = self.content.action_cards.get(action["card_id"], {})
                 option["label"] = card_definition.get("name") or option["label"]
-                option["payload"]["action_label"] = "使用策略牌"
+                option["action_label"] = "使用策略牌"
                 option["description"] = card_definition.get("description") or option["description"]
                 timing = card_definition.get("timing") or "当前行动阶段"
                 best_use = card_definition.get("best_use") or "在合适目标上使用，改变本回合的风险或资源。"
@@ -1447,13 +1495,17 @@ class GameEngine:
                 option["reason"] = f"时机：{timing}。最适合：{best_use}。限制：{limitations}"
                 option["payload"].update({key: card_definition.get(key) for key in ("timing", "effect", "best_use", "limitations", "combo_tags") if card_definition.get(key) is not None})
                 option["confirmation"] = f"确认使用策略牌“{card_definition.get('name', '策略牌')}”吗？"
+            elif action_type == ActionType.PLAY_CARD.value and action.get("card_id"):
+                option["label"] = self.content.cards.get(action["card_id"], {}).get("name") or option["label"]
+            elif action_type in {ActionType.USE_SKILL.value, ActionType.USE_NODE_ABILITY.value, ActionType.USE_UPGRADE.value}:
+                option["label"] = action.get("label") or option["label"]
             target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
             payload = {key: value for key, value in action.items() if value is not None}
             if target:
                 target_key = str(target)
                 if action_type == ActionType.EXCHANGE.value:
                     target_key = f"{target_key}:{action.get('card_id', '')}"
-                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": self._action_preview_delta(action, state), "payload": payload})
+                option["targets"].append({"id": target_key, "label": action.get("label", str(target)), "preview_delta": self._action_preview_delta(action, state), "payload": payload, "recommendation_score": 0, "reason": ""})
             else:
                 option["payload"] = payload
         if state is not None and not state.pending_choice and not state.shared.outcome:
@@ -1472,6 +1524,7 @@ class GameEngine:
                 for action_type, reason in disabled.items():
                     grouped[action_type] = {
                         "id": f"action:{action_type}", "type": action_type, "label": terminology.get(action_type, {}).get("name", "当前行动"),
+                        "category_label": category_labels.get(action_type, "基础行动"), "action_label": action_labels_by_type.get(action_type, terminology.get(action_type, {}).get("name", action_type)),
                         "description": terminology.get(action_type, {}).get("description", descriptions.get(action_type, "执行一项可用行动。")), "cost": {"ap": 0},
                         "enabled": False, "disabled_reason": reason, "targets": [],
                         "preview_delta": {}, "confirmation": "", "payload": {}, "requirements": [], "recommendation_score": 0, "reason": reason,
@@ -1480,7 +1533,19 @@ class GameEngine:
             if option["enabled"]:
                 active = state.players.get(state.shared.active_player_id) if state else None
                 if active:
-                    option["recommendation_score"], generated_reason = self._recommendation_for_option(option, state, active)
+                    if option["targets"]:
+                        scored_targets = []
+                        for target in option["targets"]:
+                            candidate = dict(target["payload"])
+                            candidate["type"] = option["type"]
+                            candidate["cost"] = option["cost"].get("ap", 0)
+                            target_score, target_reason = self._recommendation_for_option(option, state, active, candidate)
+                            target["recommendation_score"] = target_score
+                            target["reason"] = target_reason
+                            scored_targets.append((target_score, target_reason))
+                        option["recommendation_score"], generated_reason = max(scored_targets, key=lambda item: item[0])
+                    else:
+                        option["recommendation_score"], generated_reason = self._recommendation_for_option(option, state, active)
                     option["reason"] = option["reason"] or generated_reason
                 else:
                     option["recommendation_score"] = 0

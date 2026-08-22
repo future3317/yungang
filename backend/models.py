@@ -253,12 +253,16 @@ class ActionTarget(BaseModel):
     label: str
     preview_delta: JsonObject = Field(default_factory=dict)
     payload: JsonObject = Field(default_factory=dict)
+    recommendation_score: int = 0
+    reason: str = ""
 
 
 class ActionOption(BaseModel):
     id: str
     type: ActionType
     label: str
+    category_label: str = "基础行动"
+    action_label: str = ""
     description: str = ""
     cost: Dict[str, int] = Field(default_factory=lambda: {"ap": 0})
     enabled: bool = True

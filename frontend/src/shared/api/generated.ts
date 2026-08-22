@@ -321,6 +321,10 @@ export interface components {
             type: components["schemas"]["ActionType"];
             /** Label */
             label: string;
+            /** Category Label */
+            category_label?: string;
+            /** Action Label */
+            action_label?: string;
             /**
              * Description
              * @default
@@ -403,6 +407,10 @@ export interface components {
             payload?: {
                 [key: string]: components["schemas"]["JsonValue"];
             };
+            /** Recommendation Score */
+            recommendation_score?: number;
+            /** Reason */
+            reason?: string;
         };
         /**
          * ActionType

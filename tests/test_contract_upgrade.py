@@ -56,3 +56,34 @@ def test_round_summary_keeps_previous_event_targets():
     assert summary["event_id"] == "old-event"
     assert summary["event_targets"] == ["old-site"]
     assert summary["planning_mark_count"] == 1
+
+
+def test_action_option_scores_each_target_and_promotes_best_target():
+    engine = GameEngine()
+    state = engine.new_game("target-recommendation", ["p1"], solo_mode=False)
+    player = state.players["p1"]
+    candidates = [site for site in state.sites.values() if site.id != player.location][:2]
+    assert len(candidates) == 2
+    candidates[0].damage = candidates[0].max_damage - 1
+    candidates[1].damage = 0
+    actions = [
+        {"type": "move", "target_id": site.id, "label": f"前往 {site.id}", "cost": 1}
+        for site in candidates
+    ]
+
+    options = engine._build_action_options(actions, state)
+    move = next(option for option in options if option.type == "move")
+    assert len(move.targets) >= 2
+    assert all(target.recommendation_score >= 0 and target.reason for target in move.targets)
+    assert move.recommendation_score == max(target.recommendation_score for target in move.targets)
+    assert max(target.recommendation_score for target in move.targets) > min(target.recommendation_score for target in move.targets)
+
+
+def test_action_option_keeps_specific_name_above_action_category():
+    engine = GameEngine()
+    state = engine.new_game("action-label-contract", ["p1"], solo_mode=False)
+
+    skill = next(option for option in state.action_options if option.type == "use_skill")
+    assert skill.label == "精修"
+    assert skill.category_label == "角色技能"
+    assert skill.action_label == "使用角色技能"

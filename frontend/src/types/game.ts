@@ -4,7 +4,7 @@ export type ActionType = components['schemas']['ActionType'];
 export type SiteStatus = components['schemas']['SiteStatus'];
 export type GameOutcome = 'victory' | 'defeat' | null;
 export interface Action { type: ActionType; label: string; description?: string; cost?: number; target_id?: string; target_site_id?: string; target_ids?: string[]; card_id?: string; recipient_id?: string; route_id?: string; upgrade_id?: string; skill?: string; request_id?: string; preview_delta?: Record<string, unknown>; }
-export interface ActionTarget { id: string; label: string; preview_delta?: Record<string, unknown>; payload?: Partial<Action>; }
+export interface ActionTarget { id: string; label: string; preview_delta?: Record<string, unknown>; payload?: Partial<Action>; recommendation_score?: number; reason?: string; }
 type GeneratedActionOption = components['schemas']['ActionOption'];
 export type ActionOption = Omit<GeneratedActionOption, 'targets' | 'payload' | 'preview_delta' | 'recommendation_score' | 'reason' | 'confirmation'> & Partial<Pick<GeneratedActionOption, 'recommendation_score' | 'reason' | 'confirmation'>> & { targets: ActionTarget[]; payload?: Partial<Action> & Record<string, unknown>; preview_delta?: Record<string, unknown>; };
 export interface Player { id: string; name: string; role_id: string; location: string; ap: number; max_ap: number; influence: number; durability: number; hand: string[]; action_hand?: string[]; supplies?: number; skill_used: boolean; contributions: number; upgrades?: string[]; }
