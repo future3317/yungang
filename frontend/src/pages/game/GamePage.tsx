@@ -3,7 +3,7 @@ import { Archive, ChevronDown, CircleAlert, Clock3, Map as MapIcon, Send, Shield
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Navigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
-import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, Site, Task } from '../../types/game';
+import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, FeedbackChange, GameState, Meta, Site, Task } from '../../types/game';
 import { HeritageNetwork } from '../../widgets/heritage-network/HeritageNetwork';
 import { CommandDock } from '../../widgets/game/CommandDock';
 import { ScenarioHeader } from '../../widgets/game/ScenarioHeader';
@@ -20,6 +20,21 @@ import { getRoomToken } from '../../shared/roomToken';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
 import { GameViewport } from '../../widgets/game/GameViewport';
 import { StateChangeList } from '../../widgets/game/StateChangeList';
+
+function feedbackChangeText(changes: FeedbackChange[]) {
+  const seen = new Set<string>();
+  return changes.filter(change => {
+    if (change.metric === 'threat') return false;
+    const key = change.metric || change.label || '状态变化';
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).map(change => {
+    const label = change.label || '状态变化';
+    if (change.before !== undefined && change.before !== null && change.after !== undefined && change.after !== null) return `${label} ${change.before}→${change.after}`;
+    return `${label} ${change.delta && change.delta > 0 ? '+' : ''}${change.delta ?? ''}`;
+  });
+}
 import { StrategyCardDialog } from '../../widgets/game/StrategyCardDialog';
 import { assetUrl } from '../../shared/assetUrl';
 import '../../styles/experience.css';
@@ -57,7 +72,7 @@ export function GamePage() {
   const canAct = state?.viewer?.can_act ?? true;
   const mutation = useMutation({
     mutationFn: (action: Action) => roomId ? api.roomAction(roomId, roomToken, action, state?.revision || 0) : api.action(sessionId, action, state?.shared.active_player_id || '', state?.revision || 0),
-    onSuccess: (data, action) => { setLastActionType(action.type); queryClient.setQueryData([roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], data); setPreview(null); setSelectedOption(null); setActionMode(null); if (action.type === 'move' && action.target_id) { setFocus(action.target_id); setInspectorOpen(true); } if (action.type === 'choose_intervention') { const newlyCompleted = Object.values(data.tasks).find(nextTask => nextTask.completed && !state?.tasks[nextTask.id || '']?.completed); if (newlyCompleted) { const completedSite = Object.values(data.sites).find(item => item.active_task_id === newlyCompleted.id); setCompletedTask({ task: newlyCompleted, siteName: completedSite?.id || '当前节点', changes: (data.feedback_events || []).flatMap(event => event.changes || []) }); } } if (data.viewer?.play_mode === 'local' && action.type === 'end_turn' && data.players[data.shared.active_player_id]) setHandoffName(data.players[data.shared.active_player_id].name); if (action.type === 'end_turn' && state?.shared.current_event_id !== data.shared.current_event_id && data.shared.current_event_id) { const settledName = currentEvent?.name || '上一轮事件'; const nextName = meta.events?.find(item => item.id === data.shared.current_event_id)?.name || '新的世界事件'; enqueueToast(`${settledName}已结算，${nextName}已揭示。`); } (data.feedback_events?.length ? data.feedback_events : [{ message: actionFeedback(action, state, data), changes: [] }]).forEach((event, index) => window.setTimeout(() => enqueueToast([event.message, ...(event.changes || []).map(change => `${change.label || '状态变化'} ${change.delta > 0 ? '+' : ''}${change.delta ?? ''}`)].filter(Boolean).join(' · ')), index * 180)); },
+    onSuccess: (data, action) => { setLastActionType(action.type); queryClient.setQueryData([roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], data); setPreview(null); setSelectedOption(null); setActionMode(null); if (action.type === 'move' && action.target_id) { setFocus(action.target_id); setInspectorOpen(true); } if (action.type === 'choose_intervention') { const newlyCompleted = Object.values(data.tasks).find(nextTask => nextTask.completed && !state?.tasks[nextTask.id || '']?.completed); if (newlyCompleted) { const completedSite = Object.values(data.sites).find(item => item.active_task_id === newlyCompleted.id); setCompletedTask({ task: newlyCompleted, siteName: completedSite?.id || '当前节点', changes: (data.feedback_events || []).flatMap(event => event.changes || []) }); } } if (data.viewer?.play_mode === 'local' && action.type === 'end_turn' && data.players[data.shared.active_player_id]) setHandoffName(data.players[data.shared.active_player_id].name); if (action.type === 'end_turn' && state?.shared.current_event_id !== data.shared.current_event_id && data.shared.current_event_id) { const settledName = currentEvent?.name || '上一轮事件'; const nextName = meta.events?.find(item => item.id === data.shared.current_event_id)?.name || '新的世界事件'; enqueueToast(`${settledName}已结算，${nextName}已揭示。`); } (data.feedback_events?.length ? data.feedback_events : [{ message: actionFeedback(action, state, data), changes: [] }]).forEach((event, index) => window.setTimeout(() => enqueueToast([event.message, ...feedbackChangeText(event.changes || [])].filter(Boolean).join(' · ')), index * 180)); },
     onError: error => { if (error instanceof ApiError && error.status === 409) { const current = (error.payload as { detail?: { current_state?: GameState } })?.detail?.current_state; if (current) { queryClient.setQueryData([roomId ? 'room-game' : 'game', roomId || sessionId, roomToken], current); setActionMode(null); setSelectedOption(null); setPreview(null); setCard(null); setStrategyOption(null); enqueueToast('\u72b6\u6001\u5df2\u540c\u6b65\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9\u884c\u52a8\u3002'); return; } } setActionMode(null); setSelectedOption(null); setPreview(null); enqueueToast(localizeActionError(error)); }
   });
   useEffect(() => { const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') { setActionMode(null); setSelectedOption(null); setCard(null); setPreview(null); } }; window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey); }, []);
