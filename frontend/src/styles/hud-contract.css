@@ -28,8 +28,16 @@
     padding: 0;
     overflow: hidden;
   }
-  .game-shell > .hud-slot-top { grid-column: 1 / -1; grid-row: 1; min-width: 0; min-height: 0; z-index: 20; }
-  .game-shell > .hud-slot-top > .game-header { height: var(--hud-header-height); min-height: 0; box-sizing: border-box; }
+  .game-shell > .hud-slot-top { position: relative; grid-column: 1 / -1; grid-row: 1; min-width: 0; min-height: 0; z-index: 20; }
+  .game-shell > .hud-slot-top > .game-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 700px) auto;
+    align-items: center;
+    gap: var(--hud-rail-gap);
+    height: var(--hud-header-height);
+    min-height: 0;
+    box-sizing: border-box;
+  }
   .game-shell > .hud-slot-top .header-center { min-width: 0; display: grid; place-items: center; }
   .game-shell > .hud-slot-top .goal-hud { width: min(100%, 700px); min-width: 0; transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)); }
   .game-shell > .hud-slot-top .goal-hud.is-open {
@@ -39,6 +47,8 @@
     left: 50%;
     width: min(760px, calc(100vw - 80px));
     max-height: min(520px, calc(100dvh - 100px));
+    background: linear-gradient(145deg, rgba(24, 39, 29, .99), rgba(12, 24, 17, .99));
+    box-shadow: 0 22px 58px rgba(0, 0, 0, .42);
     transform: translate(calc(-50% + var(--drag-x, 0px)), var(--drag-y, 0px));
     overflow: hidden;
   }

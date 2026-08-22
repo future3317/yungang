@@ -31,6 +31,7 @@ test('game HUD visual baseline', async ({ page }) => {
   await expect(page).toHaveScreenshot('game-hud.png', screenshotOptions);
   if (!test.info().project.name.endsWith('390')) {
     await page.getByRole('button', { name: '查看胜利条件（全部）' }).click();
+    await expect(page.locator('#goal-conditions')).toBeVisible();
   }
   await expect(page).toHaveScreenshot('game-goals-open.png', screenshotOptions);
 });

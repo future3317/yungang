@@ -2,7 +2,7 @@ import pytest
 from pydantic import TypeAdapter, ValidationError
 
 from backend.content_schemas import ComboRequirementContract, EffectContract, EventContract, ProjectStageContract
-from backend.models import EventForecastScope, EventInstance, EventRecord, PendingChoice, PendingChoiceOption, ProjectStage, RoundEntityChange, RoundMetrics, RoundSummary, TaskState
+from backend.models import EffectiveRules, EventForecastScope, EventInstance, EventModifier, EventRecord, PendingChoice, PendingChoiceOption, ProjectStage, RoundEntityChange, RoundMetrics, RoundSummary, StageEvidence, StageRequirements, StageReward, TaskReward, TaskState
 
 
 def test_combo_requirement_contract_rejects_unknown_fields():
@@ -49,6 +49,12 @@ def test_task_runtime_submodels_reject_unknown_nested_fields():
     (RoundSummary, {}),
     (ProjectStage, {}),
     (TaskState, {}),
+    (EventModifier, {"type": "route_action_cost"}),
+    (StageEvidence, {"stage_id": "discover", "card_id": "card", "player_id": "p1", "action_type": "explore"}),
+    (StageRequirements, {}),
+    (StageReward, {}),
+    (TaskReward, {}),
+    (EffectiveRules, {}),
 ])
 def test_runtime_contracts_reject_unknown_fields(model, payload):
     with pytest.raises(ValidationError):

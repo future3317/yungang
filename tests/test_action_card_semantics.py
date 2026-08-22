@@ -169,3 +169,14 @@ def test_using_strategy_card_does_not_draw_again_until_the_next_round():
     state.shared.turn += 1
     assert engine._draw_action_card(state, player) is True
     assert player.action_hand == ["action_01"]
+
+
+def test_strategy_card_option_does_not_advertise_card_id_as_route_target():
+    engine, state, player = _state_with_card("action_02")
+    for route in state.routes.values():
+        route.status = "open"
+    state = engine.refresh(state)
+
+    option = next(item for item in state.action_options if item.type == "use_action_card" and item.payload.get("card_id") == "action_02")
+    assert option.enabled is False
+    assert option.targets == []

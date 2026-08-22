@@ -8,7 +8,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, EVENT_MODIFIER_ACTIONS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, InterpretationEvaluation, InterpretationPlacement, JournalEntry, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, InterpretationEvaluation, InterpretationPlacement, JournalEntry, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus, StageEvidence
 
 
 class GameEngine:
@@ -240,7 +240,7 @@ class GameEngine:
                     "card_id": card,
                     "label": f"使用策略：{self.content.action_cards[card]['name']}",
                     "cost": int(self.content.action_cards[card].get("cost", 1)),
-                    "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]),
+                    "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]) and self._action_card_target_available(state, active_player, self.content.action_cards[card]),
                     "disabled_reason": f"当前不能使用 · 时机：{self.content.action_cards[card].get('timing', '当前行动阶段')}",
                 } for card in active_player.action_hand)
             elif kind == "view_select":
@@ -327,7 +327,7 @@ class GameEngine:
                 "card_id": card,
                 "label": f"\u4f7f\u7528\u7b56\u7565\uff1a{self.content.action_cards[card]['name']}",
                 "cost": int(self.content.action_cards[card].get("cost", 1)),
-                "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]),
+                "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]) and self._action_card_target_available(state, active, self.content.action_cards[card]),
                 "disabled_reason": f"\u5f53\u524d\u4e0d\u80fd\u4f7f\u7528 \u00b7 \u65f6\u673a\uff1a{self.content.action_cards[card].get('timing', '\u5f53\u524d\u884c\u52a8\u9636\u6bb5')}",
             } for card in active.action_hand)
             ability = self.content.sites[active.location].get("node_ability", {})
@@ -544,7 +544,7 @@ class GameEngine:
         task["contributed_cards"].append(card); task.setdefault("contribution_records", []).append(placement_model)
         task.setdefault("contributed_by_player", {})[player.id] = task.setdefault("contributed_by_player", {}).get(player.id, 0) + 1
         if player.id not in task.setdefault("contributing_player_ids", []): task["contributing_player_ids"].append(player.id)
-        site = state.sites[site_id]; site.contributions.append(placement); site.influence += 1
+        site = state.sites[site_id]; site.contributions.append(InterpretationPlacement.model_validate(placement)); site.influence += 1
         project = state.projects.get(site.active_project_id or "")
         if project and project.status == "active" and relation != "conflict": self._advance_project(state, project, player.id, "interpret_evidence", card)
         state.decks.setdefault("archive", []).append(card)
@@ -730,6 +730,21 @@ class GameEngine:
         if "事件响应" in timing: return bool(state.pending_choice and state.pending_choice.get("kind") == "event")
         if "事件预告" in timing: return state.shared.phase == "player_action" and bool(state.shared.current_event_id)
         return state.shared.phase == "player_action" and not state.pending_choice
+
+    def _action_card_target_available(self, state, player, definition):
+        typ = definition.get("effect", {}).get("type")
+        adjacent = [route for route in state.routes.values() if player.location in {route.from_site, route.to_site}]
+        route_effects = {"survey_route", "survey_and_mitigate", "survey_multiple_routes", "reduce_route_risk", "restore_route", "establish_connection", "restore_and_move"}
+        if typ in route_effects:
+            statuses = {"restored"} if typ == "establish_connection" else {"blocked", "strained"}
+            return any(route.status in statuses for route in adjacent)
+        if typ == "remote_exchange_or_connect":
+            return any(item.id != player.id for item in state.players.values()) or any(route.status == "restored" for route in adjacent)
+        if typ == "transfer_resource":
+            return any(item.id != player.id and item.location == player.location for item in state.players.values())
+        if typ == "team_prepare":
+            return bool(state.players)
+        return True
 
     def _use_action_card(self, state, player, card, target_id=None, target_ids=None, force_event_response=False):
         if card not in player.action_hand or card not in self.content.action_cards: raise ValueError("action_card_unavailable")
@@ -1229,7 +1244,7 @@ class GameEngine:
         stage = project.stages[project.stage_index]
         if stage.get("action_type", "interpret_evidence") != action_type: return
         stage_id = stage.get("id", str(project.stage_index))
-        project.stage_evidence.append({"stage_id": stage_id, "card_id": card_id, "player_id": player_id, "action_type": action_type})
+        project.stage_evidence.append(StageEvidence(stage_id=stage_id, card_id=card_id, player_id=player_id, action_type=action_type))
         project.stage_progress[stage_id] = project.stage_progress.get(stage_id, 0) + 1
         stage_receipts = project.stage_receipts.setdefault(stage_id, {})
         for key, amount in (receipts or {}).items():
@@ -1801,7 +1816,9 @@ class GameEngine:
                 option["confirmation"] = f"确认发动文化牌“{card_definition.get('name', '文化牌')}”的即时效果吗？"
             elif action_type in {ActionType.USE_SKILL.value, ActionType.USE_NODE_ABILITY.value, ActionType.USE_UPGRADE.value}:
                 option["label"] = action.get("label") or option["label"]
-            target = action.get("target_id") or action.get("target_site_id") or action.get("card_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
+            target = action.get("target_id") or action.get("target_site_id") or action.get("route_id") or action.get("recipient_id") or action.get("upgrade_id")
+            if action_type != ActionType.USE_ACTION_CARD.value:
+                target = target or action.get("card_id")
             payload = {key: value for key, value in action.items() if value is not None}
             if action_type == ActionType.PLAY_CARD.value and action.get("card_id"):
                 card_definition = self.content.cards.get(action["card_id"], {})

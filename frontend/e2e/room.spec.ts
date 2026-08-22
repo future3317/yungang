@@ -88,6 +88,12 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   const after = await host.evaluate(async ({ roomId, token }) => (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json(), syncContext);
   expect(after.revision).toBeGreaterThan(before.revision);
   expect(after.players[after.shared.active_player_id].location).not.toBe(before.players[before.shared.active_player_id].location);
+  const expectedSync = {
+    revision: after.revision,
+    event: after.shared.current_event_id,
+    activePlayer: after.shared.active_player_id,
+    players: Object.fromEntries(Object.entries(after.players).map(([id, player]) => [id, { name: player.name, role_id: player.role_id, location: player.location, hand: player.hand, action_hand: player.action_hand }]))
+  };
 
   await guestContext.close();
   const recovered = await recoveredContext.newPage();
@@ -100,10 +106,13 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   const recoveredContextState = await recovered.evaluate(async ({ roomId, expectedRevision, expectedLocation }) => {
     const token = sessionStorage.getItem(`yungang-room-token:${roomId}`) || '';
     const state = await (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json();
-    return { revision: state.revision, location: state.players[state.shared.active_player_id].location, expectedRevision, expectedLocation };
+    return { revision: state.revision, location: state.players[state.shared.active_player_id].location, event: state.shared.current_event_id, activePlayer: state.shared.active_player_id, players: Object.fromEntries(Object.entries(state.players).map(([id, player]) => [id, { name: player.name, role_id: player.role_id, location: player.location, hand: player.hand, action_hand: player.action_hand }])), expectedRevision, expectedLocation };
   }, { roomId: syncContext.roomId, expectedRevision: after.revision, expectedLocation: after.players[after.shared.active_player_id].location });
-  expect(recoveredContextState.revision).toBe(after.revision);
-  expect(recoveredContextState.location).toBe(after.players[after.shared.active_player_id].location);
+  expect(recoveredContextState.revision).toBe(expectedSync.revision);
+  expect(recoveredContextState.location).toBe(expectedSync.players[expectedSync.activePlayer].location);
+  expect(recoveredContextState.event).toBe(expectedSync.event);
+  expect(recoveredContextState.activePlayer).toBe(expectedSync.activePlayer);
+  expect(recoveredContextState.players).toEqual(expectedSync.players);
 
   await hostContext.close();
   await recoveredContext.close();

@@ -143,6 +143,12 @@ class EventRecord(DictModel):
     trigger: Optional[str] = None
 
 
+class EventModifier(DictModel):
+    type: str
+    action: Optional[str] = None
+    amount: Optional[int] = None
+
+
 class EventInstance(DictModel):
     event_id: Optional[str] = None
     status: EventStatus = EventStatus.FORECAST
@@ -151,7 +157,7 @@ class EventInstance(DictModel):
     resolved_targets: List[str] = Field(default_factory=list)
     mitigation: List[EventRecord] = Field(default_factory=list)
     resolution: List[EventRecord] = Field(default_factory=list)
-    modifiers: List[JsonObject] = Field(default_factory=list)
+    modifiers: List[EventModifier] = Field(default_factory=list)
 
 
 class PendingChoiceOption(DictModel):
@@ -180,6 +186,57 @@ class ComboRequirement(DictModel):
     required_combo_tags: List[str] = Field(default_factory=list)
     preferred_origins: List[str] = Field(default_factory=list)
     minimum_distinct_players: int = 0
+
+
+class StageRequirements(DictModel):
+    clues: int = 0
+    domains: List[str] = Field(default_factory=list)
+    origin_diversity: int = 0
+    restoration_resource: int = 0
+    contributors: int = 0
+
+
+class StageReward(DictModel):
+    influence: int = 0
+    research_clues: int = 0
+    restoration_resource: int = 0
+    route_connection: int = 0
+    weathering_reduction: int = 0
+    market_reserve: int = 0
+    archive_retrieve: int = 0
+    finale_unlock: bool = False
+    objective_tags: List[str] = Field(default_factory=list)
+
+
+class TaskReward(DictModel):
+    scroll_delta: int = 0
+    restoration_delta: int = 0
+    domain: Optional[str] = None
+    research_clues: int = 0
+    weathering_reduction: int = 0
+    influence: int = 0
+
+
+class StageEvidence(DictModel):
+    stage_id: str
+    card_id: str
+    player_id: str
+    action_type: str
+
+
+class EffectiveRules(DictModel):
+    max_rounds: int = 0
+    restoration_resource: int = 0
+    event_weight: float = 0
+    node_damage_base: int = 0
+    event_preview_count: int = 0
+    solo_ap_bonus: int = 0
+    planning_marks_per_round: int = 0
+    influence_goal: int = 0
+    guidance_level: Optional[str] = None
+    show_recommendation_reasons: bool = False
+    show_event_target_details: bool = False
+    route_action_discount: int = 0
 
 
 class InterpretationPlacement(DictModel):
@@ -279,8 +336,8 @@ class ProjectStage(DictModel):
     action_type: str = "interpret_evidence"
     required_progress: int = 1
     stage_text: Optional[str] = None
-    requirements: JsonObject = Field(default_factory=dict)
-    reward: JsonObject = Field(default_factory=dict)
+    requirements: StageRequirements = Field(default_factory=StageRequirements)
+    reward: StageReward = Field(default_factory=StageReward)
     choices: List[JsonObject] = Field(default_factory=list)
 
 
@@ -292,7 +349,7 @@ class TaskState(DictModel):
     required_origin_diversity: int = 1
     required_card_count: int = 1
     combo_requirement: ComboRequirement = Field(default_factory=ComboRequirement)
-    reward: JsonObject = Field(default_factory=dict)
+    reward: TaskReward = Field(default_factory=TaskReward)
     contributed_cards: List[str] = Field(default_factory=list)
     contribution_records: List[InterpretationPlacement] = Field(default_factory=list)
     interpretation: InterpretationState = Field(default_factory=InterpretationState)
@@ -628,7 +685,7 @@ class ProjectState(BaseModel):
     progress: int = 0
     status: ProjectStatus = ProjectStatus.ACTIVE
     contributors: List[str] = Field(default_factory=list)
-    stage_evidence: List[JsonObject] = Field(default_factory=list)
+    stage_evidence: List[StageEvidence] = Field(default_factory=list)
     completed_stages: List[str] = Field(default_factory=list)
     stage_progress: Dict[str, int] = Field(default_factory=dict)
     stage_contributors: Dict[str, List[str]] = Field(default_factory=dict)
@@ -677,7 +734,7 @@ class SiteState(BaseModel):
     influence: int = 0
     discovered: bool = False
     domains: List[str] = Field(default_factory=list)
-    contributions: List[JsonObject] = Field(default_factory=list)
+    contributions: List[InterpretationPlacement] = Field(default_factory=list)
     active_project_id: Optional[str] = None
 
 class SharedState(BaseModel):
@@ -702,7 +759,7 @@ class SharedState(BaseModel):
     phase: Phase = Phase.PLAYER_ACTION
     weathering_track: int = 0
     weathering_limit: int = 5
-    effective_rules: JsonObject = Field(default_factory=dict)
+    effective_rules: EffectiveRules = Field(default_factory=EffectiveRules)
     solo_mode: bool = False
     controlled_character_ids: List[str] = Field(default_factory=list)
     journal: List[JournalEntry] = Field(default_factory=list)
@@ -735,7 +792,7 @@ class PublicSharedState(BaseModel):
     phase: Phase = Phase.PLAYER_ACTION
     weathering_track: int = 0
     weathering_limit: int = 5
-    effective_rules: JsonObject = Field(default_factory=dict)
+    effective_rules: EffectiveRules = Field(default_factory=EffectiveRules)
     solo_mode: bool = False
     controlled_character_ids: List[str] = Field(default_factory=list)
     journal: List[JournalEntry] = Field(default_factory=list)
