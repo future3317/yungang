@@ -32,9 +32,14 @@ function eventIntensityLabel(value: number | undefined) {
 }
 
 function scenarioTriggerLabel(trigger: string | undefined) {
-  if (!trigger) return '';
-  if (trigger === 'round_end') return '回合结束';
-  return trigger.replace(/^after_/, '完成').replaceAll('_', ' ');
+  const labels: Record<string, string> = {
+    after_restore: '完成修护后',
+    after_interpret_evidence: '完成证据研判后',
+    after_establish_connection: '建立区域连接后',
+    after_explore: '完成寻访后',
+    round_end: '回合结束时',
+  };
+  return trigger ? labels[trigger] || '完成相应行动后' : '';
 }
 
 export function LandingPage() {
