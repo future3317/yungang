@@ -10,8 +10,15 @@ export type ChoiceKind = components['schemas']['ChoiceKind'];
 export type EventStatus = components['schemas']['EventStatus'];
 export type PlayMode = components['schemas']['PlayMode'];
 export type GameOutcome = components['schemas']['GameOutcome'] | null;
-export type ActionOption = Omit<components['schemas']['ActionOption'], 'targets' | 'recommendation_score' | 'reason' | 'confirmation' | 'category_label' | 'action_label'> & { targets: ActionTarget[]; recommendation_score?: number; reason?: string; confirmation?: string; category_label?: string; action_label?: string; };
-export type ActionTarget = Omit<components['schemas']['ActionTarget'], 'recommendation_score' | 'reason'> & { recommendation_score?: number; reason?: string; };
+export type ActionOption = components['schemas']['ActionOption'] & {
+  targets: NonNullable<components['schemas']['ActionOption']['targets']>;
+  recommendation_score: number;
+  reason: string;
+  confirmation: string;
+  category_label: string;
+  action_label: string;
+};
+export type ActionTarget = components['schemas']['ActionTarget'];
 export type Player = Omit<components['schemas']['PublicPlayerState'], 'hand' | 'action_hand'> & { hand: string[]; action_hand: string[]; };
 export type Site = components['schemas']['SiteState'] & {
   name?: string; summary?: string; icon_asset?: string; scene_asset?: string; x?: number; y?: number;
@@ -23,7 +30,10 @@ export type Site = components['schemas']['SiteState'] & {
 export type Task = components['schemas']['TaskState'];
 export type Shared = Omit<components['schemas']['PublicSharedState'], 'player_order' | 'completed_domains' | 'log' | 'planning_marks' | 'journal' | 'event_targets' | 'event_history'> & { player_order: string[]; completed_domains: string[]; log: string[]; planning_marks?: Record<string, Array<{ target_id: string; turn: string; collaborated?: boolean; collaboration_action?: string | null }>>; journal?: Array<{ id: string; round: number; type: string; message: string; effects?: unknown[]; created_at: string; player_id?: string | null }>; event_targets?: string[]; event_history?: Array<{ event_id?: string | null; round: number; resolution?: Array<{ changes?: Record<string, string | number> }> }>; };
 export type RouteState = components['schemas']['RouteState'];
-export type ProjectState = Omit<components['schemas']['ProjectState'], 'stages' | 'contributors'> & { stages: components['schemas']['ProjectStage'][]; contributors: string[]; };
+export type ProjectState = components['schemas']['ProjectState'] & {
+  stages: NonNullable<components['schemas']['ProjectState']['stages']>;
+  contributors: NonNullable<components['schemas']['ProjectState']['contributors']>;
+};
 export type ObjectiveState = components['schemas']['ObjectiveState'];
 export type ScoreState = components['schemas']['ScoreState'];
 export type GoalCondition = components['schemas']['GoalCondition'];
@@ -48,4 +58,6 @@ export type Meta = Omit<components['schemas']['MetaResponse'], 'terminology' | '
 export type RoomSeat = components['schemas']['RoomSeat'];
 export type Room = components['schemas']['RoomPublic'] & { play_mode: PlayMode; seats: RoomSeat[]; session_id?: string | null; };
 export type RoomCredentials = components['schemas']['RoomCredentials'];
-export type ArchiveSummary = Omit<components['schemas']['ArchiveSummary'], 'players'> & { players: components['schemas']['ArchivePlayer'][]; };
+export type ArchiveSummary = components['schemas']['ArchiveSummary'] & {
+  players: NonNullable<components['schemas']['ArchiveSummary']['players']>;
+};

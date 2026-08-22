@@ -1,5 +1,5 @@
 import type { Action, ArchiveSummary, GameState, Meta, PlayMode, Room, RoomCredentials, Task } from '../../types/game';
-import type { components } from './generated';
+import type { components, paths } from './generated';
 
 type ActionRequest = components['schemas']['ActionRequest'];
 type ContractGameState = components['schemas']['GameStateResponse'];
@@ -12,7 +12,16 @@ export class ApiError extends Error {
   constructor(status: number, message: string, payload: unknown, code?: string, recovery?: string) { super(message); this.name = 'ApiError'; this.status = status; this.payload = payload; this.code = code; this.recovery = recovery; }
 }
 
-async function request<T>(url: string, init?: RequestInit): Promise<T> {
+type HttpMethod = 'get' | 'post';
+type PathOperation<P extends keyof paths, M extends HttpMethod> = P extends keyof paths
+  ? M extends keyof paths[P] ? paths[P][M] : never
+  : never;
+type JsonBody<O> = O extends { requestBody?: { content: { 'application/json': infer Body } } } ? Body : never;
+type JsonResponse<O> = O extends { responses: infer Responses }
+  ? Responses extends { 200: { content: { 'application/json': infer Body } } } ? Body : never
+  : never;
+
+async function requestRaw(url: string, init?: RequestInit): Promise<unknown> {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 12000);
   let response: Response;
@@ -29,6 +38,20 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
     throw new ApiError(response.status, message, body, detail.code, detail.recovery);
   }
   return body;
+}
+
+async function requestPath<P extends keyof paths, M extends HttpMethod>(path: P, method: M, options: {
+  path?: Record<string, string>;
+  body?: JsonBody<PathOperation<P, M>>;
+  headers?: HeadersInit;
+} = {}): Promise<JsonResponse<PathOperation<P, M>>> {
+  const url = String(path).replace(/\{([^}]+)\}/g, (_, key: string) => {
+    const value = options.path?.[key];
+    if (!value) throw new Error(`缺少接口路径参数：${key}`);
+    return encodeURIComponent(value);
+  });
+  const body = options.body === undefined ? undefined : JSON.stringify(options.body);
+  return await requestRaw(url, { method: method.toUpperCase(), body, headers: options.headers }) as JsonResponse<PathOperation<P, M>>;
 }
 
 function requiredArray<T>(value: T[] | undefined, field: string): T[] {
@@ -98,28 +121,72 @@ function normalizeGameState(payload: ContractGameState): GameState {
   };
 }
 
-function gameRequest(url: string, init?: RequestInit) {
-  return request<ContractGameState>(url, init).then(normalizeGameState);
+function gameResponse(body: ContractGameState) {
+  return normalizeGameState(body);
+}
+
+function roomResponse(body: components['schemas']['RoomPublic'], sessionId?: string | null): Room {
+  return { ...body, seats: body.seats || [], session_id: sessionId || null };
+}
+
+function credentialsResponse(body: components['schemas']['RoomCredentials']): RoomCredentials {
+  return { ...body, room: roomResponse(body.room, body.session_id) };
+}
+
+function metaResponse(body: components['schemas']['MetaResponse']): Meta {
+  if (!body || typeof body !== 'object' || !Array.isArray(body.scenarios) || !Array.isArray(body.sites) || !Array.isArray(body.roles)) {
+    throw new Error('服务器返回的内容目录不完整，无法开始旅程。');
+  }
+  const normalized = {
+    ...body,
+    terminology: body.terminology,
+    domain_meta: body.domain_meta || {},
+    regions: body.regions || [],
+    scenarios: body.scenarios || [],
+    roles: body.roles || [],
+    sites: body.sites || [],
+    cards: body.cards || [],
+    action_cards: body.action_cards || [],
+    events: body.events || [],
+    tasks: body.tasks || [],
+    projects: body.projects || [],
+    objectives: body.objectives || [],
+    facets: body.facets || [],
+    difficulty: body.difficulty || [],
+    effective_rules_preview: body.effective_rules_preview || {},
+  };
+  // Content contracts and runtime site ViewModels intentionally meet at this one boundary.
+  // No server state is defaulted here; nullability is normalized only for content presentation.
+  return normalized as unknown as Meta;
+}
+
+function archivesResponse(body: components['schemas']['ArchiveSummary'][]): ArchiveSummary[] {
+  if (!Array.isArray(body)) throw new Error('服务器返回的存档列表格式不正确。');
+  return body.map(item => ({ ...item, players: item.players || [] }));
+}
+
+function actionRequest(action: Action, playerId: string, revision: number): ActionRequest {
+  return { player_id: playerId, action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id };
 }
 
 export const api = {
-  meta: () => request<Meta>('/api/meta'),
-  archives: () => request<ArchiveSummary[]>('/api/archives'),
-  game: (id: string) => gameRequest(`/api/games/${encodeURIComponent(id)}`),
-  create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => gameRequest('/api/games', { method: 'POST', body: JSON.stringify({ player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed }) }),
-  action: (id: string, action: Action, playerId: string, revision: number) => { const payload: ActionRequest = { player_id: playerId, action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }; return gameRequest(`/api/games/${encodeURIComponent(id)}/actions`, { method: 'POST', body: JSON.stringify(payload) }); },
-  createRoom: (options: { play_mode: PlayMode; name: string; role_id?: string; scenario_id: string; difficulty_id: string; seed?: number; max_players?: number }) => request<RoomCredentials>('/api/rooms', { method: 'POST', body: JSON.stringify(options) }),
-  room: (roomId: string, token?: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}`, { headers: token ? { 'X-Seat-Token': token } : undefined }),
-  joinRoom: (roomId: string, name: string, role_id?: string) => request<RoomCredentials>(`/api/rooms/${encodeURIComponent(roomId)}/join`, { method: 'POST', body: JSON.stringify({ name, role_id }) }),
-  roomReconnect: (roomId: string, seatId: string) => request<RoomCredentials>(`/api/rooms/${encodeURIComponent(roomId)}/reconnect`, { method: 'POST', body: JSON.stringify({ seat_id: seatId }) }),
-  roomReady: (roomId: string, token: string, ready: boolean) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/ready`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ ready }) }),
-  roomRole: (roomId: string, token: string, role_id: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/role`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ role_id }) }),
-  roomSeat: (roomId: string, token: string, seatId: string, update: { name?: string; role_id?: string; ready?: boolean }) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/seats/${encodeURIComponent(seatId)}`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify(update) }),
-  roomStart: (roomId: string, token: string) => request<{ room: Room; session_id: string }>(`/api/rooms/${encodeURIComponent(roomId)}/start`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
-  roomPause: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/pause`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
-  roomResume: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/resume`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
-  roomLeave: (roomId: string, token: string) => request<Room>(`/api/rooms/${encodeURIComponent(roomId)}/leave`, { method: 'POST', headers: { 'X-Seat-Token': token } }),
-  roomGame: (roomId: string, token: string) => gameRequest(`/api/rooms/${encodeURIComponent(roomId)}/game`, { headers: { 'X-Seat-Token': token } }),
-  roomEventTicket: (roomId: string, token: string) => request<{ ticket: string; expires_in: number }>(`/api/rooms/${encodeURIComponent(roomId)}/events-ticket`, { headers: { 'X-Seat-Token': token } }),
-  roomAction: (roomId: string, token: string, action: Action, revision: number) => gameRequest(`/api/rooms/${encodeURIComponent(roomId)}/actions`, { method: 'POST', headers: { 'X-Seat-Token': token }, body: JSON.stringify({ action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id }) })
+  meta: () => requestPath('/api/meta', 'get').then(metaResponse),
+  archives: () => requestPath('/api/archives', 'get').then(archivesResponse),
+  game: (id: string) => requestPath('/api/games/{session_id}', 'get', { path: { session_id: id } }).then(gameResponse),
+  create: (playerIds: string[], difficultyId: string, options?: { scenario_id?: string; seed?: number; daily_seed?: string }) => requestPath('/api/games', 'post', { body: { player_ids: playerIds, difficulty_id: difficultyId, scenario_id: options?.scenario_id || 'sand_and_stone', seed: options?.seed, daily_seed: options?.daily_seed } }).then(gameResponse),
+  action: (id: string, action: Action, playerId: string, revision: number) => requestPath('/api/games/{session_id}/actions', 'post', { path: { session_id: id }, body: actionRequest(action, playerId, revision) }).then(gameResponse),
+  createRoom: (options: { play_mode: PlayMode; name: string; role_id?: string; scenario_id: string; difficulty_id: string; seed?: number; max_players?: number }) => requestPath('/api/rooms', 'post', { body: { ...options, max_players: options.max_players || 4 } }).then(credentialsResponse),
+  room: (roomId: string, token?: string) => requestPath('/api/rooms/{room_id}', 'get', { path: { room_id: roomId }, headers: token ? { 'X-Seat-Token': token } : undefined }).then(body => roomResponse(body)),
+  joinRoom: (roomId: string, name: string, role_id?: string) => requestPath('/api/rooms/{room_id}/join', 'post', { path: { room_id: roomId }, body: { name, role_id } }).then(credentialsResponse),
+  roomReconnect: (roomId: string, seatId: string) => requestPath('/api/rooms/{room_id}/reconnect', 'post', { path: { room_id: roomId }, body: { seat_id: seatId } }).then(credentialsResponse),
+  roomReady: (roomId: string, token: string, ready: boolean) => requestPath('/api/rooms/{room_id}/ready', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token }, body: { ready } }).then(body => roomResponse(body)),
+  roomRole: (roomId: string, token: string, role_id: string) => requestPath('/api/rooms/{room_id}/role', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token }, body: { role_id } }).then(body => roomResponse(body)),
+  roomSeat: (roomId: string, token: string, seatId: string, update: { name?: string; role_id?: string; ready?: boolean }) => requestPath('/api/rooms/{room_id}/seats/{seat_id}', 'post', { path: { room_id: roomId, seat_id: seatId }, headers: { 'X-Seat-Token': token }, body: update }).then(body => roomResponse(body)),
+  roomStart: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/start', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }).then(body => ({ ...body, room: roomResponse(body.room, body.session_id) })),
+  roomPause: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/pause', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }).then(body => roomResponse(body)),
+  roomResume: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/resume', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }).then(body => roomResponse(body)),
+  roomLeave: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/leave', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }).then(body => roomResponse(body)),
+  roomGame: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/game', 'get', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }).then(gameResponse),
+  roomEventTicket: (roomId: string, token: string) => requestPath('/api/rooms/{room_id}/events-ticket', 'get', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token } }),
+  roomAction: (roomId: string, token: string, action: Action, revision: number) => requestPath('/api/rooms/{room_id}/actions', 'post', { path: { room_id: roomId }, headers: { 'X-Seat-Token': token }, body: { action: action.type, expected_revision: revision, target_id: action.target_id, target_site_id: action.target_site_id, card_id: action.card_id, recipient_id: action.recipient_id, route_id: action.route_id, upgrade_id: action.upgrade_id, target_ids: action.target_ids, request_id: action.request_id } }).then(gameResponse)
 };

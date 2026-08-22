@@ -296,6 +296,23 @@ def test_player_learning_chain_has_real_state_transitions():
     assert site.damage == max(0, before_damage - 1)
 
 
+def test_learning_chain_closes_two_player_round_and_keeps_summary():
+    state = engine.new_game("learning-chain-round", ["p1", "p2"], solo_mode=False)
+    active = state.players[state.shared.active_player_id]
+    active.ap = 0
+    engine.apply(state, {"player_id": active.id, "action": "end_turn"})
+    next_player = state.players[state.shared.active_player_id]
+    next_player.ap = 0
+    engine.apply(state, {"player_id": next_player.id, "action": "end_turn"})
+
+    summary = state.shared.round_summary
+    assert state.shared.turn == 2
+    assert summary["round"] == 1
+    assert summary["event_id"] is not None
+    assert summary.before is not None and summary.after is not None
+    assert isinstance(summary.event_resolution, list)
+
+
 def test_western_dancer_upgrade_rewards_cross_origin_contribution_with_clue():
     state = engine.new_game("upgrade-clue", ["p1"])
     player = state.players["p1"]

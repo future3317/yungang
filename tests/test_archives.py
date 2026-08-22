@@ -1,6 +1,8 @@
+import json
+
 from fastapi.testclient import TestClient
 
-from backend.app import app, repo
+from backend.app import app, engine, repo
 from backend.models import JournalEntry
 from backend.repository import migrate_game_state
 
@@ -65,3 +67,24 @@ def test_v1_state_migration_runs_each_version_step():
     assert migrated["migrated_from_schema_version"] == 1
     assert migrated["shared"]["weathering_track"] == 2
     assert "threat" not in migrated["shared"]
+
+
+def test_repository_persists_canonical_state_after_legacy_read(tmp_path):
+    from backend.repository import GameRepository
+
+    repository = GameRepository(tmp_path / "legacy.sqlite3")
+    repository.database.ensure_games()
+    payload = json.loads(engine.new_game("legacy-read", ["p1"], scenario_id="sand_and_stone").model_dump_json())
+    payload["schema_version"] = 1
+    payload["shared"]["threat"] = 2
+    payload["shared"].pop("weathering_track", None)
+    with repository.database.connect() as db:
+        db.execute(repository.database.sql("INSERT INTO games(session_id,state) VALUES(?,?)"), ("legacy-read", json.dumps(payload)))
+
+    assert repository.get("legacy-read") is not None
+    with repository.database.connect() as db:
+        raw = db.execute(repository.database.sql("SELECT state FROM games WHERE session_id=?"), ("legacy-read",)).fetchone()[0]
+    stored = json.loads(raw)
+    assert stored["schema_version"] == 3
+    assert stored["shared"]["weathering_track"] == 2
+    assert "threat" not in stored["shared"]

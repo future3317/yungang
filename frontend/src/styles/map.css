@@ -1,5 +1,6 @@
 /* Map and interaction visuals. Viewport geometry belongs only to hud-contract.css. */
 .network-atmosphere-layer, .map-focus-layer, .node-surface, .node-frame, .node-image, .map-player-focus-art, .map-selection-focus-art { pointer-events: none; }
+.network-frame > svg { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; touch-action: none; }
 .network-atmosphere { opacity: .045; mix-blend-mode: screen; }
 .network-atmosphere-lit { opacity: .075; }
 .node-surface { opacity: .18; mix-blend-mode: screen; }

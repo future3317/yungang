@@ -71,7 +71,7 @@
   .hud-layout > .hud-slot-left::-webkit-scrollbar-thumb, .hud-layout > .hud-slot-right::-webkit-scrollbar-thumb { background: rgba(220, 188, 105, .68); border: 2px solid rgba(7, 15, 10, .3); border-radius: 999px; background-clip: padding-box; }
   .game-shell > .hud-slot-bottom { grid-column: 2; grid-row: 3; min-width: 0; z-index: 15; pointer-events: none; }
   .game-shell > .hud-slot-bottom > .timeline-drawer { width: min(760px, 100%); margin: 0 auto 12px; pointer-events: auto; transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)); }
-  .game-shell > .hud-overlay-layer { position: relative; z-index: 300; }
+  .game-shell > .hud-overlay-layer { position: fixed; inset: 0; z-index: 300; pointer-events: none; }
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
@@ -97,4 +97,5 @@
   .goal-hud, .timeline-drawer, .stage-caption { transition: none; }
 }
 
+.hud-overlay-layer > * { pointer-events: auto; }
 .hud-overlay-layer .toast { pointer-events: none; }

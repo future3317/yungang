@@ -14,6 +14,7 @@ from .models import ActionOption, ActionType, EventHistoryRecord, FeedbackChange
 class GameEngine:
     def __init__(self, content: Content | None = None):
         self.content = content or Content()
+        self._preview_cache: dict[tuple[int, int, str], dict[str, int]] = {}
 
     def _effective_rules(self, scenario, difficulty, solo):
         normal = self.content.difficulty.get("normal", {})
@@ -1743,8 +1744,13 @@ class GameEngine:
             if state is None:
                 return {}
             key = repr(sorted((name, repr(value)) for name, value in action.items()))
-            if key not in preview_cache:
-                preview_cache[key] = self._action_preview_delta(action, state)
+            cache_key = (id(state), int(state.revision), key)
+            if cache_key not in self._preview_cache:
+                self._preview_cache[cache_key] = self._action_preview_delta(action, state)
+                if len(self._preview_cache) > 2048:
+                    state_id = id(state)
+                    self._preview_cache = {item_key: value for item_key, value in self._preview_cache.items() if item_key[0] == state_id}
+            preview_cache[key] = self._preview_cache[cache_key]
             return preview_cache[key]
 
         active = state.players.get(state.shared.active_player_id) if state else None

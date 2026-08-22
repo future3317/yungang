@@ -12,7 +12,7 @@ from .database import database_target_from_environment
 from .engine import GameEngine
 from .errors import error_detail, error_status
 from .models import ActionRequest, ArchiveSummary, CreateGameRequest, GameState, GameStateResponse, MetaResponse, RoomActionRequest, RoomCreateRequest, RoomCredentials, RoomEventTicket, RoomJoinRequest, RoomPublic, RoomReadyRequest, RoomReconnectRequest, RoomRoleRequest, RoomSeatUpdateRequest, RoomStartResponse, ViewerState
-from .repository import GameRepository
+from .repository import GameRepository, migrate_game_state
 from .rooms import RoomRepository, RoomService
 
 app = FastAPI(title="Yungang Heritage Network", version="3.0")
@@ -94,7 +94,7 @@ def list_archives() -> list[ArchiveSummary]:
     archives: list[ArchiveSummary] = []
     for session_id, raw_state in repo.list_raw():
         try:
-            state = GameState.model_validate(json.loads(raw_state))
+            state = GameState.model_validate(migrate_game_state(json.loads(raw_state)))
         except (TypeError, json.JSONDecodeError, ValueError):
             continue
         room = rooms.get(session_id)

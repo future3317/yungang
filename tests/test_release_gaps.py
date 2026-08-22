@@ -215,6 +215,35 @@ def test_interpretation_evaluator_is_single_source_for_progress_and_legality():
     assert progress.model_dump(mode="json") == engine._evaluate_interpretation(state.tasks[task["id"]]).model_dump(mode="json")
 
 
+def test_global_event_targets_are_not_rendered_as_player_targets():
+    state = engine.new_game("global-event-targets", ["p1", "p2"], scenario_id="sand_and_stone")
+    for rule in ("shared_resource", "weathering", "global_resource", "global_weathering"):
+        event = {"id": f"event-{rule}", "target_rule": rule}
+        assert engine._select_event_targets(state, event) == []
+
+
+def test_conflict_is_counted_once_by_low_confidence_intervention_rule():
+    state = engine.new_game("confidence-single-penalty", ["p1"])
+    player = state.players["p1"]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    cards = list(engine.content.cards)[:2]
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [engine.content.cards[cards[0]]["domain"]]
+    task["combo_requirement"] = {}
+    task["interpretation"]["placements"] = [
+        {"card_id": cards[0], "relation": "support"},
+        {"card_id": cards[1], "relation": "conflict"},
+    ]
+    evaluation = engine._evaluate_interpretation(task)
+    assert evaluation["confidence"] == 1
+    task["interpretation"]["formed"] = True
+    task["interpretation"]["confidence"] = evaluation["confidence"]
+    before = state.shared.weathering_track
+    engine._choose_intervention(state, player, player.location, "act_now")
+    assert state.shared.weathering_track == before + 1
+
+
 def test_intervention_preview_delta_matches_real_execution():
     state = engine.new_game("intervention-preview-contract", ["p1"], scenario_id="sand_and_stone")
     player = state.players["p1"]

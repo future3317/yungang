@@ -69,9 +69,14 @@ class GameRepository:
     def get(self, session_id: str):
         with self.database.connect() as db:
             row = db.execute(self.database.sql("SELECT state FROM games WHERE session_id=?"), (session_id,)).fetchone()
-        if not row:
-            return None
-        return GameState.model_validate(migrate_game_state(json.loads(row[0])))
+            if not row:
+                return None
+            payload = json.loads(row[0])
+            migrated = migrate_game_state(payload)
+            state = GameState.model_validate(migrated)
+            if int(payload.get("schema_version", 1)) < CURRENT_SCHEMA_VERSION:
+                db.execute(self.database.sql("UPDATE games SET state=? WHERE session_id=?"), (state.model_dump_json(), session_id))
+            return state
 
     def save(self, state: GameState):
         with self.database.connect() as db:

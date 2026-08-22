@@ -29,7 +29,7 @@ describe('game UI localization and previews', () => {
   });
 
   it('carries action descriptions into confirmation previews', () => {
-    expect(optionAction({ id: 'skill', type: 'use_skill', label: '凿刻辨识', category_label: '角色技能', action_label: '使用角色技能', description: '修护当前节点。', cost: { ap: 1 }, enabled: true, targets: [] }).description).toBe('修护当前节点。');
+    expect(optionAction({ id: 'skill', type: 'use_skill', label: '凿刻辨识', category_label: '角色技能', action_label: '使用角色技能', description: '修护当前节点。', cost: { ap: 1 }, enabled: true, targets: [], recommendation_score: 0, reason: '', confirmation: '' }).description).toBe('修护当前节点。');
   });
 
   it('explains how interpretation confidence changes intervention choices', () => {
