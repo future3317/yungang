@@ -43,8 +43,9 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : 'task';
   const [tab, setTab] = useState<InspectorTab>(initialTab);
   useEffect(() => {
-    setTab(actionMode === 'explore' ? 'market' : 'task');
-  }, [actionMode, site.id]);
+    if (actionMode === 'explore') setTab('market');
+    else if (site.id !== state.players[state.shared.active_player_id]?.location) setTab('task');
+  }, [actionMode, site.id, state.players, state.shared.active_player_id]);
 
   const active = state.players[state.shared.active_player_id];
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));

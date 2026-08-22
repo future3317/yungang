@@ -145,6 +145,8 @@ export function localizeActionText(value?: string, context?: DisplayContext) {
     .replace(/\bafter_arrival\b/gi, '抵达后')
     .replace(/\bround_end\b/gi, '回合结束时')
     .replace(/\bplayer_action\b/gi, '玩家行动阶段')
+    .replace(/\bplayer-seat-\d+\b/gi, '同行者')
+    .replace(/\bseat-\d+\b/gi, '同行席位')
     .replace(/\broute_risk\b/gi, '路线风险')
     .replace(/\bweathering_track\b/gi, '风化压力')
     .replace(/\bthreat_delta\b/gi, '风化压力变化')

@@ -383,7 +383,18 @@ class GameEngine:
 
     def _journal_message(self, action: str, target: str | None, req: dict[str, Any]) -> str:
         labels = {"move": "移动", "explore": "寻访文化线索", "interpret_evidence": "研判证据", "form_interpretation": "形成解释", "choose_intervention": "选择干预", "restore": "修护节点", "exchange": "交换证据", "use_skill": "使用角色技能", "play_card": "使用文化牌", "use_action_card": "使用策略牌", "survey_route": "勘察路线", "restore_route": "修护路线", "establish_connection": "建立区域连接", "prepare": "准备事件", "end_turn": "结束回合", "plan": "放置规划标记", "end_planning": "开始行动"}
-        return labels.get(action, "完成一项行动") + (f"（目标：{target}）" if target else "")
+        target_label = target
+        if target:
+            target_label = self.content.sites.get(target, {}).get("name") or self.content.projects.get(target, {}).get("name")
+            if not target_label:
+                route = next((item for item in self.content.routes if item.get("id") == target), None)
+                if route:
+                    source = self.content.sites.get(route.get("from"), {}).get("name", route.get("from"))
+                    destination = self.content.sites.get(route.get("to"), {}).get("name", route.get("to"))
+                    target_label = route.get("name") or f"{source}—{destination}"
+            if not target_label:
+                target_label = "同行者" if str(target).startswith(("player-", "seat-")) else target
+        return labels.get(action, "完成一项行动") + (f"（目标：{target_label}）" if target_label else "")
 
     @staticmethod
     def _sync_pressure(state: GameState, before_threat: int, before_weathering: int) -> None:

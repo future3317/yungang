@@ -939,8 +939,6 @@
   .game-grid.hud-slot-center > .stage-column {
     position: absolute !important;
     inset: 0;
-    display: block !important;
-    min-height: 100dvh !important;
     pointer-events: none;
   }
   .game-grid.hud-slot-center > .stage-column > .network-stage { pointer-events: auto; }
@@ -1576,6 +1574,46 @@
     width: min(360px, calc(100% - 2 * var(--hud-center-gutter))) !important;
     max-height: 220px !important;
     margin: 0 auto !important;
+  }
+}
+
+/* Final desktop contract: the header is a row, while both rails own their scroll surface. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell > .hud-slot-top {
+    height: var(--header-height) !important;
+    pointer-events: none;
+  }
+  .game-viewport > .game-shell > .hud-slot-top > .game-header {
+    display: grid !important;
+    grid-template-columns: minmax(300px, 1fr) minmax(520px, 680px) minmax(150px, 1fr) !important;
+    min-height: var(--header-height) !important;
+    height: var(--header-height) !important;
+    pointer-events: auto !important;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column,
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    top: var(--hud-panel-top) !important;
+    bottom: var(--hud-panel-bottom) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector .inspector-content {
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector::-webkit-scrollbar,
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column::-webkit-scrollbar { width: 10px; }
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector::-webkit-scrollbar-thumb,
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column::-webkit-scrollbar-thumb {
+    background: rgba(220, 188, 105, .66);
+    border: 2px solid rgba(7, 15, 10, .3);
+    border-radius: 999px;
+    background-clip: padding-box;
   }
 }
 
