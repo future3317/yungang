@@ -1891,6 +1891,34 @@
     touch-action: none;
   }
 
-  .timeline-drawer .timeline-drag-handle:active { cursor: grabbing; }
-  .timeline-drawer .timeline-drag-handle img { width: 18px; height: 18px; object-fit: contain; }
+.timeline-drawer .timeline-drag-handle:active { cursor: grabbing; }
+.timeline-drawer .timeline-drag-handle img { width: 18px; height: 18px; object-fit: contain; }
+}
+
+/* Final geometry contract: an expanded goal list is a centered overlay in the
+   world slot, never a layer over either independently scrollable side rail. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud.is-open {
+    position: fixed !important;
+    z-index: 220 !important;
+    top: var(--header-height) !important;
+    left: 50% !important;
+    width: min(760px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 2 * var(--hud-center-gutter))) !important;
+    max-width: none !important;
+    max-height: min(520px, calc(100dvh - var(--header-height) - 24px)) !important;
+    transform: translate(calc(-50% + var(--drag-x, 0px)), var(--drag-y, 0px)) !important;
+    overflow: hidden !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud.is-open .goal-conditions {
+    max-height: min(360px, calc(100dvh - var(--header-height) - 150px)) !important;
+    overflow-y: auto !important;
+    scrollbar-gutter: stable;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-center > .roster-column,
+  .game-viewport > .game-shell > .hud-slot-center > .site-inspector {
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable both-edges !important;
+  }
 }
