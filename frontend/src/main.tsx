@@ -14,9 +14,9 @@ import './styles/map.css';
 import './styles/command-dock.css';
 import './styles/responsive.css';
 import './styles/motion.css';
+import './styles/components.css';
 import './styles/readability-tuning.css';
 import './styles/production-finishing.css';
-import './styles/components.css';
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 5000, retry: 1 } } });
 createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><BrowserRouter><App /><AccessibilitySettings /></BrowserRouter></QueryClientProvider></React.StrictMode>);

@@ -28,7 +28,6 @@ import { assetUrl } from '../../shared/assetUrl';
 import { tutorialContextForAction, type TutorialContext, useTutorialProgress } from '../../shared/useTutorialProgress';
 import '../../styles/experience.css';
 import '../../styles/tutorial.css';
-import '../../styles/interface-scale.css';
 import '../../styles/handoff.css';
 import '../../styles/fullscreen-map.css';
 
