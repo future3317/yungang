@@ -42,13 +42,14 @@ export function useDraggablePosition(storageKey: string, options: DragOptions = 
     const end = () => { if (dragRef.current && movedRef.current) suppressClickRef.current = true; dragRef.current = null; };
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', end);
-    return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); };
+    window.addEventListener('pointercancel', end);
+    return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end); };
   }, [minVisibleHeight, minVisibleWidth]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLElement>) => {
     movedRef.current = false;
     suppressClickRef.current = false;
-    const surface = event.currentTarget.parentElement;
+    const surface = event.currentTarget.closest<HTMLElement>('[data-draggable-surface]') || event.currentTarget.parentElement;
     dragRef.current = { startX: event.clientX, startY: event.clientY, originX: position.x, originY: position.y, rect: surface?.getBoundingClientRect() || event.currentTarget.getBoundingClientRect() };
     event.currentTarget.setPointerCapture?.(event.pointerId);
   };

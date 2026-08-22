@@ -1344,10 +1344,55 @@
 /* Keep the top bar in its own safe band and make the goal HUD's persisted drag offset visible. */
 @media (min-width: 1101px) {
   .game-viewport {
-    --hud-panel-top: calc(var(--header-height, 64px) + 20px);
+    --hud-panel-top: calc(var(--header-height, 64px) + 30px);
   }
 
   .goal-hud {
     transform: translate(var(--drag-x, 0px), var(--drag-y, 0px));
+  }
+
+  /* Keep the title rail independent from the side HUD rails. The world can remain
+     full-screen, but side panels must begin below the title rail's safe band. */
+  .hud-slot-top > .game-header {
+    grid-template-columns: minmax(320px, 1fr) minmax(360px, min(620px, 44vw)) minmax(96px, 1fr) !important;
+  }
+
+  .hud-slot-top .header-center {
+    position: relative !important;
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0 !important;
+    width: auto !important;
+    transform: none !important;
+  }
+
+  .hud-slot-top .header-center > .goal-hud {
+    position: relative;
+    width: 100% !important;
+    max-width: 620px;
+    pointer-events: auto;
+  }
+
+  .hud-slot-top .header-center > .goal-hud.is-open {
+    position: absolute;
+    z-index: 220;
+    top: calc(100% + 10px);
+    left: 50%;
+    width: min(620px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 48px)) !important;
+    max-height: min(430px, calc(100dvh - var(--hud-panel-top) - 24px));
+    overflow: visible;
+    transform: translate(calc(-50% + var(--drag-x, 0px)), var(--drag-y, 0px));
+  }
+
+  .hud-slot-top .header-center > .goal-hud.is-open .goal-conditions {
+    max-height: min(320px, calc(100dvh - var(--hud-panel-top) - 100px));
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .roster-column,
+  .game-grid.hud-slot-center > .site-inspector {
+    top: var(--hud-panel-top);
   }
 }
