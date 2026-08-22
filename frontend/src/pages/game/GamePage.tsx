@@ -32,6 +32,7 @@ import '../../styles/experience.css';
 import '../../styles/tutorial.css';
 import '../../styles/handoff.css';
 import '../../styles/fullscreen-map.css';
+import '../../styles/hud-contract.css';
 
 
 export function GamePage() {
