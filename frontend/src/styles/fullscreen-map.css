@@ -1895,6 +1895,12 @@
 .timeline-drawer .timeline-drag-handle img { width: 18px; height: 18px; object-fit: contain; }
 }
 
+/* Dialogs are the only blocking layer. Keep the draggable timeline below it
+   so an expanded history drawer can never intercept a confirmation click. */
+.game-viewport > .game-shell > .hud-overlay-layer {
+  z-index: 300 !important;
+}
+
 /* Final geometry contract: an expanded goal list is a centered overlay in the
    world slot, never a layer over either independently scrollable side rail. */
 @media (min-width: 1101px) {

@@ -67,3 +67,58 @@ test('game actions expose a guided target mode without internal enums', async ({
   const bodyText = await page.locator('body').innerText();
   expect(bodyText).not.toMatch(/use_action_card|form_interpretation|project_[0-9]+/);
 });
+
+test('single player can follow the learning chain with visible confirmations', async ({ page }) => {
+  test.skip(test.info().project.name !== 'desktop', 'The full learning-chain journey is covered on desktop.');
+  await startSolo(page);
+
+  const confirmPreview = async () => {
+    const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+    if (await tutorialClose.isVisible()) await tutorialClose.click();
+    const preview = page.locator('.action-preview');
+    if (await preview.isVisible()) {
+      await preview.getByRole('button', { name: /踏上这一步/ }).click();
+      await expect(preview).toBeHidden();
+    }
+  };
+
+  await page.getByRole('button', { name: /^移动/ }).first().click();
+  await confirmPreview();
+
+  const explore = page.getByRole('button', { name: /^探索/ }).first();
+  await expect(explore).toBeVisible();
+  await explore.click();
+  await confirmPreview();
+
+  await page.locator('.inspector-content').evaluate(element => { element.scrollTop = element.scrollHeight; });
+  const marketCard = page.locator('.culture-card').first();
+  await expect(marketCard).toBeVisible();
+  await marketCard.click();
+  await confirmPreview();
+  await page.getByRole('tab', { name: '任务' }).click();
+
+  const evidence = page.locator('.evidence-choice').first();
+  await expect(evidence).toBeVisible();
+  await evidence.getByRole('button', { name: /支持/ }).click();
+  await confirmPreview();
+
+  const form = page.getByRole('button', { name: '形成当前解释' });
+  if (await form.isVisible()) {
+    if (await form.isEnabled()) {
+      await form.click();
+      await confirmPreview();
+    } else {
+      await expect(page.locator('.interpretation-hint')).toBeVisible();
+    }
+  }
+
+  const intervention = page.getByRole('button', { name: /最小干预/ });
+  if (await intervention.isVisible()) {
+    await intervention.click();
+    await confirmPreview();
+  }
+
+  await expect(page.locator('.toast-queue, .timeline-drawer').first()).toBeVisible();
+  const bodyText = await page.locator('body').innerText();
+  expect(bodyText).not.toMatch(/player-seat-|target_rule|use_action_card|form_interpretation/);
+});

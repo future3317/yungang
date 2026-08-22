@@ -227,6 +227,54 @@ def test_direct_contribution_path_is_not_available():
     assert not hasattr(engine, "_contribute")
 
 
+def test_player_learning_chain_has_real_state_transitions():
+    """The core teaching loop must change the real game state at every step."""
+    state = engine.new_game("learning-chain", ["p1"], solo_mode=True)
+    player = state.players["p1"]
+    player.max_ap = 8
+    player.ap = 8
+    player.action_hand = ["action_08"]
+
+    before_ap = player.ap
+    engine._use_action_card(state, player, "action_08")
+    assert player.ap == before_ap - 1
+    assert "action_08" not in player.action_hand
+    assert "action_08" in state.decks["action_discard"]
+
+    engine.refresh(state)
+    move_option = next(option for option in state.action_options if option.type == "move" and option.targets)
+    move_target = move_option.targets[0].id
+    engine.apply(state, {"player_id": player.id, "action": "move", "target_id": move_target})
+    assert player.location == move_target
+
+    engine.refresh(state)
+    explore_option = next(option for option in state.action_options if option.type == "explore" and option.targets)
+    explore_target = explore_option.targets[0]
+    card_id = explore_target.payload["card_id"]
+    engine.apply(state, {"player_id": player.id, "action": "explore", "target_id": player.location, "card_id": card_id})
+    assert card_id in player.hand
+    assert state.shared.research_clues >= 1
+
+    site = state.sites[player.location]
+    task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
+    card = engine.content.cards[card_id]
+    task["required_card_count"] = 1
+    task["required_origin_diversity"] = 1
+    task["required_domains"] = [card["domain"]]
+    task["combo_requirement"] = {}
+    engine.apply(state, {"player_id": player.id, "action": "interpret_evidence", "target_site_id": player.location, "target_id": "support", "card_id": card_id})
+    engine.apply(state, {"player_id": player.id, "action": "form_interpretation", "target_id": player.location})
+    before_influence = state.shared.influence
+    before_damage = site.damage
+    engine.apply(state, {"player_id": player.id, "action": "choose_intervention", "target_site_id": player.location, "target_id": "minimal"})
+
+    assert task["completed"] is True
+    assert task["interpretation"]["formed"] is True
+    assert task["interpretation"]["intervention"] == "minimal"
+    assert state.shared.influence == before_influence + 1
+    assert site.damage == max(0, before_damage - 1)
+
+
 def test_western_dancer_upgrade_rewards_cross_origin_contribution_with_clue():
     state = engine.new_game("upgrade-clue", ["p1"])
     player = state.players["p1"]
