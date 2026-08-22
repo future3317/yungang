@@ -87,3 +87,9 @@
 .hud-overlay-layer { position: fixed; z-index: var(--z-overlay); inset: 0; pointer-events: none; isolation: isolate; }.hud-overlay-layer > * { pointer-events: auto; }
 .choice-hint.choice-impact { border-left-color: var(--risk, #c86b53); background: rgba(143, 64, 48, .14); }
 .interpretation-guidance { margin-top: 10px; }
+
+.event-section { display: grid; gap: 7px; margin-top: 10px; padding: 10px 11px; color: #dfd4be; background: rgba(14, 28, 20, .3); border: 1px solid rgba(220, 190, 112, .16); border-radius: 8px; }
+.event-section > b { color: #e4c57f; font-size: .76rem; letter-spacing: .04em; }
+.event-section > p { margin: 0; color: #d5c9b2; font-size: .78rem; line-height: 1.55; }
+.event-action-section { background: rgba(178, 139, 70, .09); border-color: rgba(220, 190, 112, .28); }
+.event-action-section .primary-action { margin-top: 2px; }
