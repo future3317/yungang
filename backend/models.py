@@ -534,6 +534,7 @@ class SharedState(BaseModel):
     round_snapshot: JsonObject = Field(default_factory=dict, exclude=True)
     reserved_market_cards: List[str] = Field(default_factory=list)
     scenario_rule_uses: List[str] = Field(default_factory=list)
+    scenario_round_baseline: JsonObject = Field(default_factory=dict)
 
 class GameState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)

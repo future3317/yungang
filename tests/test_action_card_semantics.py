@@ -131,3 +131,19 @@ def test_project_progress_effect_advances_stage_state_consistently():
     engine._apply_node_effect(state, player, player.location, {"type": "project_progress", "amount": 1})
     assert project.stage_progress[stage.get("id", "0")] == 1
     assert project.stage_index == 1 or project.status == "completed"
+
+
+def test_project_progress_effect_grants_the_completed_stage_reward():
+    engine = GameEngine()
+    state = engine.new_game("project-effect-reward", ["p1"])
+    player = state.players["p1"]
+    project = state.projects[state.sites[player.location].active_project_id]
+    stage = project.stages[project.stage_index]
+    stage["required_progress"] = 1
+    stage["requirements"] = {}
+    stage["reward"] = {"research_clues": 2}
+    before_clues = state.shared.research_clues
+
+    engine._apply_node_effect(state, player, player.location, {"type": "project_progress", "amount": 1})
+
+    assert state.shared.research_clues == before_clues + 2

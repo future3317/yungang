@@ -91,7 +91,7 @@ class GameEngine:
         return False
 
     def _scenario_reduce_weathering_if_stage_and_route(self, state, context, effect):
-        if any(project.completed_stages for project in state.projects.values()) and any(route.status in {"restored", "illuminated"} for route in state.routes.values()):
+        if context.get("completed_project_stages", 0) > 0 and context.get("restored_routes", 0) > 0:
             state.shared.weathering_track = max(0, state.shared.weathering_track - int(effect.get("amount", 1)))
             return True
         return False
@@ -197,6 +197,7 @@ class GameEngine:
             project = next((item for item in state.projects.values() if item.site_id == site.id), None)
             site.active_project_id = project.id if project else None
             self._update_site(site)
+        state.shared.scenario_round_baseline = self._capture_scenario_round_baseline(state)
         self._refill_market(state)
         self._reveal_event(state)
         state.shared.log.append("\u65c5\u7a0b\u5f00\u59cb\uff1a\u5148\u89c2\u5bdf\u4e8b\u4ef6\u9884\u544a\uff0c\u518d\u51b3\u5b9a\u672c\u56de\u5408\u7684\u8282\u70b9\u884c\u52a8\u3002")
@@ -321,6 +322,7 @@ class GameEngine:
         request_id = req.get("request_id")
         if request_id and request_id in state.processed_request_ids:
             return state
+        self._ensure_runtime_state(state)
         if state.shared.outcome:
             raise ValueError("game_is_over")
         if state.pending_choice:
@@ -859,6 +861,7 @@ class GameEngine:
             if project.progress < int(current.get("required_progress", 1)) or not self._project_stage_ready(state, project, current):
                 break
             project.completed_stages.append(current_id)
+            self._apply_reward(state, current.get("reward") or self._default_stage_reward(current))
             project.progress = 0
             project.stage_index += 1
         if project.stage_index >= len(project.stages):
@@ -902,7 +905,8 @@ class GameEngine:
         """Close one round while the resolved event is still the current instance."""
         if state.shared.event_instance.get("status") == "resolved":
             state.shared.event_history.append(dict(state.shared.event_instance))
-        scenario_effects = self._emit_scenario_rule(state, "round_end", snapshot)
+        scenario_context = self._scenario_round_context(state, snapshot)
+        scenario_effects = self._emit_scenario_rule(state, "round_end", scenario_context)
         planning_effects = self._settle_planning_marks(state, state.shared.active_player_id)
         state.shared.round_summary = self._build_round_summary(state, snapshot, scenario_effects + planning_effects)
         self._reveal_event(state)
@@ -910,6 +914,7 @@ class GameEngine:
             self._trigger_node_ability(state, state.players[state.shared.active_player_id], site_id, trigger="round_start")
         self._draw_action_card(state, state.players[state.shared.active_player_id])
         self._release_reserved_market_cards(state)
+        state.shared.scenario_round_baseline = self._capture_scenario_round_baseline(state)
         state.shared.round_snapshot = {}
 
     def _settle_planning_marks(self, state, player_id):
@@ -1351,6 +1356,35 @@ class GameEngine:
             if not site.active_project_id:
                 project = next((item for item in state.projects.values() if item.site_id == site.id), None)
                 site.active_project_id = project.id if project else None
+        if not state.shared.scenario_round_baseline:
+            state.shared.scenario_round_baseline = self._capture_scenario_round_baseline(state)
+
+    @staticmethod
+    def _capture_scenario_round_baseline(state):
+        return {
+            "project_completed_stages": {project.id: len(project.completed_stages) for project in state.projects.values()},
+            "route_statuses": {route.id: getattr(route.status, "value", route.status) for route in state.routes.values()},
+        }
+
+    def _scenario_round_context(self, state, snapshot=None):
+        baseline = state.shared.scenario_round_baseline or self._capture_scenario_round_baseline(state)
+        project_baseline = baseline.get("project_completed_stages", {})
+        route_baseline = baseline.get("route_statuses", {})
+        completed_project_stages = sum(
+            max(0, len(project.completed_stages) - int(project_baseline.get(project.id, 0)))
+            for project in state.projects.values()
+        )
+        restored_routes = sum(
+            1
+            for route in state.routes.values()
+            if getattr(route.status, "value", route.status) in {"restored", "illuminated"}
+            and route_baseline.get(route.id) not in {"restored", "illuminated"}
+        )
+        return {
+            **(snapshot or {}),
+            "completed_project_stages": completed_project_stages,
+            "restored_routes": restored_routes,
+        }
 
     def _preview_snapshot(self, state, req):
         player = state.players.get(req.get("player_id"))
