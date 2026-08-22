@@ -6,7 +6,7 @@
     position: relative;
     isolation: isolate;
     min-height: 100dvh;
-    padding: 12px;
+    padding: 0;
     overflow-x: clip;
     background: #09140f;
   }
@@ -26,8 +26,8 @@
 
   .game-header {
     z-index: 12;
-    width: min(100%, 1840px);
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     background: rgba(13, 26, 19, .7) !important;
     border-color: rgba(213, 190, 133, .2) !important;
     box-shadow: 0 10px 28px rgba(0, 0, 0, .2);
@@ -36,7 +36,7 @@
   .game-header .header-center { position: absolute; top: 8px; left: 50%; width: min(620px, calc(100% - 440px)); transform: translateX(-50%); }
   .game-header .goal-hud { width: 100%; box-sizing: border-box; }
 
-  .game-grid { position: absolute; inset: 0; display: block !important; min-height: 100dvh; margin: 0; padding: 0 !important; }
+  .game-grid { position: absolute; inset: 0; display: block !important; width: 100vw !important; max-width: none !important; min-height: 100dvh; margin: 0; padding: 0 !important; }
   .stage-column { position: absolute; inset: 0; display: block !important; min-height: 100dvh !important; padding: 0 !important; }
   .network-stage { position: absolute !important; inset: 0; width: 100vw; height: 100dvh; min-height: 0 !important; overflow: hidden; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
   .network-stage > * { position: relative; z-index: 2; }
@@ -52,10 +52,13 @@
     min-height: 0 !important;
     max-height: none !important;
     overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-width: thin;
+    overflow-y: scroll;
+    scrollbar-width: auto;
     scrollbar-color: rgba(220, 188, 105, .45) transparent;
   }
+  .roster-column::-webkit-scrollbar, .site-inspector::-webkit-scrollbar { width: 10px; }
+  .roster-column::-webkit-scrollbar-track, .site-inspector::-webkit-scrollbar-track { background: rgba(7, 15, 10, .28); }
+  .roster-column::-webkit-scrollbar-thumb, .site-inspector::-webkit-scrollbar-thumb { background: rgba(220, 188, 105, .48); border: 2px solid transparent; border-radius: 999px; background-clip: padding-box; }
 
   .roster-column { left: 0; width: var(--map-left-clearance); display: flex !important; flex-direction: column; gap: 10px; padding: 0 0 12px; background: linear-gradient(90deg, rgba(11, 24, 17, .9), rgba(11, 24, 17, .68) 76%, transparent); border: 0 !important; border-radius: 0; box-shadow: none; backdrop-filter: blur(10px); }
   .site-inspector { right: 0; width: var(--map-right-clearance); color: #f1e6cb; background: linear-gradient(270deg, rgba(48, 49, 39, .9), rgba(48, 49, 39, .74) 78%, transparent) !important; border: 0 !important; border-radius: 0; box-shadow: none; backdrop-filter: blur(12px); }
@@ -516,8 +519,8 @@
 
 /* Desktop HUD safe zones: every persistent surface owns a separate anchor. */
 @media (min-width: 1101px) {
-  .game-header .brand-group { max-width: calc(var(--map-left-clearance) - 18px); }
-  .game-header .brand-scenario { max-width: 150px; }
+  .game-header .brand-group { max-width: min(520px, calc(100vw - 300px)); }
+  .game-header .brand-scenario { max-width: 240px; }
   .game-header .header-center {
     top: 8px;
     width: min(540px, calc(100% - var(--map-left-clearance) - var(--map-right-clearance) - 72px));

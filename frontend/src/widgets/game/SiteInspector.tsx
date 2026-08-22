@@ -66,7 +66,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     <button type="button" className="inspector-collapse" onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
     <header className="inspector-summary">
       <span className="eyebrow">当前聚焦地点</span>
-      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.png')} alt="" /></div><div className="inspector-scene-art"><img src={assetUrl(site.scene_asset, 'generated/scene_yungang_day.png')} onError={event => { const image = event.currentTarget; if (image.dataset.fallback) { image.style.display = 'none'; image.parentElement?.classList.add('scene-art-failed'); return; } image.dataset.fallback = 'true'; image.src = assetUrl('generated/scene_yungang_day.png'); }} alt={`${site.name || '当前地点'}场景`} /></div>
+      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset, 'ornaments/heritage-medallion-1.png')} alt="" /></div>
       <h2>{site.name}</h2>
       <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
       <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
