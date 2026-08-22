@@ -787,3 +787,50 @@
   .site-inspector .inspector-content { flex: 0 0 auto; min-height: 0; overflow: visible !important; }
   .route-inspector { top: calc(var(--hud-panel-top) + 116px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); width: min(292px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 3 * var(--hud-center-gutter))); max-height: min(250px, calc(100dvh - 240px)); overflow-y: auto; }
 }
+/* The desktop HUD is a three-slot grid over one world layer. */
+@media (min-width: 1101px) {
+  .game-grid.hud-slot-center {
+    position: absolute !important;
+    inset: 0;
+    display: grid !important;
+    grid-template-columns: var(--map-left-clearance) minmax(0, 1fr) var(--map-right-clearance);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+    width: 100% !important;
+    min-height: 100dvh;
+    pointer-events: none;
+  }
+  .game-grid.hud-slot-center > .stage-column {
+    position: absolute !important;
+    inset: 0;
+    display: block !important;
+    min-height: 100dvh !important;
+    pointer-events: none;
+  }
+  .game-grid.hud-slot-center > .stage-column > .network-stage { pointer-events: auto; }
+  .game-grid.hud-slot-center > .roster-column {
+    position: relative !important;
+    inset: auto;
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    height: auto;
+    align-self: stretch;
+    min-height: 0;
+    max-height: 100%;
+    pointer-events: auto;
+  }
+  .game-grid.hud-slot-center > .site-inspector {
+    position: relative !important;
+    inset: auto;
+    grid-column: 3;
+    grid-row: 1;
+    width: auto;
+    height: auto;
+    align-self: stretch;
+    min-height: 0;
+    max-height: 100%;
+    pointer-events: auto;
+  }
+  .game-grid.hud-slot-center > .event-history-bar { pointer-events: auto; }
+}
