@@ -39,6 +39,50 @@ def test_event_response_action_card_keeps_timing_and_declared_mitigation():
     assert "action_10" in state.decks["action"]
 
 
+def test_event_choice_returns_refreshed_state_after_round_finalization():
+    state = engine.new_game("event-choice-return", ["p1"], scenario_id="sand_and_stone")
+    route = next(iter(state.routes.values()))
+    state.shared.phase = "pending_choice"
+    state.shared.event_targets = [route.id]
+    state.shared.event_instance = {
+        "event_id": "route_blocked",
+        "revealed_targets": [route.id],
+        "resolved_targets": [],
+        "mitigation": [],
+        "resolution": [],
+        "status": "forecast",
+    }
+    state.pending_choice = {"kind": "event", "event_id": "route_blocked", "options": []}
+
+    result = engine.apply(state, {"player_id": "p1", "action": "resolve_event", "target_id": "accept"})
+
+    assert result is state
+    assert result.pending_choice is None
+    assert result.shared.phase == "player_action"
+    assert result.action_options
+
+
+def test_refresh_preview_does_not_crash_for_event_choice():
+    state = engine.new_game("event-choice-preview", ["p1"], scenario_id="sand_and_stone")
+    route = next(iter(state.routes.values()))
+    state.shared.phase = "pending_choice"
+    state.shared.event_targets = [route.id]
+    state.shared.event_instance = {
+        "event_id": "route_blocked",
+        "revealed_targets": [route.id],
+        "resolved_targets": [],
+        "mitigation": [],
+        "resolution": [],
+        "status": "forecast",
+    }
+    state.pending_choice = {"kind": "event", "event_id": "route_blocked", "options": []}
+
+    refreshed = engine.refresh(state)
+
+    assert refreshed is state
+    assert isinstance(refreshed.action_options, list)
+
+
 def test_room_session_cannot_be_read_through_legacy_game_endpoint():
     created = client.post("/api/rooms", json={"play_mode": "multi_device", "name": "测试者", "role_id": "pingcheng_artisan", "scenario_id": "sand_and_stone", "difficulty_id": "normal", "max_players": 2})
     assert created.status_code == 200

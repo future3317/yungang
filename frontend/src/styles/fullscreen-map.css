@@ -777,13 +777,16 @@
 
 /* Final desktop HUD overrides: keep these after legacy finishing rules. */
 @media (min-width: 1101px) {
-  .hud-slot-top > .game-header { position: relative; z-index: 50; display: grid; grid-template-columns: minmax(360px, 1fr) minmax(540px, min(760px, 52vw)) minmax(96px, 1fr); align-items: start; min-height: var(--header-height); height: auto; overflow: visible !important; }
+  .hud-slot-top { position: relative; z-index: 100; pointer-events: none; }
+  .hud-slot-top > .game-header { position: relative; z-index: 101; display: grid; grid-template-columns: minmax(360px, 1fr) minmax(540px, min(760px, 52vw)) minmax(96px, 1fr); align-items: start; min-height: var(--header-height); height: auto; overflow: visible !important; pointer-events: auto; }
   .hud-slot-top .header-center { position: relative; top: auto; left: auto; width: 100%; transform: none; justify-self: center; }
-  .hud-slot-top .goal-hud.is-open { position: absolute; z-index: 30; top: 8px; left: 0; width: 100%; max-height: min(440px, calc(100dvh - 96px)); overflow: visible; background: rgba(16, 31, 22, .96); box-shadow: 0 18px 36px rgba(0, 0, 0, .34); }
+  .hud-slot-top .goal-hud { position: relative; z-index: 102; }
+  .hud-slot-top .goal-hud.is-open { position: absolute; z-index: 110; top: calc(100% + 6px); left: 0; width: 100%; max-height: min(440px, calc(100dvh - 96px)); overflow: visible; background: rgba(16, 31, 22, .98); box-shadow: 0 18px 36px rgba(0, 0, 0, .34); }
   .hud-slot-top .goal-hud.is-open .goal-conditions { max-height: min(300px, calc(100dvh - 190px)); overflow-y: auto; padding-right: 4px; scrollbar-gutter: stable; }
   .site-inspector { display: flex !important; flex-direction: column !important; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-gutter: stable; }
   .site-inspector .inspector-summary, .site-inspector .inspector-tabs { flex: 0 0 auto; }
   .site-inspector .inspector-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+  .site-inspector { height: 100%; min-height: 0; overflow-x: hidden !important; overflow-y: auto !important; scrollbar-gutter: stable; }
   .site-inspector .inspector-content { flex: 0 0 auto; min-height: 0; overflow: visible !important; }
   .route-inspector { top: calc(var(--hud-panel-top) + 116px); right: calc(var(--map-right-clearance) + var(--hud-center-gutter)); width: min(292px, calc(100vw - var(--map-left-clearance) - var(--map-right-clearance) - 3 * var(--hud-center-gutter))); max-height: min(250px, calc(100dvh - 240px)); overflow-y: auto; }
 }
@@ -826,7 +829,7 @@
     grid-column: 3;
     grid-row: 1;
     width: auto;
-    height: auto;
+    height: 100%;
     align-self: stretch;
     min-height: 0;
     max-height: 100%;

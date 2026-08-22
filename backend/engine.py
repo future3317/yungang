@@ -991,6 +991,9 @@ class GameEngine:
             snapshot = dict(state.shared.round_snapshot)
             state.pending_choice = None
             self._finalize_round(state, snapshot)
+            state.revision += 1
+            self._check_outcome(state)
+            return self.refresh(state)
         elif state.pending_choice["kind"] == "view_select":
             player = state.players[state.shared.active_player_id]; card = req.get("card_id")
             if action != ActionType.SELECT_MARKET_CARD.value or card not in state.pending_choice["cards"]: raise ValueError("invalid_market_choice")
@@ -1301,7 +1304,7 @@ class GameEngine:
         }
         simulated = deepcopy(state)
         before = self._preview_snapshot(simulated, request)
-        self.apply(simulated, request)
+        simulated = self.apply(simulated, request)
         after = self._preview_snapshot(simulated, request)
         return {key: after[key] - value for key, value in before.items() if isinstance(value, (int, float)) and after.get(key) != value}
 
