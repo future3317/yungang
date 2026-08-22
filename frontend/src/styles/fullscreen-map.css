@@ -1766,7 +1766,7 @@
     flex: 1 1 210px !important;
     width: auto !important;
     min-width: 170px !important;
-    max-width: 280px !important;
+    max-width: none !important;
     margin: 0 !important;
     pointer-events: auto !important;
   }
@@ -1926,4 +1926,95 @@
   .goal-conditions > div > span { min-width: 0; justify-content: flex-start; flex-wrap: wrap; line-height: 1.4; overflow-wrap: anywhere; }
   .timeline-drawer { transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)); }
   .timeline-drawer .timeline-events { scrollbar-width: auto; }
+}
+
+/* Stable desktop HUD contract. These are the only final geometry rules for the
+   desktop game: the header owns its row, the map owns the world, side rails own
+   their scroll surfaces, and the focus card is anchored to the map layer. */
+@media (min-width: 1101px) {
+  .game-viewport > .game-shell > .hud-slot-top > .game-header {
+    width: 100% !important;
+    max-width: none !important;
+    grid-template-columns: minmax(0, 1.2fr) minmax(340px, 1.4fr) minmax(180px, .5fr) !important;
+  }
+
+  .game-grid.hud-slot-center > .roster-column,
+  .game-grid.hud-slot-center > .site-inspector {
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  .game-grid.hud-slot-center > .roster-column {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .game-grid.hud-slot-center > .site-inspector .inspector-content {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-caption {
+    position: absolute !important;
+    right: calc(var(--map-right-clearance) + var(--hud-center-gutter)) !important;
+    bottom: calc(var(--hud-footer-bottom) + 82px) !important;
+    left: calc(var(--map-left-clearance) + var(--hud-center-gutter)) !important;
+    z-index: 80 !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-caption[data-focused="true"] {
+    width: min(700px, 100%) !important;
+    margin-inline: auto !important;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-caption[data-focused="false"] {
+    width: fit-content !important;
+    max-width: min(360px, 100%) !important;
+    margin-inline: auto !important;
+  }
+
+  .game-grid.hud-slot-center > .stage-column > .stage-caption button {
+    position: relative !important;
+    z-index: 81 !important;
+    pointer-events: auto !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-bottom .timeline-drawer {
+    transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)) !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-hud {
+    min-width: 0 !important;
+    transform: translate(var(--drag-x, 0px), var(--drag-y, 0px)) !important;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-summary > span,
+  .game-viewport > .game-shell > .hud-slot-top .goal-conditions > div > span {
+    min-width: 0;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .game-viewport > .game-shell > .hud-slot-top .goal-conditions {
+    overflow-y: auto !important;
+    scrollbar-gutter: stable;
+  }
 }
