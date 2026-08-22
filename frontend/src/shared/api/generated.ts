@@ -564,10 +564,7 @@ export interface components {
                 [key: string]: components["schemas"]["ObjectiveState"];
             };
             score?: components["schemas"]["ScoreState"];
-            /** Result */
-            result?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            };
+            result?: components["schemas"]["ResultState"];
             /** Viewer */
             viewer?: {
                 [key: string]: components["schemas"]["JsonValue"];
@@ -885,6 +882,27 @@ export interface components {
          * @enum {string}
          */
         ProjectStatus: "active" | "completed";
+        /** ResultState */
+        ResultState: {
+            outcome?: components["schemas"]["GameOutcome"] | null;
+            /** Outcome Reason */
+            outcome_reason?: string | null;
+            /**
+             * Outcome Summary
+             * @default
+             */
+            outcome_summary: string;
+            score?: components["schemas"]["ScoreState"];
+            /** Completed Objectives */
+            completed_objectives?: string[];
+            /** Completed Projects */
+            completed_projects?: string[];
+            /**
+             * Seed
+             * @default 0
+             */
+            seed: number;
+        };
         /** RoomActionRequest */
         RoomActionRequest: {
             action: components["schemas"]["ActionType"];

@@ -8,7 +8,7 @@ from typing import Any
 from .content import Content
 from .domain.rng import DeterministicRng
 from .mechanisms import ACTION_CARD_EFFECT_HANDLERS, CULTURE_EFFECT_HANDLERS, EVENT_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS, SCENARIO_RULE_EFFECT_HANDLERS, TRIGGER_HANDLERS
-from .models import ActionOption, ActionType, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, RouteState, SiteState, SiteStatus
+from .models import ActionOption, ActionType, FeedbackChange, FeedbackEvent, ActionTarget, GameOutcome, GameState, GoalStatus, ObjectiveState, PlayerState, ProjectState, ResultState, RouteState, SiteState, SiteStatus
 
 
 class GameEngine:
@@ -1323,7 +1323,15 @@ class GameEngine:
             state.shared.outcome = GameOutcome.DEFEAT; state.shared.outcome_reason = "round_limit_reached"
         if state.shared.outcome:
             state.shared.phase = "game_over"
-            state.result = {"outcome": state.shared.outcome, "outcome_reason": state.shared.outcome_reason, "outcome_summary": scenario.get("victory_brief") if state.shared.outcome == GameOutcome.VICTORY else scenario.get("failure_brief"), "score": state.score.model_dump(), "completed_objectives": [item.id for item in state.objectives.values() if item.completed], "completed_projects": [item.id for item in state.projects.values() if item.status == "completed"], "seed": state.seed}
+            state.result = ResultState(
+                outcome=state.shared.outcome,
+                outcome_reason=state.shared.outcome_reason,
+                outcome_summary=scenario.get("victory_brief") if state.shared.outcome == GameOutcome.VICTORY else scenario.get("failure_brief", ""),
+                score=state.score,
+                completed_objectives=[item.id for item in state.objectives.values() if item.completed],
+                completed_projects=[item.id for item in state.projects.values() if item.status == "completed"],
+                seed=state.seed,
+            )
 
     def _ensure_runtime_state(self, state):
         if not state.routes:

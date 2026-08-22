@@ -407,6 +407,16 @@ class ScoreState(BaseModel):
     total: int = 0
     grade: str = "stone"
 
+
+class ResultState(BaseModel):
+    outcome: Optional[GameOutcome] = None
+    outcome_reason: Optional[str] = None
+    outcome_summary: str = ""
+    score: ScoreState = Field(default_factory=ScoreState)
+    completed_objectives: List[str] = Field(default_factory=list)
+    completed_projects: List[str] = Field(default_factory=list)
+    seed: int = 0
+
 class SiteState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
     id: str
@@ -480,7 +490,7 @@ class GameState(BaseModel):
     projects: Dict[str, ProjectState] = Field(default_factory=dict)
     objectives: Dict[str, ObjectiveState] = Field(default_factory=dict)
     score: ScoreState = Field(default_factory=ScoreState)
-    result: JsonObject = Field(default_factory=dict)
+    result: ResultState = Field(default_factory=ResultState)
     viewer: JsonObject = Field(default_factory=dict)
     feedback_events: List[FeedbackEvent] = Field(default_factory=list)
     goal_status: GoalStatus = Field(default_factory=GoalStatus)

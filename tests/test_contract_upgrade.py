@@ -1,4 +1,5 @@
 from backend.engine import GameEngine
+from backend.models import ResultState
 import pytest
 
 
@@ -158,3 +159,21 @@ def test_action_option_keeps_specific_name_above_action_category():
     assert skill.label == "精修"
     assert skill.category_label == "角色技能"
     assert skill.action_label == "使用角色技能"
+
+
+def test_result_state_is_structured_and_survives_game_serialization():
+    engine = GameEngine()
+    state = engine.new_game("contract-result-state", ["p1"], solo_mode=False)
+    state.result = ResultState(
+        outcome="victory",
+        outcome_reason="core_project_and_objectives_completed",
+        outcome_summary="完成共同目标。",
+        completed_objectives=["objective_protect_core"],
+        completed_projects=["project_01"],
+        seed=state.seed,
+    )
+
+    restored = type(state).model_validate_json(state.model_dump_json())
+
+    assert restored.result.outcome == "victory"
+    assert restored.result.completed_projects == ["project_01"]
