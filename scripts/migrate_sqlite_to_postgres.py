@@ -22,12 +22,15 @@ def migrate(source: str | Path, target: str | Path) -> dict[str, int]:
     copied = {"games": 0, "rooms": 0}
 
     with sqlite3.connect(source_path) as source_db, target_database.connect() as target_db:
-        for table, key, column in (("games", "session_id", "state"), ("rooms", "room_id", "payload")):
-            rows = source_db.execute(f"SELECT {key}, {column} FROM {table}").fetchall()
-            for identifier, payload in rows:
+        cursor = target_db.cursor()
+        try:
+            for table, key, column in (("games", "session_id", "state"), ("rooms", "room_id", "payload")):
+                rows = source_db.execute(f"SELECT {key}, {column} FROM {table}").fetchall()
                 query = f"INSERT INTO {table}({key},{column}) VALUES(?,?) ON CONFLICT({key}) DO UPDATE SET {column}=excluded.{column}"
-                target_db.execute(target_database.sql(query), (identifier, payload))
-                copied[table] += 1
+                cursor.executemany(target_database.sql(query), rows)
+                copied[table] = len(rows)
+        finally:
+            cursor.close()
     return copied
 
 
