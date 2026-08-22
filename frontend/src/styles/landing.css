@@ -9,3 +9,4 @@
 .scenario-detail small, .field-note { color: #66746a; font-size: .7rem; font-weight: 500; line-height: 1.45; }
 .landing-feedback { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; color: #713b2e; background: #f1ddd0; border: 1px solid #d19a83; border-radius: 7px; font-size: .78rem; line-height: 1.4; }
 .landing-feedback button { flex: none; padding: 4px 8px; color: #713b2e; background: transparent; border: 1px solid currentColor; border-radius: 5px; font-size: .72rem; }
+.scenario-options button.selected em { color: #f0dfbd; }
