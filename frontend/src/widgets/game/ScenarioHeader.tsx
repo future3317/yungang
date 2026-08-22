@@ -3,8 +3,7 @@ import { GripVertical } from 'lucide-react';
 import type { GameState } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 import { useDraggablePosition } from '../../shared/useDraggablePosition';
-
-function Progress({ value, max }: { value: number; max: number }) { return <div className="progress gold"><span style={{ width: `${Math.min(100, max ? value / max * 100 : 0)}%` }} /></div>; }
+import { Progress } from '../ui/Primitives';
 
 export function ScenarioHeader({ state, scenarioName, connection, gameReference, eventSummary }: { state: GameState; scenarioName: string; connection: string; gameReference?: string; eventSummary?: { name?: string; targets?: string[]; historyCount?: number } }) {
   const [goalsOpen, setGoalsOpen] = useState(false);
