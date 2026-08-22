@@ -949,13 +949,23 @@
 /* One desktop HUD contract: brand/theme stay at the top left, goals stay in the title bar,
    and Inspector content owns the only right-side scroll surface. */
 @media (min-width: 1101px) {
+  .hud-slot-top {
+    position: absolute !important;
+    z-index: 120 !important;
+    inset: 0 0 auto;
+    height: var(--header-height);
+    pointer-events: none;
+  }
+
   .hud-slot-top > .game-header {
-    position: relative !important;
+    position: absolute !important;
+    inset: 0;
     display: flex !important;
     align-items: flex-start;
     justify-content: space-between;
     gap: 24px;
     min-height: var(--header-height);
+    box-sizing: border-box;
     height: auto !important;
     padding: 8px 20px !important;
     overflow: visible !important;

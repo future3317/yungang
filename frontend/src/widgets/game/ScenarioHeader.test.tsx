@@ -28,6 +28,8 @@ describe('ScenarioHeader', () => {
   it('anchors the goal control in the header actions and expands its conditions in place', () => {
     render(<ScenarioHeader state={state} scenarioName="风沙与石" connection="已连接" />);
 
+    expect(screen.getByRole('link', { name: '返回首页' })).toHaveTextContent('云冈');
+    expect(screen.getByText('风沙与石')).toBeVisible();
     const goal = screen.getByLabelText('共同目标进度');
     expect(goal.parentElement?.className).toContain('header-actions');
 
