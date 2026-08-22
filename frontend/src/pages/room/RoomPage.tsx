@@ -60,7 +60,7 @@ export function RoomPage() {
   const leave = useMutation({ mutationFn: () => update(api.roomLeave(roomId, token)), onSuccess: () => { clearRoomToken(roomId); navigate('/'); }, onError: showError });
 
   if (roomQuery.isLoading || metaQuery.isLoading) return <main className="room-screen"><LoaderCircle className="spin" /><p>正在整理同行席位…</p></main>;
-  if (roomQuery.isError || !room || !metaQuery.data) return <main className="room-screen"><section className="room-card"><h1>旅舍暂时找不到</h1><p>请确认房间码仍然有效，或回到首页点亮新的旅程。</p><button className="primary-cta" onClick={() => navigate('/')}>返回首页</button></section></main>;
+  if (roomQuery.isError || !room || !metaQuery.data) return <main className="room-screen"><section className="room-card"><h1>{roomQuery.isError ? '旅舍暂时无法读取' : '旅舍暂时找不到'}</h1><p>{roomQuery.isError ? '可能是网络暂时中断；房间进度仍保存在服务端，可以重新连接。' : '请确认房间码仍然有效，或回到首页点亮新的旅程。'}</p><div className="room-actions"><button className="primary-cta" disabled={roomQuery.isFetching || metaQuery.isFetching} onClick={() => { void roomQuery.refetch(); void metaQuery.refetch(); }}>{roomQuery.isFetching || metaQuery.isFetching ? '重新连接中…' : '重新连接'}</button><button className="ghost-button" onClick={() => navigate('/')}>返回首页</button></div></section></main>;
 
   const roles = metaQuery.data.roles;
   const takenRoles = new Set(room.seats.map(item => item.role_id).filter(Boolean));

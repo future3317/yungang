@@ -26,7 +26,7 @@ export function GameResultPage() {
     return api.create(players, state.difficulty_id, { scenario_id: state.scenario_id, ...(sameSeed && state.seed !== undefined ? { seed: state.seed } : {}) });
   }, onSuccess: game => navigate(`/game/${game.session_id}`) });
   if (gameQuery.isLoading || metaQuery.isLoading) return <main className="result-screen"><p>正在整理旅程档案…</p></main>;
-  if (gameQuery.isError || metaQuery.isError || !gameQuery.data || !metaQuery.data) return <main className="result-screen"><h1>无法读取旅程结算</h1><button onClick={() => navigate(roomId ? `/room/${roomId}` : '/')}>返回{roomId ? '房间' : '首页'}</button></main>;
+  if (gameQuery.isError || metaQuery.isError || !gameQuery.data || !metaQuery.data) return <main className="result-screen"><h1>暂时无法读取旅程结算</h1><p>{roomId ? '席位凭证可能已失效；返回房间即可重新恢复席位后查看结算。' : '可能是网络暂时中断，旅程记录仍然保存在本机服务中。'}</p><div className="result-actions"><button className="primary-cta" disabled={gameQuery.isFetching || metaQuery.isFetching} onClick={() => { void gameQuery.refetch(); void metaQuery.refetch(); }}>{gameQuery.isFetching || metaQuery.isFetching ? '重新读取中…' : '重新读取'}</button><button onClick={() => navigate(roomId ? `/room/${roomId}` : '/')}>返回{roomId ? '房间' : '首页'}</button></div></main>;
   const state = gameQuery.data;
   const result = outcomeCopy[state.shared.outcome_reason || ''] || { title: state.shared.outcome === 'victory' ? '旅程完成' : '旅程结束', body: '本局记录已保存，可从首页继续新的旅程。' };
   const score = state.score || { tasks: 0, routes: 0, diversity: 0, protection: 0, discovery: 0, total: 0, grade: 'stone' };
