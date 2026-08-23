@@ -898,3 +898,93 @@
   background: rgba(101, 83, 43, 0.86);
   border-color: #d8b866;
 }
+
+/* Desktop world layer: the map is the full browser canvas; HUD rails float above it. */
+@media (min-width: 1101px) {
+  .game-shell > .hud-layout {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .hud-layout > .stage-column {
+    position: absolute;
+    inset: 0;
+    display: block;
+    padding: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hud-layout > .stage-column > .network-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: auto;
+  }
+
+  .hud-layout > .stage-column > .network-stage .network-frame {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+  }
+
+  .hud-layout > .stage-column > .stage-heading {
+    position: absolute;
+    top: calc(var(--hud-header-height) + 14px);
+    left: calc(var(--hud-left-width) + var(--hud-rail-gap) + 18px);
+    right: calc(var(--hud-right-width) + var(--hud-rail-gap) + 18px);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hud-layout > .stage-column > .round-summary {
+    position: absolute;
+    top: calc(var(--hud-header-height) + 8px);
+    left: 50%;
+    z-index: 8;
+    transform: translateX(-50%);
+    pointer-events: auto;
+  }
+
+  .hud-layout > .stage-column > .stage-caption {
+    position: absolute;
+    left: calc(var(--hud-left-width) + var(--hud-rail-gap) + 18px);
+    right: calc(var(--hud-right-width) + var(--hud-rail-gap) + 18px);
+    bottom: 54px;
+    z-index: 4;
+    pointer-events: auto;
+  }
+
+  .hud-layout > .hud-slot-left,
+  .hud-layout > .hud-slot-right {
+    position: absolute;
+    top: var(--hud-header-height);
+    bottom: 0;
+    z-index: 10;
+    width: var(--hud-left-width);
+    padding: 0;
+  }
+
+  .hud-layout > .hud-slot-left {
+    left: 0;
+  }
+
+  .hud-layout > .hud-slot-right {
+    right: 0;
+    width: var(--hud-right-width);
+  }
+
+  .game-shell > .hud-slot-bottom {
+    position: absolute;
+    left: calc(var(--hud-left-width) + var(--hud-rail-gap) + 18px);
+    right: calc(var(--hud-right-width) + var(--hud-rail-gap) + 18px);
+    bottom: 0;
+    z-index: 15;
+    grid-column: auto;
+    grid-row: auto;
+  }
+}

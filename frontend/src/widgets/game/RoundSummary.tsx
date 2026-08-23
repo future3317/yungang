@@ -76,7 +76,7 @@ export function RoundSummary({
     value ||
     '';
   return (
-    <section className={styles.roundSummary} aria-label="上一回合摘要">
+    <section className={`${styles.roundSummary} round-summary`} aria-label="上一回合摘要">
       <div className={styles.roundSummaryMain}>
         <CheckCircle2 size={18} />
         <span>
