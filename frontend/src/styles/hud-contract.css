@@ -242,6 +242,36 @@
   line-height: 1.4;
 }
 
+.site-inspector .domain-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 9px 0;
+}
+
+.site-inspector .domain-list span {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 5px 6px;
+  color: var(--ink-secondary);
+  background: rgba(20, 34, 25, 0.55);
+  border: 1px solid var(--line-subtle);
+  border-radius: 6px;
+  font-size: 0.72rem;
+}
+
+.site-inspector .domain-list img {
+  width: 28px;
+  height: 28px;
+  max-width: 28px;
+  max-height: 28px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 .site-inspector .evidence-ledger {
   display: grid;
   gap: 8px;
