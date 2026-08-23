@@ -65,6 +65,22 @@
   justify-self: center;
 }
 
+:global(.network-era-note) {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 3;
+  max-width: min(420px, 42%);
+  padding: 5px 9px;
+  color: rgba(239, 225, 188, 0.82);
+  background: rgba(11, 23, 16, 0.7);
+  border: 1px solid rgba(215, 184, 103, 0.28);
+  border-radius: 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
 :global(.game-shell > .hud-layout) {
   display: grid;
   grid-column: 1 / -1;
@@ -187,8 +203,8 @@
 
 @media (min-width: 1101px) {
   :global(.game-shell) {
-    --hud-left-width: clamp(300px, 18vw, 360px);
-    --hud-right-width: clamp(360px, 20vw, 420px);
+    --hud-left-width: clamp(280px, 17vw, 340px);
+    --hud-right-width: clamp(340px, 19vw, 400px);
   }
 
   :global(.hud-layout > .hud-slot-left),

@@ -264,13 +264,17 @@ export function GamePage() {
   const focusedMeta = sites[focused.id] || focused;
   const task = focusedMeta.active_task_id ? state.tasks[focusedMeta.active_task_id] : undefined;
   const currentEvent = state.shared.current_event_id ? events[state.shared.current_event_id] : undefined;
+  const eventTargetLabel = (id: string) => {
+    const route = state.routes?.[id];
+    return sites[id]?.name || (route ? `${sites[route.from_site]?.name || route.from_site}—${sites[route.to_site]?.name || route.to_site}` : '事件目标');
+  };
   const eventTargetIds = state.shared.event_targets?.length
     ? state.shared.event_targets
     : state.shared.event_instance?.revealed_targets || [];
-  const eventTargetLabels = eventTargetIds.map((id) => sites[id]?.name || state.routes?.[id]?.name || '事件目标');
+  const eventTargetLabels = eventTargetIds.map(eventTargetLabel);
   const eventOpenTargetLabels = eventTargetIds
     .filter((id) => (state.routes?.[id] ? state.routes[id].status !== 'blocked' : state.sites[id]?.status !== 'closed'))
-    .map((id) => sites[id]?.name || state.routes?.[id]?.name || '事件目标');
+    .map(eventTargetLabel);
   const targetIds = new Set(
     (selectedOption?.type === actionMode ? selectedOption.targets : []).map((target) => {
       const payload = target.payload || {};
@@ -282,7 +286,7 @@ export function GamePage() {
   const modeStatus =
     actionMode === 'explore'
       ? `正在选择证据卡 · 公开市场显示 ${state.market.length} 张可取线索 · Escape 取消`
-      : `正在选择${actionModeLabel(actionMode)} · ${selectedOption?.cost?.ap || 0} 行动点 · 点击${routeMode ? '金色路线' : '金色地点'} · Escape 取消`;
+      : `正在选择${actionModeLabel(actionMode)} · ${selectedOption?.cost?.ap || 0} 行动点 · 点击${routeMode ? '高亮路线' : '高亮地点'} · Escape 取消`;
   const connection =
     mutation.isPending || gameQuery.isFetching || metaQuery.isFetching
       ? '同步中'

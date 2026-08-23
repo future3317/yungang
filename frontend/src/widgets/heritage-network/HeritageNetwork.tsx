@@ -40,7 +40,7 @@ function nodeReason(site: Site, meta: SiteReference, current: boolean, target: b
   if (site.status === 'closed') return '节点已关闭：先完成修护才能继续推进。';
   if (site.status === 'at_risk') return '风险：再受一次损伤将关闭。优先修护可避免回合结算后失去它。';
   if (eventTarget) return '橙色标记：本轮事件可能影响这里，提前准备可以降低损伤。';
-  if (target) return '金色标记：这是当前行动可以选择的合法目标。';
+  if (target) return '高亮标记：这是当前行动可以选择的合法目标。';
   if (current) return '这里是当前行动者的位置。';
   return `${meta.name || '此处节点'}目前${siteStatusName(site.status, catalog)}。点击可查看地点任务、团队项目和事件说明。`;
 }
@@ -377,6 +377,7 @@ export function HeritageNetwork({
           <Maximize2 />
         </button>
       </div>
+      <div className="network-era-note" role="note">本图为跨时代遗产研究网络，并非历史时期地图复原。</div>
       <svg
         ref={svgRef}
         viewBox="0 0 100 100"

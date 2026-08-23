@@ -22,7 +22,7 @@ describe('inspector player-facing labels', () => {
     });
 
     expect(text).toContain('领域：造像、纹样');
-    expect(text).toContain('来源数量：至少 2 种');
+    expect(text).toContain('线索脉络数：至少 2 种');
     expect(text).toContain('行动：研判证据');
     expect(text).not.toContain('origin_diversity');
     expect(text).not.toContain('interpret_evidence');

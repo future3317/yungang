@@ -4,109 +4,109 @@
       "id": "yungang_facet_image",
       "site_id": "yungang",
       "kind": "image",
-      "name": "云冈石窟·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "造像与洞窟图像",
+      "description": "观察造像姿态、服饰和洞窟装饰，比较图像母题的异同，不把单一细节直接当作完整历史结论。",
       "evidence_domains": [
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
+      "gameplay_hint": "先记录图像细节，再与其他线索脉络互证。"
     },
     {
       "id": "yungang_facet_material",
       "site_id": "yungang",
       "kind": "material",
-      "name": "云冈石窟·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "石窟开凿与风化",
+      "description": "关注砂岩开凿痕迹、表面风化和历次修护记录，为节点修护阶段提供可追溯依据。",
       "evidence_domains": [
         "architecture",
-        "frontier"
+        "pattern"
       ],
-      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
+      "gameplay_hint": "节点接近关闭时，优先把这类线索用于修护研判。"
     },
     {
       "id": "yungang_facet_route",
       "site_id": "yungang",
       "kind": "route",
-      "name": "云冈石窟·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "营造与交流线索",
+      "description": "从营造材料、工匠协作和行旅条件观察石窟如何嵌入平城的遗产网络。",
       "evidence_domains": [
-        "trade",
-        "frontier"
+        "architecture",
+        "trade"
       ],
-      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
+      "gameplay_hint": "路线承压时，先比较营造与行旅线索，再决定是否修护路线。"
     },
     {
       "id": "huayan_temple_facet_image",
       "site_id": "huayan_temple",
       "kind": "image",
-      "name": "华严寺·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "辽代木构与藏经阁",
+      "description": "观察薄伽教藏殿的木构做法、藏经阁空间和装饰纹样，区分现存建筑与后世格局。",
       "evidence_domains": [
-        "statue",
+        "architecture",
         "pattern"
       ],
-      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
+      "gameplay_hint": "适合为建筑互证任务准备结构和纹样线索。"
     },
     {
       "id": "huayan_temple_facet_material",
       "site_id": "huayan_temple",
       "kind": "material",
-      "name": "华严寺·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "木构保护与最小干预",
+      "description": "记录木构构件、彩画和修护痕迹；保护应以最小干预、完整记录为先，条件允许时保持可逆性。",
       "evidence_domains": [
         "architecture",
-        "frontier"
+        "pattern"
       ],
-      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
+      "gameplay_hint": "修护时先核对记录，再选择不会掩盖原状的处理方式。"
     },
     {
       "id": "huayan_temple_facet_route",
       "site_id": "huayan_temple",
       "kind": "route",
-      "name": "华严寺·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "古城寺院联系",
+      "description": "从华严寺与平城城址、其他寺院的空间联系观察辽金时期的城市遗产网络。",
       "evidence_domains": [
-        "trade",
-        "frontier"
+        "architecture",
+        "trade"
       ],
-      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
+      "gameplay_hint": "需要连接寺院与城址时，优先组合建筑和行旅线索。"
     },
     {
       "id": "shanhua_temple_facet_image",
       "site_id": "shanhua_temple",
       "kind": "image",
-      "name": "善化寺·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "辽金建筑与塑像",
+      "description": "观察三圣殿、普贤阁等主要建筑及塑像保存状态，比较木构和造像在寺院中的分工。",
       "evidence_domains": [
-        "statue",
-        "pattern"
+        "architecture",
+        "statue"
       ],
-      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
+      "gameplay_hint": "先记录建筑与造像的对应关系，再归类进地点任务。"
     },
     {
       "id": "shanhua_temple_facet_material",
       "site_id": "shanhua_temple",
       "kind": "material",
-      "name": "善化寺·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "建筑构件与修护记录",
+      "description": "关注辽金木构构件、彩画和后世修护痕迹，避免把不同年代的层次混为一谈。",
       "evidence_domains": [
         "architecture",
-        "frontier"
+        "pattern"
       ],
-      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
+      "gameplay_hint": "节点有风险时，优先核对构件记录和修护顺序。"
     },
     {
       "id": "shanhua_temple_facet_route",
       "site_id": "shanhua_temple",
       "kind": "route",
-      "name": "善化寺·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "寺院与城市网络",
+      "description": "从善化寺与大同城市空间、行旅路线的关系理解寺院网络，不把路线图当作历史时期复原图。",
       "evidence_domains": [
-        "trade",
-        "frontier"
+        "architecture",
+        "trade"
       ],
-      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
+      "gameplay_hint": "规划跨节点行动时，使用这类线索解释协作价值。"
     },
     {
       "id": "wall_pass_facet_image",
@@ -184,37 +184,37 @@
       "id": "pingcheng_ruins_facet_image",
       "site_id": "pingcheng_ruins",
       "kind": "image",
-      "name": "平城遗址·图像与纹样",
-      "description": "观察图像、装饰、标记或可识别的视觉线索，判断它们如何与地点任务发生联系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "平城遗址与北魏遗存",
+      "description": "观察城址范围、遗迹分布和出土遗存之间的关系；现有考古材料不足以直接还原完整城垣边界。",
       "evidence_domains": [
-        "statue",
-        "pattern"
+        "architecture",
+        "statue"
       ],
-      "gameplay_hint": "优先查看纹样、造像或档案类证据。"
+      "gameplay_hint": "先标记已确认遗迹，再把推测内容作为待确认线索。"
     },
     {
       "id": "pingcheng_ruins_facet_material",
       "site_id": "pingcheng_ruins",
       "kind": "material",
-      "name": "平城遗址·材料与修护",
-      "description": "观察材料状态、结构关系和维护痕迹，为节点修护和项目阶段提供依据。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "城址与夯土遗迹",
+      "description": "记录夯土、道路和遗迹层位等材料信息，区分考古发现、保护现状与研究推断。",
       "evidence_domains": [
         "architecture",
-        "frontier"
+        "pattern"
       ],
-      "gameplay_hint": "节点受损或项目进入修护阶段时优先处理。"
+      "gameplay_hint": "适合支撑遗址保护项目的记录和修护阶段。"
     },
     {
       "id": "pingcheng_ruins_facet_route",
       "site_id": "pingcheng_ruins",
       "kind": "route",
-      "name": "平城遗址·交通与协作",
-      "description": "观察该节点与周边路线、人员流动和资源调度的关系。 本面向服务于游戏中的证据比较，不把单一线索直接视为完整历史结论。",
+      "name": "都城网络与行旅",
+      "description": "从北魏平城的都城功能和区域行旅理解遗址之间的联系，不把跨时代网络当作单一时期交通图。",
       "evidence_domains": [
         "trade",
-        "frontier"
+        "silk"
       ],
-      "gameplay_hint": "路线承压、阻断或需要跨区协作时优先查看。"
+      "gameplay_hint": "需要连接多个遗产节点时，优先比较都城与行旅线索。"
     },
     {
       "id": "northern_workshop_facet_image",

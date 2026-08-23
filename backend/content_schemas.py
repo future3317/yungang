@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import Annotated, Literal, Union
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, ConfigDict, Field, JsonValue, TypeAdapter
 
@@ -393,6 +394,8 @@ class ContentItemContract(BaseModel):
 
     content_class: str = Field(pattern="^(documented|interpretive|gameplay)$")
 
+    source_ids: list[str] = Field(default_factory=list)
+
 
 
 
@@ -422,8 +425,6 @@ class SiteContract(ContentItemContract):
     region_id: str | None = None
 
     scene_asset: str | None = None
-
-    source_ids: list[str] = Field(default_factory=list)
 
     start_damage: int | None = None
 
@@ -733,8 +734,6 @@ class CultureCardContract(ContentItemContract):
     rarity: str | None = None
 
     site_tags: list[str] = Field(default_factory=list)
-
-    source_ids: list[str] = Field(default_factory=list)
 
     strategic_role: str | None = None
 
@@ -1146,27 +1145,25 @@ def validate_content_contracts(files: Mapping[str, object]) -> None:
 
         TerminologyContract.model_validate(files["terminology"])
 
+    quality_items = [*sites, *cards, *tasks, *events, *projects, *action_cards, *roles, *scenarios, *objectives, *routes, *regions, *facets, *task_templates, *event_chains, *role_upgrades, *achievements]
+    for item in quality_items:
+        if item.get("content_class") in {"documented", "interpretive"} and not item.get("source_ids"):
+            raise ValueError(f"documented content requires source_ids: {item['id']}")
+
     if files.get("sources"):
 
         SourcesContract.model_validate(files["sources"])
 
-        source_ids = {source["id"] for source in _items(files["sources"], "sources")}
-
-        for site in sites:
-
-            for source_id in site.get("source_ids", []):
-
+        source_items = _items(files["sources"], "sources")
+        source_ids = {source["id"] for source in source_items}
+        for item in quality_items:
+            for source_id in item.get("source_ids", []):
                 if source_id not in source_ids:
-
-                    raise ValueError(f"site references unknown source: {site['id']}:{source_id}")
-
-        for card in cards:
-
-            for source_id in card.get("source_ids", []):
-
-                if source_id not in source_ids:
-
-                    raise ValueError(f"card references unknown source: {card['id']}:{source_id}")
+                    raise ValueError(f"content references unknown source: {item['id']}:{source_id}")
+        for source in source_items:
+            value = source.get("url_or_citation", "")
+            if value.startswith(("http://", "https://")) and not urlparse(value).path.strip("/"):
+                raise ValueError(f"source URL must point to a specific page: {source['id']}")
 
 
 

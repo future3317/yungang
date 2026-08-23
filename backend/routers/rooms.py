@@ -64,6 +64,15 @@ def _require_host(room: dict, token: str | None) -> None:
         raise HTTPException(403, {"code": "host_required", "message": "只有房主可以改变旅舍状态。", "details": {}, "recovery": "wait_for_host"})
 
 
+def _commit_room(room: dict) -> None:
+    try:
+        room_service.commit(room)
+    except ValueError as exc:
+        if str(exc) == "room_revision_conflict":
+            raise HTTPException(409, {"code": "room_revision_conflict", "message": "房间状态刚刚发生变化，请重新同步后再操作。", "details": {}, "recovery": "sync_current_room"}) from exc
+        raise _room_token_error(exc) from exc
+
+
 def _run_action(session_id: str, request: ActionRequest, state: GameState | None = None) -> GameState:
     state = state or repo.get(session_id)
     if not state:
@@ -207,7 +216,7 @@ def pause_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     _require_host(room, x_seat_token)
     if room["status"] == "in_progress":
         room["status"] = "paused"
-        room_service.repository.save(room)
+        _commit_room(room)
     return room_service.public(room, x_seat_token)
 
 
@@ -217,7 +226,7 @@ def resume_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     _require_host(room, x_seat_token)
     if room["status"] == "paused":
         room["status"] = "in_progress"
-        room_service.repository.save(room)
+        _commit_room(room)
     return room_service.public(room, x_seat_token)
 
 
@@ -252,7 +261,7 @@ def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
     room["session_id"] = session_id
     room["status"] = "in_progress"
     room["updated_at"] = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
-    room_service.repository.save(room)
+    _commit_room(room)
     repo.save(state)
     return {"room": room_service.public(room, x_seat_token), "session_id": session_id}
 
@@ -335,7 +344,7 @@ def room_action(room_id: str, request: RoomActionRequest, x_seat_token: str | No
     result = _run_action(room["session_id"], action_request, current)
     if result.shared.outcome:
         room["status"] = "completed"
-        room_service.repository.save(room, revision=result.revision)
+        _commit_room(room)
     else:
         room_service.repository.notify(room_id, revision=result.revision, room=room)
     return result

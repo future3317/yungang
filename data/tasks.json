@@ -30,7 +30,7 @@
     },
     "strategic_role": "开局核心证据任务",
     "route_synergy": "完成后适合向云冈核心项目汇集证据。",
-    "ui_instruction": "提交3张证据，覆盖造像、纹样，并包含至少2种来源。",
+    "ui_instruction": "归类3张证据，覆盖造像、纹样，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -64,7 +64,7 @@
     },
     "strategic_role": "修护与建筑任务",
     "route_synergy": "完成后可优先处理寺观区域的路线风险。",
-    "ui_instruction": "提交3张证据，覆盖建筑、纹样，并包含至少2种来源。",
+    "ui_instruction": "归类3张证据，覆盖建筑、纹样，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -98,7 +98,7 @@
     },
     "strategic_role": "资源调度任务",
     "route_synergy": "完成后适合建立材料场与寺观节点之间的稳定连接。",
-    "ui_instruction": "提交3张证据，覆盖建筑、互市，并包含至少2种来源。",
+    "ui_instruction": "归类3张证据，覆盖建筑、互市，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -132,7 +132,7 @@
     },
     "strategic_role": "路线风险任务",
     "route_synergy": "完成后优先计入路线恢复与区域连通目标。",
-    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少2种来源。",
+    "ui_instruction": "归类3张证据，覆盖边塞、互市，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -168,7 +168,7 @@
     },
     "strategic_role": "多人协作任务",
     "route_synergy": "完成后适合推进互市重开或文明汇流情景。",
-    "ui_instruction": "提交3张证据，覆盖互市、边塞，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖互市、边塞，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -208,7 +208,7 @@
     },
     "strategic_role": "终局核心任务",
     "route_synergy": "完成后满足标准局核心胜利条件。",
-    "ui_instruction": "提交5张证据，覆盖造像、纹样、建筑、边塞、互市，并包含至少3种来源。",
+    "ui_instruction": "归类5张证据，覆盖造像、纹样、建筑、边塞、互市，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -242,7 +242,7 @@
     },
     "strategic_role": "项目加速任务",
     "route_synergy": "完成后可为相邻核心节点补充修护资源。",
-    "ui_instruction": "提交2张证据，覆盖建筑、造像，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖建筑、造像，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -277,7 +277,7 @@
     },
     "strategic_role": "证据整理任务",
     "route_synergy": "完成后适合改善市场选择或回收档案。",
-    "ui_instruction": "提交3张证据，覆盖造像、纹样，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖造像、纹样，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -310,7 +310,7 @@
     },
     "strategic_role": "风险缓解任务",
     "route_synergy": "完成后可支援相邻节点的修护行动。",
-    "ui_instruction": "提交2张证据，覆盖建筑、边塞，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖建筑、边塞，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -344,7 +344,7 @@
     },
     "strategic_role": "造像项目任务",
     "route_synergy": "完成后可强化云冈核心项目的造像阶段。",
-    "ui_instruction": "提交3张证据，覆盖造像、建筑，并包含至少2种来源。",
+    "ui_instruction": "归类3张证据，覆盖造像、建筑，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -379,7 +379,7 @@
     },
     "strategic_role": "互鉴组合任务",
     "route_synergy": "完成后提高来源多样性目标进度。",
-    "ui_instruction": "提交3张证据，覆盖纹样、互市，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖纹样、互市，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -412,7 +412,7 @@
     },
     "strategic_role": "路线调查任务",
     "route_synergy": "完成后可降低相邻路线的风险说明门槛。",
-    "ui_instruction": "提交2张证据，覆盖互市、边塞，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖互市、边塞，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -446,7 +446,7 @@
     },
     "strategic_role": "机动支援任务",
     "route_synergy": "完成后适合降低下一次跨区移动成本。",
-    "ui_instruction": "提交2张证据，覆盖互市、建筑，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖互市、建筑，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -481,7 +481,7 @@
     },
     "strategic_role": "高协作任务",
     "route_synergy": "完成后适合缓解边塞区域事件。",
-    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖边塞、互市，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -515,7 +515,7 @@
     },
     "strategic_role": "事件预警任务",
     "route_synergy": "完成后适合预览或缓解下一轮事件。",
-    "ui_instruction": "提交2张证据，覆盖边塞、建筑，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖边塞、建筑，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -550,7 +550,7 @@
     },
     "strategic_role": "角色强化任务",
     "route_synergy": "完成后适合触发角色升级选择。",
-    "ui_instruction": "提交3张证据，覆盖建筑、造像，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖建筑、造像，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -584,7 +584,7 @@
     },
     "strategic_role": "信息整理任务",
     "route_synergy": "完成后适合改善事件或市场信息。",
-    "ui_instruction": "提交2张证据，覆盖互市、纹样，并包含至少2种来源。",
+    "ui_instruction": "归类2张证据，覆盖互市、纹样，并包含至少2种来源。",
     "content_class": "gameplay"
   },
   {
@@ -619,7 +619,7 @@
     },
     "strategic_role": "区域连接任务",
     "route_synergy": "完成后计入连通区域和路线恢复目标。",
-    "ui_instruction": "提交3张证据，覆盖边塞、互市，并包含至少3种来源。",
+    "ui_instruction": "归类3张证据，覆盖边塞、互市，并包含至少3种来源。",
     "content_class": "gameplay"
   },
   {
@@ -650,7 +650,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "来源对照任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，覆盖造像、纹样与至少 2 个来源。",
+    "ui_instruction": "在节点委托中归类 2 张证据，覆盖造像、纹样与至少 2 个来源。",
     "content_class": "gameplay"
   },
   {
@@ -681,7 +681,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "工序推演任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，完成建筑与造像的交叉验证。",
+    "ui_instruction": "在节点委托中归类 2 张证据，完成建筑与造像的交叉验证。",
     "content_class": "gameplay"
   },
   {
@@ -712,7 +712,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "传播判断任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，覆盖边地、交流与至少 2 个来源。",
+    "ui_instruction": "在节点委托中归类 2 张证据，覆盖边地、交流与至少 2 个来源。",
     "content_class": "gameplay"
   },
   {
@@ -744,7 +744,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "档案拼合任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，覆盖建筑、纹样并完成跨来源拼合。",
+    "ui_instruction": "在节点委托中归类 2 张证据，覆盖建筑、纹样并完成跨来源拼合。",
     "content_class": "gameplay"
   },
   {
@@ -776,7 +776,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "风险排序任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，覆盖建筑、边地并完成材料诊断。",
+    "ui_instruction": "在节点委托中归类 2 张证据，覆盖建筑、边地并完成材料诊断。",
     "content_class": "gameplay"
   },
   {
@@ -807,7 +807,7 @@
       "minimum_distinct_players": 1
     },
     "strategic_role": "现场回应任务",
-    "ui_instruction": "在节点委托中提交 2 张证据，覆盖交流、边地并完成路线治理。",
+    "ui_instruction": "在节点委托中归类 2 张证据，覆盖交流、边地并完成路线治理。",
     "content_class": "gameplay"
   },
   {
@@ -835,7 +835,7 @@
     },
     "strategic_role": "入门证据任务",
     "route_synergy": "完成后可前往相邻节点继续导览。",
-    "ui_instruction": "提交1张造像类证据卡。",
+    "ui_instruction": "归类1张造像类证据卡。",
     "content_class": "gameplay"
   },
   {
@@ -863,7 +863,7 @@
     },
     "strategic_role": "入门修护任务",
     "route_synergy": "完成后节点恢复稳定。",
-    "ui_instruction": "提交1张建筑类证据卡，然后进行修护。",
+    "ui_instruction": "归类1张建筑类证据卡，然后进行修护。",
     "content_class": "gameplay"
   },
   {
@@ -894,7 +894,7 @@
     },
     "strategic_role": "入门组合任务",
     "route_synergy": "完成后加深对证据组合的理解。",
-    "ui_instruction": "提交2张证据卡，覆盖造像与建筑领域。",
+    "ui_instruction": "归类2张证据卡，覆盖造像与建筑领域。",
     "content_class": "gameplay"
   },
   {
@@ -924,7 +924,7 @@
     },
     "strategic_role": "入门移动任务",
     "route_synergy": "完成后熟悉地图移动与节点委托。",
-    "ui_instruction": "移动到古道口并提交2张证据卡。",
+    "ui_instruction": "移动到古道口并归类2张证据卡。",
     "content_class": "gameplay"
   }
 ]

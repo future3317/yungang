@@ -65,7 +65,7 @@
     "start_damage": 0,
     "max_damage": 3,
     "active_task_id": "task_architecture_huayan",
-    "summary": "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
+    "summary": "始建于辽重熙七年（1038）；现存薄伽教藏殿为辽构，大雄宝殿于1140年重建；明代形成上、下寺格局。",
     "region_id": "temple_network",
     "strategic_role": "建筑证据与修护转换",
     "node_ability": {
@@ -88,12 +88,13 @@
     "source_ids": [
       "source_huayan_temple"
     ],
-    "historical_context": "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
+    "historical_context": "始建于辽重熙七年（1038）；现存薄伽教藏殿为辽构，大雄宝殿于1140年重建；明代形成上、下寺格局。",
     "gameplay_effect": "节点能力【结构互证】：在此贡献建筑证据后，本回合下一次节点修护少消耗1点共同修护资源。",
     "strategy_hint": "适合先贡献再修护，形成完整的建筑项目回合。",
     "map_shape": "hexagon",
     "domains": [
-      "frontier"
+      "architecture",
+      "pattern"
     ]
   },
   {
@@ -276,7 +277,8 @@
     "strategy_hint": "适合优先锁定核心项目所需的稀缺领域。",
     "map_shape": "circle",
     "source_ids": [
-      "source_pingcheng_northern_wei"
+      "source_pingcheng_northern_wei",
+      "source_pingcheng_ruins_official"
     ],
     "domains": []
   },

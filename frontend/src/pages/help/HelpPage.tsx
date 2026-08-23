@@ -32,7 +32,7 @@ export function HelpPage() {
           <article>
             <Users />
             <h2>共同完成委托</h2>
-            <p>把不同来源的证据卡交付给地点任务。完成互证后，团队影响和遗产网络都会发生变化。</p>
+            <p>把不同线索脉络的证据卡归入地点任务。完成互证后，团队影响和遗产网络都会发生变化。</p>
           </article>
           <article>
             <Keyboard />

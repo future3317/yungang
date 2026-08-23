@@ -281,6 +281,9 @@ class RoomService:
         if not self.repository.save_if_revision(room, expected_revision):
             raise ValueError("room_revision_conflict")
 
+    def commit(self, room: dict[str, Any]) -> None:
+        self._save_room(room)
+
     @staticmethod
     def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, recovery_token: str, connected: bool) -> dict[str, Any]:
         return {"seat_id": seat_id, "player_id": f"player-{seat_id}", "name": name.strip()[:24] or "同行者", "role_id": role_id, "ready": False, "connected": connected, "role_locked": False, "token_hash": _digest(token), "recovery_token_hash": _digest(recovery_token)}

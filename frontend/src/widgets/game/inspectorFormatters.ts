@@ -6,7 +6,7 @@ export type CardRecord = Record<string, unknown>;
 export { contentTagName, domainName } from './contentLabels';
 
 export function originName(value?: string, meta?: Meta) {
-  return displayText(meta, 'origins', value, '未标注来源');
+  return displayText(meta, 'origins', value, '未标注线索脉络');
 }
 
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
@@ -23,7 +23,7 @@ export function formatProjectRequirements(meta: Meta, requirements: Record<strin
   const labels: Record<string, string> = {
     clues: '研究点',
     domains: '领域',
-    origin_diversity: '来源数量',
+    origin_diversity: '线索脉络数',
     restoration_resource: '修护资源',
     action_type: '行动',
   };
@@ -136,7 +136,7 @@ export function recordText(value: unknown, ...keys: string[]) {
 export function marketReason(card: ContentCard | undefined, task?: Task, useful = false, meta?: Meta) {
   const domain = card?.domain;
   const label = domain ? (meta ? domainName(meta, domain) : domain) : '';
-  if (useful && domain) return `回应此处地点任务的「${label}」证据卡，适合优先交付。`;
+  if (useful && domain) return `回应此处地点任务的「${label}」证据卡，适合优先归类。`;
   if (task?.required_origin_diversity && task.required_origin_diversity > 1)
     return '来自另一条脉络，可补足这段故事的互证。';
   return domain ? `属于「${label}」证据卡，也许会在后续节点显出意义。` : '先收进手中，等待合适的节点召唤它。';
@@ -144,5 +144,5 @@ export function marketReason(card: ContentCard | undefined, task?: Task, useful 
 
 export function marketOutcome(card: ContentCard | undefined) {
   const instant = textField(card, 'instant_use_text', 'combo_reward_text');
-  return instant ? `收入手中；${instant}` : '收入手中；之后可交付给地点任务，或在合适时机使用。';
+  return instant ? `收入手中；${instant}` : '收入手中；之后可归入地点任务，或在合适时机使用。';
 }

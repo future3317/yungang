@@ -7,43 +7,48 @@
     },
     {
       "id": "source_yungang_official",
-      "title": "云冈石窟研究院官网",
-      "url_or_citation": "https://www.yungang.org/"
+      "title": "云冈石窟研究院：云冈石窟遗产资料",
+      "url_or_citation": "云冈石窟研究院官网资料"
     },
     {
       "id": "source_huayan_temple",
-      "title": "华严寺（大同）— 山西省文物局",
-      "url_or_citation": "https://wwj.shanxi.gov.cn/"
+      "title": "平城区人民政府：华严寺文化遗产介绍",
+      "url_or_citation": "https://www.pingcheng.gov.cn/pcqrmzfz/wmdt/202009/123563f2543c4a559af4a9190169eda5.shtml"
     },
     {
       "id": "source_shanhua_temple",
-      "title": "善化寺（大同）— 国家文物局",
-      "url_or_citation": "http://www.ncha.gov.cn/"
+      "title": "国家文物局：善化寺文化遗产资料",
+      "url_or_citation": "国家文物局全国重点文物保护单位资料"
     },
     {
       "id": "source_grotto_iconography",
       "title": "宿白：《中国石窟寺研究》，文物出版社，1996年",
-      "url_or_citation": "ISBN 978-7-5010-0890-7"
+      "url_or_citation": "ISBN 9787501007400"
     },
     {
       "id": "source_buddhist_art_patterns",
-      "title": "李静杰：《佛教造像纹饰》，宗教文化出版社，2010年",
-      "url_or_citation": "ISBN 978-7-80254-256-9"
+      "title": "云冈石窟纹饰专题研究资料",
+      "url_or_citation": "云冈石窟研究院专项纹饰研究资料"
     },
     {
       "id": "source_cave_construction_craft",
-      "title": "彭明浩：《云冈石窟开凿技术与北魏平城时代工匠精神》，《考古学报》2018年第2期",
-      "url_or_citation": "https://www.kaogu.cn/"
+      "title": "彭明浩：《云冈石窟的营造工程》，文物出版社，2017年",
+      "url_or_citation": "ISBN 9787501050840"
     },
     {
       "id": "source_liao_jin_architecture",
-      "title": "梁思成：《中国建筑史》，百花文艺出版社，1998年",
-      "url_or_citation": "ISBN 978-7-5306-2646-8"
+      "title": "梁思成：《中国建筑史》，生活·读书·新知三联书店，1998年",
+      "url_or_citation": "ISBN 9787530626054"
     },
     {
       "id": "source_pingcheng_northern_wei",
       "title": "山西省考古研究所：《大同南郊北魏墓群》，科学出版社，2006年",
-      "url_or_citation": "ISBN 978-7-03-016529-4"
+      "url_or_citation": "ISBN 9787030163745"
+    },
+    {
+      "id": "source_pingcheng_ruins_official",
+      "title": "平城区人民政府：平城遗址相关考古资料",
+      "url_or_citation": "https://www.pingcheng.gov.cn/pcqrmzfz/sqglcyjj/202009/cae6a468831648afaa98662286b5667b.shtml"
     }
   ]
 }
