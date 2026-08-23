@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
-import './GameViewport.module.css';
+import styles from './GameViewport.module.css';
 
 export function GameViewport({ children }: { children: ReactNode }) {
   return (
-    <div className="game-viewport" data-hud-root="true">
+    <div className={`${styles.root} game-viewport`} data-hud-root="true">
       {children}
     </div>
   );

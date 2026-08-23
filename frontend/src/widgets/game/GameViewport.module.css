@@ -1,3 +1,7 @@
+:local(.root) {
+  display: block;
+}
+
 :global(.game-viewport) {
   height: 100dvh;
   min-height: 0;
