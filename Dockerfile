@@ -4,6 +4,7 @@ WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend ./
+COPY scripts/check-asset-budgets.mjs /app/scripts/check-asset-budgets.mjs
 RUN npm run build && rm -rf dist/ui-assets/generated/source
 
 FROM python:3.12-slim AS runtime
