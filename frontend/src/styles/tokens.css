@@ -13,7 +13,7 @@
   --surface-environment: #121715;
   --surface-stage: #19201d;
   --surface-raised: #222b26;
-  --surface-inspector: #e7e0d0;
+  --surface-inspector: rgba(31, 40, 34, 0.96);
   --surface-interactive: #2a352e;
   --surface-selected: #39473c;
   --surface-paper: #f0eadc;

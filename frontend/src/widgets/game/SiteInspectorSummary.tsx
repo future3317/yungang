@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import type { Action, SiteReference } from '../../types/game';
+import type { SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 import { contentClassName, statusName } from './inspectorFormatters';
 
@@ -7,13 +7,11 @@ export function SiteInspectorSummary({
   site,
   siteType,
   siteDescription,
-  action,
   onCollapse,
 }: {
   site: SiteReference;
   siteType: string;
   siteDescription: string;
-  action?: Action;
   onCollapse: () => void;
 }) {
   return (
@@ -22,7 +20,6 @@ export function SiteInspectorSummary({
         <X size={16} />
       </button>
       <header className="inspector-summary" tabIndex={0} aria-label="地点摘要，可滚动查看">
-        <span className="eyebrow">当前聚焦地点</span>
         <div className="inspector-site-mark">
           <img src={assetUrl(site.icon_asset || undefined, 'ornaments/heritage-medallion-1.webp')} alt="" />
         </div>
@@ -34,8 +31,8 @@ export function SiteInspectorSummary({
         </div>
         {site.status === 'at_risk' && (
           <div className="site-alert-explanation">
-            <b>红点提醒</b>
-            <span>节点已经承压，再受到一次事件损伤可能关闭。优先修护，或先降低本轮事件影响。</span>
+            <b>风险：再受 1 次损伤将关闭</b>
+            <span>优先修护，或先降低本轮事件影响。</span>
           </div>
         )}
         {site.status === 'closed' && (
@@ -45,13 +42,6 @@ export function SiteInspectorSummary({
           </div>
         )}
         <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
-        {action && (
-          <div className="relevant-action">
-            <span>当前相关行动</span>
-            <b>{action.label}</b>
-            <small>{action.cost || 0} 行动点</small>
-          </div>
-        )}
       </header>
     </>
   );

@@ -86,7 +86,7 @@
 }
 .goal-drawer-toggle,
 .help-zone-trigger {
-  min-height: 34px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -100,7 +100,7 @@
 }
 .help-zone-trigger {
   padding: 0;
-  width: 34px;
+  width: 44px;
   justify-content: center;
 }
 .goal-drawer-toggle:hover,
@@ -136,8 +136,8 @@
   font-size: 0.86rem;
 }
 .goal-drawer-head button {
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   color: var(--ink-secondary);

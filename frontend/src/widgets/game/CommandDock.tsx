@@ -72,10 +72,14 @@ export function CommandDock({
     (state.shared.effective_rules as Record<string, unknown> | undefined)?.show_recommendation_reasons === true;
   const waitingFor = state.players?.[state.shared.active_player_id]?.name || '当前行动者';
   const ranked = [...actionOptions].sort(
-    (left, right) => (right.recommendation_score || 0) - (left.recommendation_score || 0)
+    (left, right) =>
+      (right.recommendation_score || 0) - (left.recommendation_score || 0) ||
+      primaryOrder.indexOf(left.type) - primaryOrder.indexOf(right.type) ||
+      left.label.localeCompare(right.label, 'zh-CN')
   );
   const featured = ranked.filter((item) => item.enabled !== false).slice(0, 3);
-  const more = ranked.filter((item) => !featured.some((feature) => feature.id === item.id));
+  const more = ranked.filter((item) => item.enabled !== false && !featured.some((feature) => feature.id === item.id));
+  const unavailable = ranked.filter((item) => item.enabled === false);
   const select = (option: ActionOption) => {
     if (!canAct || option.enabled === false) return;
     if (option.type === 'use_action_card') setStrategy(option);
@@ -93,12 +97,10 @@ export function CommandDock({
           <b>{active.ap}</b>
           <span>
             行动点
-            <br />
-            可用行动点
           </span>
         </div>
         <span className={styles.dockTeamStatus}>
-          团队修护资源 {state.shared.restoration_resource} · 研究点 {state.shared.research_clues || 0}
+          修护 {state.shared.restoration_resource} · 研究 {state.shared.research_clues || 0}
         </span>
         {!canAct && (
           <span className={styles.dockWaiting} role="status">
@@ -137,7 +139,7 @@ export function CommandDock({
             <button
               type="button"
               key={option.id}
-              className={`${styles.actionCard} ${styles[`action-${type}`] || ''} ${selected ? styles.selected : ''} ${index === 0 ? styles.leadAction : ''} ${disabled ? styles.isDisabled : ''}`.trim()}
+              className={`${styles.actionCard} ${styles[`action-${type}`] || ''} ${selected ? styles.selected : ''} ${disabled ? styles.isDisabled : ''}`.trim()}
               disabled={disabled}
               onClick={() => select(option)}
               data-detail={detailText}
@@ -147,7 +149,7 @@ export function CommandDock({
                 {asset ? <img src={assetUrl(`interaction/action-icons/${asset}.webp`)} alt="" /> : <Icon size={20} />}
               </span>
               <span className={styles.actionCardCopy}>
-                <b>{label}</b>
+                <b>{index === 0 && <i className={styles.recommended}>推荐</i>}{label}</b>
                 <small>
                   {[
                     option.category_label,
@@ -205,6 +207,7 @@ export function CommandDock({
                 </button>
               );
             })}
+            {unavailable.length ? <div className={styles.unavailableLabel}>暂不可用 {unavailable.length} 项</div> : null}
           </div>
         </details>
       </div>
@@ -223,12 +226,13 @@ export function CommandDock({
           {active.hand.length ? (
             active.hand.map((id) => {
               const item = cards[id];
+              const interpretAction = findCardAction(legal, 'interpret_evidence', id);
               const playAction = findCardAction(legal, 'play_card', id);
               return (
                 <button type="button" key={id} className={styles.handCard} onClick={() => onCard(id)}>
                   <img src={assetUrl(item?.icon_asset, 'interaction/resource-icons/scroll.webp')} alt="" />
                   <b>{item?.name || id}</b>
-                  <small>{playAction ? '在研究台中判断它的关系' : '查看这件证据'}</small>
+                  <small>{interpretAction ? '可用于当前研判' : playAction ? '可发动即时效果' : '查看这件证据'}</small>
                 </button>
               );
             })

@@ -17,8 +17,7 @@
   touch-action: none;
 }
 .network-atmosphere {
-  opacity: 0.045;
-  mix-blend-mode: screen;
+  display: none;
 }
 .network-atmosphere-lit {
   opacity: 0.075;
@@ -113,12 +112,10 @@
   opacity: 0.66;
 }
 .map-player-focus-art {
-  opacity: 0.34;
-  mix-blend-mode: screen;
+  display: none;
 }
 .map-selection-focus-art {
-  opacity: 0.62;
-  mix-blend-mode: screen;
+  display: none;
 }
 .route-layer path.is-event-target {
   stroke: #d58a59;

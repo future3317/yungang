@@ -61,9 +61,10 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 }
 
 describe('LandingPage', () => {
-  it('shows the tutorial and ready-to-configure journey form by default', () => {
+  it('keeps the first visit focused and opens the journey form on demand', () => {
     render(<LandingPage />, { wrapper: Wrapper });
     expect(screen.getByRole('button', { name: /开始新手导览/ })).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '自定义旅程' }));
     expect(screen.getByRole('button', { name: /进入准备厅/ })).toBeVisible();
     expect(screen.getByText('旅程场景')).toBeInTheDocument();
     expect(screen.getByLabelText('旅程难度')).toBeInTheDocument();
@@ -71,6 +72,7 @@ describe('LandingPage', () => {
 
   it('keeps advanced seed controls progressively disclosed', () => {
     render(<LandingPage />, { wrapper: Wrapper });
+    fireEvent.click(screen.getByRole('button', { name: '自定义旅程' }));
     fireEvent.click(screen.getByRole('button', { name: /高级设置/ }));
     expect(screen.getByRole('button', { name: /收起/ })).toBeVisible();
   });
@@ -82,6 +84,7 @@ describe('LandingPage', () => {
     } as Response);
 
     render(<LandingPage />, { wrapper: Wrapper });
+    fireEvent.click(screen.getByRole('button', { name: '自定义旅程' }));
     await waitFor(() => expect(screen.getByText('风沙与石')).toBeInTheDocument());
     expect(screen.getByRole('button', { name: /风沙与石/ })).toHaveAttribute('aria-pressed', 'false');
   });

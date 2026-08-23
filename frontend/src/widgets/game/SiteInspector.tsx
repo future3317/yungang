@@ -56,7 +56,6 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const projectStageId = projectStage?.id || String(project?.stage_index || 0);
   const projectStageProgress = project ? project.stage_progress?.[projectStageId] || 0 : 0;
   const projectStageTarget = projectStage?.required_progress || 1;
-  const action = legal.find(item => item.target_id === site.id || item.target_site_id === site.id) || legal.find(item => item.type === 'explore' && isCurrentSite);
   const eventResponseAvailable = state.pending_choice?.kind === 'event';
   const interventionActions = actionOptions.filter(item => item.type === 'choose_intervention').flatMap(option => option.targets.length ? option.targets.map(target => optionAction(option, target)) : [optionAction(option)]);
   const contributions = task?.contributed_cards || [];
@@ -78,7 +77,6 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       site={site}
       siteType={siteType}
       siteDescription={siteDescription}
-      action={action}
       onCollapse={() => onCollapsedChange(true)}
     />
     <div className="inspector-tabs" role="tablist" aria-label="地点信息">

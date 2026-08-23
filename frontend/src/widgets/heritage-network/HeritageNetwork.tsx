@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LocateFixed, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import { LocateFixed, Maximize2 } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
@@ -13,9 +13,6 @@ type MapActionMode = Extract<
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
 
-function routeRoadName(value: string | undefined, catalog: Meta | undefined) {
-  return displayText(catalog, 'route_classes', value, '未标注路线');
-}
 function routeStatusName(value: string | undefined, catalog: Meta | undefined) {
   return displayText(catalog, 'statuses', value, '未标注状态');
 }
@@ -23,8 +20,8 @@ function siteStatusName(value: string | undefined, catalog: Meta | undefined) {
   return displayText(catalog, 'statuses', value, '未标注状态');
 }
 function nodeReason(site: Site, meta: SiteReference, current: boolean, target: boolean, eventTarget: boolean, catalog?: Meta) {
-  if (site.status === 'closed') return '红点：这个节点已经关闭，先完成修护才能继续推进。';
-  if (site.status === 'at_risk') return '红点：节点接近关闭，优先修护可避免回合结算后失去它。';
+  if (site.status === 'closed') return '节点已关闭：先完成修护才能继续推进。';
+  if (site.status === 'at_risk') return '风险：再受一次损伤将关闭。优先修护可避免回合结算后失去它。';
   if (eventTarget) return '橙色标记：本轮事件可能影响这里，提前准备可以降低损伤。';
   if (target) return '金色标记：这是当前行动可以选择的合法目标。';
   if (current) return '这里是当前行动者的位置。';
@@ -256,8 +253,6 @@ export function HeritageNetwork({
   reachableIds,
   actionMode,
   eventTargetIds = [],
-  eventTargetLabels = [],
-  eventName,
   catalog,
   onFocus,
 }: {
@@ -271,8 +266,6 @@ export function HeritageNetwork({
   reachableIds: ReadonlySet<string>;
   actionMode: MapActionMode;
   eventTargetIds?: ReadonlyArray<string>;
-  eventTargetLabels?: string[];
-  eventName?: string;
   catalog?: Meta;
   onFocus: (id: string) => void;
 }) {
@@ -282,7 +275,6 @@ export function HeritageNetwork({
   const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity);
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
-  const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [hoveredSiteId, setHoveredSiteId] = useState<string | null>(null);
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
@@ -359,9 +351,6 @@ export function HeritageNetwork({
       selection.on('.zoom', null);
     };
   }, [enabledSiteKey]);
-  const scaleBy = (factor: number) => {
-    if (svgRef.current && zoomRef.current) select(svgRef.current).call(zoomRef.current.scaleBy, factor);
-  };
   const centerCurrent = () => {
     const target = mapPoint(active.location);
     const scale = Math.max(transform.k, 1.12);
@@ -384,7 +373,6 @@ export function HeritageNetwork({
   );
   const eventTargetRouteIds = new Set(eventTargetIds.filter((id) => routeLines.some((line) => line.id === id)));
   const hoveredRoute = routeLines.find((line) => line.id === hoveredRouteId);
-  const selectedRoute = routeLines.find((line) => line.id === selectedRouteId);
   const visibleLines = routeLines.filter(
     (line) =>
       lod !== 'overview' ||
@@ -394,17 +382,11 @@ export function HeritageNetwork({
   );
   const currentPoint = mapPoint(active.location);
   const selectedPoint = focusedId && focusedId !== active.location ? mapPoint(focusedId) : null;
-  const hintSiteId = hoveredSiteId || focusedId;
+  const hintSiteId = hoveredSiteId;
   const hintSite = hintSiteId ? enabledSites.find((site) => site.id === hintSiteId) : undefined;
   return (
     <div className="network-frame world-stage">
       <div className="network-tools">
-        <button title="放大地图" onClick={() => scaleBy(1.14)} aria-label="放大地图">
-          <ZoomIn />
-        </button>
-        <button title="缩小地图" onClick={() => scaleBy(0.88)} aria-label="缩小地图">
-          <ZoomOut />
-        </button>
         <button title="聚焦当前玩家" onClick={centerCurrent} aria-label="聚焦当前玩家">
           <LocateFixed />
         </button>
@@ -484,7 +466,7 @@ export function HeritageNetwork({
                 eventTarget ? 'is-event-target' : '',
                 abnormal ? `is-${line.route.status}` : '',
                 line.route.connection_level >= 2 ? 'is-illuminated' : '',
-                hoveredRouteId === line.id || selectedRouteId === line.id ? 'is-hovered' : '',
+                hoveredRouteId === line.id ? 'is-hovered' : '',
                 actionMode && !target && !neighborRouteIds.has(line.id) ? 'is-muted' : '',
               ]
                 .filter(Boolean)
@@ -507,12 +489,12 @@ export function HeritageNetwork({
                   onBlur={() => setHoveredRouteId(null)}
                   onClick={(event) => {
                     event.stopPropagation();
-                    setSelectedRouteId(line.id);
+                    onFocus(line.to);
                   }}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
-                      setSelectedRouteId(line.id);
+                      onFocus(line.to);
                     }
                   }}
                 />
@@ -708,41 +690,6 @@ export function HeritageNetwork({
           </g>
         </g>
       </svg>
-      {selectedRoute && (
-        <aside className="route-inspector" aria-label="路线检查器">
-          <button title="关闭路线检查器" aria-label="关闭路线检查器" onClick={() => setSelectedRouteId(null)}>
-            ×
-          </button>
-          <span className="eyebrow">路线检查器</span>
-          <h3>
-            {selectedRoute.route.name || `${metaSites[selectedRoute.from]?.name}—${metaSites[selectedRoute.to]?.name}`}
-          </h3>
-          <p>
-            {selectedRoute.route.ui_hint ||
-              selectedRoute.route.risk_profile ||
-              '这条路线连接两个协作节点，状态会随事件和团队治理改变。'}
-          </p>
-          <dl>
-            <div>
-              <dt>道路</dt>
-              <dd>{routeRoadName(selectedRoute.route.road_class, catalog)}</dd>
-            </div>
-            <div>
-              <dt>成本</dt>
-              <dd>{selectedRoute.route.cost} 行动点</dd>
-            </div>
-            <div>
-              <dt>风险</dt>
-              <dd>{selectedRoute.route.risk}</dd>
-            </div>
-            <div>
-              <dt>状态</dt>
-              <dd>{routeStatusName(selectedRoute.route.status, catalog)}</dd>
-            </div>
-          </dl>
-          <small>相关行动：勘察、修护或建立连接会根据当前合法行动出现。</small>
-        </aside>
-      )}
       <details className="network-access-list">
         <summary>地点与路线清单</summary>
         <div>
@@ -752,19 +699,12 @@ export function HeritageNetwork({
             </button>
           ))}
           {routeLines.map((line) => (
-            <button key={line.id} onClick={() => setSelectedRouteId(line.id)}>
+            <button key={line.id} onClick={() => onFocus(line.to)}>
               {line.route.name || `${metaSites[line.from]?.name}—${metaSites[line.to]?.name}`}
             </button>
           ))}
         </div>
       </details>
-      {eventTargetLabels.length > 0 ? (
-        <div className="event-map-notice" role="status">
-          <b>{eventName || '当前事件'}</b>
-          <span>影响地点：{eventTargetLabels.join('、')}</span>
-          <small>橙色环表示本回合会受影响；橙色实点表示仍可守护。</small>
-        </div>
-      ) : null}
       <div className="network-corner">
         本局地图
         <span>

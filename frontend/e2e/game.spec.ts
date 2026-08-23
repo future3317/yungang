@@ -4,6 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 async function startSolo(page: Page, seed?: string) {
   await page.goto('/');
   if (seed) {
+    await page.getByRole('button', { name: '自定义旅程' }).click();
     await page.getByRole('button', { name: /风沙与石/ }).click();
     await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
     await page.getByLabel('可复现种子').fill(seed);
@@ -21,7 +22,7 @@ async function startSolo(page: Page, seed?: string) {
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
-  await expect(page.getByRole('heading', { name: '云冈行旅地图' })).toBeVisible();
+  await expect(page.locator('.network-stage')).toBeVisible();
   const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await tutorialClose.isVisible()) await tutorialClose.click();
 }

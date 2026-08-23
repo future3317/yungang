@@ -1,7 +1,7 @@
 .commandDeck {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 164px minmax(0, 1fr) minmax(244px, 0.62fr);
+  grid-template-columns: 124px minmax(0, 1fr) 154px;
   gap: 14px;
   padding: 13px 14px;
   border-top: 1px solid var(--line-subtle);
@@ -12,6 +12,27 @@
   display: grid;
   align-content: center;
   gap: 6px;
+}
+
+.dockHint {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.sectionLabel,
+.dockTeamStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ink-secondary);
+  font-size: var(--text-micro);
+}
+
+.sectionLabel b,
+.dockTeamStatus {
+  color: var(--connection);
 }
 
 .apReadout {
@@ -91,14 +112,25 @@
   background: rgba(61, 77, 64, 0.92);
 }
 
-.actionCard.leadAction {
-  background: linear-gradient(130deg, rgba(159, 118, 55, 0.28), rgba(46, 61, 50, 0.9));
-  border-color: rgba(201, 173, 99, 0.46);
-}
-
 .actionCard.selected {
   border-color: var(--connection);
   box-shadow: inset 0 0 0 1px rgba(209, 173, 99, 0.22);
+}
+
+.recommended {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 2px 4px;
+  color: #273426;
+  background: var(--connection);
+  border-radius: 3px;
+  font: 700 0.68rem/1 var(--font-body);
+  font-style: normal;
+}
+
+.isDisabled {
+  cursor: not-allowed;
+  filter: saturate(0.4);
 }
 
 .actionCardIcon {
@@ -130,11 +162,11 @@
 }
 
 .actionCardCopy small {
-  overflow: hidden;
+  display: none;
   color: var(--ink-muted);
   font-size: 0.75rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .actionCost {
@@ -207,7 +239,15 @@
   color: var(--connection);
 }
 
+.unavailableLabel {
+  padding: 8px 7px 2px;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--line-subtle);
+  font-size: var(--text-micro);
+}
+
 .handTray {
+  position: relative;
   min-width: 0;
   padding-left: 13px;
   border-left: 1px solid var(--line-subtle);
@@ -244,9 +284,18 @@
 }
 
 .handContent {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: var(--z-dock);
+  width: min(560px, calc(100vw - 40px));
   display: grid;
   gap: 8px;
-  margin-top: 7px;
+  padding: 12px;
+  background: rgba(20, 32, 24, 0.98);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
 }
 
 .handCards {
@@ -305,6 +354,13 @@
   line-height: 1.4;
 }
 
+.strategyHand {
+  display: grid;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line-subtle);
+}
+
 /* Tooltip content stays anchored to its control; it does not need viewport
    coordinates or a portal, so scrolling and responsive reflow cannot detach it. */
 .actionCard[data-detail],
@@ -357,16 +413,11 @@
 }
 
 
-:global(.roster-column) > .commandDeck .moreActions button {
-  min-width: 0;
-  width: 100%;
-}
-
-.moreActions summary :global(svg) {
+.moreActions summary svg {
   transition: transform var(--motion-fast) var(--ease-out);
 }
 
-.moreActions[open] summary :global(svg) {
+.moreActions[open] summary svg {
   transform: rotate(180deg);
 }
 

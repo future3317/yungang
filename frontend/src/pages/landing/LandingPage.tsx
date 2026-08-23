@@ -61,7 +61,7 @@ function scenarioFaceFields(item: Scenario) {
 
 export function LandingPage() {
   const navigate = useNavigate();
-  const [customOpen, setCustomOpen] = useState(true);
+  const [customOpen, setCustomOpen] = useState(false);
   const [name, setName] = useState('');
   const [mode, setMode] = useState<PlayMode>('solo');
   const [count, setCount] = useState(2);
@@ -282,12 +282,6 @@ export function LandingPage() {
                         <em>预计时间</em>
                         {face.minutes} 分钟 · {item.max_rounds || '—'} 回合
                       </span>
-                      {scenario === item.id && (
-                        <small className="scenario-detail-inline">
-                          胜利：{item.victory_brief || '完成共同目标并保持网络开放。'} 失败：
-                          {item.failure_brief || '回合耗尽或风化压力失控。'}
-                        </small>
-                      )}
                     </button>
                   );
                 })}

@@ -30,6 +30,7 @@ async function gotoLanding(page: Page) {
 
 async function createRoom(page: Page) {
   await gotoLanding(page);
+  await page.getByRole('button', { name: '自定义旅程' }).click();
   await page.locator('.scenario-options > button').first().click();
   await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
   await page.getByLabel('可复现种子').fill('901');
@@ -44,7 +45,7 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '准备' }).nth(0).click();
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
-  await expect(page.getByRole('heading', { name: '云冈行旅地图' })).toBeVisible();
+  await expect(page.locator('.network-stage')).toBeVisible();
   const tutorial = page.getByRole('button', { name: /^(跳过，自己寻访证据|知道了)$/ }).first();
   if (await tutorial.isVisible()) await tutorial.click();
 }
@@ -108,6 +109,13 @@ async function assertMapWidthAtLeast(page: Page, ratio: number) {
   expect(box && viewport && box.width >= viewport.width * ratio).toBe(true);
 }
 
+async function assertMapHeightAtLeast(page: Page, ratio: number) {
+  if (isMobileProject()) return;
+  const box = await page.locator('.network-stage').first().boundingBox();
+  const viewport = page.viewportSize();
+  expect(box && viewport && box.height >= viewport.height * ratio).toBe(true);
+}
+
 async function assertNoOverlap(page: Page, aSelector: string, bSelector: string) {
   const a = await page.locator(aSelector).first().boundingBox();
   const b = await page.locator(bSelector).first().boundingBox();
@@ -154,6 +162,7 @@ test('game HUD visual baseline', async ({ page }) => {
   await skipNonVisual();
   await startSolo(page);
   await assertMapWidthAtLeast(page, 0.55);
+  await assertMapHeightAtLeast(page, 0.5);
   await assertNoOverlap(page, '.game-header', '.site-inspector, .inspector-rail');
   await expect(page).toHaveScreenshot('game-hud.png', commonScreenshot(page, { mask: [page.locator('.header-actions')] }));
 });

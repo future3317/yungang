@@ -86,7 +86,6 @@ export function GamePage() {
   const [mobileView, setMobileView] = useState<'map' | 'mission' | 'hand'>('map');
   const [toasts, setToasts] = useState<Array<{ id: string; text: string }>>([]);
   const [inspectorOpen, setInspectorOpen] = useState(true);
-  const [focusCardOpen, setFocusCardOpen] = useState(true);
   const [tutorialOpen, setTutorialOpen] = useState(false);
   const [handoffName, setHandoffName] = useState<string | null>(null);
   const [selectedOption, setSelectedOption] = useState<ActionOption | null>(null);
@@ -155,7 +154,6 @@ export function GamePage() {
       setActionMode(null);
       if (action.type === 'move' && action.target_id) {
         setFocus(action.target_id);
-        setFocusCardOpen(true);
         setInspectorOpen(true);
       }
       if (action.type === 'choose_intervention') {
@@ -377,7 +375,6 @@ export function GamePage() {
       return;
     }
     setFocus(id);
-    setFocusCardOpen(true);
     setInspectorOpen(true);
   };
   const mapActionMode =
@@ -459,17 +456,6 @@ export function GamePage() {
   }));
   const summaryEventId =
     typeof state.shared.round_summary?.event_id === 'string' ? state.shared.round_summary.event_id : undefined;
-  const hasExplicitFocus = focus !== null;
-  const imageFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const image = event.currentTarget;
-    if (image.dataset.fallback) {
-      image.style.display = 'none';
-      image.parentElement?.classList.add('scene-art-failed');
-      return;
-    }
-    image.dataset.fallback = 'true';
-    image.src = assetUrl('generated/scene_yungang_day.webp');
-  };
   return (
     <GameViewport>
       <div className="game-shell">
@@ -487,7 +473,6 @@ export function GamePage() {
               if (!target) return;
               const projectSite = state.projects?.[target]?.site_id;
               setFocus(state.routes?.[target] ? state.routes[target].from_site : projectSite || target);
-              setFocusCardOpen(true);
               setInspectorOpen(true);
             }}
             onOpenHelp={() => {
@@ -618,12 +603,6 @@ export function GamePage() {
               routes={state.routes}
               eventName={summaryEventId ? events[summaryEventId]?.name : undefined}
             />
-            <div className="stage-heading">
-              <div>
-                <span className="eyebrow">当前地图</span>
-                <h1>云冈行旅地图</h1>
-              </div>
-            </div>
             <div className="network-stage">
               {actionMode && (
                 <div className="mode-strip" role="status" aria-live="polite">
@@ -665,63 +644,10 @@ export function GamePage() {
                 reachableIds={targetIds}
                 actionMode={mapActionMode}
                 eventTargetIds={eventTargetIds}
-                eventTargetLabels={eventTargetLabels}
-                eventName={currentEvent?.name}
                 catalog={meta}
                 onFocus={selectNode}
               />
             </div>
-            {focusCardOpen ? (
-              <section className="stage-caption" data-focused="true" aria-label="当前聚焦">
-                <div className="scene-thumb">
-                  <img
-                    src={assetUrl(focusedMeta.scene_asset || undefined, 'generated/scene_yungang_day.webp')}
-                    onError={imageFallback}
-                    alt="当前聚焦地点场景"
-                  />
-                </div>
-                <div>
-                  <span className="eyebrow">当前聚焦</span>
-                  <h2>{focusedMeta.name || '当前聚焦节点'}</h2>
-                  <p>{focusedMeta.summary || '等待寻访证据后显示节点的文化摘要。'}</p>
-                </div>
-                <button
-                  type="button"
-                  className="focus-card-toggle"
-                  data-overlay-control="true"
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onPointerUp={(event) => event.stopPropagation()}
-                  onClick={() => setFocusCardOpen(false)}
-                >
-                  收起聚焦
-                </button>
-                <button
-                  type="button"
-                  className="focus-clear"
-                  data-overlay-control="true"
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onPointerUp={(event) => event.stopPropagation()}
-                  onClick={() => {
-                    setFocus(null);
-                    setFocusCardOpen(false);
-                    setActionMode(null);
-                    setSelectedOption(null);
-                  }}
-                  aria-label="清除当前聚焦"
-                >
-                  <X size={16} />
-                </button>
-              </section>
-            ) : (
-              <button
-                type="button"
-                className="stage-caption focus-card-collapsed"
-                data-focused="false"
-                onClick={() => setFocusCardOpen(true)}
-              >
-                打开当前聚焦：{focusedMeta.name || '当前聚焦节点'}
-              </button>
-            )}
           </section>
           <SiteInspector
             state={state}
