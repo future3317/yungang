@@ -12,7 +12,7 @@ from ..models import (
 
 class EvidenceMixin:
     def _explore(self, state: GameState, player: PlayerState, card: str) -> None:
-        if player.ap < 1 or card not in state.market or len(player.hand) >= 3:
+        if player.ap < 1 or card not in state.market or len(player.hand) >= 3 + state.shared.effective_rules.hand_limit_bonus:
             raise ValueError("invalid_explore")
         player.ap -= 1
         player.hand.append(card)
@@ -32,7 +32,7 @@ class EvidenceMixin:
     def _request_explore(self, state: GameState, player: PlayerState, card: str) -> None:
         if player.ap < 1 or card not in state.market:
             raise ValueError("invalid_explore")
-        if len(player.hand) >= 3:
+        if len(player.hand) >= 3 + state.shared.effective_rules.hand_limit_bonus:
             state.pending_choice = {
                 "kind": "discard",
                 "next_card_id": card,
@@ -225,9 +225,9 @@ class EvidenceMixin:
 
     def _exchange(self, state: GameState, player: PlayerState, recipient_id: str, card: str) -> None:
         recipient = state.players.get(recipient_id)
-        remote = player.flags.get("remote_exchange_player_id") == recipient_id
+        remote = player.flags.get("remote_exchange_player_id") == recipient_id or state.shared.effective_rules.virtual_exchange
         free = bool(player.flags.pop("free_exchange", False) or player.flags.pop("exchange_discount", 0))
-        if not recipient or (recipient.location != player.location and not remote) or card not in player.hand or len(recipient.hand) >= 3:
+        if not recipient or (recipient.location != player.location and not remote) or card not in player.hand or len(recipient.hand) >= 3 + state.shared.effective_rules.hand_limit_bonus:
             raise ValueError("invalid_exchange")
         cost = 0 if free else self._event_action_cost(state, "exchange", 1)
         if player.ap < cost:

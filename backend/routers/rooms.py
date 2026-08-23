@@ -46,6 +46,15 @@ def _room_token_error(exc: ValueError) -> HTTPException:
     return HTTPException(error_status(code), error_detail(content.terminology, code, default_recovery="return_to_room"))
 
 
+def _validate_room_setup(scenario_id: str, difficulty_id: str, role_id: str | None) -> None:
+    if scenario_id not in content.scenarios:
+        raise HTTPException(400, {"code": "unknown_scenario", "message": "找不到这个旅程主题。", "details": {}, "recovery": "choose_scenario"})
+    if difficulty_id not in content.difficulty:
+        raise HTTPException(400, {"code": "unknown_difficulty", "message": "找不到这个难度设置。", "details": {}, "recovery": "choose_difficulty"})
+    if role_id is not None and role_id not in content.roles:
+        raise HTTPException(400, {"code": "unknown_role", "message": "找不到这个角色。", "details": {}, "recovery": "choose_another_role"})
+
+
 def _require_host(room: dict, token: str | None) -> None:
     try:
         seat = room_service.authenticate(room, token or "")
@@ -96,18 +105,20 @@ async def _room_revision_stream(room_id: str, listener):
 
 @router.post("/api/rooms", response_model=RoomCredentials)
 def create_room(request: RoomCreateRequest):
+    _validate_room_setup(request.scenario_id, request.difficulty_id, request.role_id)
     archive_id = request.archive_id
     archived_state = None
     if archive_id:
-        archived_state = repo.get(archive_id)
+        archive_room = room_service.repository.get(archive_id)
+        if archive_room and request.archive_recovery_token:
+            try:
+                room_service.verify_recovery(archive_room, request.archive_recovery_token)
+                archived_state = repo.get(archive_room.get("session_id")) if archive_room.get("session_id") else None
+            except ValueError as exc:
+                raise _room_token_error(exc) from exc
         if not archived_state:
-            rooms_by_session = room_service.rooms_by_session()
-            room = rooms_by_session.get(archive_id)
-            if room:
-                archived_state = repo.get(room.get("session_id"))
-        if not archived_state:
-            raise HTTPException(404, {"code": "archive_not_found", "message": "找不到指定的存档。", "details": {"archive_id": archive_id}, "recovery": "return_home"})
-    room, host_token, seat_token = room_service.create(f"room-{uuid4().hex[:16]}", request)
+            raise HTTPException(403, {"code": "archive_access_denied", "message": "没有这段存档的恢复凭证。", "details": {}, "recovery": "enter_recovery_token"})
+    room, host_token, seat_token, recovery_token = room_service.create(f"room-{uuid4().hex[:16]}", request)
     if archived_state:
         room["session_id"] = archived_state.session_id
         room["status"] = "in_progress"
@@ -115,7 +126,7 @@ def create_room(request: RoomCreateRequest):
         room["difficulty_id"] = archived_state.difficulty_id
         room["updated_at"] = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()
         room_service.repository.save(room)
-    return {"room": room_service.public(room, seat_token), "host_token": host_token, "seat_token": seat_token, "session_id": room.get("session_id")}
+    return {"room": room_service.public(room, seat_token), "host_token": host_token, "seat_token": seat_token, "recovery_token": recovery_token, "session_id": room.get("session_id")}
 
 
 @router.get("/api/rooms/{room_id}", response_model=RoomPublic)
@@ -127,18 +138,20 @@ def get_room(room_id: str, x_seat_token: str | None = Header(default=None)):
 @router.post("/api/rooms/{room_id}/join", response_model=RoomCredentials)
 def join_room(room_id: str, request: RoomJoinRequest):
     room = _room_or_404(room_id)
+    if request.role_id is not None and request.role_id not in content.roles:
+        raise HTTPException(400, {"code": "unknown_role", "message": "找不到这个角色。", "details": {}, "recovery": "choose_another_role"})
     try:
-        room, seat_token, _ = room_service.join(room, request.name, request.role_id)
+        room, seat_token, _, recovery_token = room_service.join(room, request.name, request.role_id)
     except ValueError as exc:
         raise _room_token_error(exc) from exc
-    return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
+    return {"room": room_service.public(room, seat_token), "seat_token": seat_token, "recovery_token": recovery_token}
 
 
 @router.post("/api/rooms/{room_id}/reconnect", response_model=RoomCredentials)
 def reconnect_room(room_id: str, request: RoomReconnectRequest):
     room = _room_or_404(room_id)
     try:
-        room, seat_token = room_service.reconnect(room, request.seat_id)
+        room, seat_token = room_service.reconnect(room, request.seat_id, request.recovery_token)
     except ValueError as exc:
         raise _room_token_error(exc) from exc
     return {"room": room_service.public(room, seat_token), "seat_token": seat_token}
@@ -217,6 +230,10 @@ def start_room(room_id: str, x_seat_token: str | None = Header(default=None)):
         raise _room_token_error(exc) from exc
     if host["seat_id"] != "seat-1":
         raise HTTPException(403, {"code": "host_required", "message": "只有房主可以点亮旅程。", "details": {}, "recovery": "wait_for_host"})
+    if room["status"] == "completed":
+        raise HTTPException(409, {"code": "room_completed", "message": "这段旅程已经完成，请从结果页开始新的旅程。", "details": {}, "recovery": "view_result"})
+    if room["status"] == "abandoned":
+        raise HTTPException(409, {"code": "room_abandoned", "message": "这间旅舍已经结束，不能重新点亮。", "details": {}, "recovery": "return_home"})
     if room["status"] != "lobby":
         return {"room": room_service.public(room, x_seat_token), "session_id": room.get("session_id")}
     if len(room["seats"]) != room["max_players"]:

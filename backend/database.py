@@ -86,6 +86,13 @@ class Database:
             if not column:
                 db.execute("ALTER TABLE rooms ADD COLUMN session_id TEXT")
             db.execute(self.sql("CREATE INDEX IF NOT EXISTS idx_rooms_session_id ON rooms(session_id)"))
+            if self.is_postgres:
+                revision_column = db.execute("SELECT 1 FROM information_schema.columns WHERE table_schema=current_schema() AND table_name=%s AND column_name=%s", ("rooms", "room_revision")).fetchone()
+            else:
+                revision_column = next((row for row in db.execute("PRAGMA table_info(rooms)").fetchall() if row[1] == "room_revision"), None)
+            if not revision_column:
+                db.execute("ALTER TABLE rooms ADD COLUMN room_revision INTEGER NOT NULL DEFAULT 0")
+            db.execute(self.sql("CREATE INDEX IF NOT EXISTS idx_rooms_revision ON rooms(room_id, room_revision)"))
             rows = db.execute(self.sql("SELECT room_id, payload FROM rooms WHERE session_id IS NULL")).fetchall()
             for room_id, payload in rows:
                 try:

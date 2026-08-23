@@ -1,37 +1,47 @@
 import json
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Header, HTTPException
 
 from backend.dependencies import repo, room_service
 from backend.models import ArchiveSummary
-from backend.repository import migrate_game_state
 
 router = APIRouter()
 
 
 @router.get("/api/archives", response_model=list[ArchiveSummary])
-def list_archives() -> list[ArchiveSummary]:
-    rooms = room_service.rooms_by_session()
+def list_archives(x_archive_capabilities: str | None = Header(default=None)) -> list[ArchiveSummary]:
+    if not x_archive_capabilities:
+        raise HTTPException(401, {"code": "archive_capability_required", "message": "请从本机历史记录进入，或提供存档恢复凭证。", "details": {}, "recovery": "choose_saved_archive"})
+    try:
+        capabilities = json.loads(x_archive_capabilities)
+    except json.JSONDecodeError as exc:
+        raise HTTPException(400, {"code": "invalid_archive_capability", "message": "存档恢复凭证格式不正确。", "details": {}, "recovery": "choose_saved_archive"}) from exc
+    if not isinstance(capabilities, dict):
+        raise HTTPException(400, {"code": "invalid_archive_capability", "message": "存档恢复凭证格式不正确。", "details": {}, "recovery": "choose_saved_archive"})
     archives: list[ArchiveSummary] = []
-    for session_id, raw_state in repo.list_raw():
-        try:
-            state = migrate_game_state(json.loads(raw_state))
-        except (TypeError, json.JSONDecodeError, ValueError):
+    for room_id, recovery_token in capabilities.items():
+        room = room_service.repository.get(str(room_id))
+        if not room or not isinstance(recovery_token, str):
             continue
-        from backend.models import GameState
-
-        state = GameState.model_validate(state)
-        room = rooms.get(session_id)
+        try:
+            room_service.verify_recovery(room, recovery_token)
+        except ValueError:
+            continue
+        session_id = room.get("session_id")
+        if not session_id:
+            continue
+        state = repo.get(session_id)
+        if not state:
+            continue
         journal = state.shared.journal or []
         timestamps = [entry.created_at for entry in journal if entry.created_at]
         updated_at = max(timestamps) if timestamps else None
         status = str(room.get("status")) if room else ("completed" if state.shared.outcome else "in_progress")
         archives.append(ArchiveSummary(
-            archive_id=str(room.get("room_id")) if room else session_id,
-            session_id=session_id,
-            room_id=str(room.get("room_id")) if room else None,
-            mode=str(room.get("play_mode")) if room else "solo",
-            status=status,
+            archive_id=str(room_id),
+            room_id=str(room_id),
+            mode=str(room.get("play_mode")),
+            status=str(room.get("status")),
             scenario_id=state.scenario_id or state.shared.scenario_id,
             difficulty_id=state.difficulty_id,
             turn=state.shared.turn,

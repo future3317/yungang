@@ -45,6 +45,7 @@ def test_multi_device_requires_roles_ready_and_blocks_legacy_session_access():
     joined = client.post(f"/api/rooms/{room_id}/join", json={"name": "同行者", "role_id": "grassland_rider"})
     assert joined.status_code == 200
     guest_token = joined.json()["seat_token"]
+    guest_recovery_token = joined.json()["recovery_token"]
     assert client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": host_token}).status_code == 409
     assert client.post(f"/api/rooms/{room_id}/role", headers={"X-Seat-Token": host_token}, json={"role_id": "pingcheng_artisan"}).status_code == 200
     assert client.post(f"/api/rooms/{room_id}/ready", headers={"X-Seat-Token": host_token}, json={"ready": True}).status_code == 200
@@ -56,7 +57,7 @@ def test_multi_device_requires_roles_ready_and_blocks_legacy_session_access():
     assert guest_state.status_code == 200
     assert guest_state.json()["viewer"]["can_act"] is False
     assert guest_state.json()["action_options"] == []
-    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-2"})
+    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-2", "recovery_token": guest_recovery_token})
     assert reconnected.status_code == 200
     replacement_token = reconnected.json()["seat_token"]
     assert client.get(f"/api/rooms/{room_id}/game", headers={"X-Seat-Token": replacement_token}).json()["viewer"]["seat_id"] == "seat-2"

@@ -539,6 +539,17 @@ class ScenarioRuleContract(BaseModel):
 
 
 
+class SoloRulesContract(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    controlled_roles: int = Field(default=2, ge=1, le=4)
+    planning_marks_per_round: int = Field(default=1, ge=0)
+    route_action_discount: int = Field(default=0, ge=0)
+    max_rounds_bonus: int = Field(default=0, ge=0)
+    hand_limit_bonus: int = Field(default=0, ge=0)
+    virtual_exchange: bool = False
+
+
 class ScenarioContract(ContentItemContract):
 
     content_class: str = "gameplay"
@@ -583,7 +594,7 @@ class ScenarioContract(ContentItemContract):
 
     restoration_resource: int | None = None
 
-    solo_rules: JsonObject | None = None
+    solo_rules: SoloRulesContract | None = None
 
     starting_clues: int | None = None
 
@@ -632,6 +643,8 @@ class ActionCardContract(ContentItemContract):
 class EventContract(ContentItemContract):
 
     target_rule: str
+
+    tone: Literal["hazard", "opportunity", "neutral"] = "neutral"
 
     preview_delta: JsonObject = Field(default_factory=dict)
 

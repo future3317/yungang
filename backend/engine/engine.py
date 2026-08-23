@@ -153,7 +153,7 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
                 if any(self.content.cards.get(card, {}).get("domain") in {self.content.cards[item].get("domain") for item in active.hand} for card in state.decks.get("archive", [])):
                     actions.append({"type": ActionType.USE_UPGRADE.value, "upgrade_id": "archive_retrieve", "label": "档案回收", "cost": 1})
             for other_id, other in state.players.items():
-                if other_id != active.id and (other.location == active.location or active.flags.get("remote_exchange_player_id") == other_id):
+                if other_id != active.id and (other.location == active.location or active.flags.get("remote_exchange_player_id") == other_id or state.shared.effective_rules.virtual_exchange):
                     exchange_cost = 0 if active.flags.get("free_exchange") or active.flags.get("exchange_discount") or active.flags.get("remote_exchange_player_id") == other_id else self._event_action_cost(state, "exchange", 1)
                     actions.extend({"type": ActionType.EXCHANGE.value, "target_id": other_id, "card_id": card, "label": f"交给 {other.name}：{self.content.cards[card]['name']}", "cost": exchange_cost} for card in active.hand)
         role = self.content.roles[active.role_id]
@@ -249,7 +249,7 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
             pid,
             self._journal_message(action, target, req),
             changes,
-            self._journal_target(state, target),
+            self._journal_target(state, target, action, req),
         )
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
         return result

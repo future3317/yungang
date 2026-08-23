@@ -1,7 +1,7 @@
 from enum import StrEnum
 from typing import Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, JsonValue
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, model_validator
 
 from .content_schemas import (
     ActionCardContract,
@@ -254,6 +254,8 @@ class EffectiveRules(DictModel):
     show_recommendation_reasons: bool = False
     show_event_target_details: bool = False
     route_action_discount: int = 0
+    hand_limit_bonus: int = 0
+    virtual_exchange: bool = False
 
 
 class EffectiveRulesPreview(EffectiveRules):
@@ -516,6 +518,7 @@ class RoomCredentials(BaseModel):
     room: RoomPublic
     host_token: Optional[str] = None
     seat_token: str
+    recovery_token: Optional[str] = None
     session_id: Optional[str] = None
 
 
@@ -536,7 +539,6 @@ class ArchivePlayer(BaseModel):
 
 class ArchiveSummary(BaseModel):
     archive_id: str
-    session_id: str
     room_id: Optional[str] = None
     mode: str
     status: str
@@ -606,6 +608,7 @@ class RoomCreateRequest(BaseModel):
     seed: Optional[int] = None
     max_players: int = Field(default=4, ge=1, le=4)
     archive_id: Optional[str] = None
+    archive_recovery_token: Optional[str] = Field(default=None, min_length=32, max_length=128)
 
 
 class RoomJoinRequest(BaseModel):
@@ -615,6 +618,7 @@ class RoomJoinRequest(BaseModel):
 
 class RoomReconnectRequest(BaseModel):
     seat_id: str
+    recovery_token: str = Field(min_length=32, max_length=128)
 
 
 class RoomRoleRequest(BaseModel):
@@ -867,7 +871,7 @@ class GameStateResponse(BaseModel):
     sites: Dict[str, SiteState]
     tasks: Dict[str, TaskState] = Field(default_factory=dict)
     shared: PublicSharedState
-    decks: Dict[str, List[str]] = Field(default_factory=dict)
+    deck_counts: Dict[str, int] = Field(default_factory=dict)
     market: List[str] = Field(default_factory=list)
     pending_choice: Optional[PendingChoice] = None
     action_options: List[ActionOption] = Field(default_factory=list)
@@ -881,3 +885,11 @@ class GameStateResponse(BaseModel):
     viewer: ViewerState = Field(default_factory=ViewerState)
     feedback_events: List[FeedbackEvent] = Field(default_factory=list)
     goal_status: GoalStatus = Field(default_factory=GoalStatus)
+
+    @model_validator(mode="before")
+    @classmethod
+    def project_deck_counts(cls, value):
+        data = dict(value) if isinstance(value, dict) else value.model_dump()
+        decks = data.pop("decks", {}) or {}
+        data["deck_counts"] = {str(key): len(items) for key, items in decks.items() if isinstance(items, list)}
+        return data

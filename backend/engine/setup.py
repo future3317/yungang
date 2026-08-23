@@ -42,6 +42,8 @@ class SetupMixin:
             rules["max_rounds"] += int(solo_rules.get("max_rounds_bonus", 0))
             rules["planning_marks_per_round"] = int(solo_rules.get("planning_marks_per_round", 1))
             rules["route_action_discount"] = int(solo_rules.get("route_action_discount", 0))
+            rules["hand_limit_bonus"] = int(solo_rules.get("hand_limit_bonus", 0))
+            rules["virtual_exchange"] = bool(solo_rules.get("virtual_exchange", False))
         return rules
 
     def _allowed_action_types(self, state: GameState) -> set[str] | None:

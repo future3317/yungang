@@ -40,7 +40,8 @@ def test_migration_copies_games_and_rooms_to_the_new_database_target(tmp_path):
 
     assert migrated == {"games": 1, "rooms": 1}
     assert GameRepository(target).get(state.session_id).session_id == state.session_id
-    assert RoomRepository(target).get(room["room_id"]) == room
+    migrated_room = RoomRepository(target).get(room["room_id"])
+    assert {key: migrated_room[key] for key in room} == room
 
 
 def test_game_room_timeline_and_event_history_survive_repository_reopen(tmp_path):
@@ -64,4 +65,4 @@ def test_game_room_timeline_and_event_history_survive_repository_reopen(tmp_path
     assert reopened_state is not None
     assert reopened_state.shared.journal[0]["message"] == "抵达云冈石窟"
     assert reopened_state.shared.event_history[0]["event_id"] == "event-1"
-    assert reopened_room == room
+    assert {key: reopened_room[key] for key in room} == room

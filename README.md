@@ -18,7 +18,7 @@
 - 文化牌、节点能力、事件和策略牌效果通过机制注册表执行；内容启动时校验未知效果和触发器。
 - 任务状态返回结构化进度，包括证据数、领域、来源、组合标签、贡献者和最低贡献条件。
 - 事件预告和结算使用同一组确定性目标，并返回实际影响对象、数值变化和原因。
-- 房间使用席位令牌；大厅和游戏页支持 revision SSE 推送，并保留轮询作为断线兜底。
+- 房间使用席位令牌；大厅和游戏页在 SSE 正常连接时只依赖 revision 推送，只有重连或连接结束时才启用低频轮询兜底。
 - 单人旅程在大厅中明确为一人轮流调度两位角色。
 - 角色选择页采用内容驱动的双栏展台：角色主图与徽章固定在同一视觉单元内，详情文字不会越界或被裁切。
 - 首页模式与场景选择在桌面端使用更宽的配置列，降低场景卡的纵向压缩。
@@ -47,7 +47,7 @@
 1. 首页选择人数、场景、难度和可复现 seed；单人控制两个角色。
 2. 事件预告锁定影响范围，回合结算沿用同一组确定性目标。
 3. 规划阶段放置地点、路线或项目标记。
-4. 行动阶段从左侧行动坞选择移动、探索、证据研判、修护、勘察、路线治理、交换、策略牌或角色技能。
+4. 行动阶段从行动坞选择移动、探索、证据研判、修护、勘察、路线治理、交换、策略牌或角色技能。
 5. 行动目标由后端返回。点击后显示目标、费用、预期变化和风险，再确认提交。
 6. 到达节点后才能探索、贡献证据或修护该地点；远处节点只可查看公开摘要。
 7. 结束回合后结算世界事件，展示影响对象和资源变化，再进入下一轮规划。
@@ -106,12 +106,10 @@ npm run test
 npm run build
 npx playwright test visual.spec.ts --reporter=line
 npx playwright test game.spec.ts --project=desktop --reporter=line
-npx playwright test game.spec.ts --project=mobile --reporter=line
 npx playwright test room.spec.ts --project=desktop --reporter=line
-npx playwright test room.spec.ts --project=mobile --reporter=line
 ```
 
-视觉回归覆盖首页、角色选择页和游戏 HUD；固定分辨率项目会在本地服务启动后生成并比对截图。若视觉调整是有意变更，使用 `--update-snapshots` 更新对应基线后必须再次执行一次不带该参数的回归。
+当前产品只维护 PC 端；视觉回归覆盖首页、角色选择页和 PC 游戏 HUD，固定分辨率项目会在本地服务启动后生成并比对截图。若视觉调整是有意变更，使用 `--update-snapshots` 更新对应基线后必须再次执行一次不带该参数的回归。
 
 OpenAPI 类型生成要求后端运行在 `127.0.0.1:8000`：
 
@@ -122,14 +120,13 @@ npm run api:generate
 ## 重要接口
 
 - `GET /api/meta`：内容与展示元数据。
-- `GET /api/archives`：读取可继续的旅程归档。
+- `GET /api/archives`：使用本机保存的存档恢复凭证读取可继续的旅程摘要。
 - `POST /api/rooms`：创建单人、本地协作或多设备旅程。
 - `GET /api/rooms/{room_id}/game`：读取带席位权限的旅程状态。
 - `POST /api/rooms/{room_id}/actions`：提交带 revision 和 request ID 的行动。
-- `POST /api/rooms`：创建大厅。
-- `GET /api/rooms/{room_id}`：读取大厅与席位状态。
+- `GET /api/rooms/{room_id}`：使用席位令牌读取大厅与席位状态。
 - `GET /api/rooms/{room_id}/game`：读取带 viewer 权限的游戏状态。
-- `POST /api/rooms/{room_id}/events/ticket`：使用席位令牌换取短时 SSE 订阅票据。
+- `GET /api/rooms/{room_id}/events-ticket`：使用席位令牌换取短时 SSE 订阅票据。
 - `GET /api/rooms/{room_id}/events?ticket=...`：使用短时票据订阅 revision SSE。
 - `POST /api/rooms/{room_id}/actions`：使用席位令牌提交多人行动。
 
@@ -178,9 +175,9 @@ Git 回退应回到功能提交，不要删除用户素材和本地存档数据�
 
 ## 机制与安全基线
 
-当前版本包含六个可选场景，场景牌池严格按 `data/scenarios.json` 的 `card_pool` 构建，场景规则使用结构化 `trigger` 与 `effect` 并由引擎执行。规划阶段支持地点、路线和项目三类目标；房间结果通过房间专用接口读取。
+当前版本包含七个可选场景，场景牌池严格按 `data/scenarios.json` 的 `card_pool` 构建，场景规则使用结构化 `trigger` 与 `effect` 并由引擎执行。规划阶段支持地点、路线和项目三类目标；房间结果通过房间专用接口读取。
 
-房间 SSE 使用短时一次性订阅票据，长期席位令牌只通过 `X-Seat-Token` 请求头传输，并仅保存在当前浏览器会话。房间码是访问标识而非强私密凭证，不应当公开分享。
+房间 SSE 使用短时一次性订阅票据，长期席位令牌只通过 `X-Seat-Token` 请求头传输，并仅保存在当前浏览器会话。当前 Render 部署按单实例、单 worker 运行；扩容前必须将 ticket/listener 迁移到共享 pub/sub。房间码是访问标识而非强私密凭证，不应当公开分享。
 
 生产部署必须设置 `DATABASE_URL` 指向 Neon PostgreSQL。Render 不保存生产 SQLite；本地开发和隔离测试可以使用 SQLite fallback，但生产环境缺少 `DATABASE_URL` 时应用会直接拒绝启动。Neon 中保存游戏、房间、时间线和事件历史，重新部署、休眠或重启不会清空存档。
 

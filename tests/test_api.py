@@ -12,6 +12,7 @@ from backend.engine import GameEngine
 
 client = TestClient(app)
 _rooms: dict[str, str] = {}
+_recovery_tokens: dict[str, str] = {}
 
 
 _ROLES = ["pingcheng_artisan", "western_dancer", "grassland_rider", "central_scribe"]
@@ -25,6 +26,7 @@ def _start_solo_room(session: str, scenario_id: str = "sand_and_stone", difficul
     assert created.status_code == 200
     room_id = created.json()["room"]["room_id"]
     token = created.json()["seat_token"]
+    _recovery_tokens[room_id] = created.json()["recovery_token"]
     for seat_index, role_id in enumerate(_ROLES[:2], start=1):
         configured = client.post(
             f"/api/rooms/{room_id}/seats/seat-{seat_index}",
@@ -54,7 +56,7 @@ def action(session, state, player, kind, **extra):
 
 def _token_for_room(room_id: str) -> str:
     # Re-connect to seat-1 to obtain a fresh token for the in-progress room.
-    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-1"})
+    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-1", "recovery_token": _recovery_tokens[room_id]})
     assert reconnected.status_code == 200
     return reconnected.json()["seat_token"]
 
@@ -264,11 +266,11 @@ def test_card_has_archive_and_discard_paths():
     session = "test-card-dual-use"
     state = create(session)
     active_player = state["shared"]["active_player_id"]
-    assert state["decks"]["action"]
+    assert state["deck_counts"]["action"]
     card = state["market"][0]
     explored = action(session, state, active_player, "explore", target_id="pingcheng_ruins", card_id=card).json()
     played = action(session, explored, active_player, "play_card", card_id=card).json()
-    assert card in played["decks"]["discard"]
+    assert card in repo.get(played["session_id"]).decks["discard"]
 
 
 def test_revision_conflict_returns_public_state_without_persistence_fields():

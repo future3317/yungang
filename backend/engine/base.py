@@ -60,7 +60,17 @@ class BaseEngineMixin:
         }
         return labels.get(action, "完成一项行动")
 
-    def _journal_target(self, state: GameState, target: str | None) -> dict[str, Any] | None:
+    def _journal_target(self, state: GameState, target: str | None, action: str | None = None, req: dict[str, Any] | None = None) -> dict[str, Any] | None:
+        req = req or {}
+        if action in {"survey_route", "restore_route", "establish_connection"}:
+            target = req.get("route_id") or target
+        if action in {"play_card", "use_action_card"} and req.get("card_id"):
+            card_id = str(req["card_id"])
+            card = self.content.cards.get(card_id) or self.content.action_cards.get(card_id) or {}
+            return {"kind": "card", "id": card_id, "label": card.get("name", "策略牌")}
+        if action == "exchange" and req.get("target_id") in state.players:
+            player_id = str(req["target_id"])
+            return {"kind": "player", "id": player_id, "label": state.players[player_id].name}
         if not target:
             return None
         if target in state.routes:
@@ -86,7 +96,18 @@ class BaseEngineMixin:
             "choose_intervention": "处理方式已经写入遗产网络，现场与胜利目标已更新。",
             "use_action_card": "策略牌已结算，资源、路线与旅程记录已经更新。",
             "end_turn": "本角色行动结束，旅程正在交接给下一位同行者。",
-        }.get(action, "行动已记录，世界状态已经更新。")
+            "restore": "节点修护完成，地点状态已经更新。",
+            "survey_route": "路线勘察完成，路线信息已经写入旅程记录。",
+            "restore_route": "路线修护完成，通行风险已经降低。",
+            "establish_connection": "区域连接已经建立，团队路线目标向前推进。",
+            "exchange": "证据已交给指定同行者。",
+            "prepare": "已提前准备本轮事件，结算时会按准备效果处理。",
+            "use_skill": "角色技能已生效，具体变化已列在行动反馈中。",
+            "use_node_ability": "地点能力已生效，节点信息已经更新。",
+            "use_upgrade": "角色专长已生效，能力变化已经写入当前旅程。",
+            "plan": "团队意图已记录，后续行动可以获得协作收益。",
+            "end_planning": "团队规划已结束，现在进入角色行动。",
+        }.get(action, "这项行动已经完成，具体变化见下方反馈。")
 
     @staticmethod
     def _metric_snapshot(state: GameState, player_id: str, site_id: str | None = None, route_id: str | None = None) -> dict[str, int]:

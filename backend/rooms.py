@@ -37,14 +37,29 @@ class RoomRepository:
 
     def get(self, room_id: str) -> Optional[dict[str, Any]]:
         with self.database.connect() as db:
-            row = db.execute(self.database.sql("SELECT payload FROM rooms WHERE room_id=?"), (room_id,)).fetchone()
-        return json.loads(row[0]) if row else None
+            row = db.execute(self.database.sql("SELECT payload, room_revision FROM rooms WHERE room_id=?"), (room_id,)).fetchone()
+        if not row:
+            return None
+        room = json.loads(row[0])
+        room["room_revision"] = int(row[1] or 0)
+        return room
 
     def save(self, room: dict[str, Any], revision: int | None = None) -> None:
         payload = json.dumps(room, ensure_ascii=False, separators=(",", ":"))
         with self.database.connect() as db:
-            db.execute(self.database.sql("INSERT INTO rooms(room_id,session_id,payload) VALUES(?,?,?) ON CONFLICT(room_id) DO UPDATE SET session_id=excluded.session_id,payload=excluded.payload"), (room["room_id"], room.get("session_id"), payload))
+            db.execute(self.database.sql("INSERT INTO rooms(room_id,session_id,payload,room_revision) VALUES(?,?,?,?) ON CONFLICT(room_id) DO UPDATE SET session_id=excluded.session_id,payload=excluded.payload,room_revision=excluded.room_revision"), (room["room_id"], room.get("session_id"), payload, int(room.get("room_revision", 0))))
         self.notify(room["room_id"], revision=revision, room=room)
+
+    def save_if_revision(self, room: dict[str, Any], expected_revision: int) -> bool:
+        next_revision = expected_revision + 1
+        room["room_revision"] = next_revision
+        payload = json.dumps(room, ensure_ascii=False, separators=(",", ":"))
+        with self.database.connect(immediate=True) as db:
+            cursor = db.execute(self.database.sql("UPDATE rooms SET session_id=?, payload=?, room_revision=? WHERE room_id=? AND room_revision=?"), (room.get("session_id"), payload, next_revision, room["room_id"], expected_revision))
+            if cursor.rowcount != 1:
+                return False
+        self.notify(room["room_id"], revision=next_revision, room=room)
+        return True
 
     def subscribe(self, room_id: str) -> tuple[asyncio.AbstractEventLoop, asyncio.Queue[dict[str, Any]]]:
         listener = (asyncio.get_running_loop(), asyncio.Queue(maxsize=8))
@@ -82,15 +97,16 @@ class RoomService:
         self.repository = repository
         self._event_tickets: dict[str, tuple[str, float]] = {}
 
-    def create(self, room_id: str, request: Any) -> tuple[dict[str, Any], str, str]:
+    def create(self, room_id: str, request: Any) -> tuple[dict[str, Any], str, str, str]:
         host_token = _token()
         seat_token = _token()
+        recovery_token = _token()
         mode = request.play_mode if request.play_mode in {"solo", "local", "multi_device"} else "solo"
-        seats = [self._seat("seat-1", request.name, request.role_id, seat_token, True)]
+        seats = [self._seat("seat-1", request.name, request.role_id, seat_token, recovery_token, True)]
         if mode in {"solo", "local"}:
             for index in range(2, (2 if mode == "solo" else request.max_players) + 1):
                 name = "协作角色" if mode == "solo" else f"本地同行者 {index}"
-                seats.append(self._seat(f"seat-{index}", name, None, _token(), True))
+                seats.append(self._seat(f"seat-{index}", name, None, _token(), _token(), True))
         room = {
             "room_id": room_id,
             "status": "lobby",
@@ -101,12 +117,13 @@ class RoomService:
             "max_players": 2 if mode == "solo" else max(2, request.max_players) if mode == "local" else request.max_players,
             "host_token_hash": _digest(host_token),
             "session_id": None,
+            "room_revision": 0,
             "created_at": _now(),
             "updated_at": _now(),
             "seats": seats,
         }
         self.repository.save(room)
-        return room, host_token, seat_token
+        return room, host_token, seat_token, recovery_token
 
     def join(self, room: dict[str, Any], name: str, role_id: Optional[str]) -> tuple[dict[str, Any], str, dict[str, Any]]:
         if room["status"] != "lobby":
@@ -116,25 +133,35 @@ class RoomService:
         used_roles = {seat.get("role_id") for seat in room["seats"]}
         seat_number = len(room["seats"]) + 1
         seat_token = _token()
-        seat = self._seat(f"seat-{seat_number}", name, role_id, seat_token, False)
+        recovery_token = _token()
+        seat = self._seat(f"seat-{seat_number}", name, role_id, seat_token, recovery_token, False)
         seat["role_locked"] = bool(role_id and role_id not in used_roles)
         room["seats"].append(seat)
         room["updated_at"] = _now()
-        self.repository.save(room)
-        return room, seat_token, seat
+        self._save_room(room)
+        return room, seat_token, seat, recovery_token
 
-    def reconnect(self, room: dict[str, Any], seat_id: str) -> tuple[dict[str, Any], str]:
+    def reconnect(self, room: dict[str, Any], seat_id: str, recovery_token: str) -> tuple[dict[str, Any], str]:
         if room["status"] == "lobby":
             raise ValueError("room_not_started")
         seat = next((item for item in room["seats"] if item["seat_id"] == seat_id), None)
         if not seat:
             raise ValueError("seat_not_found")
+        stored = seat.get("recovery_token_hash")
+        if not stored or not secrets.compare_digest(stored, _digest(recovery_token)):
+            raise ValueError("invalid_recovery_token")
         seat_token = _token()
         seat["token_hash"] = _digest(seat_token)
         seat["connected"] = True
         room["updated_at"] = _now()
-        self.repository.save(room)
+        self._save_room(room)
         return room, seat_token
+
+    def verify_recovery(self, room: dict[str, Any], recovery_token: str, seat_id: str = "seat-1") -> dict[str, Any]:
+        seat = next((item for item in room["seats"] if item.get("seat_id") == seat_id), None)
+        if not seat or not seat.get("recovery_token_hash") or not secrets.compare_digest(seat["recovery_token_hash"], _digest(recovery_token)):
+            raise ValueError("invalid_recovery_token")
+        return seat
 
     def authenticate(self, room: dict[str, Any], token: Optional[str]) -> dict[str, Any]:
         if not token:
@@ -164,7 +191,7 @@ class RoomService:
         seat = self.authenticate(room, token)
         seat["ready"] = ready
         room["updated_at"] = _now()
-        self.repository.save(room)
+        self._save_room(room)
         return room
 
     def update_local_seat(self, room: dict[str, Any], token: str, seat_id: str, name: Optional[str], role_id: Optional[str], ready: Optional[bool]) -> dict[str, Any]:
@@ -188,7 +215,7 @@ class RoomService:
                 raise ValueError("role_required")
             seat["ready"] = ready
         room["updated_at"] = _now()
-        self.repository.save(room)
+        self._save_room(room)
         return room
 
     def set_role(self, room: dict[str, Any], token: str, role_id: str) -> dict[str, Any]:
@@ -196,8 +223,9 @@ class RoomService:
         if any(other is not seat and other.get("role_id") == role_id for other in room["seats"]):
             raise ValueError("role_already_taken")
         seat["role_id"] = role_id
+        seat["ready"] = False
         room["updated_at"] = _now()
-        self.repository.save(room)
+        self._save_room(room)
         return room
 
     def leave(self, room: dict[str, Any], token: str) -> dict[str, Any]:
@@ -209,7 +237,7 @@ class RoomService:
         else:
             room["seats"] = [item for item in room["seats"] if item["seat_id"] != seat["seat_id"]]
         room["updated_at"] = _now()
-        self.repository.save(room)
+        self._save_room(room)
         return room
 
     def public(self, room: dict[str, Any], token: Optional[str] = None) -> dict[str, Any]:
@@ -248,6 +276,11 @@ class RoomService:
                 continue
         return result
 
+    def _save_room(self, room: dict[str, Any]) -> None:
+        expected_revision = int(room.get("room_revision", 0))
+        if not self.repository.save_if_revision(room, expected_revision):
+            raise ValueError("room_revision_conflict")
+
     @staticmethod
-    def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, connected: bool) -> dict[str, Any]:
-        return {"seat_id": seat_id, "player_id": f"player-{seat_id}", "name": name.strip()[:24] or "同行者", "role_id": role_id, "ready": False, "connected": connected, "role_locked": False, "token_hash": _digest(token)}
+    def _seat(seat_id: str, name: str, role_id: Optional[str], token: str, recovery_token: str, connected: bool) -> dict[str, Any]:
+        return {"seat_id": seat_id, "player_id": f"player-{seat_id}", "name": name.strip()[:24] or "同行者", "role_id": role_id, "ready": False, "connected": connected, "role_locked": False, "token_hash": _digest(token), "recovery_token_hash": _digest(recovery_token)}

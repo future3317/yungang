@@ -5,6 +5,7 @@ from backend.dependencies import engine, repo
 
 client = TestClient(app)
 _rooms: dict[str, str] = {}
+_recovery_tokens: dict[str, str] = {}
 
 
 def _start_solo_room(session: str, difficulty_id: str = "normal", **options):
@@ -13,6 +14,7 @@ def _start_solo_room(session: str, difficulty_id: str = "normal", **options):
     assert created.status_code == 200
     room_id = created.json()["room"]["room_id"]
     token = created.json()["seat_token"]
+    _recovery_tokens[room_id] = created.json()["recovery_token"]
     roles = ["pingcheng_artisan", "western_dancer"]
     for seat_index, role_id in enumerate(roles, start=1):
         configured = client.post(
@@ -28,7 +30,7 @@ def _start_solo_room(session: str, difficulty_id: str = "normal", **options):
 
 
 def _token_for_room(room_id: str) -> str:
-    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-1"})
+    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-1", "recovery_token": _recovery_tokens[room_id]})
     assert reconnected.status_code == 200
     return reconnected.json()["seat_token"]
 
@@ -53,7 +55,8 @@ def test_full_hand_requires_discard_before_exploration():
     stored = repo.get(state["session_id"])
     active_player = stored.shared.active_player_id
     player = stored.players[active_player]
-    player.hand = stored.market[:3]
+    hand_limit = 3 + stored.shared.effective_rules.hand_limit_bonus
+    player.hand = (stored.market + stored.decks["culture"])[:hand_limit]
     player.ap = 3
     engine.refresh(stored)
     repo.save(stored)
