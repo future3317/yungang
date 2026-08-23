@@ -1,0 +1,371 @@
+:global(.game-viewport) {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+:global(.game-shell) {
+  display: grid;
+  grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
+  grid-template-rows: var(--hud-header-height) minmax(0, 1fr) clamp(120px, 17vh, 176px);
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+:global(.game-shell > .hud-slot-top) {
+  position: relative;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  z-index: 20;
+}
+
+:global(.game-shell > .hud-slot-top > .game-header) {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--hud-rail-gap);
+  height: var(--hud-header-height);
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 8px 16px;
+}
+
+:global(.game-shell > .hud-slot-top .header-center) {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+:global(.game-shell > .hud-slot-top .event-history-bar) {
+  min-width: 0;
+  padding: 6px 10px;
+  color: #f0e4c8;
+  background: rgba(24, 38, 29, 0.72);
+  border: 1px solid rgba(220, 190, 112, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: var(--type-label);
+}
+
+:global(.game-shell > .hud-slot-top .event-history-bar b) {
+  display: block;
+  color: #f4e3b4;
+  font-size: var(--type-label);
+}
+
+:global(.game-shell > .hud-slot-top .goal-summary) {
+  width: fit-content;
+  justify-self: center;
+}
+
+:global(.game-shell > .hud-layout) {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
+  grid-template-rows: minmax(0, 1fr);
+  gap: var(--hud-rail-gap);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px 8px 0;
+  overflow: hidden;
+}
+
+:global(.hud-layout > .hud-slot-left),
+:global(.hud-layout > .hud-slot-right) {
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
+  scrollbar-width: thin;
+}
+
+:global(.hud-layout > .hud-slot-world) {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+:global(.hud-layout > .stage-column) {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  align-self: stretch;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 0 0 8px;
+}
+
+:global(.hud-layout > .stage-column > .round-summary) {
+  min-width: 0;
+  margin: 0;
+}
+
+:global(.hud-layout > .stage-column > .network-stage),
+:global(.hud-layout > .stage-column > .network-stage .network-frame) {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+:global(.hud-layout > .stage-column > .network-stage .network-frame > svg) {
+  width: 100%;
+  height: 100%;
+}
+
+/* The rail owns scrolling. The inspector fills the rail so long mission
+   content remains reachable without moving the map or bottom dock. */
+:global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector) {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  contain: layout;
+}
+
+:global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector .inspector-content) {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+:global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
+:global(.hud-layout > .hud-slot-right::-webkit-scrollbar) {
+  width: 10px;
+}
+
+:global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
+:global(.hud-layout > .hud-slot-right::-webkit-scrollbar-thumb) {
+  background: rgba(220, 188, 105, 0.68);
+  border: 2px solid rgba(7, 15, 10, 0.3);
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+:global(.game-shell > .hud-slot-bottom) {
+  position: relative;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+  margin: 0 8px 8px;
+  z-index: 15;
+  pointer-events: auto;
+}
+
+:global(.game-shell > .hud-overlay-layer) {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+}
+
+:global(.hud-overlay-layer > *) {
+  pointer-events: auto;
+}
+
+:global(.hud-overlay-layer .toast) {
+  pointer-events: none;
+}
+
+:global(.hud-overlay-layer .dialog-backdrop) {
+  z-index: 90;
+}
+
+@media (min-width: 1101px) {
+  :global(.game-shell) {
+    --hud-left-width: clamp(300px, 18vw, 360px);
+    --hud-right-width: clamp(400px, 23vw, 480px);
+  }
+
+  :global(.hud-layout > .hud-slot-left),
+  :global(.hud-layout > .hud-slot-right) {
+    height: 100%;
+  }
+}
+
+/* Large-text mode keeps the desktop contract, but gives the denser HUD
+   enough room to wrap instead of colliding with neighboring slots. */
+:global(html[data-large-text='true'] .game-shell) {
+  --hud-left-width: clamp(330px, 22vw, 400px);
+  --hud-right-width: clamp(420px, 30vw, 520px);
+  grid-template-rows: 180px minmax(0, 1fr) clamp(300px, 36vh, 360px);
+}
+
+:global(html[data-large-text='true'] .game-shell > .hud-slot-top > .game-header) {
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.25fr) minmax(240px, 0.9fr);
+  height: 180px;
+  align-items: start;
+  padding: 16px;
+}
+
+:global(html[data-large-text='true'] .header-actions) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 4px;
+}
+
+:global(html[data-large-text='true'] .header-actions .game-reference) {
+  grid-column: 1 / -1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:global(html[data-large-text='true'] .header-actions .goal-drawer-toggle) {
+  min-width: 0;
+  justify-content: center;
+  padding: 0 6px;
+}
+
+:global(html[data-large-text='true'] .brand-scenario) {
+  max-width: 280px;
+  white-space: normal;
+}
+
+:global(html[data-large-text='true'] .goal-line) {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+:global(html[data-large-text='true'] .goal-context) {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+:global(html[data-large-text='true'] .roster-row) {
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+}
+
+:global(html[data-large-text='true'] .roster-row > strong) {
+  grid-column: 2;
+  justify-self: start;
+}
+
+:global(html[data-large-text='true'] .site-inspector .inspector-summary) {
+  max-height: 220px;
+}
+
+:global(html[data-large-text='true'] .site-inspector .inspector-tabs) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:global(html[data-large-text='true'] .site-inspector .inspector-tabs button) {
+  min-width: 0;
+  min-height: 72px;
+  line-height: 1.25;
+}
+
+:global(html[data-large-text='true'] .commandDeck) {
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.45fr) minmax(220px, 0.8fr);
+}
+
+:global(html[data-large-text='true'] .featuredActions) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:global(html[data-large-text='true'] .moreActions) {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+:global(html[data-large-text='true'] .actionCard) {
+  min-height: 92px;
+}
+
+:global(html[data-large-text='true'] .actionCardCopy b) {
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  :global(.game-viewport),
+  :global(.game-shell) {
+    min-height: 100dvh;
+  }
+
+  :global(.hud-layout) {
+    grid-template-columns: minmax(220px, 28vw) minmax(0, 1fr);
+    gap: 10px;
+    min-height: calc(100dvh - var(--hud-header-height));
+  }
+
+  :global(.hud-slot-left) {
+    grid-column: 1;
+  }
+
+  :global(.hud-slot-world) {
+    grid-column: 2;
+  }
+
+  :global(.hud-slot-right) {
+    grid-column: 1 / -1;
+    max-height: 42dvh;
+  }
+}
+
+@media (max-width: 760px) {
+  :global(.game-shell) {
+    display: block;
+    min-height: 100dvh;
+    padding: 8px;
+    overflow-x: hidden;
+  }
+
+  :global(.game-header) {
+    grid-template-columns: 1fr auto;
+    height: auto;
+    min-height: 54px;
+  }
+
+  :global(.hud-layout) {
+    display: block;
+    min-height: 0;
+    padding: 0;
+  }
+
+  :global(.hud-slot-left),
+  :global(.hud-slot-right) {
+    max-height: none;
+    overflow: visible;
+  }
+
+  :global(.hud-slot-world) {
+    min-height: 420px;
+  }
+
+  :global(.stage-column) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    grid-template-rows: auto minmax(480px, 62vh) auto;
+    overflow-x: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.goal-drawer) {
+    transition: none;
+  }
+}
+
+:global(.hud-overlay-layer:has(.dialog-backdrop) .tutorial-trigger) {
+  visibility: hidden;
+  pointer-events: none;
+}
+

@@ -1,11 +1,11 @@
 .landing {
   min-height: 100vh;
   box-sizing: border-box;
-  padding: var(--type-page);
+  padding: var(--space-6);
   display: grid;
   align-items: center;
   grid-template-columns: minmax(0, 1.05fr) minmax(440px, 0.88fr);
-  gap: var(--type-page);
+  gap: var(--space-6);
   background:
     radial-gradient(circle at 18% 20%, rgba(120, 145, 116, 0.16), transparent 34%),
     linear-gradient(115deg, #121715, #1b221d 54%, #252a20);
@@ -44,7 +44,7 @@
 }
 .start-panel {
   position: relative;
-  padding: var(--type-page);
+  padding: var(--space-6);
   color: var(--ink-dark);
   background: var(--surface-paper);
   border-radius: 2px 18px 18px 2px;
@@ -288,7 +288,7 @@
     width: min(1940px, calc(100vw - 56px));
     max-width: none;
     margin-inline: auto;
-    gap: var(--type-page);
+    gap: var(--space-6);
     padding-inline: max(28px, 4vw);
   }
   .landing-copy {

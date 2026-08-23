@@ -15,6 +15,13 @@
   font-size: var(--type-label);
 }
 .mode-strip button {
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
   color: inherit;
   background: transparent;
   border: 0;
@@ -22,8 +29,9 @@
   white-space: nowrap;
 }
 .focus-clear {
-  width: 36px;
-  height: 36px;
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
   display: grid;
   place-items: center;
   color: var(--ink-secondary);
@@ -281,7 +289,7 @@
   width: min(680px, 100%);
   display: grid;
   gap: 18px;
-  padding: var(--type-page);
+  padding: var(--space-6);
   text-align: center;
   background: linear-gradient(145deg, rgba(53, 70, 58, 0.97), rgba(24, 35, 28, 0.98));
   border: 1px solid rgba(215, 182, 103, 0.42);
@@ -458,10 +466,27 @@
   white-space: nowrap;
 }
 html[data-large-text='true'] {
-  font-size: var(--type-body);
+  --type-page: 2.25rem;
+  --type-entity: 1.7rem;
+  --type-section: 1.25rem;
+  --type-control: 1.08rem;
+  --type-reading: 1.08rem;
+  --type-body: 1rem;
+  --type-label: 0.9rem;
 }
 html[data-high-contrast='true'] {
-  filter: contrast(1.16);
+  --surface-environment: #09100c;
+  --surface-stage: #101b14;
+  --surface-raised: #1d2b21;
+  --surface-interactive: #304a38;
+  --surface-selected: #4d684f;
+  --ink-primary: #fffdf2;
+  --ink-secondary: #ecf0df;
+  --ink-muted: #c3d0bf;
+  --line-subtle: rgba(255, 248, 214, 0.52);
+  --connection: #ffe08a;
+  --risk: #ff9b78;
+  filter: none;
 }
 html[data-reduced-motion='true'] *,
 html[data-reduced-motion='true'] *::before,
@@ -822,8 +847,10 @@ html[data-reduced-motion='true'] *::after {
     gap: 4px;
     overflow-x: auto;
   }
-  .timeline-filter button {
-    min-height: 28px;
+.timeline-filter button {
+    box-sizing: border-box;
+    min-width: 44px;
+    min-height: 44px;
     padding: 0 7px;
     color: var(--ink-secondary);
     background: transparent;
@@ -1170,6 +1197,9 @@ html[data-reduced-motion='true'] *::after {
   margin-top: 0;
 }
 .network-tools button {
+  box-sizing: border-box;
+  min-width: 44px;
+  min-height: 44px;
   display: grid;
   place-items: center;
   padding: 0;

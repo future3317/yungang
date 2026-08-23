@@ -1,8 +1,8 @@
 .root {
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
-  contain: layout paint;
+  overflow: visible;
+  contain: layout;
 }
 
 /* SiteInspector component styles. HUD geometry remains in hud-contract.css. */
@@ -59,7 +59,7 @@ display: inline-flex;
 :global(.site-inspector .inspector-summary) {
 flex: 0 1 auto;
   min-height: 0;
-  max-height: 144px;
+  max-height: 118px;
   overflow-y: auto;
   padding: 2px 38px 2px 0;
   display: grid;
@@ -160,7 +160,7 @@ display: flex;
 }
 :global(.site-inspector .inspector-tabs button) {
 flex: 1 1 25%;
-  min-width: 0;
+  min-width: 44px;
   min-height: 44px;
   padding: 7px 4px;
   color: var(--ink-secondary);
@@ -417,22 +417,11 @@ width: 48px;
 }
 
 }
-:global(.site-inspector) {
-display: block;
-    min-height: 0;
-    max-height: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-gutter: stable;
-    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
-    scrollbar-width: thin;
-}
 :global(.site-inspector .inspector-summary) {
 min-width: 0;
     min-height: 0;
-    max-height: none;
-    overflow: visible;
+    max-height: 118px;
+    overflow-y: auto;
     scrollbar-color: rgba(213, 183, 105, 0.62) rgba(16, 27, 20, 0.38);
     scrollbar-width: thin;
 }
@@ -467,7 +456,8 @@ color: #f1d37f;
 :global(.site-inspector .inspector-content) {
 min-width: 0;
     min-height: 0;
-    overflow: visible;
+    flex: 1 1 auto;
+    overflow-y: auto;
     padding-bottom: 16px;
 }
 :global(.site-inspector .inspector-content > *) {
@@ -478,6 +468,12 @@ min-width: 0;
 :global(.site-inspector .intervention-choice button),
 :global(.site-inspector .event-action-section .primary-action),
 :global(.site-inspector .event-response-details summary) {
+box-sizing: border-box;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 appearance: none;
     color: #f0e5cc;
     background: rgba(178, 139, 70, 0.18);
@@ -591,323 +587,4 @@ color: inherit;
 color: var(--ink-muted);
   font-size: var(--type-label);
   line-height: 1.35;
-}
-
-/* SiteInspector component styles. HUD geometry remains in hud-contract.css. */
-:global(.game-shell) {
-width: 100%;
-  max-width: 100vw;
-  min-width: 0;
-  overflow-x: clip;
-}
-:global(.game-header) {
-min-width: 0;
-}
-@media (min-width: 1101px) {
-:global(.game-viewport) {
-height: 100dvh;
-    min-height: 0;
-    overflow: hidden;
-    isolation: isolate;
-}
-:global(.game-shell) {
-display: grid;
-    grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
-    grid-template-rows: var(--hud-header-height) minmax(0, 1fr) clamp(120px, 17vh, 176px);
-    height: 100%;
-    min-height: 0;
-    padding: 0;
-    overflow: hidden;
-}
-:global(.game-shell > .hud-slot-top) {
-position: relative;
-    grid-column: 1 / -1;
-    grid-row: 1;
-    min-width: 0;
-    min-height: 0;
-    z-index: 20;
-}
-:global(.game-shell > .hud-slot-top > .game-header) {
-display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr) minmax(0, 1fr);
-    align-items: center;
-    gap: var(--hud-rail-gap);
-    height: var(--hud-header-height);
-    min-height: 0;
-    box-sizing: border-box;
-    padding: 8px 16px;
-}
-:global(.game-shell > .hud-slot-top .header-center) {
-min-width: 0;
-    display: grid;
-    gap: 6px;
-}
-:global(.game-shell > .hud-slot-top .event-history-bar) {
-min-width: 0;
-    padding: 6px 10px;
-    color: #f0e4c8;
-    background: rgba(24, 38, 29, 0.72);
-    border: 1px solid rgba(220, 190, 112, 0.25);
-    border-radius: var(--radius-sm);
-    font-size: var(--type-label);
-}
-:global(.game-shell > .hud-slot-top .event-history-bar b) {
-display: block;
-    color: #f4e3b4;
-    font-size: var(--type-label);
-}
-:global(.game-shell > .hud-slot-top .goal-summary) {
-width: fit-content;
-    justify-self: center;
-}
-:global(.game-shell > .hud-layout) {
-grid-column: 1 / -1;
-    grid-row: 2;
-    display: grid;
-    grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
-    grid-template-rows: minmax(0, 1fr);
-    gap: var(--hud-rail-gap);
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
-    padding: 12px 4px 0;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-:global(.hud-layout > .hud-slot-left) {
-grid-column: 1;
-    min-width: 0;
-    min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-    overscroll-behavior: contain;
-}
-:global(.hud-layout > .hud-slot-world) {
-grid-column: 2;
-    min-width: 0;
-    min-height: 0;
-    overflow: hidden;
-}
-:global(.hud-layout > .hud-slot-right) {
-grid-column: 3;
-    min-width: 0;
-    min-height: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-    overscroll-behavior: contain;
-}
-:global(.hud-layout > .stage-column) {
-display: grid;
-    grid-template-rows: minmax(0, 1fr);
-    gap: 0;
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
-    align-self: stretch;
-    padding: 0 0 8px;
-}
-:global(.hud-layout > .stage-column > .round-summary) {
-min-width: 0;
-    margin: 0;
-}
-:global(.hud-layout > .stage-column > .network-stage) {
-position: relative;
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
-    overflow: hidden;
-}
-:global(.hud-layout > .stage-column > .network-stage .network-frame) {
-position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
-}
-:global(.hud-layout > .stage-column > .network-stage .network-frame > svg) {
-width: 100%;
-    height: 100%;
-}
-:global(.hud-layout > .hud-slot-right) {
-display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr);
-    align-content: stretch;
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
-}
-:global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
-:global(.hud-layout > .hud-slot-right::-webkit-scrollbar) {
-width: 10px;
-}
-:global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
-:global(.hud-layout > .hud-slot-right::-webkit-scrollbar-thumb) {
-background: rgba(220, 188, 105, 0.68);
-    border: 2px solid rgba(7, 15, 10, 0.3);
-    border-radius: 999px;
-    background-clip: padding-box;
-}
-:global(.game-shell > .hud-slot-bottom) {
-grid-column: 1 / -1;
-    grid-row: 3;
-    min-width: 0;
-    margin: 0 4px 6px;
-    z-index: 15;
-    position: relative;
-    pointer-events: auto;
-}
-:global(.game-shell > .hud-overlay-layer) {
-position: fixed;
-    inset: 0;
-    z-index: 300;
-    pointer-events: none;
-}
-
-}
-@media (min-width: 1101px) and (max-width: 1400px) {
-:global(.game-shell) {
---hud-rail-gap: 8px;
-}
-:global(.hud-layout) {
-gap: 8px;
-}
-:global(:root) {
---hud-left-width: 232px;
-    --hud-right-width: 300px;
-    --hud-rail-gap: 8px;
-}
-
-}
-@media (min-width: 761px) and (max-width: 1100px) {
-:global(.game-viewport) {
-min-height: 100dvh;
-    overflow-x: hidden;
-}
-:global(.game-shell) {
-min-height: 100dvh;
-}
-:global(.hud-layout) {
-display: grid;
-    grid-template-columns: minmax(220px, 28vw) minmax(0, 1fr);
-    gap: 10px;
-    min-height: calc(100dvh - var(--hud-header-height));
-}
-:global(.hud-slot-left) {
-grid-column: 1;
-    min-height: 0;
-    overflow-y: auto;
-}
-:global(.hud-slot-world) {
-grid-column: 2;
-    min-height: 0;
-}
-:global(.hud-slot-right) {
-grid-column: 1 / -1;
-    min-height: 0;
-    max-height: 42dvh;
-    overflow-y: auto;
-}
-
-}
-@media (max-width: 760px) {
-:global(.game-shell) {
-min-height: 100dvh;
-    padding: 8px;
-    overflow-x: hidden;
-}
-
-@media (min-width: 1101px) {
-  :global(.game-shell > .hud-slot-bottom) {
-    margin: 0 8px 8px;
-  }
-}
-:global(.game-header) {
-grid-template-columns: 1fr auto;
-    height: auto;
-    min-height: 54px;
-}
-:global(.stage-column) {
-width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    grid-template-rows: auto minmax(480px, 62vh) auto;
-    overflow-x: hidden;
-}
-:global(.hud-layout) {
-display: block;
-    min-height: 0;
-}
-:global(.hud-slot-left),
-:global(.hud-slot-right) {
-max-height: none;
-    overflow: visible;
-}
-:global(.hud-slot-world) {
-min-height: 420px;
-}
-:global(.hud-slot-world .network-frame) {
-position: relative;
-    overflow: hidden;
-}
-
-}
-@media (prefers-reduced-motion: reduce) {
-:global(.goal-drawer) {
-transition: none;
-}
-
-}
-:global(.hud-overlay-layer > *) {
-pointer-events: auto;
-}
-:global(.hud-overlay-layer .toast) {
-pointer-events: none;
-}
-:global(.hud-overlay-layer .dialog-backdrop) {
-z-index: 90;
-}
-@media (min-width: 1101px) {
-:global(.hud-slot-left),
-:global(.hud-slot-right) {
-min-height: 0;
-    max-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
-    scrollbar-width: thin;
-}
-
-}
-:global(.hud-overlay-layer:has(.dialog-backdrop) .tutorial-trigger) {
-visibility: hidden;
-  pointer-events: none;
-}
-
-/* Desktop HUD contract: the rails own their scroll, while the world keeps
-   its full stage height and never inherits a panel's overflow rules. */
-@media (min-width: 1101px) {
-  :global(.game-shell) {
-    --hud-left-width: clamp(300px, 18vw, 360px);
-    --hud-right-width: 332px;
-  }
-
-  :global(.hud-slot-left),
-  :global(.hud-slot-right) {
-    min-height: 0;
-    max-height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
-    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
-    scrollbar-width: thin;
-  }
-
-  :global(.site-inspector) {
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
-  }
 }

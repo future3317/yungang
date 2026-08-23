@@ -101,6 +101,8 @@
 .help-zone-trigger {
   padding: 0;
   width: 44px;
+  min-width: 44px;
+  flex: 0 0 44px;
   justify-content: center;
 }
 .goal-drawer-toggle:hover,

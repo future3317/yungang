@@ -207,6 +207,12 @@
 }
 
 .moreActions summary {
+  box-sizing: border-box;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
   list-style: none;
   color: var(--ink-secondary);
   font-size: var(--type-label);
@@ -519,4 +525,27 @@
   .commandDeck .handCards {
     grid-template-columns: 1fr;
   }
+}
+
+:global(html[data-large-text='true']) .commandDeck {
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.45fr) minmax(220px, 0.8fr);
+}
+
+:global(html[data-large-text='true']) .featuredActions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:global(html[data-large-text='true']) .moreActions {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+:global(html[data-large-text='true']) .actionCard {
+  min-height: 92px;
+}
+
+:global(html[data-large-text='true']) .actionCardCopy b {
+  overflow-wrap: anywhere;
+  white-space: normal;
+  line-height: 1.25;
 }

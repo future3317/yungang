@@ -36,7 +36,7 @@
   width: min(530px, 100%);
   display: grid;
   gap: 13px;
-  padding: var(--type-page);
+  padding: var(--space-6);
   color: #f3e7ce;
   background: linear-gradient(145deg, #34493a, #202e26);
   border: 1px solid rgba(220, 187, 101, 0.58);
