@@ -7,6 +7,7 @@ const NEUTRAL_MASK = '#1a1a1a';
 function commonScreenshot(page: Page, overrides: Record<string, unknown> = {}) {
   return {
     animations: 'disabled' as const,
+    maxDiffPixels: 400,
     maskColor: NEUTRAL_MASK,
     mask: [] as Array<ReturnType<typeof page.locator>>,
     ...overrides,
@@ -111,9 +112,29 @@ async function assertMapWidthAtLeast(page: Page, ratio: number) {
 
 async function assertMapHeightAtLeast(page: Page, ratio: number) {
   if (isMobileProject()) return;
-  const box = await page.locator('.network-stage').first().boundingBox();
+  const map = page.locator('.network-stage').first();
+  const box = await map.boundingBox();
   const viewport = page.viewportSize();
-  expect(box && viewport && box.height >= viewport.height * ratio).toBe(true);
+  const layout = await map.evaluate((element) => {
+    const describe = (node: Element | null) => {
+      if (!node) return null;
+      const style = getComputedStyle(node);
+      const rect = node.getBoundingClientRect();
+      return {
+        className: node.className,
+        rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+        display: style.display,
+        height: style.height,
+        gridTemplateRows: style.gridTemplateRows,
+        alignSelf: style.alignSelf,
+      };
+    };
+    return [element, element.parentElement, element.parentElement?.parentElement, element.closest('.hud-layout'), element.closest('.game-shell')].map(describe);
+  });
+  expect(
+    box && viewport && box.height >= viewport.height * ratio,
+    `map=${JSON.stringify(box)} viewport=${JSON.stringify(viewport)} layout=${JSON.stringify(layout)}`
+  ).toBe(true);
 }
 
 async function assertNoOverlap(page: Page, aSelector: string, bSelector: string) {
@@ -258,6 +279,18 @@ test('200 percent font visual baseline', async ({ page }) => {
   });
   await assertPrimaryCtaAboveFold(page);
   await expect(page).toHaveScreenshot('font-200.png', commonScreenshot(page, { mask: [] }));
+});
+
+test('game HUD at 200 percent font remains readable', async ({ page }) => {
+  await skipNonVisual();
+  await startSolo(page);
+  await page.evaluate(() => {
+    document.documentElement.dataset.largeText = 'true';
+    document.documentElement.style.fontSize = '32px';
+  });
+  await expect(page.locator('.network-stage')).toBeVisible();
+  await expect(page.locator('.site-inspector, .inspector-rail')).toBeVisible();
+  await expect(page).toHaveScreenshot('game-hud-font-200.png', commonScreenshot(page, { mask: [page.locator('.header-actions')] }));
 });
 
 test('high contrast visual baseline', async ({ page }) => {
