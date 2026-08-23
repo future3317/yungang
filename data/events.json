@@ -37,7 +37,7 @@
         "amount": 1
       },
       "forecast_text": "本轮是推进多来源任务的有利窗口。",
-        "mitigation_hint": "无需额外缓解；可以利用本轮交换证据或推进研判。",
+      "mitigation_hint": "无需额外缓解；可以利用本轮交换证据或推进研判。",
       "tags": [
         "opportunity",
         "exchange",
@@ -180,7 +180,7 @@
         "amount": 1
       },
       "forecast_text": "本轮不直接损伤节点，但会压缩后续容错。",
-      "mitigation_hint": "准备应对或使用降低压力的文化证据。",
+      "mitigation_hint": "准备应对或使用降低压力的证据卡。",
       "tags": [
         "surface",
         "weathering",
@@ -341,7 +341,7 @@
         "amount": 1
       },
       "forecast_text": "来源多样性和档案任务的推进会更加重要。",
-        "mitigation_hint": "完成档案编目、投入不同来源的证据，或使用研究类策略牌。",
+      "mitigation_hint": "完成档案编目、投入不同来源的证据，或使用研究类策略牌。",
       "tags": [
         "archive",
         "information",

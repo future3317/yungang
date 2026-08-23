@@ -99,7 +99,7 @@
       ],
       "scenario_rule": {
         "description": "每轮首次完成节点修护后，团队可将一个计划标记移动到相邻节点。",
-      "trigger": "after_restore",
+        "trigger": "after_restore",
         "effect": {
           "type": "move_planning_mark_adjacent",
           "amount": 1
@@ -213,7 +213,7 @@
         "chain_08"
       ],
       "scenario_rule": {
-        "description": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究线索。",
+        "description": "每轮第一次由两名不同玩家参与的任务贡献，额外获得1点研究点。",
         "trigger": "after_interpret_evidence",
         "effect": {
           "type": "gain_clue_if_distinct_players",
@@ -649,7 +649,7 @@
       "recommended_minutes": "20–30",
       "core_project_id": "project_09",
       "scenario_rule": {
-        "description": "研究线索更容易获得，但每轮事件会考验团队的来源多样性。",
+        "description": "研究点更容易获得，但每轮事件会考验团队的来源多样性。",
         "trigger": "after_explore",
         "effect": {
           "type": "gain_clue",
@@ -691,6 +691,81 @@
         "culture_32": 1,
         "culture_33": 1
       }
+    },
+    {
+      "id": "tutorial",
+      "name": "新手导览",
+      "description": "四节点、两领域、四回合的简化导览，第一回合只开放移动、寻访证据、研判证据、修护与结束行动。",
+      "max_rounds": 4,
+      "restoration_resource": 4,
+      "influence_goal": 2,
+      "closed_site_limit": 1,
+      "objective_ids": [
+        "objective_tutorial"
+      ],
+      "enabled_site_ids": [
+        "tutorial_cave",
+        "tutorial_temple",
+        "tutorial_workshop",
+        "tutorial_route"
+      ],
+      "enabled_project_ids": [],
+      "card_pool": {
+        "archive": 4,
+        "craft": 4
+      },
+      "event_deck": [],
+      "action_card_pool": {},
+      "blocked_route_count": 0,
+      "initial_damage": {
+        "tutorial_temple": 1
+      },
+      "recommended_players": [
+        1,
+        2
+      ],
+      "recommended_minutes": "10–15",
+      "core_project_id": null,
+      "event_chain_ids": [],
+      "scenario_rule": {
+        "description": "导览中每完成一次寻访证据，团队获得1点研究点。",
+        "trigger": "after_explore",
+        "effect": {
+          "type": "gain_clue",
+          "amount": 1
+        }
+      },
+      "starting_weathering": 0,
+      "starting_clues": 1,
+      "solo_rules": {
+        "controlled_roles": 2,
+        "planning_marks_per_round": 0
+      },
+      "victory_brief": "完成导览目标并掌握移动、取得证据卡与修护。",
+      "failure_brief": "回合耗尽仍未完成导览目标。",
+      "tutorial": true,
+      "tutorial_unlock_schedule": [
+        {
+          "from_round": 2,
+          "unlock": [
+            "events",
+            "routes",
+            "projects",
+            "action_cards"
+          ]
+        }
+      ],
+      "first_turn_allowed_actions": [
+        "move",
+        "explore",
+        "interpret_evidence",
+        "restore",
+        "end_turn"
+      ],
+      "selectable_role_ids": [
+        "pingcheng_artisan",
+        "central_scribe"
+      ]
     }
   ]
 }

@@ -5,7 +5,7 @@
       "site_id": "pingcheng_ruins",
       "name": "平城线索编年",
       "project_type": "investigation",
-      "summary": "将地点探索、造像证据和修护记录串联为一份可复查的线索序列。",
+      "summary": "将地点寻访证据、造像证据和修护记录串联为一份可复查的线索序列。",
       "stages": [
         {
           "id": "discover",
@@ -15,7 +15,7 @@
           "requirements": {
             "clues": 1
           },
-          "stage_text": "在平城遗址探索并取得一份可归档的文化证据。"
+          "stage_text": "在平城遗址寻访证据并取得一份可归档的证据卡。"
         },
         {
           "id": "compare",
@@ -50,7 +50,7 @@
           "origin_diversity"
         ]
       },
-      "strategy_note": "适合作为开局项目，先探索再汇集证据，最后用修护收束。",
+      "strategy_note": "适合作为开局项目，先寻访证据再汇集证据，最后用修护收束。",
       "content_class": "gameplay"
     },
     {
@@ -70,7 +70,7 @@
               "architecture"
             ]
           },
-          "stage_text": "探索建筑或材料证据。"
+          "stage_text": "寻访一份建筑或材料证据。"
         },
         {
           "id": "compare",
@@ -125,7 +125,7 @@
               "architecture"
             ]
           },
-          "stage_text": "探索一份建筑证据。"
+          "stage_text": "寻访一份建筑证据。"
         },
         {
           "id": "compare",
@@ -178,7 +178,7 @@
           "requirements": {
             "clues": 2
           },
-          "stage_text": "通过两次探索积累路线判断依据。"
+          "stage_text": "通过两次寻访证据积累路线判断依据。"
         },
         {
           "id": "compare",
@@ -233,7 +233,7 @@
               "trade"
             ]
           },
-          "stage_text": "探索一份互市或路线证据。"
+          "stage_text": "寻访一份互市或路线证据。"
         },
         {
           "id": "compare",
@@ -269,7 +269,7 @@
           "projects"
         ]
       },
-      "strategy_note": "需要手牌交换和多人分工，是文明汇流情景的关键项目。",
+      "strategy_note": "需要证据卡交换和多人分工，是文明汇流情景的关键项目。",
       "content_class": "gameplay"
     },
     {
@@ -287,7 +287,7 @@
           "requirements": {
             "clues": 2
           },
-          "stage_text": "在核心区域完成两次探索。"
+          "stage_text": "在核心区域完成两次寻访证据。"
         },
         {
           "id": "compare",
@@ -345,7 +345,7 @@
           "requirements": {
             "clues": 1
           },
-          "stage_text": "取得一张新的文化证据，建立目录入口。"
+          "stage_text": "取得一张新的证据卡，建立目录入口。"
         },
         {
           "id": "compare",
@@ -398,7 +398,7 @@
           "requirements": {
             "clues": 2
           },
-          "stage_text": "通过探索获取两份路线或环境证据。"
+          "stage_text": "通过寻访证据获取两份路线或环境证据。"
         },
         {
           "id": "compare",

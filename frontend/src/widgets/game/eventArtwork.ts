@@ -33,5 +33,10 @@ const fallbackByType: Record<string, string> = {
 };
 
 export function resolveEventSceneAsset(event?: { id?: string; scene_asset?: string; type?: string }) {
-  return event?.scene_asset || (event?.id ? fallbackByEventId[event.id] : undefined) || (event?.type ? fallbackByType[event.type] : undefined) || 'generated/scene_yungang_night.webp';
+  return (
+    event?.scene_asset ||
+    (event?.id ? fallbackByEventId[event.id] : undefined) ||
+    (event?.type ? fallbackByType[event.type] : undefined) ||
+    'generated/scene_yungang_night.webp'
+  );
 }

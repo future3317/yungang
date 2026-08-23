@@ -5,11 +5,141 @@
     container-type: inline-size;
   }
 
+  .primaryCta {
+    border: 0;
+    min-height: 44px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--action-primary);
+    color: #fff7ed;
+    padding: 0 18px;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(117, 41, 27, 0.26);
+    transition:
+      transform var(--motion-fast) var(--ease-out),
+      background var(--motion-fast);
+  }
+
+  .primaryCta:hover {
+    background: #a84b39;
+    transform: translateY(-1px);
+  }
+
+  /* Context-specific overrides that used to live in global stylesheets.
+     Keeping them here means the Button component owns all of its states. */
+  .primaryCta[data-context='room-actions'],
+  .primaryCta[data-context='room-card'] {
+    justify-content: center;
+  }
+
+  .primaryCta[data-context='room-actions'] {
+    min-height: 46px;
+    flex: 1;
+    color: #fff8ea;
+    background: #b85239;
+    border: 0;
+    border-radius: 7px;
+  }
+
+  .primaryCta[data-context='room-card'] {
+    min-height: 44px;
+  }
+
+  .primaryCta[data-context='help'],
+  .primaryCta[data-context='handoff'] {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: #fff8e8;
+    background: #b8563d;
+    border: 0;
+    border-radius: 7px;
+  }
+
+  .primaryCta[data-context='archive'] {
+    min-height: 34px;
+    padding: 6px 10px;
+  }
+
+  .primaryCta[data-context='card'] {
+    justify-self: stretch;
+    min-height: 46px;
+    margin-top: 5px;
+  }
+
+  .primaryCta[data-context='result'] {
+    background: #8f3b2e;
+    border-color: transparent;
+  }
+
+  .primaryCta[data-context='start'] {
+    min-height: 56px;
+    justify-content: center;
+    color: #fff8ea;
+    background: linear-gradient(105deg, #b54c35, #cf6448);
+    border: 0;
+    border-radius: 9px;
+    box-shadow: 0 9px 18px rgba(148, 65, 42, 0.23);
+    font-size: 1rem;
+  }
+
+  .primaryCta[data-context='choice'],
+  .primaryCta[data-context='card-immediate'] {
+    justify-self: start;
+    margin-top: 2px;
+  }
+
+  .primaryCta[data-context='card-immediate'] {
+    min-height: 46px;
+  }
+
+  .primaryCta[data-context='dialog'] {
+    border: 0;
+    border-radius: 7px;
+  }
+
+  .primaryCta[data-context='tutorial'] {
+    min-height: 43px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 16px;
+    color: #fff7e7;
+    background: #a84731;
+    border: 0;
+    border-radius: 8px;
+    font-size: 0.84rem;
+  }
+
+  .primaryCta[data-context='tutorial']:hover {
+    background: #ce6549;
+  }
+
+  @media (max-width: 560px) {
+    .primaryCta[data-context='card'] {
+      position: sticky;
+      bottom: -18px;
+      padding: 13px;
+      background: #bd593d;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .primaryCta[data-context='tutorial'] {
+      justify-content: center;
+    }
+  }
+
   .progress {
     min-width: 0;
     height: 4px;
     overflow: hidden;
-    background: rgba(225, 211, 174, .18);
+    background: rgba(225, 211, 174, 0.18);
     border-radius: 999px;
   }
 
@@ -22,6 +152,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .progress > span { transition: none; }
+    .progress > span {
+      transition: none;
+    }
   }
 }

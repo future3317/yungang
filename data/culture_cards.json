@@ -49,7 +49,10 @@
         "archive_context",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录沿途节点、道路状态与人员往来，可作为路线判断的基础证据。",
+      "gameplay_effect": "作为互市证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与边塞或建筑证据共同贡献时，适合推进路线治理类任务。"
     },
     {
       "id": "craft",
@@ -99,7 +102,13 @@
         "material_diagnosis",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_cave_construction_craft"
+      ],
+      "historical_context": "记录工具、工序与材料判断，适合支撑营造和修护类项目。",
+      "gameplay_effect": "作为建筑证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "下一次贡献获得加成，并可作为营造类组合的核心证据。"
     },
     {
       "id": "alliance",
@@ -148,7 +157,10 @@
         "cross_origin",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "以交换约定和通行协作为主题，适合缓解跨区域移动与交换压力。",
+      "gameplay_effect": "作为互市证据投入任务。 本回合下一次移动不消耗路线行动点。",
+      "strategy_hint": "与边塞证据共同贡献时，形成路线治理组合。"
     },
     {
       "id": "archive",
@@ -200,7 +212,14 @@
         "image_reconstruction",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_grotto_iconography",
+        "source_yungang_unesco"
+      ],
+      "historical_context": "将造像、位置与保存状态整理为可比较记录，兼顾研究与修护。",
+      "gameplay_effect": "作为造像证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "与纹样或建筑证据配合时，可支撑图像复原和空间解释。"
     },
     {
       "id": "motif",
@@ -249,7 +268,13 @@
         "cross_origin",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_buddhist_art_patterns"
+      ],
+      "historical_context": "以莲华构图的重复、变化和位置关系作为装饰艺术比较线索。",
+      "gameplay_effect": "作为纹样证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "与造像证据共同贡献时，形成图像复原组合。"
     },
     {
       "id": "frontier",
@@ -299,7 +324,10 @@
         "archive_context",
         "frontier"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录关隘通行、值守与协同约定，可用于降低突发风险。",
+      "gameplay_effect": "作为边塞证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "与互市证据共同贡献时，适合完成边塞交流任务。"
     },
     {
       "id": "culture_07",
@@ -349,7 +377,13 @@
         "archive_context",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_cave_construction_craft"
+      ],
+      "historical_context": "凿痕的方向、密度与叠压关系可帮助判断营造过程和后期干预。",
+      "gameplay_effect": "作为建筑证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "与造像记录共同贡献时，可支持营造顺序判断。"
     },
     {
       "id": "culture_08",
@@ -398,7 +432,10 @@
         "craft_coordination",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "微小金色残留可作为装饰层次和工艺选择的观察线索。",
+      "gameplay_effect": "作为纹样证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "与材料或建筑证据组合时，增强装饰工艺解释。"
     },
     {
       "id": "culture_09",
@@ -447,7 +484,10 @@
         "image_reconstruction",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "衣纹、服饰和排列方式可用于比较不同图像传统的表达差异。",
+      "gameplay_effect": "作为纹样证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与造像证据共同贡献时，形成跨来源图像比较。"
     },
     {
       "id": "culture_10",
@@ -498,7 +538,10 @@
         "craft_coordination",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "边饰中的莲瓣节奏可帮助识别装饰单元的组合方式。",
+      "gameplay_effect": "作为纹样证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "适合与造像或营造证据共同推进装饰类项目。"
     },
     {
       "id": "culture_11",
@@ -548,7 +591,13 @@
         "craft_coordination",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_liao_jin_architecture"
+      ],
+      "historical_context": "梁架比例、构件关系与空间尺度可作为建筑结构判断的基础。",
+      "gameplay_effect": "作为建筑证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "与运输或材料流通证据组合时，支撑建筑修护。"
     },
     {
       "id": "culture_12",
@@ -597,7 +646,10 @@
         "cross_origin",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "驮运、补给与分段行进体现路线网络对物资和信息交换的支撑。",
+      "gameplay_effect": "作为互市证据投入任务。 本回合下一次移动不消耗路线行动点。",
+      "strategy_hint": "与边塞证据共同贡献时，适合恢复跨区域路线。"
     },
     {
       "id": "culture_13",
@@ -648,7 +700,10 @@
         "image_reconstruction",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "不同装饰单元在同一画面中的并置与重组，可作为文化互鉴的比较线索。",
+      "gameplay_effect": "作为纹样证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "满足来源多样性时，提高结局中的互鉴评价。"
     },
     {
       "id": "culture_14",
@@ -695,7 +750,10 @@
         "material_diagnosis",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "石材表面的颗粒、裂隙与风化差异可用于判断修护优先级。",
+      "gameplay_effect": "作为建筑证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "与风险或边塞证据共同贡献时，适合处理高危节点。"
     },
     {
       "id": "culture_15",
@@ -744,7 +802,10 @@
         "cross_origin",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "人物行列的方向、层次与位置关系可用于理解图像叙事的组织方式。",
+      "gameplay_effect": "作为造像证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "与纹样证据组合时，补足图像场景解释。"
     },
     {
       "id": "culture_16",
@@ -794,7 +855,10 @@
         "route_governance",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "入口附近的风痕、沉积与磨蚀可提示环境作用和维护需求。",
+      "gameplay_effect": "作为建筑证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "适合在风沙或通行压力事件中解锁缓解选项。"
     },
     {
       "id": "culture_17",
@@ -845,7 +909,10 @@
         "archive_context",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "通过工序、工具和修补痕迹的记录，呈现长期营造与维护的协作关系。",
+      "gameplay_effect": "作为建筑证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "与图像证据组合时，适合推进多阶段修护项目。"
     },
     {
       "id": "culture_18",
@@ -895,7 +962,10 @@
         "material_diagnosis",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "不同色层与覆盖关系可作为观察装饰变化和保存状态的线索。",
+      "gameplay_effect": "作为纹样证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "与建筑材料证据共同贡献时，形成保存状态组合。"
     },
     {
       "id": "culture_19",
@@ -943,7 +1013,10 @@
         "route_governance",
         "frontier"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "关隘与道路节点共同构成通行、守望和区域协作的空间网络。",
+      "gameplay_effect": "作为边塞证据投入任务。 本回合下一次移动不消耗路线行动点。",
+      "strategy_hint": "适合降低跨区域移动和路线项目的行动压力。"
     },
     {
       "id": "culture_20",
@@ -992,7 +1065,10 @@
         "route_governance",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "用于确认身份、货物或约定的记录，可作为交换秩序的佐证。",
+      "gameplay_effect": "作为互市证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "与关塞证据组合时，适合解锁事件协商选项。"
     },
     {
       "id": "culture_21",
@@ -1040,7 +1116,10 @@
         "image_reconstruction",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "龛内明暗、观看方向和造像位置共同影响图像被理解的方式。",
+      "gameplay_effect": "作为造像证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与纹样或空间证据共同贡献时，推进核心图像项目。"
     },
     {
       "id": "culture_22",
@@ -1090,7 +1169,14 @@
         "craft_coordination",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_cave_construction_craft",
+        "source_grotto_iconography"
+      ],
+      "historical_context": "修补层与原有材料的关系可用于讨论保护、记录和可逆性等基本原则。",
+      "gameplay_effect": "作为建筑证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "适合在高损伤节点兼顾修护和项目推进。"
     },
     {
       "id": "culture_23",
@@ -1139,7 +1225,10 @@
         "cross_origin",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "连续纹带中的转折和节奏可作为图像空间连接的装饰线索。",
+      "gameplay_effect": "作为纹样证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "与造像证据共同贡献时，提高跨来源组合价值。"
     },
     {
       "id": "culture_24",
@@ -1189,7 +1278,10 @@
         "route_governance",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "排水方向、汇水位置与表面病害之间的关系可用于判断环境风险。",
+      "gameplay_effect": "作为建筑证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "可在渗水、排水不畅等事件中提供缓解线索。"
     },
     {
       "id": "culture_25",
@@ -1240,7 +1332,10 @@
         "archive_context",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "文本转译与概念传播体现知识在不同语言和文化环境中的再表达。",
+      "gameplay_effect": "作为互市证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与图像证据共同贡献时，可扩展项目解释维度。"
     },
     {
       "id": "culture_26",
@@ -1287,7 +1382,10 @@
         "route_governance",
         "frontier"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "守望标记与值守秩序可用于表现路线安全和事件预警。",
+      "gameplay_effect": "作为边塞证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "适合在路线阻断或多点告警事件前使用。"
     },
     {
       "id": "culture_27",
@@ -1336,7 +1434,13 @@
         "craft_coordination",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_grotto_iconography"
+      ],
+      "historical_context": "形体比例、姿态和龛像关系是比较造像组织方式的重要线索。",
+      "gameplay_effect": "作为造像证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "与纹样证据共同贡献时，强化造像复原项目。"
     },
     {
       "id": "culture_28",
@@ -1386,7 +1490,10 @@
         "archive_context",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "器座、台基与周边空间关系可用于理解使用方式和空间组织。",
+      "gameplay_effect": "作为建筑证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "与造像证据共同贡献时，补足空间使用线索。"
     },
     {
       "id": "culture_29",
@@ -1435,7 +1542,10 @@
         "image_reconstruction",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "连续圆珠构成的边饰可用于比较装饰单元的传播和再组合。",
+      "gameplay_effect": "作为纹样证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "与互市证据共同贡献时，提高文化流动评价。"
     },
     {
       "id": "culture_30",
@@ -1484,7 +1594,13 @@
         "material_diagnosis",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_cave_construction_craft"
+      ],
+      "historical_context": "工具类型和使用痕迹可帮助理解石作工序与协作方式。",
+      "gameplay_effect": "作为建筑证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与造像证据共同贡献时，可推进工艺阶段。"
     },
     {
       "id": "culture_31",
@@ -1530,7 +1646,10 @@
         "route_governance",
         "trade"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "驿站、补给和路线节点体现长距离移动需要多点协作。",
+      "gameplay_effect": "作为互市证据投入任务。 本回合下一次移动不消耗路线行动点。",
+      "strategy_hint": "适合在路线治理情景中建立连续通行。"
     },
     {
       "id": "culture_32",
@@ -1579,7 +1698,14 @@
         "cross_origin",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_grotto_iconography",
+        "source_buddhist_art_patterns"
+      ],
+      "historical_context": "龛楣中的飞天形象与周边纹样可作为图像构成和文化交流的观察线索。",
+      "gameplay_effect": "作为造像证据投入任务。 立即恢复1点行动点。",
+      "strategy_hint": "与纹样证据共同贡献时，形成完整龛楣组合。"
     },
     {
       "id": "culture_33",
@@ -1628,7 +1754,13 @@
         "material_diagnosis",
         "pattern"
       ],
-      "content_class": "gameplay"
+      "content_class": "documented",
+      "source_ids": [
+        "source_buddhist_art_patterns"
+      ],
+      "historical_context": "残留花叶色彩可用于比较装饰层次与保存状态。",
+      "gameplay_effect": "作为纹样证据投入任务。 下一次贡献获得额外影响。",
+      "strategy_hint": "与材料证据组合时，适合推进保护记录项目。"
     },
     {
       "id": "culture_34",
@@ -1681,7 +1813,10 @@
         "cross_origin",
         "architecture"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "多类工序和人员协同完成大型营造，可作为合作分工的综合证据。",
+      "gameplay_effect": "作为建筑证据投入任务。 补充修护资源，并获得个人影响。",
+      "strategy_hint": "由不同玩家共同贡献时，适合完成大型项目。"
     },
     {
       "id": "culture_35",
@@ -1730,7 +1865,10 @@
         "image_reconstruction",
         "statue"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "空间回声与观看距离提示洞窟体验不仅来自图像，也来自整体空间。",
+      "gameplay_effect": "作为造像证据投入任务。 立即增加1点共同影响。",
+      "strategy_hint": "与建筑证据共同贡献时，扩展核心项目解释。"
     },
     {
       "id": "culture_36",
@@ -1780,7 +1918,10 @@
         "cross_origin",
         "frontier"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "夜间守望和灯火联络可作为路线安全与协作响应的象征性证据。",
+      "gameplay_effect": "作为边塞证据投入任务。 降低1点风化压力。",
+      "strategy_hint": "适合在事件结算前降低风险并连接边塞与互市任务。"
     },
     {
       "id": "evidence_37",
@@ -1832,7 +1973,10 @@
         "archive_context",
         "material_diagnosis"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录材料、工具与营造痕迹，帮助判断修护先后。",
+      "gameplay_effect": "投入材料与工序类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_38",
@@ -1881,7 +2025,10 @@
       "finale_tags": [
         "image_reconstruction"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "观察造像细节与衣纹变化，作为跨来源比较的入口。",
+      "gameplay_effect": "投入造像与衣纹类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_39",
@@ -1933,7 +2080,10 @@
         "route_governance",
         "cross_origin"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录关口、守望与季节性通行，追踪风险如何传递。",
+      "gameplay_effect": "投入边地与关塞类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_40",
@@ -1985,7 +2135,10 @@
         "archive_context",
         "image_reconstruction"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "整理莲华、卷草和联珠结构，比较不同地点的样式流动。",
+      "gameplay_effect": "投入纹样与边饰类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_41",
@@ -2035,7 +2188,10 @@
       "finale_tags": [
         "material_diagnosis"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录材料、工具与营造痕迹，帮助判断修护先后。",
+      "gameplay_effect": "投入材料与工序类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_42",
@@ -2083,7 +2239,10 @@
       "finale_tags": [
         "route_governance"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "保留商路、凭信和交换痕迹，把远距离地点连成关系。",
+      "gameplay_effect": "投入交流与往来类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_43",
@@ -2135,7 +2294,10 @@
         "cross_origin",
         "image_reconstruction"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "整理莲华、卷草和联珠结构，比较不同地点的样式流动。",
+      "gameplay_effect": "投入纹样与边饰类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_44",
@@ -2184,7 +2346,10 @@
       "finale_tags": [
         "material_diagnosis"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录材料、工具与营造痕迹，帮助判断修护先后。",
+      "gameplay_effect": "投入材料与工序类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_45",
@@ -2236,7 +2401,10 @@
         "route_governance",
         "archive_context"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "保留商路、凭信和交换痕迹，把远距离地点连成关系。",
+      "gameplay_effect": "投入交流与往来类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_46",
@@ -2284,7 +2452,10 @@
       "finale_tags": [
         "route_governance"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "记录关口、守望与季节性通行，追踪风险如何传递。",
+      "gameplay_effect": "投入边地与关塞类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_47",
@@ -2336,7 +2507,10 @@
         "archive_context",
         "cross_origin"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "保留商路、凭信和交换痕迹，把远距离地点连成关系。",
+      "gameplay_effect": "投入交流与往来类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     },
     {
       "id": "evidence_48",
@@ -2389,7 +2563,10 @@
         "route_governance",
         "cross_origin"
       ],
-      "content_class": "gameplay"
+      "content_class": "gameplay",
+      "historical_context": "保留商路、凭信和交换痕迹，把远距离地点连成关系。",
+      "gameplay_effect": "投入交流与往来类委托，推进当前地点的互证。 获得一项与当前领域相关的即时帮助。",
+      "strategy_hint": "单件材料只能提出线索；与另一来源互证后，才能形成可靠解释。"
     }
   ]
 }

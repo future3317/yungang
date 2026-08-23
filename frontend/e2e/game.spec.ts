@@ -4,10 +4,12 @@ import { expect, test, type Page } from '@playwright/test';
 async function startSolo(page: Page, seed?: string) {
   await page.goto('/');
   if (seed) {
+    await page.getByRole('button', { name: /自定义旅程/ }).click();
     await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
     await page.getByLabel('可复现种子').fill(seed);
+  } else {
+    await page.getByRole('button', { name: /开始新手导览/ }).click();
   }
-  await page.getByRole('button', { name: '进入准备厅' }).click();
   await page.getByLabel('席位 1 角色').selectOption('pingcheng_artisan');
   await page.getByLabel('席位 2 角色').selectOption('grassland_rider');
   await expect(page.getByRole('button', { name: '准备' }).nth(0)).toBeEnabled();

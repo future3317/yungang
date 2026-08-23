@@ -1,7 +1,7 @@
 # UX flow
 
 1. `/` explains the premise, team size, difficulty, expected duration and resume path.
-2. Create returns a server-generated game id and navigates to `/game/:sessionId`.
+2. Create returns a server-generated room id and navigates to `/room/:roomId`.
 3. Game shell loads meta and state independently, showing loading and reconnect states.
 4. Player focuses a node, reads task/event context, selects a market or hand card, then commits an action.
 5. The command dock groups legal actions and preserves the server as the only rule source.

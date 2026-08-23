@@ -54,7 +54,7 @@
       "visual_token": "region-temple",
       "description": "以华严寺、善化寺及材料协作节点为主线，表现结构判断、材料调度和修护记录之间的联系。",
       "gameplay_focus": "建筑诊断、修护资源、多人项目",
-      "entry_hint": "适合把探索转化为修护和项目推进。",
+      "entry_hint": "适合把寻访证据转化为修护和项目推进。",
       "risk_profile": "材料病害与资源消耗"
     },
     {
@@ -77,6 +77,25 @@
       "gameplay_focus": "路线治理、交换、事件预警",
       "entry_hint": "适合处理阻断路线、建立区域连接和完成多来源任务。",
       "risk_profile": "路线阻断和事件压力"
+    },
+    {
+      "id": "tutorial_region",
+      "name": "导览区域",
+      "site_ids": [
+        "tutorial_cave",
+        "tutorial_temple",
+        "tutorial_workshop",
+        "tutorial_route"
+      ],
+      "label_position": {
+        "x": 50,
+        "y": 55
+      },
+      "visual_token": "region-tutorial",
+      "description": "新手导览专用区域，包含四个简化节点，用于学习移动、寻访证据、研判证据与修护。",
+      "gameplay_focus": "基础行动学习",
+      "entry_hint": "按目标提示依次完成移动、寻访证据、研判证据和修护。",
+      "risk_profile": "无额外风险"
     }
   ]
 }

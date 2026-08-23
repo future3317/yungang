@@ -1,0 +1,451 @@
+.commandDeck {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 164px minmax(0, 1fr) minmax(244px, 0.62fr);
+  gap: 14px;
+  padding: 13px 14px;
+  border-top: 1px solid var(--line-subtle);
+  background: linear-gradient(90deg, rgba(13, 20, 16, 0.98), rgba(26, 34, 28, 0.94));
+}
+
+.dockSummary {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+}
+
+.apReadout {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.apReadout b {
+  color: var(--connection);
+  font: 700 2rem/0.9 var(--font-data);
+}
+
+.apReadout span {
+  color: var(--ink-muted);
+  font-size: var(--text-micro);
+  line-height: 1.25;
+}
+
+.dockHint {
+  color: var(--ink-secondary);
+  font-size: var(--text-caption);
+}
+
+.dockWaiting {
+  padding: 5px 7px;
+  color: #f0d89f;
+  background: rgba(185, 154, 88, 0.12);
+  border-left: 2px solid var(--connection);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.waitingTurn .actionCard,
+.waitingTurn .moreActions,
+.waitingTurn .handCard {
+  opacity: 0.62;
+}
+
+.dockSummary :global(.ghost-button) {
+  min-height: 31px;
+  justify-self: start;
+  padding: 0 9px;
+  font-size: var(--text-caption);
+}
+
+.featuredActions {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+}
+
+.actionCard {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 33px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 9px;
+  color: var(--ink-primary);
+  text-align: left;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-md);
+  background: rgba(49, 63, 52, 0.66);
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast),
+    background var(--motion-fast);
+}
+
+.actionCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(223, 204, 144, 0.7);
+  background: rgba(61, 77, 64, 0.92);
+}
+
+.actionCard.leadAction {
+  background: linear-gradient(130deg, rgba(159, 118, 55, 0.28), rgba(46, 61, 50, 0.9));
+  border-color: rgba(201, 173, 99, 0.46);
+}
+
+.actionCard.selected {
+  border-color: var(--connection);
+  box-shadow: inset 0 0 0 1px rgba(209, 173, 99, 0.22);
+}
+
+.actionCardIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--connection);
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.action-explore .actionCardIcon {
+  color: var(--discovery);
+}
+
+.action-restore .actionCardIcon {
+  color: var(--repair);
+}
+
+.actionCardCopy {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.actionCardCopy b {
+  font-size: 0.88rem;
+}
+
+.actionCardCopy small {
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-size: 0.65rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actionCost {
+  color: var(--connection);
+  font: 700 0.96rem var(--font-data);
+  text-align: center;
+}
+
+.actionCost small {
+  display: block;
+  color: var(--ink-muted);
+  font: 0.58rem var(--font-data);
+}
+
+.moreActions {
+  position: relative;
+  align-self: center;
+}
+
+.moreActions summary {
+  list-style: none;
+  color: var(--ink-secondary);
+  font-size: var(--text-caption);
+  cursor: pointer;
+}
+
+.moreActions summary::-webkit-details-marker {
+  display: none;
+}
+
+.moreActions summary span {
+  color: var(--connection);
+  font-family: var(--font-data);
+}
+
+.moreActions > div {
+  position: absolute;
+  z-index: var(--z-dock);
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: 210px;
+  display: grid;
+  gap: 4px;
+  padding: 7px;
+  background: #202a23;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lift);
+}
+
+.moreActions button {
+  min-height: 35px;
+  display: grid;
+  grid-template-columns: 19px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  padding: 0 7px;
+  color: var(--ink-primary);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
+.moreActions button:hover {
+  background: var(--surface-interactive);
+}
+
+.moreActions button small {
+  color: var(--connection);
+}
+
+.handTray {
+  padding-left: 13px;
+  border-left: 1px solid var(--line-subtle);
+}
+
+.handCards {
+  display: flex;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.handCard {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 2px 7px;
+  padding: 6px;
+  color: var(--ink-primary);
+  text-align: left;
+  background: #202a24;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.handCard.selected {
+  border-color: var(--connection);
+  background: #354238;
+}
+
+.handCard img {
+  grid-row: span 2;
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+}
+
+.handCard b {
+  font-size: var(--text-caption);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.handCard small {
+  font-size: 0.64rem;
+}
+
+.handEmpty {
+  align-self: center;
+  color: var(--ink-muted);
+  font-size: var(--text-caption);
+}
+
+.strategyHandNote {
+  margin: 5px 0 0;
+  color: var(--ink-muted);
+  font-size: 0.64rem;
+  line-height: 1.4;
+}
+
+/* Tooltip content stays anchored to its control; it does not need viewport
+   coordinates or a portal, so scrolling and responsive reflow cannot detach it. */
+.actionCard[data-detail],
+.moreActions button[data-detail],
+.strategyCard[data-detail] {
+  position: relative;
+}
+
+.actionCard[data-detail]::after,
+.moreActions button[data-detail]::after,
+.strategyCard[data-detail]::after {
+  position: absolute;
+  z-index: var(--z-dock, 30);
+  right: 0;
+  bottom: calc(100% + 9px);
+  left: 0;
+  display: block;
+  padding: 9px 11px;
+  color: #f3e6c9;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  background: linear-gradient(145deg, rgba(49, 68, 53, 0.98), rgba(17, 29, 21, 0.99));
+  border: 1px solid rgba(220, 190, 112, 0.7);
+  border-left: 3px solid #d4b667;
+  border-radius: 10px;
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.42),
+    inset 0 1px rgba(255, 246, 215, 0.08);
+  content: attr(data-detail);
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.actionCard[data-detail]:hover::after,
+.actionCard[data-detail]:focus-visible::after,
+.moreActions button[data-detail]:hover::after,
+.moreActions button[data-detail]:focus-visible::after,
+.strategyCard[data-detail]:hover::after,
+.strategyCard[data-detail]:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Layout variants */
+:global(.roster-column) > .commandDeck {
+  min-width: 0;
+  grid-template-columns: 1fr;
+}
+
+:global(.roster-column) > .commandDeck .featuredActions {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+:global(.roster-column) > .commandDeck .handTray,
+:global(.roster-column) > .commandDeck .handCards {
+  min-width: 0;
+}
+
+:global(.roster-column) > .commandDeck .handCards {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+:global(.roster-column) > .commandDeck .handCard {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+:global(.roster-column) > .commandDeck .moreActions {
+  width: 100%;
+  position: static;
+  overflow: hidden;
+}
+
+:global(.roster-column) > .commandDeck .moreActions summary {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 0 9px;
+  color: var(--ink-primary);
+  background: rgba(49, 63, 52, 0.52);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+}
+
+:global(.roster-column) > .commandDeck .moreActions[open] > div {
+  position: static;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  margin-top: 5px;
+  padding: 5px;
+  background: rgba(20, 29, 23, 0.7);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+}
+
+:global(.roster-column) > .commandDeck .moreActions button {
+  min-width: 0;
+  width: 100%;
+}
+
+.moreActions summary :global(svg) {
+  transition: transform var(--motion-fast) var(--ease-out);
+}
+
+.moreActions[open] summary :global(svg) {
+  transform: rotate(180deg);
+}
+
+/* Responsive layout */
+@media (max-width: 1100px) {
+  .commandDeck {
+    grid-template-columns: 160px 1fr;
+  }
+
+  .commandDeck .handTray {
+    grid-column: 1 / -1;
+    padding: 10px 0 0;
+    border: 0;
+    border-top: 1px solid var(--line-subtle);
+  }
+}
+
+@media (max-width: 760px) {
+  .commandDeck {
+    position: relative;
+    grid-template-columns: 1fr;
+    margin-top: 12px;
+  }
+
+  .featuredActions {
+    overflow-x: auto;
+    padding-bottom: 3px;
+  }
+
+  .actionCard {
+    min-width: 195px;
+  }
+
+  .commandDeck .handTray {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 430px) {
+  .handCards {
+    overflow-x: auto;
+  }
+
+  .handCard {
+    min-width: 150px;
+  }
+}
+
+/* Container query refinement for the dock itself */
+@container (min-width: 700px) {
+  .commandDeck .handCards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container (max-width: 360px) {
+  .commandDeck .handCards {
+    grid-template-columns: 1fr;
+  }
+}

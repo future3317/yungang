@@ -152,7 +152,7 @@
       "domain": "trade"
     },
     "learning_objective": "通过不同来源的通行、交换和守护证据建立协作秩序。",
-    "culture_explanation": "交换需要路线、凭信和安全条件共同支撑。任务要求三种来源，鼓励玩家跨节点交换手牌，而不是由一名玩家独立完成。",
+    "culture_explanation": "交换需要路线、凭信和安全条件共同支撑。任务要求三种来源，鼓励玩家跨节点交换证据卡，而不是由一名玩家独立完成。",
     "combo_requirement": {
       "required_combo_tags": [
         "route_governance",
@@ -808,6 +808,123 @@
     },
     "strategic_role": "现场回应任务",
     "ui_instruction": "在节点委托中提交 2 张证据，覆盖交流、边地并完成路线治理。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_tutorial_cave",
+    "site_id": "tutorial_cave",
+    "name": "导览：取得造像证据",
+    "required_domains": [
+      "statue"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "scroll_delta": 1,
+      "domain": "statue"
+    },
+    "learning_objective": "练习在节点执行寻访证据并取得证据卡。",
+    "culture_explanation": "导览任务不要求复杂组合，只需一张造像类证据卡即可完成。",
+    "combo_requirement": {
+      "required_combo_tags": [],
+      "preferred_origins": [
+        "central"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "入门证据任务",
+    "route_synergy": "完成后可前往相邻节点继续导览。",
+    "ui_instruction": "提交1张造像类证据卡。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_tutorial_temple",
+    "site_id": "tutorial_temple",
+    "name": "导览：修护受损节点",
+    "required_domains": [
+      "architecture"
+    ],
+    "required_origin_diversity": 1,
+    "required_card_count": 1,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "练习使用修护节点降低节点损伤。",
+    "culture_explanation": "导览任务展示节点损伤与修护的基本关系。",
+    "combo_requirement": {
+      "required_combo_tags": [],
+      "preferred_origins": [
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "入门修护任务",
+    "route_synergy": "完成后节点恢复稳定。",
+    "ui_instruction": "提交1张建筑类证据卡，然后进行修护。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_tutorial_workshop",
+    "site_id": "tutorial_workshop",
+    "name": "导览：组合两类证据",
+    "required_domains": [
+      "statue",
+      "architecture"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "scroll_delta": 1,
+      "restoration_delta": 1,
+      "domain": "architecture"
+    },
+    "learning_objective": "练习将造像与建筑两类证据组合提交。",
+    "culture_explanation": "导览任务展示不同领域证据如何互相支撑。",
+    "combo_requirement": {
+      "required_combo_tags": [],
+      "preferred_origins": [
+        "central",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "入门组合任务",
+    "route_synergy": "完成后加深对证据组合的理解。",
+    "ui_instruction": "提交2张证据卡，覆盖造像与建筑领域。",
+    "content_class": "gameplay"
+  },
+  {
+    "id": "task_tutorial_route",
+    "site_id": "tutorial_route",
+    "name": "导览：跨节点移动",
+    "required_domains": [
+      "statue",
+      "architecture"
+    ],
+    "required_origin_diversity": 2,
+    "required_card_count": 2,
+    "required_cards_per_player_min": 0,
+    "reward": {
+      "influence": 1,
+      "domain": "trade"
+    },
+    "learning_objective": "练习移动到一个新节点并提交证据。",
+    "culture_explanation": "导览任务强调移动是完成协作的前提。",
+    "combo_requirement": {
+      "required_combo_tags": [],
+      "preferred_origins": [
+        "central",
+        "craft"
+      ],
+      "minimum_distinct_players": 1
+    },
+    "strategic_role": "入门移动任务",
+    "route_synergy": "完成后熟悉地图移动与节点委托。",
+    "ui_instruction": "移动到古道口并提交2张证据卡。",
     "content_class": "gameplay"
   }
 ]

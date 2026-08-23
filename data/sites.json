@@ -41,7 +41,15 @@
       "y": 50,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "documented",
+    "source_ids": [
+      "source_yungang_unesco",
+      "source_yungang_official"
+    ],
+    "historical_context": "云冈石窟开凿于五世纪中叶至六世纪初，拥有252个洞窟和龛、约5.1万尊造像，是中国佛教石窟艺术的重要代表。",
+    "gameplay_effect": "节点能力【核心汇证】：每轮第一次向云冈核心任务贡献一个尚未完成的领域时，额外获得1点共同影响。",
+    "strategy_hint": "中局前确定缺失领域，避免把所有证据过早消耗在支线任务。",
+    "map_shape": "hexagon"
   },
   {
     "id": "huayan_temple",
@@ -83,7 +91,14 @@
       "y": 20,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "documented",
+    "source_ids": [
+      "source_huayan_temple"
+    ],
+    "historical_context": "华严寺始建于辽重熙七年（1038），坐西向东，由上寺、下寺组成，是大同辽金建筑遗产的重要组成。",
+    "gameplay_effect": "节点能力【结构互证】：在此贡献建筑证据后，本回合下一次节点修护少消耗1点共同修护资源。",
+    "strategy_hint": "适合先贡献再修护，形成完整的建筑项目回合。",
+    "map_shape": "hexagon"
   },
   {
     "id": "shanhua_temple",
@@ -112,7 +127,7 @@
     "node_ability": {
       "id": "material_coordination",
       "name": "材料调度",
-      "description": "若同一轮有两名不同玩家在此行动，团队获得1点研究线索。",
+      "description": "若同一轮有两名不同玩家在此行动，团队获得1点研究点。",
       "trigger": "second_distinct_player_action_per_round",
       "effect": {
         "type": "gain_clue",
@@ -125,7 +140,14 @@
       "y": 22,
       "labelAnchor": "right"
     },
-    "content_class": "documented"
+    "content_class": "documented",
+    "source_ids": [
+      "source_shanhua_temple"
+    ],
+    "historical_context": "善化寺保存大雄宝殿、三圣殿、山门、普贤阁等辽金时期建筑遗存，寺院中轴布局和木构技术具有重要研究价值。",
+    "gameplay_effect": "节点能力【材料调度】：若同一轮有两名不同玩家在此行动，团队获得1点研究点。",
+    "strategy_hint": "让不同角色依次到达，可把多人协作转化为研究收益。",
+    "map_shape": "hexagon"
   },
   {
     "id": "wall_pass",
@@ -168,7 +190,11 @@
       "y": 84,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "以长城关隘、堡垒、烽火台和交通设施组成的防御体系为文化背景，用于表现边塞保护与区域交流。该名称不指向某一处特定遗址。",
+    "gameplay_effect": "节点能力【关隘预警】：完成此处任务后，团队可以查看事件牌堆顶的一张事件。",
+    "strategy_hint": "在风险情景中尽早完成，可减少信息不完全。",
+    "map_shape": "diamond"
   },
   {
     "id": "trade_post",
@@ -211,7 +237,11 @@
       "y": 72,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里汇集丝绸之路沿线商旅停留、补给和交换商品、技艺与观念的线索，作为本局的互市协作场。",
+    "gameplay_effect": "节点能力【互市协作】：同一节点的玩家每轮第一次交换证据不消耗行动点。",
+    "strategy_hint": "把来源分散的证据带到这里，可高效完成多来源任务。",
+    "map_shape": "diamond"
   },
   {
     "id": "pingcheng_ruins",
@@ -241,7 +271,7 @@
     "node_ability": {
       "id": "capital_archive",
       "name": "都城索引",
-      "description": "首次探索后，可将市场中一张未选证据保留到下一轮。",
+      "description": "首次寻访证据后，可将市场中一张未选证据保留到下一轮。",
       "trigger": "first_explore",
       "effect": {
         "type": "reserve_market_card",
@@ -254,7 +284,14 @@
       "y": 70,
       "labelAnchor": "right"
     },
-    "content_class": "interpretive"
+    "content_class": "interpretive",
+    "historical_context": "北魏平城遗址大体叠压在今大同老城区及周边，城垣范围仍需考古调查与文献互证，已发现城墙、建筑遗迹和北魏遗物线索。",
+    "gameplay_effect": "节点能力【都城索引】：首次寻访证据后，可将市场中一张未选证据保留到下一轮。",
+    "strategy_hint": "适合优先锁定核心项目所需的稀缺领域。",
+    "map_shape": "circle",
+    "source_ids": [
+      "source_pingcheng_northern_wei"
+    ]
   },
   {
     "id": "northern_workshop",
@@ -280,20 +317,24 @@
     "node_ability": {
       "id": "workshop_preparation",
       "name": "工序预备",
-      "description": "完成一次探索后，下一次建筑或造像贡献额外获得1点共同影响。",
+      "description": "完成一次寻访证据后，下一次建筑或造像贡献额外获得1点共同影响。",
       "trigger": "after_explore",
       "effect": {
         "type": "next_contribute_bonus",
         "amount": 1
       }
     },
-    "gameplay_hint": "先探索再贡献，可用较少行动完成工艺项目。",
+    "gameplay_hint": "先寻访证据再贡献，可用较少行动完成工艺项目。",
     "layout": {
       "x": 13,
       "y": 34,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里聚焦云冈大型石窟营造所需的石作、工具和工匠协作；北线工坊是本局组织工序线索的体验场景。",
+    "gameplay_effect": "节点能力【工序预备】：完成一次寻访证据后，下一次建筑或造像贡献额外获得1点共同影响。",
+    "strategy_hint": "先寻访证据再贡献，可用较少行动完成工艺项目。",
+    "map_shape": "square"
   },
   {
     "id": "archive_depot",
@@ -332,7 +373,11 @@
       "y": 43,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里整理平城遗址中的建筑构件、瓦当、陶片等考古材料，寻找可互相印证的线索。",
+    "gameplay_effect": "节点能力【档案回查】：每轮一次，可查看项目档案区顶部两张证据并选择一张作为任务提示。",
+    "strategy_hint": "适合文明汇流情景，帮助判断还缺哪种来源。",
+    "map_shape": "square"
   },
   {
     "id": "material_yard",
@@ -354,11 +399,11 @@
     "icon_asset": "generated/nodes/icon_node_material_yard.webp",
     "scene_asset": "scene_craft_restoration.webp",
     "region_id": "temple_network",
-    "strategic_role": "研究线索转修护资源",
+    "strategic_role": "研究点转修护资源",
     "node_ability": {
       "id": "material_exchange",
       "name": "材料调配",
-      "description": "每轮一次，可将2点研究线索换成1点共同修护资源。",
+      "description": "每轮一次，可将2点研究点换成1点共同修护资源。",
       "trigger": "once_per_round",
       "effect": {
         "type": "clue_to_restoration",
@@ -366,13 +411,17 @@
         "restoration": 1
       }
     },
-    "gameplay_hint": "不要过早兑换；先确认路线修护是否更需要研究线索。",
+    "gameplay_hint": "不要过早兑换；先确认路线修护是否更需要研究点。",
     "layout": {
       "x": 62,
       "y": 40,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里关注古建筑保护中的材质、结构、施工工艺和修缮记录。",
+    "gameplay_effect": "节点能力【材料调配】：每轮一次，可将2点研究点换成1点共同修护资源。",
+    "strategy_hint": "不要过早兑换；先确认路线修护是否更需要研究点。",
+    "map_shape": "square"
   },
   {
     "id": "carving_courtyard",
@@ -411,7 +460,11 @@
       "y": 30,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里重现云冈石窟造像开凿、雕刻组织和图像研究的工作线索。",
+    "gameplay_effect": "节点能力【造作对位】：在此完成造像与建筑组合时，项目额外推进1格。",
+    "strategy_hint": "将造像比例、工具和石料证据集中到这里。",
+    "map_shape": "square"
   },
   {
     "id": "motif_gallery",
@@ -450,7 +503,11 @@
       "y": 18,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里追踪丝路沿线纹样、服饰、染料及装饰艺术的传播、吸收与再创造。",
+    "gameplay_effect": "节点能力【纹样转译】：每轮一次，一张纹样证据可临时增加一个不同来源标签。",
+    "strategy_hint": "用于只差一种来源即可完成的任务。",
+    "map_shape": "square"
   },
   {
     "id": "river_crossing",
@@ -489,7 +546,11 @@
       "y": 48,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里记录历史交通网络中的渡口、补给和人员流动，承担路线风险的判断。",
+    "gameplay_effect": "节点能力【通行窗口】：从此节点出发的第一次移动不受承压路线额外影响。",
+    "strategy_hint": "适合作为边塞与互市区域之间的中转点。",
+    "map_shape": "square"
   },
   {
     "id": "caravan_camp",
@@ -528,7 +589,11 @@
       "y": 88,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里汇集商旅分段行进、休息补给和转运交换的线索，观察文化信息如何流动。",
+    "gameplay_effect": "节点能力【营地互助】：玩家移动到此处后，可立即与同节点队友交换一张证据。",
+    "strategy_hint": "让负责机动的角色把远端证据送到协作队伍。",
+    "map_shape": "square"
   },
   {
     "id": "border_market",
@@ -567,7 +632,11 @@
       "y": 92,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里汇集大同长城沿线关堡与多民族交往交流交融的线索，处理边塞与互市的协作。",
+    "gameplay_effect": "节点能力【边市互证】：边塞与互市证据在此共同贡献时，降低1点风化压力。",
+    "strategy_hint": "适合在事件压力高时完成组合，而不是只追求影响。",
+    "map_shape": "square"
   },
   {
     "id": "watchtower",
@@ -606,7 +675,11 @@
       "y": 91,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里观察长城防御体系中的烽火台与观察设施，提前识别路线风险。",
+    "gameplay_effect": "节点能力【守望信号】：每轮开始时，可揭示当前事件最可能影响的节点类型。",
+    "strategy_hint": "与准备行动配合，可降低团队讨论成本。",
+    "map_shape": "square"
   },
   {
     "id": "craft_school",
@@ -645,7 +718,11 @@
       "y": 54,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里汇集丝绸之路上的工艺、技术与知识传播线索，支持角色专长成长。",
+    "gameplay_effect": "节点能力【工艺互授】：完成此处任务的玩家立即触发角色升级选择。",
+    "strategy_hint": "中局完成可让角色专长在后半局产生价值。",
+    "map_shape": "square"
   },
   {
     "id": "river_archive",
@@ -663,7 +740,7 @@
       "trade",
       "pattern"
     ],
-    "summary": "这里整理交通网络、路线记录与文化证据，寻找可以互相印证的档案线索。",
+    "summary": "这里整理交通网络、路线记录与证据卡，寻找可以互相印证的档案线索。",
     "icon_asset": "generated/nodes/icon_node_river_archive.webp",
     "scene_asset": "scene_archive_cave.webp",
     "region_id": "frontier_network",
@@ -671,7 +748,7 @@
     "node_ability": {
       "id": "route_records",
       "name": "路线档案",
-      "description": "完成一次探索后，可查看相邻路线的风险和状态变化预览。",
+      "description": "完成一次寻访证据后，可查看相邻路线的风险和状态变化预览。",
       "trigger": "after_explore",
       "effect": {
         "type": "inspect_adjacent_routes",
@@ -684,7 +761,11 @@
       "y": 25,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里整理交通网络、路线记录与证据卡，寻找可以互相印证的档案线索。",
+    "gameplay_effect": "节点能力【路线档案】：完成一次寻访证据后，可查看相邻路线的风险和状态变化预览。",
+    "strategy_hint": "在互市重开情景中先到这里，可避免盲目勘察。",
+    "map_shape": "square"
   },
   {
     "id": "route_junction",
@@ -723,7 +804,11 @@
       "y": 63,
       "labelAnchor": "right"
     },
-    "content_class": "gameplay"
+    "content_class": "gameplay",
+    "historical_context": "这里呈现丝绸之路多条路线相互连接、随时间变化的治理挑战。",
+    "gameplay_effect": "节点能力【枢纽调度】：每轮第一次勘察或修护相邻路线时，行动点消耗减少1点。",
+    "strategy_hint": "优先处理区域门户，不要把资源分散到所有支路。",
+    "map_shape": "square"
   },
   {
     "id": "eastern_cave_observatory",
@@ -764,7 +849,11 @@
       "x": 72,
       "y": 30,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里把造像细节、纹样和来源线索放在同一处观察。",
+    "gameplay_effect": "节点能力【校读图像】：投入造像与纹样证据，完成跨来源对照。",
+    "strategy_hint": "投入造像与纹样证据，完成跨来源对照。",
+    "map_shape": "square"
   },
   {
     "id": "central_cave_observatory",
@@ -805,7 +894,11 @@
       "x": 58,
       "y": 38,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里关注石作工序、建筑材料与造像目标之间的关系。",
+    "gameplay_effect": "节点能力【登记工序】：先收集材料线索，再以造像证据确认工序。",
+    "strategy_hint": "先收集材料线索，再以造像证据确认工序。",
+    "map_shape": "square"
   },
   {
     "id": "western_cave_observatory",
@@ -846,7 +939,11 @@
       "x": 25,
       "y": 38,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里连接边地交流与图像传播，适合比较不同来源的相遇。",
+    "gameplay_effect": "节点能力【追踪传播】：投入边地与交流证据，降低网络压力。",
+    "strategy_hint": "投入边地与交流证据，降低网络压力。",
+    "map_shape": "square"
   },
   {
     "id": "digital_mapping_station",
@@ -887,7 +984,11 @@
       "x": 48,
       "y": 24,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里把现场观察转成可复核的节点、路线与图卷关系。",
+    "gameplay_effect": "节点能力【标记图卷】：收集不同来源的记录，推进数字档案项目。",
+    "strategy_hint": "收集不同来源的记录，推进数字档案项目。",
+    "map_shape": "square"
   },
   {
     "id": "environmental_monitoring_station",
@@ -928,7 +1029,11 @@
       "x": 76,
       "y": 62,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里持续记录风化、路线和修护资源的变化。",
+    "gameplay_effect": "节点能力【读取压力】：在事件来临前查看路线风险并安排修护。",
+    "strategy_hint": "在事件来临前查看路线风险并安排修护。",
+    "map_shape": "square"
   },
   {
     "id": "visitor_emergency_point",
@@ -969,6 +1074,186 @@
       "x": 88,
       "y": 74,
       "labelAnchor": "right"
-    }
+    },
+    "historical_context": "这里将访客流线、交流证据和开放节点的安全回应连在一起。",
+    "gameplay_effect": "节点能力【组织回应】：使用交流或边地证据，维持访客路径开放。",
+    "strategy_hint": "使用交流或边地证据，维持访客路径开放。",
+    "map_shape": "square"
+  },
+  {
+    "id": "tutorial_cave",
+    "name": "导览造像窟",
+    "icon_asset": "generated/nodes/icon_node_carving_courtyard.webp",
+    "scene_asset": "scene_yungang_day.webp",
+    "type": "support",
+    "content_class": "gameplay",
+    "x": 50,
+    "y": 30,
+    "connections": [
+      "tutorial_temple",
+      "tutorial_workshop"
+    ],
+    "start_damage": 0,
+    "max_damage": 2,
+    "active_task_id": "task_tutorial_cave",
+    "site_tags": [
+      "statue",
+      "tutorial"
+    ],
+    "summary": "导览专用的简化造像节点，用于练习寻访证据与取得证据卡。",
+    "region_id": "tutorial_region",
+    "strategic_role": "学习寻访证据",
+    "node_ability": {
+      "id": "tutorial_observation",
+      "name": "导览观察",
+      "description": "首次寻访证据后，额外获得1点研究点。",
+      "trigger": "first_explore",
+      "effect": {
+        "type": "gain_clue",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "先在这里执行寻访证据，取得造像类证据卡。",
+    "layout": {
+      "x": 50,
+      "y": 30,
+      "labelAnchor": "top"
+    },
+    "map_shape": "square",
+    "historical_context": "导览专用的简化造像节点，用于练习寻访证据与取得证据卡。",
+    "gameplay_effect": "节点能力【导览观察】：首次寻访证据后，额外获得1点研究点。",
+    "strategy_hint": "先在这里执行寻访证据，取得造像类证据卡。"
+  },
+  {
+    "id": "tutorial_temple",
+    "name": "导览修护院",
+    "icon_asset": "generated/nodes/icon_node_huayan_temple.webp",
+    "scene_asset": "scene_yungang_day.webp",
+    "type": "workshop",
+    "content_class": "gameplay",
+    "x": 30,
+    "y": 60,
+    "connections": [
+      "tutorial_cave",
+      "tutorial_route"
+    ],
+    "start_damage": 1,
+    "max_damage": 3,
+    "active_task_id": "task_tutorial_temple",
+    "site_tags": [
+      "architecture",
+      "tutorial"
+    ],
+    "summary": "导览专用的简化修护节点，初始带有1点损伤，用于练习修护行动。",
+    "region_id": "tutorial_region",
+    "strategic_role": "学习修护节点",
+    "node_ability": {
+      "id": "tutorial_restore_practice",
+      "name": "导览修护",
+      "description": "完成一次寻访证据后，下一次修护少消耗1点共同修护资源。",
+      "trigger": "after_explore",
+      "effect": {
+        "type": "restore_discount",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "节点已有损伤，使用修护节点降低损伤。",
+    "layout": {
+      "x": 30,
+      "y": 60,
+      "labelAnchor": "left"
+    },
+    "map_shape": "square",
+    "historical_context": "导览专用的简化修护节点，初始带有1点损伤，用于练习修护行动。",
+    "gameplay_effect": "节点能力【导览修护】：完成一次寻访证据后，下一次修护少消耗1点共同修护资源。",
+    "strategy_hint": "节点已有损伤，使用修护节点降低损伤。"
+  },
+  {
+    "id": "tutorial_workshop",
+    "name": "导览准备间",
+    "icon_asset": "generated/nodes/icon_node_northern_workshop.webp",
+    "scene_asset": "scene_craft_restoration.webp",
+    "type": "workshop",
+    "content_class": "gameplay",
+    "x": 70,
+    "y": 60,
+    "connections": [
+      "tutorial_cave",
+      "tutorial_route"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_tutorial_workshop",
+    "site_tags": [
+      "architecture",
+      "tutorial"
+    ],
+    "summary": "导览专用的简化营造节点，用于练习跨来源证据组合。",
+    "region_id": "tutorial_region",
+    "strategic_role": "学习证据组合",
+    "node_ability": {
+      "id": "tutorial_prepare",
+      "name": "导览预备",
+      "description": "每轮一次，下一次贡献获得额外影响。",
+      "trigger": "once_per_round",
+      "effect": {
+        "type": "next_contribute_bonus",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "当行动点不足时，可在此补充行动点。",
+    "layout": {
+      "x": 70,
+      "y": 60,
+      "labelAnchor": "right"
+    },
+    "map_shape": "square",
+    "historical_context": "导览专用的简化营造节点，用于练习跨来源证据组合。",
+    "gameplay_effect": "节点能力【导览预备】：每轮一次，下一次贡献获得额外影响。",
+    "strategy_hint": "当行动点不足时，可在此补充行动点。"
+  },
+  {
+    "id": "tutorial_route",
+    "name": "导览古道口",
+    "icon_asset": "generated/nodes/icon_node_route_junction.webp",
+    "scene_asset": "scene_frontier_pass.webp",
+    "type": "workshop",
+    "content_class": "gameplay",
+    "x": 50,
+    "y": 85,
+    "connections": [
+      "tutorial_temple",
+      "tutorial_workshop"
+    ],
+    "start_damage": 0,
+    "max_damage": 3,
+    "active_task_id": "task_tutorial_route",
+    "site_tags": [
+      "frontier",
+      "tutorial"
+    ],
+    "summary": "导览专用的简化路线节点，用于练习移动与跨节点协作。",
+    "region_id": "tutorial_region",
+    "strategic_role": "学习移动",
+    "node_ability": {
+      "id": "tutorial_move",
+      "name": "导览通行",
+      "description": "从此节点出发的第一次移动不消耗行动点。",
+      "trigger": "first_move_from_site_per_round",
+      "effect": {
+        "type": "ignore_route_risk",
+        "amount": 1
+      }
+    },
+    "gameplay_hint": "尝试从这里移动到相邻节点，熟悉地图移动。",
+    "layout": {
+      "x": 50,
+      "y": 85,
+      "labelAnchor": "bottom"
+    },
+    "map_shape": "square",
+    "historical_context": "导览专用的简化路线节点，用于练习移动与跨节点协作。",
+    "gameplay_effect": "节点能力【导览通行】：从此节点出发的第一次移动不消耗行动点。",
+    "strategy_hint": "尝试从这里移动到相邻节点，熟悉地图移动。"
   }
 ]

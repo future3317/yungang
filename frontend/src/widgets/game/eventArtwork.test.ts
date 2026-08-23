@@ -9,6 +9,8 @@ describe('resolveEventSceneAsset', () => {
   });
 
   it('prefers the content-provided scene asset', () => {
-    expect(resolveEventSceneAsset({ id: 'sandstorm', scene_asset: 'generated/scene_yungang_night.webp' })).toBe('generated/scene_yungang_night.webp');
+    expect(resolveEventSceneAsset({ id: 'sandstorm', scene_asset: 'generated/scene_yungang_night.webp' })).toBe(
+      'generated/scene_yungang_night.webp'
+    );
   });
 });

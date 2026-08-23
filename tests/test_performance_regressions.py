@@ -5,15 +5,15 @@ from contextlib import contextmanager
 from types import SimpleNamespace
 
 from backend import app as app_module
-from backend.database import Database
-from backend.models import RoomActionRequest
 from backend.content import Content
+from backend.database import Database
 from backend.engine import GameEngine
+from backend.models import RoomActionRequest
 from backend.rooms import RoomRepository, RoomService
+from backend.routers import rooms as rooms_module
 
 
 def test_rate_limit_categories_cover_all_state_mutations():
-    assert app_module._rate_limit_category("/api/games") == "game-create"
     assert app_module._rate_limit_category("/api/rooms") == "room-create"
     assert app_module._rate_limit_category("/api/rooms/room-1/join") == "room-join"
     assert app_module._rate_limit_category("/api/rooms/room-1/reconnect") == "room-auth"
@@ -99,9 +99,9 @@ def test_run_action_uses_prefetched_room_state(monkeypatch):
         def save_if_revision(self, next_state, expected_revision):
             return True
 
-    monkeypatch.setattr(app_module, "repo", NoReadRepository())
-    monkeypatch.setattr(app_module, "dispatch", lambda engine, current, action: current)
-    assert app_module._run_action("game-1", request, state) is state
+    monkeypatch.setattr(rooms_module, "repo", NoReadRepository())
+    monkeypatch.setattr(rooms_module, "dispatch", lambda engine, current, action: current)
+    assert rooms_module._run_action("game-1", request, state) is state
 
 
 def test_room_action_loads_game_once(monkeypatch):
@@ -142,12 +142,12 @@ def test_room_action_loads_game_once(monkeypatch):
         def save_if_revision(_state, _expected_revision):
             return True
 
-    monkeypatch.setattr(app_module, "_room_or_404", lambda _room_id: room)
-    monkeypatch.setattr(app_module, "room_service", FakeRoomService())
-    monkeypatch.setattr(app_module, "repo", FakeGameRepository())
-    monkeypatch.setattr(app_module, "dispatch", lambda _engine, current, _request: current)
+    monkeypatch.setattr(rooms_module, "_room_or_404", lambda _room_id: room)
+    monkeypatch.setattr(rooms_module, "room_service", FakeRoomService())
+    monkeypatch.setattr(rooms_module, "repo", FakeGameRepository())
+    monkeypatch.setattr(rooms_module, "dispatch", lambda _engine, current, _request: current)
 
-    result = app_module.room_action("room-1", RoomActionRequest(action="end_turn", expected_revision=4), "seat-token")
+    result = rooms_module.room_action("room-1", RoomActionRequest(action="end_turn", expected_revision=4), "seat-token")
 
     assert result is state
     assert loads == 1
@@ -158,12 +158,12 @@ def test_sse_stream_waits_for_notification_instead_of_querying_each_second(monke
         queue = asyncio.Queue()
         listener = (asyncio.get_running_loop(), queue)
         await queue.put({"revision": 7, "status": "in_progress"})
-        generator = app_module._room_revision_stream("room-1", listener)
+        generator = rooms_module._room_revision_stream("room-1", listener)
         event = await generator.__anext__()
         await generator.aclose()
         return event
 
-    monkeypatch.setattr(app_module.room_service.repository, "unsubscribe", lambda room_id, listener: None)
+    monkeypatch.setattr(rooms_module.room_service.repository, "unsubscribe", lambda room_id, listener: None)
     event = asyncio.run(consume_one_event())
     assert '"revision": 7' in event
 

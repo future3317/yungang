@@ -6,7 +6,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = (ROOT / "backend" / "engine.py", ROOT / "backend" / "rooms.py", ROOT / "backend" / "repository.py")
+SOURCES = [
+    *Path(ROOT / "backend" / "engine").glob("*.py"),
+    ROOT / "backend" / "app.py",
+    ROOT / "backend" / "rooms.py",
+    ROOT / "backend" / "repository.py",
+    *Path(ROOT / "backend" / "routers").glob("*.py"),
+]
 ERROR_PATTERN = re.compile(r'raise ValueError\("([a-z][a-z0-9_]+)"\)')
 INTERNAL_PREFIXES = ("content_", "unsupported_content_mechanism")
 

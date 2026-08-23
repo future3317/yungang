@@ -33,12 +33,38 @@ function readProgress(): Progress {
 }
 
 function writeProgress(value: Progress) {
-  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value)); } catch { /* private browsing can reject storage */ }
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+  } catch {
+    /* private browsing can reject storage */
+  }
 }
 
 export function useTutorialProgress(): TutorialProgress {
   const [progress, setProgress] = useState(readProgress);
-  const markManualSeen = useCallback(() => setProgress(current => { const next = { ...current, manual: true }; writeProgress(next); return next; }), []);
-  const markContextSeen = useCallback((context: string) => setProgress(current => { if (current.contexts.includes(context)) return current; const next = { ...current, contexts: [...current.contexts, context] }; writeProgress(next); return next; }), []);
-  return { hasSeenManual: progress.manual, hasSeenContext: (context: string) => progress.contexts.includes(context), markManualSeen, markContextSeen };
+  const markManualSeen = useCallback(
+    () =>
+      setProgress((current) => {
+        const next = { ...current, manual: true };
+        writeProgress(next);
+        return next;
+      }),
+    []
+  );
+  const markContextSeen = useCallback(
+    (context: string) =>
+      setProgress((current) => {
+        if (current.contexts.includes(context)) return current;
+        const next = { ...current, contexts: [...current.contexts, context] };
+        writeProgress(next);
+        return next;
+      }),
+    []
+  );
+  return {
+    hasSeenManual: progress.manual,
+    hasSeenContext: (context: string) => progress.contexts.includes(context),
+    markManualSeen,
+    markContextSeen,
+  };
 }

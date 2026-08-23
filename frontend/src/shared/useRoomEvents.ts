@@ -65,12 +65,14 @@ export function useRoomEvents({ roomId, token, onRevision, onState }: RoomEventO
         const { ticket } = await api.roomEventTicket(roomId, token);
         if (cancelled) return;
         stream?.close();
-        stream = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events?ticket=${encodeURIComponent(ticket)}`);
+        stream = new EventSource(
+          `/api/rooms/${encodeURIComponent(roomId)}/events?ticket=${encodeURIComponent(ticket)}`
+        );
         stream.onopen = () => {
           retryCount = 0;
           onStateRef.current?.('connected');
         };
-        stream.addEventListener('revision', event => {
+        stream.addEventListener('revision', (event) => {
           lastRoomStatus = roomStatusFromEvent((event as MessageEvent<string>).data);
           retryCount = 0;
           onStateRef.current?.('connected');

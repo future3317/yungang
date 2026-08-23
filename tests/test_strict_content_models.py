@@ -1,8 +1,30 @@
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from backend.content_schemas import ComboRequirementContract, EffectContract, EventContract, ProjectStageContract
-from backend.models import EffectiveRules, EventForecastScope, EventInstance, EventModifier, EventRecord, PendingChoice, PendingChoiceOption, ProjectStage, RoundEntityChange, RoundMetrics, RoundSummary, StageEvidence, StageRequirements, StageReward, TaskReward, TaskState
+from backend.content_schemas import (
+    ComboRequirementContract,
+    EffectContract,
+    EventContract,
+    ProjectStageContract,
+)
+from backend.models import (
+    EffectiveRules,
+    EventForecastScope,
+    EventInstance,
+    EventModifier,
+    EventRecord,
+    PendingChoice,
+    PendingChoiceOption,
+    ProjectStage,
+    RoundEntityChange,
+    RoundMetrics,
+    RoundSummary,
+    StageEvidence,
+    StageRequirements,
+    StageReward,
+    TaskReward,
+    TaskState,
+)
 
 
 def test_combo_requirement_contract_rejects_unknown_fields():

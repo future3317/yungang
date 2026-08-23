@@ -1,0 +1,64 @@
+.roundSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 10px;
+  padding: 9px 12px;
+  color: #d9cfba;
+  background: rgba(48, 66, 52, 0.72);
+  border: 1px solid rgba(221, 199, 143, 0.2);
+  border-radius: 8px;
+}
+
+.roundSummaryMain {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roundSummaryMain svg {
+  color: #d7b962;
+}
+
+.roundSummaryMain span {
+  display: grid;
+  gap: 2px;
+}
+
+.roundSummaryMain b {
+  color: #f2e7ce;
+  font-size: 0.82rem;
+}
+
+.roundSummaryMain small,
+.roundSummaryMetrics {
+  color: #c9bda5;
+  font-size: 0.72rem;
+}
+
+.roundSummaryNext {
+  color: #e8cb86;
+  font-weight: 700;
+}
+
+.continueButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #e3c674;
+  background: transparent;
+  border: 0;
+  font-size: 0.76rem;
+}
+
+@media (max-width: 760px) {
+  .roundSummary {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .continueButton {
+    justify-self: end;
+  }
+}

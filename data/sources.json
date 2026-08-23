@@ -1,0 +1,49 @@
+{
+  "sources": [
+    {
+      "id": "source_yungang_unesco",
+      "title": "UNESCO World Heritage Centre: Yungang Grottoes",
+      "url_or_citation": "https://whc.unesco.org/en/list/1039/"
+    },
+    {
+      "id": "source_yungang_official",
+      "title": "云冈石窟研究院官网",
+      "url_or_citation": "https://www.yungang.org/"
+    },
+    {
+      "id": "source_huayan_temple",
+      "title": "华严寺（大同）— 山西省文物局",
+      "url_or_citation": "https://wwj.shanxi.gov.cn/"
+    },
+    {
+      "id": "source_shanhua_temple",
+      "title": "善化寺（大同）— 国家文物局",
+      "url_or_citation": "http://www.ncha.gov.cn/"
+    },
+    {
+      "id": "source_grotto_iconography",
+      "title": "宿白：《中国石窟寺研究》，文物出版社，1996年",
+      "url_or_citation": "ISBN 978-7-5010-0890-7"
+    },
+    {
+      "id": "source_buddhist_art_patterns",
+      "title": "李静杰：《佛教造像纹饰》，宗教文化出版社，2010年",
+      "url_or_citation": "ISBN 978-7-80254-256-9"
+    },
+    {
+      "id": "source_cave_construction_craft",
+      "title": "彭明浩：《云冈石窟开凿技术与北魏平城时代工匠精神》，《考古学报》2018年第2期",
+      "url_or_citation": "https://www.kaogu.cn/"
+    },
+    {
+      "id": "source_liao_jin_architecture",
+      "title": "梁思成：《中国建筑史》，百花文艺出版社，1998年",
+      "url_or_citation": "ISBN 978-7-5306-2646-8"
+    },
+    {
+      "id": "source_pingcheng_northern_wei",
+      "title": "山西省考古研究所：《大同南郊北魏墓群》，科学出版社，2006年",
+      "url_or_citation": "ISBN 978-7-03-016529-4"
+    }
+  ]
+}

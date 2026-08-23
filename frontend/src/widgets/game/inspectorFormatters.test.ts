@@ -31,7 +31,10 @@ describe('inspector player-facing labels', () => {
   });
 
   it('uses the shared terminology catalog for event target rules', () => {
-    const eventMeta = { ...meta, terminology: { event_target_rules: { two_open_sites: '两处仍可守护的节点' } } } as Meta;
+    const eventMeta = {
+      ...meta,
+      terminology: { event_target_rules: { two_open_sites: '两处仍可守护的节点' } },
+    } as Meta;
     expect(eventTargetRuleName('two_open_sites', eventMeta)).toBe('两处仍可守护的节点');
     expect(eventTargetRuleName('two_open_sites', eventMeta)).not.toContain('two_open_sites');
   });

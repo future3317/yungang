@@ -1,10 +1,12 @@
+from copy import deepcopy
+
+import pytest
+from pydantic import ValidationError
+
 from backend.content import Content
+from backend.content_schemas import validate_content_contracts
 from backend.engine import GameEngine
 from backend.mechanisms import ACTION_CARD_EFFECT_HANDLERS, NODE_EFFECT_HANDLERS
-from backend.content_schemas import validate_content_contracts
-from pydantic import ValidationError
-from copy import deepcopy
-import pytest
 
 
 def test_event_chain_preserves_previous_event_before_revealing_next():

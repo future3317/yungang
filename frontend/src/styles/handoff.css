@@ -1,1 +1,31 @@
-.seat-handoff-backdrop { z-index: 75; }.seat-handoff { width: min(470px, calc(100vw - 32px)); display: grid; gap: 12px; padding: 31px; color: #f5ead3; background: linear-gradient(145deg, #35493b, #202e25); border: 1px solid rgba(220, 186, 96, .55); border-radius: 15px; }.handoff-icon { width: 54px; height: 54px; display: grid; place-items: center; color: #22362b; background: #d4b566; border-radius: 14px; }.seat-handoff h2 { margin: 0; font-size: 1.65rem; }.seat-handoff p { margin: 0; color: #d4c6aa; line-height: 1.65; }.seat-handoff .primary-cta { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; color: #fff8e8; background: #b8563d; border: 0; border-radius: 7px; }
+.seat-handoff-backdrop {
+  z-index: 75;
+}
+.seat-handoff {
+  width: min(470px, calc(100vw - 32px));
+  display: grid;
+  gap: 12px;
+  padding: 31px;
+  color: #f5ead3;
+  background: linear-gradient(145deg, #35493b, #202e25);
+  border: 1px solid rgba(220, 186, 96, 0.55);
+  border-radius: 15px;
+}
+.handoff-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  color: #22362b;
+  background: #d4b566;
+  border-radius: 14px;
+}
+.seat-handoff h2 {
+  margin: 0;
+  font-size: 1.65rem;
+}
+.seat-handoff p {
+  margin: 0;
+  color: #d4c6aa;
+  line-height: 1.65;
+}

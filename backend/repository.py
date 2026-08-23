@@ -5,7 +5,6 @@ from typing import Optional
 from .database import Database
 from .models import GameState
 
-
 CURRENT_SCHEMA_VERSION = 3
 
 

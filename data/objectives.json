@@ -27,7 +27,7 @@
       "name": "完成跨来源互证",
       "type": "origin_diversity",
       "target": 4,
-      "description": "在团队手牌、档案和已完成任务中形成至少4种来源线索。",
+      "description": "在团队证据卡、档案和已完成任务中形成至少4种来源线索。",
       "progress_text": "来源种类",
       "completion_text": "团队已用多种来源的证据建立互相支撑的解释。",
       "scoring_weight": 4,
@@ -51,9 +51,20 @@
       "target": 3,
       "description": "通过已连接路线建立至少3次区域间稳定联络。",
       "progress_text": "区域联络",
-      "completion_text": "文化证据与修护资源可以在多个区域间持续流动。",
+      "completion_text": "证据卡与修护资源可以在多个区域间持续流动。",
       "scoring_weight": 3,
       "strategy_hint": "优先处理区域门户路线，而不是所有支路。"
+    },
+    {
+      "id": "objective_tutorial",
+      "name": "导览目标",
+      "type": "tutorial",
+      "target": 3,
+      "description": "学会移动、取得证据卡与修护节点：至少移动一次、完成一次节点委托并进行一次修护。",
+      "progress_text": "导览步骤",
+      "completion_text": "已完成新手导览的基本行动学习。",
+      "scoring_weight": 1,
+      "strategy_hint": "按顶部目标提示一步步执行，不要跳过修护步骤。"
     }
   ]
 }

@@ -16,7 +16,7 @@
     "meaning": "以都城营造、石作组织和持续维护为灵感的合作角色，重点是把有限修护资源投入最关键的位置。",
     "team_role": "节点修护与项目收束",
     "play_style": "先观察事件目标和节点损伤，再在中后局用强化修护完成项目。",
-    "solo_rule": "单人模式下首次精修后获得1点研究线索。",
+    "solo_rule": "单人模式下首次精修后获得1点研究点。",
     "upgrade_ids": [
       "pingcheng_artisan_upgrade_1",
       "pingcheng_artisan_upgrade_2"
@@ -82,7 +82,7 @@
     "start_site_id": "trade_post",
     "ability": {
       "name": "博览",
-      "description": "消耗1点行动点，从公开市场的三张候选中选择一张加入手牌，减少随机抽取造成的浪费。",
+      "description": "消耗1点行动点，从公开市场的三张候选中选择一张加入证据卡，减少随机抽取造成的浪费。",
       "action": "view_select",
       "ap_cost": 1
     },

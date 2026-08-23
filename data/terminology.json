@@ -97,8 +97,8 @@
       "description": "沿可通行路线前往相邻节点。"
     },
     "explore": {
-      "name": "探索",
-      "description": "从公开市场选择一张文化证据并获得研究线索。"
+      "name": "寻访证据",
+      "description": "从公开市场选择一张证据卡并获得研究点。"
     },
     "survey_route": {
       "name": "勘察路线",
@@ -106,7 +106,7 @@
     },
     "restore_route": {
       "name": "修护路线",
-      "description": "消耗研究线索恢复受损路线。"
+      "description": "消耗研究点恢复受损路线。"
     },
     "establish_connection": {
       "name": "建立连接",
@@ -118,14 +118,14 @@
     },
     "interpret_evidence": {
       "name": "研判证据",
-      "description": "将线索归入支持、冲突或待确认，建立一段可解释的证据关系。"
+      "description": "将证据卡归入支持、冲突或待确认，建立一段可解释的证据关系。"
     },
     "form_interpretation": {
-      "name": "形成解释",
-      "description": "在领域、来源和组合条件满足后形成当前解释。"
+      "name": "完成研判",
+      "description": "在领域、来源和组合条件满足后完成当前研判。"
     },
     "choose_intervention": {
-      "name": "选择干预",
+      "name": "选择处理方式",
       "description": "决定立即处理、最小干预或先记录。"
     },
     "restore": {
@@ -134,11 +134,11 @@
     },
     "exchange": {
       "name": "交换证据",
-      "description": "与同一节点的队友交换或赠予文化证据。"
+      "description": "与同一节点的队友交换或赠予证据卡。"
     },
     "plan": {
       "name": "放置计划",
-      "description": "标记本轮拟处理的节点、路线或项目。"
+      "description": "标记本轮拟处理的地点、路线或团队项目。"
     },
     "play_card": {
       "name": "使用卡牌",
@@ -172,15 +172,15 @@
   "resources": {
     "ap": {
       "name": "行动点",
-      "short_name": "AP"
+      "short_name": "行动点"
     },
     "restoration": {
       "name": "共同修护资源",
       "short_name": "修护"
     },
     "clues": {
-      "name": "研究线索",
-      "short_name": "线索"
+      "name": "研究点",
+      "short_name": "研究点"
     },
     "influence": {
       "name": "共同影响",
@@ -230,28 +230,28 @@
     "action_card_unavailable": "这张策略牌当前不可用。",
     "action_card_wrong_timing": "这张策略牌还没有到使用时机。",
     "archive_empty": "档案库暂时没有可查阅的记录。",
-    "archive_retrieve_needs_matching_hand": "需要手牌中已有同领域证据才能回收档案。",
-    "card_not_in_hand": "这张牌已经不在手牌中。",
+    "archive_retrieve_needs_matching_hand": "需要证据卡中已有同领域证据才能回收档案。",
+    "card_not_in_hand": "这张牌已经不在证据卡中。",
     "evidence_already_placed": "这份证据已经归类。",
     "game_is_over": "这段旅程已经结算。",
     "game_needs_one_to_four_players": "旅程需要一至四位同行者。",
     "host_required": "只有房主可以执行这个操作。",
-    "interpretation_already_formed": "当前解释已经形成。",
+    "interpretation_already_formed": "当前研判已经完成。",
     "interpretation_not_ready": "证据条件尚未满足。",
-    "intervention_not_available": "当前还没有可执行的干预。",
+    "intervention_not_available": "当前还没有可执行的处理方式。",
     "invalid_action_card_target": "请选择这张策略牌允许的目标。",
     "invalid_action_card_discard": "请选择要弃置的策略牌。",
     "invalid_archive_choice": "请选择档案库展示的记录。",
     "invalid_connection": "这条路线当前不能建立连接。",
-    "invalid_discard_choice": "请选择一张手牌弃置。",
+    "invalid_discard_choice": "请选择一张证据卡弃置。",
     "invalid_event_choice": "请选择当前事件提供的应对方式。",
     "invalid_exchange": "当前地点没有可完成的交换。",
-    "invalid_explore": "当前不能从市场寻访线索。",
+    "invalid_explore": "当前不能从市场寻访证据。",
     "invalid_interpretation_evidence": "这张证据不能归入当前委托。",
-    "invalid_intervention": "请选择当前委托提供的干预方式。",
-    "invalid_market_choice": "请选择市场展示的线索。",
+    "invalid_intervention": "请选择当前委托提供的处理方式。",
+    "invalid_market_choice": "请选择市场展示的证据卡。",
     "invalid_node_ability_target": "当前地点不能使用这项节点能力。",
-    "invalid_plan_target": "请选择地点、路线或项目作为规划目标。",
+    "invalid_plan_target": "请选择地点、路线或团队项目作为规划目标。",
     "invalid_prepare": "当前不能准备事件。",
     "invalid_restore": "当前地点不需要修护。",
     "invalid_route": "请选择一条可通行路线。",
@@ -263,7 +263,7 @@
     "node_ability_unavailable": "这项节点能力本回合已使用或暂不可用。",
     "not_active_player": "当前轮到另一位同行者行动。",
     "not_enough_ap": "行动点不足。",
-    "not_enough_research_clues": "研究线索不足。",
+    "not_enough_research_clues": "研究点不足。",
     "not_enough_restoration_resource": "共同修护资源不足。",
     "nothing_to_repair": "当前没有需要修护的对象。",
     "planning_limit_reached": "本轮规划标记已达上限。",

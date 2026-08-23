@@ -1,2 +1,20 @@
-@keyframes spin { to { transform: rotate(1turn); } } @keyframes route-draw { to { stroke-dashoffset: -6; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms; animation-iteration-count: 1; scroll-behavior: auto; transition-duration: .01ms; } }
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes route-draw {
+  to {
+    stroke-dashoffset: -6;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+  }
+}

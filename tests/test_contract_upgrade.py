@@ -1,6 +1,7 @@
+import pytest
+
 from backend.engine import GameEngine
 from backend.models import ProjectStatus, ResultState, SiteStatus, ViewerState
-import pytest
 
 
 def test_action_options_are_the_ranked_player_contract():

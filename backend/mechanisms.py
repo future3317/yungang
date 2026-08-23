@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 TRIGGER_HANDLERS = {
     "first_new_domain_contribution_per_round": "node_trigger",
     "after_architecture_contribution": "node_trigger",

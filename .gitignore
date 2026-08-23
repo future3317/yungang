@@ -16,6 +16,8 @@ ChatGPT Image*.png
 
 # Runtime assets are deployed with the frontend. Only the source-side scratch pack stays local.
 yungang_game_ui_assets/
+yungang_ui_asset_pack/
+assets-source/
 
 # Runtime databases and local QA artifacts
 data/*.sqlite3

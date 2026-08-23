@@ -5,7 +5,7 @@
       "name": "踏查旧径",
       "action_type": "survey_route",
       "cost": 1,
-      "description": "先勘察再修护，可避免把研究线索投入错误路线。",
+      "description": "先勘察再修护，可避免把研究点投入错误路线。",
       "timing": "行动阶段",
       "target_rule": "相邻承压或阻断路线",
       "effect": {
@@ -13,7 +13,7 @@
         "risk_delta": -1,
         "clues": 1
       },
-      "best_use": "先勘察再修护，可避免把研究线索投入错误路线。",
+      "best_use": "先勘察再修护，可避免把研究点投入错误路线。",
       "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
       "combo_tags": [
         "route_governance"
@@ -25,14 +25,14 @@
       "name": "清理险段",
       "action_type": "restore_route",
       "cost": 1,
-      "description": "研究线索不足但必须立即恢复通行时使用。",
+      "description": "研究点不足但必须立即恢复通行时使用。",
       "timing": "行动阶段",
       "target_rule": "相邻承压或阻断路线",
       "effect": {
         "type": "restore_route",
         "ignore_clue_cost": true
       },
-      "best_use": "研究线索不足但必须立即恢复通行时使用。",
+      "best_use": "研究点不足但必须立即恢复通行时使用。",
       "limitations": "每张牌使用后进入行动牌弃牌区；同一行动不能重复结算。",
       "combo_tags": [
         "route_governance"
@@ -246,7 +246,9 @@
       "strategic_role": "路线侦察",
       "best_use": "路线承压但尚未阻断时使用，先降低风险再决定是否修护。",
       "limitations": "只能选择当前地点相邻路线；使用后进入行动牌弃牌区。",
-      "combo_tags": ["route_governance"],
+      "combo_tags": [
+        "route_governance"
+      ],
       "content_class": "gameplay"
     },
     {
@@ -263,9 +265,11 @@
         "clues": 1
       },
       "strategic_role": "路线侦察",
-      "best_use": "研究线索不足时使用，先获取路线信息和一枚研究线索。",
+      "best_use": "研究点不足时使用，先获取路线信息和一枚研究点。",
       "limitations": "只能选择当前地点相邻路线；使用后进入行动牌弃牌区。",
-      "combo_tags": ["archive_context"],
+      "combo_tags": [
+        "archive_context"
+      ],
       "content_class": "gameplay"
     },
     {
@@ -284,7 +288,9 @@
       "strategic_role": "团队支援",
       "best_use": "另一位同行者即将行动但行动力不足时使用。",
       "limitations": "只能选择当前地点的同行者；使用后进入行动牌弃牌区。",
-      "combo_tags": ["cross_origin"],
+      "combo_tags": [
+        "cross_origin"
+      ],
       "content_class": "gameplay"
     },
     {
@@ -301,7 +307,9 @@
       "strategic_role": "事件预案",
       "best_use": "事件即将结算且团队无法及时抵达目标时使用。",
       "limitations": "只能在事件预告阶段使用；使用后进入行动牌弃牌区。",
-      "combo_tags": ["route_governance"],
+      "combo_tags": [
+        "route_governance"
+      ],
       "content_class": "gameplay"
     }
   ]

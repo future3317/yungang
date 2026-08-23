@@ -18,7 +18,8 @@
     "role_upgrades": "role_upgrades.json",
     "objectives": "objectives.json",
     "achievements": "achievements.json",
-    "terminology": "terminology.json"
+    "terminology": "terminology.json",
+    "sources": "sources.json"
   },
   "domains": [
     "statue",

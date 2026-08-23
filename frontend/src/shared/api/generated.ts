@@ -21,23 +21,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/games": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create Game */
-        post: operations["create_game_api_games_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/archives": {
         parameters: {
             query?: never;
@@ -49,40 +32,6 @@ export interface paths {
         get: operations["list_archives_api_archives_get"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/games/{session_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Game */
-        get: operations["get_game_api_games__session_id__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/games/{session_id}/actions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Game Action */
-        post: operations["game_action_api_games__session_id__actions_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -421,30 +370,6 @@ export interface components {
                 [key: string]: components["schemas"]["JsonValue"];
             };
         };
-        /** ActionRequest */
-        ActionRequest: {
-            /** Player Id */
-            player_id: string;
-            action: components["schemas"]["ActionType"];
-            /** Expected Revision */
-            expected_revision: number;
-            /** Target Id */
-            target_id?: string | null;
-            /** Target Site Id */
-            target_site_id?: string | null;
-            /** Card Id */
-            card_id?: string | null;
-            /** Recipient Id */
-            recipient_id?: string | null;
-            /** Route Id */
-            route_id?: string | null;
-            /** Upgrade Id */
-            upgrade_id?: string | null;
-            /** Target Ids */
-            target_ids?: string[] | null;
-            /** Request Id */
-            request_id?: string | null;
-        };
         /** ActionTarget */
         ActionTarget: {
             /** Id */
@@ -559,25 +484,6 @@ export interface components {
              */
             minimum_distinct_players: number;
         };
-        /** CreateGameRequest */
-        CreateGameRequest: {
-            /** Player Ids */
-            player_ids?: string[];
-            /**
-             * Difficulty Id
-             * @default normal
-             */
-            difficulty_id: string;
-            /**
-             * Scenario Id
-             * @default sand_and_stone
-             */
-            scenario_id: string;
-            /** Seed */
-            seed?: number | null;
-            /** Daily Seed */
-            daily_seed?: string | null;
-        };
         /** CultureCardContract */
         CultureCardContract: {
             /** Id */
@@ -619,10 +525,18 @@ export interface components {
             rarity?: string | null;
             /** Site Tags */
             site_tags?: string[];
+            /** Source Ids */
+            source_ids?: string[];
             /** Strategic Role */
             strategic_role?: string | null;
             /** Technique Tags */
             technique_tags?: string[];
+            /** Historical Context */
+            historical_context?: string | null;
+            /** Gameplay Effect */
+            gameplay_effect?: string | null;
+            /** Strategy Hint */
+            strategy_hint?: string | null;
         };
         /** CultureEffectContract */
         CultureEffectContract: {
@@ -1664,8 +1578,6 @@ export interface components {
              * @default 0
              */
             route_connection_score: number;
-            /** Log */
-            log?: string[];
             /** Planning Marks */
             planning_marks?: {
                 [key: string]: components["schemas"]["PlanningMark"][];
@@ -1899,6 +1811,8 @@ export interface components {
              * @default 4
              */
             max_players: number;
+            /** Archive Id */
+            archive_id?: string | null;
         };
         /** RoomCredentials */
         RoomCredentials: {
@@ -2268,6 +2182,16 @@ export interface components {
             starting_clues?: number | null;
             /** Starting Weathering */
             starting_weathering?: number | null;
+            /** Tutorial */
+            tutorial?: boolean | null;
+            /** Tutorial Unlock Schedule */
+            tutorial_unlock_schedule?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            }[];
+            /** First Turn Allowed Actions */
+            first_turn_allowed_actions?: string[];
+            /** Selectable Role Ids */
+            selectable_role_ids?: string[];
         };
         /** ScenarioRuleContract */
         ScenarioRuleContract: {
@@ -2361,6 +2285,8 @@ export interface components {
             scene_asset?: string | null;
             /** Site Tags */
             site_tags?: string[];
+            /** Source Ids */
+            source_ids?: string[];
             /** Start Damage */
             start_damage?: number | null;
             /** Strategic Role */
@@ -2369,6 +2295,14 @@ export interface components {
             summary?: string | null;
             /** Type */
             type?: string | null;
+            /** Map Shape */
+            map_shape?: string | null;
+            /** Historical Context */
+            historical_context?: string | null;
+            /** Gameplay Effect */
+            gameplay_effect?: string | null;
+            /** Strategy Hint */
+            strategy_hint?: string | null;
         };
         /** SiteFacetContract */
         SiteFacetContract: {
@@ -2875,39 +2809,6 @@ export interface operations {
             };
         };
     };
-    create_game_api_games_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateGameRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameStateResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
     list_archives_api_archives_get: {
         parameters: {
             query?: never;
@@ -2924,72 +2825,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ArchiveSummary"][];
-                };
-            };
-        };
-    };
-    get_game_api_games__session_id__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                session_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameStateResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    game_action_api_games__session_id__actions_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                session_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ActionRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GameStateResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

@@ -2,7 +2,6 @@ from fastapi.testclient import TestClient
 
 from backend.app import app
 
-
 client = TestClient(app)
 
 
@@ -52,8 +51,6 @@ def test_multi_device_requires_roles_ready_and_blocks_legacy_session_access():
     assert client.post(f"/api/rooms/{room_id}/ready", headers={"X-Seat-Token": guest_token}, json={"ready": True}).status_code == 200
     started = client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": host_token})
     assert started.status_code == 200
-    session_id = started.json()["session_id"]
-    assert client.get(f"/api/games/{session_id}").status_code == 403
     assert client.get(f"/api/rooms/{room_id}/game", headers={"X-Seat-Token": "invalid"}).status_code == 401
     guest_state = client.get(f"/api/rooms/{room_id}/game", headers={"X-Seat-Token": guest_token})
     assert guest_state.status_code == 200
@@ -88,16 +85,3 @@ def test_local_host_configures_all_seats_without_joining_from_another_device():
     configure_local_seat(room_id, token, "seat-1", "pingcheng_artisan")
     configure_local_seat(room_id, token, "seat-2", "grassland_rider")
     assert client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": token}).status_code == 200
-
-
-def test_legacy_game_write_routes_are_removed():
-    created = client.post("/api/rooms", json={"play_mode": "local", "name": "房主", "max_players": 2})
-    payload = created.json()
-    room_id = payload["room"]["room_id"]
-    token = payload["seat_token"]
-    configure_local_seat(room_id, token, "seat-1", "pingcheng_artisan")
-    configure_local_seat(room_id, token, "seat-2", "grassland_rider")
-    started = client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": token})
-    session_id = started.json()["session_id"]
-    assert client.post(f"/api/games/{session_id}", json={"player_ids": ["intruder"]}).status_code == 405
-    assert client.post(f"/api/games/{session_id}/players", json={"player_id": "intruder"}).status_code == 405

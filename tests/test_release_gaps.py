@@ -1,8 +1,9 @@
 from copy import deepcopy
 
-from backend.app import app, engine, repo
 from fastapi.testclient import TestClient
 
+from backend.app import app
+from backend.dependencies import engine, repo
 
 client = TestClient(app)
 
@@ -146,7 +147,6 @@ def test_room_session_cannot_be_read_through_legacy_game_endpoint():
     started = client.post(f"/api/rooms/{room['room_id']}/start", headers={"X-Seat-Token": token})
     assert started.status_code == 200
     session_id = started.json()["session_id"]
-    assert client.get(f"/api/games/{session_id}").status_code == 403
     assert repo.get(session_id) is not None
 
 

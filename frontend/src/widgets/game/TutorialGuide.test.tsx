@@ -19,7 +19,17 @@ describe('TutorialGuide', () => {
     const onOpenChange = vi.fn();
     function Harness() {
       const [open, setOpen] = useState(false);
-      return <TutorialGuide open={open} onOpenChange={next => { onOpenChange(next); setOpen(next); }} triggerAction="move" progress={value} />;
+      return (
+        <TutorialGuide
+          open={open}
+          onOpenChange={(next) => {
+            onOpenChange(next);
+            setOpen(next);
+          }}
+          triggerAction="move"
+          progress={value}
+        />
+      );
     }
     render(<Harness />);
 
@@ -37,7 +47,7 @@ describe('TutorialGuide', () => {
     const value = progress();
     render(<TutorialGuide open onOpenChange={vi.fn()} progress={value} />);
 
-    fireEvent.click(screen.getByRole('button', { name: '跳过，自己探索' }));
+    fireEvent.click(screen.getByRole('button', { name: '跳过，自己寻访证据' }));
 
     expect(value.markManualSeen).toHaveBeenCalledTimes(1);
   });

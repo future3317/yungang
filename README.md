@@ -28,9 +28,9 @@
 
 | 模块 | 当前数量 |
 | --- | ---: |
-| 场景 | 6 |
-| 遗产节点 | 24 |
-| 路线 | 42 |
+| 场景 | 7 |
+| 遗产节点 | 28 |
+| 路线 | 46 |
 | 区域 | 4 |
 | 文化证据卡 | 48 |
 | 世界事件 | 24 |
@@ -122,9 +122,10 @@ npm run api:generate
 ## 重要接口
 
 - `GET /api/meta`：内容与展示元数据。
-- `POST /api/games`：创建本地旅程。
-- `GET /api/games/{session_id}`：读取旅程状态。
-- `POST /api/games/{session_id}/actions`：提交带 revision 和 request ID 的行动。
+- `GET /api/archives`：读取可继续的旅程归档。
+- `POST /api/rooms`：创建单人、本地协作或多设备旅程。
+- `GET /api/rooms/{room_id}/game`：读取带席位权限的旅程状态。
+- `POST /api/rooms/{room_id}/actions`：提交带 revision 和 request ID 的行动。
 - `POST /api/rooms`：创建大厅。
 - `GET /api/rooms/{room_id}`：读取大厅与席位状态。
 - `GET /api/rooms/{room_id}/game`：读取带 viewer 权限的游戏状态。

@@ -13,7 +13,7 @@
 - React 19 + TypeScript + Vite application in `frontend/src`.
 - TanStack Query owns server game/meta cache; local UI state is limited to focus, card dialog and mobile view.
 - SVG map reads node coordinates and connections from `/api/meta` and visual state from the game response.
-- The landing page creates or restores a shareable `/game/:sessionId` URL.
+- The landing page creates or restores a shareable `/room/:roomId` URL.
 - FastAPI serves the Vite `dist` build and falls back to `index.html` for SPA routes.
 
 ## Remaining evidence work

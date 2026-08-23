@@ -21,9 +21,31 @@ def main():
         for viewport in VIEWPORTS:
             context = browser.new_context(viewport={"width":viewport["width"],"height":viewport["height"]})
             page = context.new_page()
-            created = page.request.post(f"{BASE_URL}/api/games", data={"player_ids": ["p1", "p2"], "difficulty_id": "normal", "scenario_id": "sand_and_stone", "seed": 20260726})
-            session = created.json()["session_id"]
-            page.goto(f"{BASE_URL}/game/{session}")
+            created = page.request.post(
+                f"{BASE_URL}/api/rooms",
+                data={
+                    "play_mode": "solo",
+                    "name": "审查者",
+                    "difficulty_id": "guided",
+                    "scenario_id": "tutorial",
+                    "max_players": 2,
+                },
+            )
+            created.raise_for_status()
+            credentials = created.json()
+            room = credentials["room"]
+            room_id = room["room_id"]
+            token = credentials["host_token"]
+            for seat_id, role_id in (("seat-1", "pingcheng_artisan"), ("seat-2", "grassland_rider")):
+                response = page.request.post(
+                    f"{BASE_URL}/api/rooms/{room_id}/seats/{seat_id}",
+                    headers={"X-Seat-Token": token},
+                    data={"role_id": role_id, "ready": True},
+                )
+                response.raise_for_status()
+            started = page.request.post(f"{BASE_URL}/api/rooms/{room_id}/start", headers={"X-Seat-Token": token})
+            started.raise_for_status()
+            page.goto(f"{BASE_URL}/room/{room_id}/game")
             page.wait_for_selector(SELECTORS["map"], timeout=10000)
             page.wait_for_selector(SELECTORS["site"], timeout=10000)
             name = {"desktop_1920": "game_1920", "desktop_1440": "game_1440", "desktop_1280": "game_1280", "tablet_768": "game_768", "mobile_390": "game_390"}[viewport["name"]]

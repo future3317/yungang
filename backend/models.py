@@ -1,7 +1,24 @@
 from enum import StrEnum
 from typing import Dict, List, Literal, Optional
+
 from pydantic import BaseModel, ConfigDict, Field, JsonValue
-from .content_schemas import AchievementContract, ActionCardContract, CultureCardContract, DifficultyContract, DomainMetaContract, EventChainContract, EventContract, ObjectiveContract, ProjectContract, RegionContract, RoleContract, RoleUpgradeContract, ScenarioContract, SiteContract, SiteFacetContract, TaskContract, TerminologyContract
+
+from .content_schemas import (
+    ActionCardContract,
+    CultureCardContract,
+    DifficultyContract,
+    DomainMetaContract,
+    EventContract,
+    ObjectiveContract,
+    ProjectContract,
+    RegionContract,
+    RoleContract,
+    ScenarioContract,
+    SiteContract,
+    SiteFacetContract,
+    TaskContract,
+    TerminologyContract,
+)
 
 JsonObject = Dict[str, JsonValue]
 
@@ -587,6 +604,7 @@ class RoomCreateRequest(BaseModel):
     difficulty_id: str = "guided"
     seed: Optional[int] = None
     max_players: int = Field(default=4, ge=1, le=4)
+    archive_id: Optional[str] = None
 
 
 class RoomJoinRequest(BaseModel):
@@ -759,7 +777,6 @@ class SharedState(BaseModel):
     research_clues: int = 0
     prepared_event_ids: List[str] = Field(default_factory=list)
     route_connection_score: int = 0
-    log: List[str] = Field(default_factory=list)
     planning_marks: Dict[str, List[PlanningMark]] = Field(default_factory=dict)
     node_ability_uses: List[str] = Field(default_factory=list)
     phase: Phase = Phase.PLAYER_ACTION
@@ -793,7 +810,6 @@ class PublicSharedState(BaseModel):
     scenario_id: str = "sand_and_stone"
     research_clues: int = 0
     route_connection_score: int = 0
-    log: List[str] = Field(default_factory=list)
     planning_marks: Dict[str, List[PlanningMark]] = Field(default_factory=dict)
     phase: Phase = Phase.PLAYER_ACTION
     weathering_track: int = 0
@@ -822,7 +838,6 @@ class GameState(BaseModel):
     decks: Dict[str, List[str]] = Field(default_factory=lambda: {"culture": [], "events": []})
     market: List[str] = Field(default_factory=list)
     pending_choice: Optional[PendingChoice] = None
-    legal_actions: List[JsonObject] = Field(default_factory=list, exclude=True)
     action_options: List[ActionOption] = Field(default_factory=list)
     scenario_id: str = "sand_and_stone"
     seed: int = 0

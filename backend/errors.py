@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 RECOVERY_BY_CODE = {
     "not_active_player": "wait_for_active_player",
     "invalid_route": "choose_another_action",

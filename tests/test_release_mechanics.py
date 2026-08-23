@@ -1,61 +1,97 @@
 from fastapi.testclient import TestClient
 
-from backend.app import app, engine, repo
-
+from backend.app import app
+from backend.dependencies import engine, repo
 
 client = TestClient(app)
+_rooms: dict[str, str] = {}
+
+
+def _start_solo_room(session: str, difficulty_id: str = "normal", **options):
+    payload = {"play_mode": "solo", "name": "p1", "difficulty_id": difficulty_id, **options}
+    created = client.post("/api/rooms", json=payload)
+    assert created.status_code == 200
+    room_id = created.json()["room"]["room_id"]
+    token = created.json()["seat_token"]
+    roles = ["pingcheng_artisan", "western_dancer"]
+    for seat_index, role_id in enumerate(roles, start=1):
+        configured = client.post(
+            f"/api/rooms/{room_id}/seats/seat-{seat_index}",
+            headers={"X-Seat-Token": token},
+            json={"role_id": role_id, "ready": True},
+        )
+        assert configured.status_code == 200
+    started = client.post(f"/api/rooms/{room_id}/start", headers={"X-Seat-Token": token})
+    assert started.status_code == 200
+    _rooms[session] = room_id
+    return room_id, token
+
+
+def _token_for_room(room_id: str) -> str:
+    reconnected = client.post(f"/api/rooms/{room_id}/reconnect", json={"seat_id": "seat-1"})
+    assert reconnected.status_code == 200
+    return reconnected.json()["seat_token"]
+
 
 def create_for_test(session, **options):
-    created = client.post('/api/games', json={'player_ids': ['p1'], 'difficulty_id': 'normal', **options})
-    assert created.status_code == 200
-    source = repo.get(created.json()['session_id'])
-    source.session_id = session
-    repo.save(source)
-    return client.get(f'/api/games/{session}').json()
+    room_id, _ = _start_solo_room(session, **options)
+    token = _token_for_room(room_id)
+    game = client.get(f"/api/rooms/{room_id}/game", headers={"X-Seat-Token": token})
+    assert game.status_code == 200
+    return game.json()
 
+
+def game_action(session, state, **payload):
+    room_id = _rooms[session]
+    token = _token_for_room(room_id)
+    return client.post(f"/api/rooms/{room_id}/actions", headers={"X-Seat-Token": token}, json={**payload, "expected_revision": state["revision"]})
 
 
 def test_full_hand_requires_discard_before_exploration():
     session = "release-discard-test"
     state = create_for_test(session, difficulty_id="guided")
-    stored = repo.get(session)
-    player = stored.players[stored.shared.active_player_id]
+    stored = repo.get(state["session_id"])
+    active_player = stored.shared.active_player_id
+    player = stored.players[active_player]
     player.hand = stored.market[:3]
     player.ap = 3
     engine.refresh(stored)
     repo.save(stored)
-    state = client.get(f"/api/games/{session}").json()
+    token = _token_for_room(_rooms[session])
+    state = client.get(f"/api/rooms/{_rooms[session]}/game", headers={"X-Seat-Token": token}).json()
     card = next(target["payload"]["card_id"] for option in state["action_options"] if option["type"] == "explore" for target in option["targets"])
-    pending = client.post(f"/api/games/{session}/actions", json={"player_id": "p1", "action": "explore", "card_id": card, "expected_revision": state["revision"]})
+    pending = game_action(session, state, player_id=active_player, action="explore", card_id=card, target_id="pingcheng_ruins")
     assert pending.status_code == 200
     pending_state = pending.json()
     assert pending_state["pending_choice"]["kind"] == "discard"
     discard_id = pending_state["pending_choice"]["options"][0]["id"]
-    explored = client.post(f"/api/games/{session}/actions", json={"player_id": "p1", "action": "discard", "card_id": discard_id, "expected_revision": pending_state["revision"]})
+    explored = game_action(session, pending_state, player_id=active_player, action="discard", card_id=discard_id)
     assert explored.status_code == 200
-    assert card in explored.json()["players"]["p1"]["hand"]
+    assert card in explored.json()["players"][active_player]["hand"]
 
 
 def test_action_card_costs_ap_and_applies_declared_route_effect():
     state = create_for_test("action-card-cost")
-    stored = repo.get("action-card-cost")
-    player = stored.players[stored.shared.active_player_id]
+    stored = repo.get(state["session_id"])
+    active_player = stored.shared.active_player_id
+    player = stored.players[active_player]
     player.action_hand = ["action_01"]
     stored.decks["action"] = ["action_02"]
     route = next(route for route in stored.routes.values() if player.location in {route.from_site, route.to_site})
     route.status = "strained"
     route.risk = 2
     repo.save(stored)
-    state = client.get("/api/games/action-card-cost").json()
-    pending = client.post("/api/games/action-card-cost/actions", json={"player_id": "p1", "action": "use_action_card", "card_id": "action_01", "expected_revision": state["revision"]}).json()
-    assert pending["players"]["p1"]["ap"] == 3
+    token = _token_for_room(_rooms["action-card-cost"])
+    state = client.get(f"/api/rooms/{_rooms['action-card-cost']}/game", headers={"X-Seat-Token": token}).json()
+    pending = game_action("action-card-cost", state, player_id=active_player, action="use_action_card", card_id="action_01").json()
+    assert pending["players"][active_player]["ap"] == 3
     target = pending["pending_choice"]["options"][0]["id"]
-    resolved = client.post("/api/games/action-card-cost/actions", json={"player_id": "p1", "action": "use_action_card", "card_id": "action_01", "target_id": target, "expected_revision": pending["revision"]}).json()
-    assert resolved["players"]["p1"]["ap"] == 2
+    resolved = game_action("action-card-cost", pending, player_id=active_player, action="use_action_card", card_id="action_01", target_id=target).json()
+    assert resolved["players"][active_player]["ap"] == 2
     assert resolved["routes"][target]["risk"] == 1
     assert resolved["shared"]["research_clues"] == 1
-    assert "action_01" not in resolved["players"]["p1"]["action_hand"]
-    assert resolved["players"]["p1"]["action_hand"] == []
+    assert "action_01" not in resolved["players"][active_player]["action_hand"]
+    assert resolved["players"][active_player]["action_hand"] == []
 
 
 def test_culture_card_action_option_exposes_its_declared_immediate_effect():
@@ -159,7 +195,6 @@ def test_contribution_closes_a_satisfied_task_and_updates_heritage_state():
 def test_interpretation_path_requires_a_judgement_before_intervention():
     state = engine.new_game("interpretation-path", ["p1"])
     player = state.players["p1"]
-    site = state.sites[player.location]
     task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
     card = next(card_id for card_id, definition in engine.content.cards.items() if definition.get("domain") in task["required_domains"])
     task["required_card_count"] = 1

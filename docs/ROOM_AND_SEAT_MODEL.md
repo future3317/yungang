@@ -28,4 +28,4 @@
 | GET | `/api/rooms/{room_id}/game` | 读取带席位权限的游戏状态 |
 | POST | `/api/rooms/{room_id}/actions` | 使用席位凭证提交行动 |
 
-旧的 `/api/games/*` 保留给本地演示、旧存档和测试；正式 Lobby 不把 `player_id` 放入客户端行动请求。
+正式流程统一使用 `/api/rooms/*`；客户端行动请求不直接携带可伪造的房间席位身份，席位由 `X-Seat-Token` 认证。

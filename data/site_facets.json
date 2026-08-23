@@ -658,7 +658,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "eastern_cave_observatory_facet_material",
@@ -670,7 +670,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "eastern_cave_observatory_facet_route",
@@ -682,7 +682,7 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "central_cave_observatory_facet_image",
@@ -694,7 +694,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "central_cave_observatory_facet_material",
@@ -706,7 +706,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "central_cave_observatory_facet_route",
@@ -718,7 +718,7 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "western_cave_observatory_facet_image",
@@ -730,7 +730,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "western_cave_observatory_facet_material",
@@ -742,7 +742,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "western_cave_observatory_facet_route",
@@ -754,7 +754,7 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "digital_mapping_station_facet_image",
@@ -766,7 +766,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "digital_mapping_station_facet_material",
@@ -778,7 +778,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "digital_mapping_station_facet_route",
@@ -790,7 +790,7 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "environmental_monitoring_station_facet_image",
@@ -802,7 +802,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "environmental_monitoring_station_facet_material",
@@ -814,7 +814,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "environmental_monitoring_station_facet_route",
@@ -826,7 +826,7 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "visitor_emergency_point_facet_image",
@@ -838,7 +838,7 @@
         "statue",
         "pattern"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "visitor_emergency_point_facet_material",
@@ -850,7 +850,7 @@
         "architecture",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
     },
     {
       "id": "visitor_emergency_point_facet_route",
@@ -862,7 +862,144 @@
         "trade",
         "frontier"
       ],
-      "gameplay_hint": "适合探索、贡献证据或查看路线关系。"
+      "gameplay_hint": "适合寻访证据、贡献证据或查看路线关系。"
+    },
+    {
+      "id": "tutorial_cave_facet_image",
+      "site_id": "tutorial_cave",
+      "kind": "image",
+      "name": "导览造像窟·造像",
+      "description": "导览面向：观察简化造像细节，练习将造像类证据提交到节点委托。",
+      "evidence_domains": [
+        "statue"
+      ],
+      "gameplay_hint": "使用造像类证据卡完成此面向委托。"
+    },
+    {
+      "id": "tutorial_cave_facet_material",
+      "site_id": "tutorial_cave",
+      "kind": "material",
+      "name": "导览造像窟·材料",
+      "description": "导览面向：了解造像与石作材料的关系，为后续组合任务做准备。",
+      "evidence_domains": [
+        "statue",
+        "architecture"
+      ],
+      "gameplay_hint": "建筑证据可在此作为辅助证据使用。"
+    },
+    {
+      "id": "tutorial_cave_facet_route",
+      "site_id": "tutorial_cave",
+      "kind": "route",
+      "name": "导览造像窟·连接",
+      "description": "导览面向：练习从造像窟移动到相邻节点。",
+      "evidence_domains": [
+        "trade"
+      ],
+      "gameplay_hint": "点击相邻节点执行移动。"
+    },
+    {
+      "id": "tutorial_temple_facet_material",
+      "site_id": "tutorial_temple",
+      "kind": "material",
+      "name": "导览修护院·材料",
+      "description": "导览面向：观察节点损伤并使用建筑证据进行修护。",
+      "evidence_domains": [
+        "architecture"
+      ],
+      "gameplay_hint": "节点已有1点损伤，先提交证据再执行修护。"
+    },
+    {
+      "id": "tutorial_temple_facet_image",
+      "site_id": "tutorial_temple",
+      "kind": "image",
+      "name": "导览修护院·装饰",
+      "description": "导览面向：了解装饰线索如何辅助修护判断。",
+      "evidence_domains": [
+        "pattern",
+        "architecture"
+      ],
+      "gameplay_hint": "纹样证据可在此作为辅助证据。"
+    },
+    {
+      "id": "tutorial_temple_facet_route",
+      "site_id": "tutorial_temple",
+      "kind": "route",
+      "name": "导览修护院·连接",
+      "description": "导览面向：练习从修护院移动到相邻节点。",
+      "evidence_domains": [
+        "frontier"
+      ],
+      "gameplay_hint": "移动到古道口继续导览。"
+    },
+    {
+      "id": "tutorial_workshop_facet_material",
+      "site_id": "tutorial_workshop",
+      "kind": "material",
+      "name": "导览准备间·营造",
+      "description": "导览面向：组合造像与建筑两类证据完成跨领域委托。",
+      "evidence_domains": [
+        "architecture",
+        "statue"
+      ],
+      "gameplay_hint": "确保同时携带两类证据卡。"
+    },
+    {
+      "id": "tutorial_workshop_facet_image",
+      "site_id": "tutorial_workshop",
+      "kind": "image",
+      "name": "导览准备间·纹样",
+      "description": "导览面向：用纹样线索连接不同领域证据。",
+      "evidence_domains": [
+        "pattern"
+      ],
+      "gameplay_hint": "纹样证据可强化组合效果。"
+    },
+    {
+      "id": "tutorial_workshop_facet_route",
+      "site_id": "tutorial_workshop",
+      "kind": "route",
+      "name": "导览准备间·连接",
+      "description": "导览面向：练习从准备间移动到相邻节点。",
+      "evidence_domains": [
+        "trade"
+      ],
+      "gameplay_hint": "移动到古道口完成移动练习。"
+    },
+    {
+      "id": "tutorial_route_facet_route",
+      "site_id": "tutorial_route",
+      "kind": "route",
+      "name": "导览古道口·路线",
+      "description": "导览面向：作为移动中转点，连接导览区域。",
+      "evidence_domains": [
+        "frontier",
+        "trade"
+      ],
+      "gameplay_hint": "利用节点能力降低移动消耗。"
+    },
+    {
+      "id": "tutorial_route_facet_material",
+      "site_id": "tutorial_route",
+      "kind": "material",
+      "name": "导览古道口·设施",
+      "description": "导览面向：用建筑证据说明路线设施的维护状态。",
+      "evidence_domains": [
+        "architecture"
+      ],
+      "gameplay_hint": "建筑证据可在此作为辅助证据。"
+    },
+    {
+      "id": "tutorial_route_facet_image",
+      "site_id": "tutorial_route",
+      "kind": "image",
+      "name": "导览古道口·标记",
+      "description": "导览面向：识别路线标记与图像线索。",
+      "evidence_domains": [
+        "statue",
+        "pattern"
+      ],
+      "gameplay_hint": "造像或纹样证据可在此作为辅助证据。"
     }
   ]
 }

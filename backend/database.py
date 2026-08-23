@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from contextlib import contextmanager
-from pathlib import Path
+import json
 import os
 import sqlite3
-import json
 import threading
+from contextlib import contextmanager
+from pathlib import Path
 from typing import Any, Iterator
 
 

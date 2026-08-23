@@ -7,8 +7,8 @@ from backend.errors import error_detail, error_status
 
 def test_engine_business_errors_are_present_in_terminology_catalog():
     catalog = json.loads(Path('data/terminology.json').read_text(encoding='utf-8'))['errors']
-    engine = Path('backend/engine.py').read_text(encoding='utf-8')
-    codes = set(re.findall(r'raise ValueError\("([a-z][a-z0-9_]+)"\)', engine))
+    engine_source = "\n".join(path.read_text(encoding='utf-8') for path in Path('backend/engine').glob('*.py'))
+    codes = set(re.findall(r'raise ValueError\("([a-z][a-z0-9_]+)"\)', engine_source))
     assert codes <= set(catalog)
 
 

@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
+
 from .content_schemas import validate_content_contracts
 from .mechanisms import validate_content_mechanisms
+
 
 class Content:
     def __init__(self, root=None):

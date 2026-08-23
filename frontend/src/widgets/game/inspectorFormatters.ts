@@ -12,7 +12,9 @@ const originNames: Record<string, string> = {
   craft: '工坊',
   silk: '丝路',
 };
-export function originName(value?: string, meta?: Meta) { return displayText(meta, 'origins', value, originNames[value || ''] || '未标注来源'); }
+export function originName(value?: string, meta?: Meta) {
+  return displayText(meta, 'origins', value, originNames[value || ''] || '未标注来源');
+}
 
 const requirementNames: Record<string, string> = {
   cross_origin: '跨来源互证',
@@ -24,39 +26,53 @@ const requirementNames: Record<string, string> = {
 };
 
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
-  return values.map(value => {
-    if (meta.domain_meta?.[value]) return domainName(meta, value);
-    if (key.includes('origin')) return originName(value, meta);
-    return requirementNames[value] || comboNames[value] || '未标注条件';
-  }).join('、');
+  return values
+    .map((value) => {
+      if (meta.domain_meta?.[value]) return domainName(meta, value);
+      if (key.includes('origin')) return originName(value, meta);
+      return requirementNames[value] || comboNames[value] || '未标注条件';
+    })
+    .join('、');
 }
 
 export function formatProjectRequirements(meta: Meta, requirements: Record<string, unknown>) {
-  const labels: Record<string, string> = { clues: '研究线索', domains: '领域', origin_diversity: '来源数量', restoration_resource: '修护资源', action_type: '行动' };
-  return Object.entries(requirements).map(([key, value]) => {
-    if (key === 'domains' && Array.isArray(value)) return `${labels[key]}：${formatRequirementValues(meta, key, value.map(String))}`;
-    if (key === 'action_type' && typeof value === 'string') return `${labels[key]}：${actionLabels[value as keyof typeof actionLabels] || '当前行动'}`;
-    if (key === 'origin_diversity') return `${labels[key]}：至少 ${String(value)} 种`;
-    return `${labels[key] || '阶段条件'}：${Array.isArray(value) ? value.join('、') : String(value)}`;
-  }).join(' · ');
+  const labels: Record<string, string> = {
+    clues: '研究点',
+    domains: '领域',
+    origin_diversity: '来源数量',
+    restoration_resource: '修护资源',
+    action_type: '行动',
+  };
+  return Object.entries(requirements)
+    .map(([key, value]) => {
+      if (key === 'domains' && Array.isArray(value))
+        return `${labels[key]}：${formatRequirementValues(meta, key, value.map(String))}`;
+      if (key === 'action_type' && typeof value === 'string')
+        return `${labels[key]}：${actionLabels[value as keyof typeof actionLabels] || '当前行动'}`;
+      if (key === 'origin_diversity') return `${labels[key]}：至少 ${String(value)} 种`;
+      return `${labels[key] || '阶段条件'}：${Array.isArray(value) ? value.join('、') : String(value)}`;
+    })
+    .join(' · ');
 }
 
 export function formatProjectReward(reward?: Record<string, unknown>) {
   if (!reward) return '完成后获得阶段奖励';
   const labels: Record<string, (value: unknown) => string> = {
-    research_clues: value => `研究线索 +${String(value)}`,
-    restoration_resource: value => `修护资源 +${String(value)}`,
-    influence: value => `共同影响 +${String(value)}`,
-    route_connection: value => `路线连接 +${String(value)}`,
-    weathering_reduction: value => `风化压力 -${String(value)}`,
-    market_reserve: value => `保留市场线索机会 ×${String(value)}`,
-    archive_retrieve: value => `获得档案回收机会 ×${String(value)}`,
-    finale_unlock: value => value ? '解锁终局' : '',
+    research_clues: (value) => `研究点 +${String(value)}`,
+    restoration_resource: (value) => `修护资源 +${String(value)}`,
+    influence: (value) => `共同影响 +${String(value)}`,
+    route_connection: (value) => `路线连接 +${String(value)}`,
+    weathering_reduction: (value) => `风化压力 -${String(value)}`,
+    market_reserve: (value) => `保留市场证据卡机会 ×${String(value)}`,
+    archive_retrieve: (value) => `获得档案回收机会 ×${String(value)}`,
+    finale_unlock: (value) => (value ? '解锁终局' : ''),
   };
-  const text = Object.entries(reward).flatMap(([key, value]) => {
-    const formatter = labels[key];
-    return formatter ? [formatter(value)] : [];
-  }).filter(Boolean);
+  const text = Object.entries(reward)
+    .flatMap(([key, value]) => {
+      const formatter = labels[key];
+      return formatter ? [formatter(value)] : [];
+    })
+    .filter(Boolean);
   return text.length ? text.join(' · ') : '完成后获得阶段奖励';
 }
 
@@ -86,11 +102,15 @@ export function siteTypeName(type?: string) {
 }
 
 export function contentClassName(value?: string) {
-  return ({
-    documented: '遗产实景',
-    interpretive: '研究性解读',
-    gameplay: '协作场景',
-  } as Record<string, string>)[value || ''] || '遗产节点';
+  return (
+    (
+      {
+        documented: '遗产实景',
+        interpretive: '研究性解读',
+        gameplay: '协作场景',
+      } as Record<string, string>
+    )[value || ''] || '遗产节点'
+  );
 }
 
 export function eventTypeName(type?: string) {
@@ -98,7 +118,7 @@ export function eventTypeName(type?: string) {
     weathering: '风化压力',
     route: '路线变化',
     exchange: '交流变化',
-    research: '研究线索',
+    research: '研究点',
   };
   return labels[type || ''] || '区域事件';
 }
@@ -141,12 +161,13 @@ export function recordText(value: unknown, ...keys: string[]) {
 export function marketReason(card: ContentCard | undefined, task?: Task, useful = false, meta?: Meta) {
   const domain = card?.domain;
   const label = domain ? (meta ? domainName(meta, domain) : domain) : '';
-  if (useful && domain) return `回应此处委托的「${label}」线索，适合优先交付。`;
-  if (task?.required_origin_diversity && task.required_origin_diversity > 1) return '来自另一条脉络，可补足这段故事的互证。';
-  return domain ? `属于「${label}」线索，也许会在后续节点显出意义。` : '先收进手中，等待合适的节点召唤它。';
+  if (useful && domain) return `回应此处地点任务的「${label}」证据卡，适合优先交付。`;
+  if (task?.required_origin_diversity && task.required_origin_diversity > 1)
+    return '来自另一条脉络，可补足这段故事的互证。';
+  return domain ? `属于「${label}」证据卡，也许会在后续节点显出意义。` : '先收进手中，等待合适的节点召唤它。';
 }
 
 export function marketOutcome(card: ContentCard | undefined) {
   const instant = textField(card, 'instant_use_text', 'combo_reward_text');
-  return instant ? `收入手中；${instant}` : '收入手中；之后可交付给委托，或在合适时机使用。';
+  return instant ? `收入手中；${instant}` : '收入手中；之后可交付给地点任务，或在合适时机使用。';
 }

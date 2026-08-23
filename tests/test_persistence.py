@@ -1,7 +1,7 @@
 import pytest
 
-from backend.database import Database, database_target_from_environment
 from backend.content import Content
+from backend.database import Database, database_target_from_environment
 from backend.engine import GameEngine
 from backend.repository import GameRepository
 from backend.rooms import RoomRepository
