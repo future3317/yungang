@@ -924,11 +924,11 @@ html[data-reduced-motion='true'] *::after {
 }
 .dialog.choice-dialog {
   position: relative;
-  width: min(520px, calc(100vw - 28px));
-  max-height: min(680px, calc(100dvh - 32px));
+  width: min(456px, calc(100vw - 40px));
+  max-height: min(560px, calc(100dvh - 56px));
   display: grid;
-  gap: 13px;
-  padding: 26px;
+  gap: 10px;
+  padding: 20px;
   overflow-y: auto;
   color: #f5ead8;
   background: linear-gradient(145deg, #35493c, #1c2921);
@@ -939,7 +939,7 @@ html[data-reduced-motion='true'] *::after {
 .choice-dialog h2 {
   margin: 0;
   color: #fff1d3;
-  font-size: var(--type-page);
+  font-size: var(--type-entity);
 }
 .choice-dialog > p {
   margin: 0;
@@ -963,7 +963,7 @@ html[data-reduced-motion='true'] *::after {
 .choice-dialog .choice-list {
   display: grid;
   gap: 8px;
-  max-height: min(360px, 46dvh);
+  max-height: min(280px, 34dvh);
   overflow-y: auto;
 }
 .choice-dialog .choice-list button,

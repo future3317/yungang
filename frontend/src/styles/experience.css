@@ -91,10 +91,10 @@
   font-size: var(--type-label);
 }
 .action-preview {
-  width: min(440px, calc(100vw - 28px));
+  width: min(410px, calc(100vw - 40px));
   display: grid;
-  gap: 14px;
-  padding: 24px;
+  gap: 11px;
+  padding: 20px;
   color: #f5ead5;
   background: linear-gradient(145deg, #35483b, #202e25);
   border: 1px solid rgba(220, 186, 96, 0.52);
