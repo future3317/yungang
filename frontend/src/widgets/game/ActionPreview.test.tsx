@@ -17,7 +17,7 @@ describe('ActionPreview', () => {
     expect(screen.getByRole('heading', { name: '移动到云冈石窟' })).toBeInTheDocument();
     expect(screen.getByText('云冈石窟')).toBeInTheDocument();
     expect(screen.getByText('1 行动点')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /踏上这一步/ }));
+    fireEvent.click(screen.getByRole('button', { name: '确认行动：执行行动' }));
     expect(onConfirm).toHaveBeenCalledOnce();
   });
 

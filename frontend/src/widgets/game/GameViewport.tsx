@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import './GameViewport.module.css';
 
 export function GameViewport({ children }: { children: ReactNode }) {
   return (

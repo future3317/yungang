@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { Archive, RotateCcw, Trophy } from 'lucide-react';
+import { Archive, Trophy } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../shared/api/client';
 import { getRoomToken } from '../../shared/roomToken';
-import type { GameState, Meta } from '../../types/game';
+import type { GameState, Meta, ScoreState } from '../../types/game';
 import { metricLabel } from '../../widgets/game/gameUi';
 import { StateChangeList } from '../../widgets/game/StateChangeList';
 import { Button } from '../../widgets/ui/Primitives';
@@ -73,14 +73,17 @@ export function GameResultPage() {
     title: state.shared.outcome === 'victory' ? '旅程完成' : '旅程结束',
     body: '本局记录已保存，可从首页继续新的旅程。',
   };
-  const score = state.score || {
+  const score: ScoreState = {
     tasks: 0,
     routes: 0,
     diversity: 0,
     protection: 0,
+    resources: 0,
+    efficiency: 0,
     discovery: 0,
     total: 0,
     grade: 'stone',
+    ...state.score,
   };
   const closedSites = Object.values(state.sites).filter((site) => site.status === 'closed').length;
   const failureDetail =
@@ -173,6 +176,12 @@ export function GameResultPage() {
           <span>
             发现 <b>{score.discovery}</b>
           </span>
+          <span>
+            效率 <b>{score.efficiency}</b>
+          </span>
+          <span title="资源余量不计入团队评分">
+            资源余量 <b>{score.resources}</b>
+          </span>
         </div>
         {state.result?.completed_projects?.length ? (
           <div className="result-projects">
@@ -205,10 +214,6 @@ export function GameResultPage() {
         </div>
         <p className="result-seed">复盘种子：{state.seed ?? '本局随机'}</p>
         <div className="result-actions">
-          <Button context="result" onClick={() => navigate(`/room/${roomId}`)}>
-            <RotateCcw size={17} />
-            返回房间
-          </Button>
           <button onClick={() => navigate('/')}>
             <Archive size={17} />
             返回首页

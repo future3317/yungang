@@ -119,13 +119,13 @@ export type GameState = Omit<
   | 'projects'
   | 'objectives'
   | 'market'
-  | 'decks'
+  | 'deck_counts'
 > & {
   players: Record<string, Player>;
   sites: Record<string, Site>;
   tasks: Record<string, Task>;
   shared: Shared;
-  decks: Record<string, string[]>;
+  deck_counts: Record<string, number>;
   market: string[];
   action_options: ActionOption[];
   routes: Record<string, RouteState>;
@@ -150,6 +150,9 @@ export interface Action {
   request_id?: string;
   preview_delta?: Record<string, unknown>;
   requirements?: string[];
+  confirmation?: string;
+  target_kind?: 'site' | 'route' | 'player' | 'card' | 'project' | 'current' | 'none';
+  target_label?: string;
 }
 
 export interface TaskRequirement {

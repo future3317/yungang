@@ -82,6 +82,7 @@ export function GamePage() {
   const [strategyOption, setStrategyOption] = useState<ActionOption | null>(null);
   const [preview, setPreview] = useState<Action | null>(null);
   const [actionMode, setActionMode] = useState<ActionMode>(null);
+  const [requestedInspectorTab, setRequestedInspectorTab] = useState<'market' | null>(null);
   const [mobileView, setMobileView] = useState<'map' | 'mission' | 'hand'>('map');
   const [toasts, setToasts] = useState<Array<{ id: string; text: string }>>([]);
   const [inspectorOpen, setInspectorOpen] = useState(true);
@@ -320,6 +321,7 @@ export function GamePage() {
       setSelectedOption(null);
       setActionMode('explore');
       setInspectorOpen(true);
+      setRequestedInspectorTab('market');
       return;
     }
     if (option.targets.length === 1) {
@@ -641,6 +643,12 @@ export function GamePage() {
             meta={meta}
             site={focusedMeta}
             task={task}
+            event={currentEvent}
+            eventTargetIds={eventTargetIds}
+            eventTargetLabels={eventTargetLabels}
+            eventOpenTargetLabels={eventOpenTargetLabels}
+            requestedInspectorTab={requestedInspectorTab}
+            onInspectorTabHandled={() => setRequestedInspectorTab(null)}
             cards={cards}
             legal={legal}
             actionMode={actionMode}
@@ -866,8 +874,8 @@ function MobileHandPanel({
         证据卡 <b>{active.hand.length} / 3</b>
       </div>
       <div className="mobile-hand-grid">
-        {active.hand.map((id) => (
-          <button key={id} className="mobile-hand-card" data-testid="mobile-evidence-hand-card" onClick={() => onCard(id)}>
+        {active.hand.map((id, index) => (
+          <button key={`${id}-${index}`} className="mobile-hand-card" data-testid="mobile-evidence-hand-card" onClick={() => onCard(id)}>
             <img src={assetUrl(cards[id]?.icon_asset)} alt="" />
             <b>{cards[id]?.name || id}</b>
             <small>{cards[id]?.strategic_role || '打开查看这件证据卡'}</small>
@@ -881,7 +889,7 @@ function MobileHandPanel({
             策略牌
           </div>
           <div className="mobile-hand-grid">
-            {active.action_hand.map((id) => {
+            {active.action_hand.map((id, index) => {
               const definition = actionCards[id] || {};
               const option =
                 actionOptions.find((item) => item.type === 'use_action_card' && item.id.endsWith(`:${id}`)) ||
@@ -905,7 +913,7 @@ function MobileHandPanel({
                 } as ActionOption);
               return (
                 <button
-                  key={id}
+                  key={`${id}-${index}`}
                   className="mobile-hand-card"
                   disabled={mutationPending}
                   onClick={() => onStrategy(option)}

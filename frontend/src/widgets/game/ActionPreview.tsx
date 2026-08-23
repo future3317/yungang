@@ -42,7 +42,8 @@ export function ActionPreview({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
-  const targetName = resolveActionTargetName(action, sites, routes, players);
+  const targetName = action.target_label || resolveActionTargetName(action, sites, routes, players);
+  const targetKindLabel: Record<string, string> = { site: '目标地点', route: '目标路线', player: '目标同行者', card: '目标证据', project: '目标项目', current: '当前地点', none: '无需目标' };
   const cardName = action.card_id ? cards[action.card_id]?.name : undefined;
   const relation =
     action.type === 'interpret_evidence'
@@ -73,7 +74,7 @@ export function ActionPreview({
         <h2 id="action-preview-title">{heading}</h2>
         <div className="preview-grid">
           <span>
-            <small>目标地点</small>
+            <small>{targetKindLabel[action.target_kind || 'site'] || '行动目标'}</small>
             <b>{targetName}</b>
           </span>
           {relation && (
@@ -117,9 +118,9 @@ export function ActionPreview({
             <X size={15} />
             返回浏览
           </button>
-          <Button context="dialog" disabled={isPending} aria-label="确认行动：踏上这一步" onClick={onConfirm}>
+          <Button context="dialog" disabled={isPending} aria-label={`确认行动：${action.confirmation || '执行行动'}`} onClick={onConfirm}>
             <Check size={15} />
-            {isPending ? '正在结算…' : '踏上这一步'}
+            {isPending ? '正在结算…' : action.confirmation || '确认行动'}
           </Button>
         </div>
       </section>

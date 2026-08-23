@@ -26,8 +26,16 @@ export function ScenarioHeader({
   const goal = state.goal_status;
   const completedProjects =
     goal?.core_projects_completed ?? projects.filter((project) => project.status === 'completed').length;
-  const phase =
-    state.shared.phase === 'planning' ? '规划阶段' : state.shared.phase === 'pending_choice' ? '等待回应' : '行动阶段';
+  const phaseLabels: Record<string, string> = {
+    round_forecast: '事件预告',
+    planning: '规划阶段',
+    player_action: '行动阶段',
+    pending_choice: '等待回应',
+    event_resolution: '事件结算',
+    round_summary: '回合总结',
+    game_over: '旅程结束',
+  };
+  const phase = phaseLabels[state.shared.phase] || '当前阶段';
   const victory = goal?.victory_conditions || [];
   const failure = goal?.failure_conditions || [];
   const visibleVictory = victory.filter((item) => item.kind === 'progress');
@@ -88,7 +96,7 @@ export function ScenarioHeader({
 
       <div className="header-center">
         <section className="goal-summary" aria-label="胜利摘要">
-          <span title={primaryGoal.label || '核心目标'}>核心目标 · {primaryGoal.current} / {primaryGoal.target}</span>
+          <span title={primaryGoal.label || '核心目标'}>{primaryGoal.label || '核心目标'} · {primaryGoal.current} / {primaryGoal.target}</span>
           <span>风化压力 {weathering} / {weatheringLimit}</span>
           <Progress value={totalProgress} max={totalTarget} />
         </section>

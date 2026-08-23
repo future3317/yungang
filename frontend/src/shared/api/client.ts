@@ -1,5 +1,6 @@
 import type { Action, ArchiveSummary, GameState, Meta, PlayMode, Room, RoomCredentials, Task } from '../../types/game';
 import type { components, paths } from './generated';
+import { getRoomRecoveryToken } from '../roomToken';
 type ContractGameState = components['schemas']['GameStateResponse'];
 
 export class ApiError extends Error {
@@ -113,7 +114,7 @@ function requiredRecord<T extends object>(value: T | undefined, field: string): 
 function normalizeGameState(payload: ContractGameState): GameState {
   const players = requiredRecord(payload.players, 'players');
   const shared = requiredRecord(payload.shared, 'shared');
-  const decks = requiredRecord(payload.decks, 'decks');
+  const deckCounts = requiredRecord(payload.deck_counts, 'deck_counts');
   const market = requiredArray(payload.market, 'market');
   const actionOptions = requiredArray(payload.action_options, 'action_options');
   const routes = requiredRecord(payload.routes, 'routes');
@@ -170,7 +171,7 @@ function normalizeGameState(payload: ContractGameState): GameState {
     sites: payload.sites as GameState['sites'],
     tasks,
     shared: shared as GameState['shared'],
-    decks: decks as GameState['decks'],
+    deck_counts: deckCounts as GameState['deck_counts'],
     market,
     pending_choice: (payload.pending_choice as GameState['pending_choice']) || null,
     action_options: actionOptions as GameState['action_options'],
@@ -237,7 +238,16 @@ function archivesResponse(body: components['schemas']['ArchiveSummary'][]): Arch
 
 export const api = {
   meta: () => requestPath('/api/meta', 'get').then(metaResponse),
-  archives: () => requestPath('/api/archives', 'get').then(archivesResponse),
+  archives: (roomIds: string[]) =>
+    roomIds.length
+      ? requestPath('/api/archives', 'get', {
+          headers: {
+            'X-Archive-Capabilities': JSON.stringify(
+              Object.fromEntries(roomIds.map((roomId) => [roomId, getRoomRecoveryToken(roomId)]))
+            ),
+          },
+        }).then(archivesResponse)
+      : Promise.resolve([] as ArchiveSummary[]),
   createRoom: (options: {
     play_mode: PlayMode;
     name: string;
@@ -259,10 +269,10 @@ export const api = {
     requestPath('/api/rooms/{room_id}/join', 'post', { path: { room_id: roomId }, body: { name, role_id } }).then(
       credentialsResponse
     ),
-  roomReconnect: (roomId: string, seatId: string) =>
+  roomReconnect: (roomId: string, seatId: string, recoveryToken: string) =>
     requestPath('/api/rooms/{room_id}/reconnect', 'post', {
       path: { room_id: roomId },
-      body: { seat_id: seatId },
+      body: { seat_id: seatId, recovery_token: recoveryToken },
     }).then(credentialsResponse),
   roomReady: (roomId: string, token: string, ready: boolean) =>
     requestPath('/api/rooms/{room_id}/ready', 'post', {

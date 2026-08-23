@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import { LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
@@ -13,6 +13,7 @@ type MapActionMode = Extract<
 > | null;
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
+type ResizeCorner = 'nw' | 'ne' | 'sw' | 'se';
 export function getTargetRouteIds(
   routeLines: ReadonlyArray<Pick<RouteLine, 'id' | 'from' | 'to'>>,
   reachableIds: ReadonlySet<string>,
@@ -248,6 +249,8 @@ export function HeritageNetwork({
   const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity);
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
+  const [accessListSize, setAccessListSize] = useState({ width: 300, height: 360 });
+  const accessResizeStart = useRef<{ x: number; y: number; width: number; height: number; corner: ResizeCorner } | null>(null);
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -283,6 +286,8 @@ export function HeritageNetwork({
   );
   const applyTransform = (next: ZoomTransform, duration = 0) => {
     if (!svgRef.current || !zoomRef.current) return;
+    const reducedMotion = document.documentElement.dataset.reducedMotion === 'true' || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) duration = 0;
     const selection = select(svgRef.current);
     const start = transformRef.current;
     if (!duration) {
@@ -326,6 +331,27 @@ export function HeritageNetwork({
   const zoomBy = (factor: number) => {
     const nextScale = Math.max(0.85, Math.min(2.2, transform.k * factor));
     applyTransform(zoomIdentity.translate(50, 50).scale(nextScale).translate(-50, -50), 220);
+  };
+  const beginAccessResize = (event: ReactPointerEvent<HTMLButtonElement>, corner: ResizeCorner) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    accessResizeStart.current = { x: event.clientX, y: event.clientY, width: accessListSize.width, height: accessListSize.height, corner };
+  };
+  const moveAccessResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const start = accessResizeStart.current;
+    const frame = svgRef.current?.parentElement;
+    if (!start || !frame) return;
+    const fromLeft = start.corner.includes('w');
+    const fromTop = start.corner.includes('n');
+    setAccessListSize({
+      width: Math.max(240, Math.min(frame.clientWidth - 32, start.width + (fromLeft ? -(event.clientX - start.x) : event.clientX - start.x))),
+      height: Math.max(180, Math.min(frame.clientHeight - 32, start.height + (fromTop ? -(event.clientY - start.y) : event.clientY - start.y))),
+    });
+  };
+  const endAccessResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    accessResizeStart.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
   const lod = transform.k < 0.94 ? 'overview' : transform.k > 1.34 ? 'detail' : 'standard';
   const labelLayouts = useMemo(
@@ -444,29 +470,33 @@ export function HeritageNetwork({
                   );
               return (
                 <g key={line.id} className="route-hit-group">
-                  <path className="route-hit-area" d={d} aria-hidden="true" />
                   <path
-                  className={classes}
-                  d={d}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
-                  onMouseEnter={() => setHoveredRouteId(line.id)}
-                  onMouseLeave={() => setHoveredRouteId(null)}
-                  onFocus={() => setHoveredRouteId(line.id)}
-                  onBlur={() => setHoveredRouteId(null)}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    if (routeAction) onRouteSelect(line.id);
-                    else onFocus(line.to);
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault();
+                    className="route-hit-area"
+                    d={d}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
+                    onMouseEnter={() => setHoveredRouteId(line.id)}
+                    onMouseLeave={() => setHoveredRouteId(null)}
+                    onFocus={() => setHoveredRouteId(line.id)}
+                    onBlur={() => setHoveredRouteId(null)}
+                    onClick={(event) => {
+                      event.stopPropagation();
                       if (routeAction) onRouteSelect(line.id);
                       else onFocus(line.to);
-                    }
-                  }}
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        if (routeAction) onRouteSelect(line.id);
+                        else onFocus(line.to);
+                      }
+                    }}
+                  />
+                  <path
+                    className={classes}
+                    d={d}
+                    aria-hidden="true"
                   />
                 </g>
               );
@@ -530,6 +560,7 @@ export function HeritageNetwork({
                     }}
                   >
                     <title>{reason}</title>
+                    <circle className="node-hit-area" r={Math.max(5.8, size + 1.6)} fill="transparent" />
                     <circle className="node-back" r={size} />
                     <image
                       className="node-surface"
@@ -621,7 +652,10 @@ export function HeritageNetwork({
           </g>
         </g>
       </svg>
-      <details className="network-access-list">
+      <details
+        className="network-access-list"
+        style={{ '--access-width': `${accessListSize.width}px`, '--access-height': `${accessListSize.height}px` } as CSSProperties}
+      >
         <summary><span>地点与路线清单</span><small>点击可聚焦地图</small></summary>
         <div className="network-access-content">
           <section>
@@ -645,6 +679,19 @@ export function HeritageNetwork({
             })}
           </section>
         </div>
+        {(['nw', 'ne', 'sw', 'se'] as ResizeCorner[]).map((corner) => (
+          <button
+            key={corner}
+            type="button"
+            className={`${styles.resizeHandle} ${styles[`resize${corner.toUpperCase()}`]}`}
+            aria-label={`调整地点与路线清单大小（${corner}）`}
+            onPointerDown={(event) => beginAccessResize(event, corner)}
+            onPointerMove={moveAccessResize}
+            onPointerUp={endAccessResize}
+            onPointerCancel={endAccessResize}
+            onClick={(event) => event.stopPropagation()}
+          />
+        ))}
       </details>
 
     </div>

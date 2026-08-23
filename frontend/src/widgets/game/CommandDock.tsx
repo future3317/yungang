@@ -233,12 +233,12 @@ export function CommandDock({
           </div>
           <div className={styles.handCards}>
           {active.hand.length ? (
-            active.hand.map((id) => {
+            active.hand.map((id, index) => {
               const item = cards[id];
               const interpretAction = findCardAction(legal, 'interpret_evidence', id);
               const playAction = findCardAction(legal, 'play_card', id);
               return (
-                <button type="button" key={id} className={styles.handCard} data-testid="evidence-hand-card" onClick={() => onCard(id)}>
+                <button type="button" key={`${id}-${index}`} className={styles.handCard} data-testid="evidence-hand-card" onClick={() => onCard(id)}>
                   <img src={assetUrl(item?.icon_asset, 'interaction/resource-icons/scroll.webp')} alt="" />
                   <b>{item?.name || id}</b>
                   <small>{interpretAction ? '可用于当前研判' : playAction ? '可发动即时效果' : '查看这件证据'}</small>
@@ -257,7 +257,7 @@ export function CommandDock({
               </div>
               <p className={styles.strategyHandNote}>每轮每位同行者抽 1 张；使用后不会立即补牌，满手时需要先弃置。</p>
               <div className={styles.handCards}>
-              {active.action_hand.map((id) => {
+              {active.action_hand.map((id, index) => {
                 const definition = actionCards[id] || {};
                 const option =
                   actionOptions.find((item) => item.type === 'use_action_card' && item.id.endsWith(`:${id}`)) ||
@@ -287,7 +287,7 @@ export function CommandDock({
                 return (
                   <button
                     type="button"
-                    key={id}
+                    key={`${id}-${index}`}
                     className={`${styles.handCard} ${styles.strategyCard}`}
                     disabled={mutationPending}
                     onClick={() => setStrategy(option)}

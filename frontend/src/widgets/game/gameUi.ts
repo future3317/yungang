@@ -196,6 +196,7 @@ export function roleBadgeAsset(roleId: string | undefined, fallback?: string) {
 
 export function optionAction(option: ActionOption, target?: ActionOption['targets'][number]): Action {
   const payload = { ...(option.payload || {}), ...(target?.payload || {}) };
+  const targetKind = option.type.includes('route') || option.type === 'survey_route' || option.type === 'establish_connection' ? 'route' : option.type === 'exchange' ? 'player' : option.type === 'use_action_card' || option.type === 'explore' ? 'card' : option.type === 'plan' ? 'project' : target ? 'site' : 'current';
   return {
     ...payload,
     type: option.type,
@@ -204,6 +205,9 @@ export function optionAction(option: ActionOption, target?: ActionOption['target
     cost: option.cost?.ap,
     preview_delta: target?.preview_delta || option.preview_delta,
     requirements: option.requirements,
+    confirmation: option.confirmation,
+    target_kind: targetKind,
+    target_label: target?.label || option.label,
   } as Action;
 }
 

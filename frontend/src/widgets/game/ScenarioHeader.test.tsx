@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ScenarioHeader } from './ScenarioHeader';
 import type { GameState } from '../../types/game';
@@ -69,7 +69,7 @@ describe('ScenarioHeader', () => {
 
     const drawer = screen.getByLabelText('胜利条件清单');
     expect(drawer).toBeVisible();
-    expect(screen.getAllByText(/完成核心项目/).length).toBe(1);
+    expect(within(drawer).getByText(/完成核心项目/)).toBeVisible();
     expect(screen.getByText('关联：云冈多域总汇')).toBeVisible();
   });
 

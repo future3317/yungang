@@ -15,7 +15,7 @@ function makeGameResponse() {
     routes: {},
     projects: {},
     objectives: {},
-    decks: { culture: [], events: [], discard: [], archive: [], action: [] },
+    deck_counts: { culture: 0, events: 0, discard: 0, archive: 0, action: 0 },
     market: [],
     action_options: [],
     feedback_events: [],

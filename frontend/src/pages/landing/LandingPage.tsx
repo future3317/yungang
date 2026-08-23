@@ -3,7 +3,7 @@ import { Archive, ArrowRight, BookOpen, Compass, Dice5, Laptop, Users, Wifi } fr
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ApiError, api } from '../../shared/api/client';
-import { setRoomToken } from '../../shared/roomToken';
+import { setRoomRecoveryToken, setRoomToken } from '../../shared/roomToken';
 import type { Meta, PlayMode, Scenario } from '../../types/game';
 import '../../styles/lobby.css';
 import { ArchiveBrowser } from '../../widgets/archive/ArchiveBrowser';
@@ -105,6 +105,7 @@ export function LandingPage() {
         max_players: 2,
       });
       setRoomToken(result.room.room_id, result.seat_token);
+      if (result.recovery_token) setRoomRecoveryToken(result.room.room_id, result.recovery_token);
       navigate(`/room/${result.room.room_id}`);
     } catch (error) {
       setCreateError(error instanceof ApiError ? error.message : '旅程暂时无法创建，请检查服务后重试。');
@@ -131,6 +132,7 @@ export function LandingPage() {
         ...(seedText.trim() ? { seed: Number(seedText) || 1 } : {}),
       });
       setRoomToken(result.room.room_id, result.seat_token);
+      if (result.recovery_token) setRoomRecoveryToken(result.room.room_id, result.recovery_token);
       navigate(`/room/${result.room.room_id}`);
     } catch (error) {
       setCreateError(error instanceof ApiError ? error.message : '旅程暂时无法创建，请检查服务后重试。');

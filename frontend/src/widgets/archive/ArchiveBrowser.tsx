@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
 import type { ArchiveSummary, Meta } from '../../types/game';
+import { getKnownRoomIds } from '../../shared/roomToken';
 import { Button } from '../ui/Primitives';
 
 const statusLabels: Record<string, string> = {
@@ -34,7 +35,7 @@ export function ArchiveBrowser({ meta, onClose }: { meta?: Meta; onClose: () => 
     isLoading,
     isError,
     refetch,
-  } = useQuery({ queryKey: ['archives'], queryFn: api.archives });
+  } = useQuery({ queryKey: ['archives', getKnownRoomIds()], queryFn: () => api.archives(getKnownRoomIds()) });
   const roles = Object.fromEntries((meta?.roles || []).map((role) => [role.id, role.name]));
   const scenarios = Object.fromEntries((meta?.scenarios || []).map((scenario) => [scenario.id, scenario.name]));
 

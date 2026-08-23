@@ -421,8 +421,6 @@ export interface components {
         ArchiveSummary: {
             /** Archive Id */
             archive_id: string;
-            /** Session Id */
-            session_id: string;
             /** Room Id */
             room_id?: string | null;
             /** Mode */
@@ -645,6 +643,16 @@ export interface components {
              * @default 0
              */
             route_action_discount: number;
+            /**
+             * Hand Limit Bonus
+             * @default 0
+             */
+            hand_limit_bonus: number;
+            /**
+             * Virtual Exchange
+             * @default false
+             */
+            virtual_exchange: boolean;
         };
         /** EffectiveRulesPreview */
         EffectiveRulesPreview: {
@@ -705,6 +713,16 @@ export interface components {
              * @default 0
              */
             route_action_discount: number;
+            /**
+             * Hand Limit Bonus
+             * @default 0
+             */
+            hand_limit_bonus: number;
+            /**
+             * Virtual Exchange
+             * @default false
+             */
+            virtual_exchange: boolean;
             /** Scenario Id */
             scenario_id: string;
             /** Difficulty Id */
@@ -731,6 +749,12 @@ export interface components {
             content_class: string;
             /** Target Rule */
             target_rule: string;
+            /**
+             * Tone
+             * @default neutral
+             * @enum {string}
+             */
+            tone: "hazard" | "opportunity" | "neutral";
             /** Preview Delta */
             preview_delta?: {
                 [key: string]: components["schemas"]["JsonValue"];
@@ -907,9 +931,9 @@ export interface components {
                 [key: string]: components["schemas"]["TaskState"];
             };
             shared: components["schemas"]["PublicSharedState"];
-            /** Decks */
-            decks?: {
-                [key: string]: string[];
+            /** Deck Counts */
+            deck_counts?: {
+                [key: string]: number;
             };
             /** Market */
             market?: string[];
@@ -1171,6 +1195,10 @@ export interface components {
             created_at: string;
             /** Player Id */
             player_id?: string | null;
+            /** Target */
+            target?: {
+                [key: string]: components["schemas"]["JsonValue"];
+            } | null;
         };
         JsonValue: unknown;
         /** MetaResponse */
@@ -1813,6 +1841,8 @@ export interface components {
             max_players: number;
             /** Archive Id */
             archive_id?: string | null;
+            /** Archive Recovery Token */
+            archive_recovery_token?: string | null;
         };
         /** RoomCredentials */
         RoomCredentials: {
@@ -1821,6 +1851,8 @@ export interface components {
             host_token?: string | null;
             /** Seat Token */
             seat_token: string;
+            /** Recovery Token */
+            recovery_token?: string | null;
             /** Session Id */
             session_id?: string | null;
         };
@@ -1874,6 +1906,8 @@ export interface components {
         RoomReconnectRequest: {
             /** Seat Id */
             seat_id: string;
+            /** Recovery Token */
+            recovery_token: string;
         };
         /** RoomRoleRequest */
         RoomRoleRequest: {
@@ -2174,10 +2208,7 @@ export interface components {
             recommended_players?: number[];
             /** Restoration Resource */
             restoration_resource?: number | null;
-            /** Solo Rules */
-            solo_rules?: {
-                [key: string]: components["schemas"]["JsonValue"];
-            } | null;
+            solo_rules?: components["schemas"]["SoloRulesContract"] | null;
             /** Starting Clues */
             starting_clues?: number | null;
             /** Starting Weathering */
@@ -2367,6 +2398,39 @@ export interface components {
          * @enum {string}
          */
         SiteStatus: "stable" | "at_risk" | "closed";
+        /** SoloRulesContract */
+        SoloRulesContract: {
+            /**
+             * Controlled Roles
+             * @default 2
+             */
+            controlled_roles: number;
+            /**
+             * Planning Marks Per Round
+             * @default 1
+             */
+            planning_marks_per_round: number;
+            /**
+             * Route Action Discount
+             * @default 0
+             */
+            route_action_discount: number;
+            /**
+             * Max Rounds Bonus
+             * @default 0
+             */
+            max_rounds_bonus: number;
+            /**
+             * Hand Limit Bonus
+             * @default 0
+             */
+            hand_limit_bonus: number;
+            /**
+             * Virtual Exchange
+             * @default false
+             */
+            virtual_exchange: boolean;
+        };
         /** StageEvidence */
         StageEvidence: {
             /** Stage Id */
@@ -2814,7 +2878,9 @@ export interface operations {
     list_archives_api_archives_get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-archive-capabilities"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -2827,6 +2893,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ArchiveSummary"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

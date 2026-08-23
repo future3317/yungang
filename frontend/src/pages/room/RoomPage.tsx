@@ -18,7 +18,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ApiError, api } from '../../shared/api/client';
 import { fallbackPollInterval, useRoomEvents, type RoomEventState } from '../../shared/useRoomEvents';
-import { clearRoomToken, getRoomToken, setRoomToken } from '../../shared/roomToken';
+import { clearRoomToken, getRoomRecoverySeatId, getRoomRecoveryToken, getRoomToken, setRoomRecoveryToken, setRoomToken } from '../../shared/roomToken';
 import { assetUrl } from '../../shared/assetUrl';
 import type { ContentRole, Meta, Room, RoomSeat } from '../../types/game';
 import '../../styles/lobby.css';
@@ -40,6 +40,8 @@ export function RoomPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [token, setToken] = useState(() => getRoomToken(roomId));
+  const [recoveryToken, setRecoveryToken] = useState(() => getRoomRecoveryToken(roomId));
+  const [recoverySeatId] = useState(() => getRoomRecoverySeatId(roomId));
   const [name, setName] = useState('同行者');
   const [roleId, setRoleId] = useState('');
   const [pendingRoleSelection, setPendingRoleSelection] = useState<{ seatId: string; roleId: string } | null>(null);
@@ -90,18 +92,32 @@ export function RoomPage() {
     onSuccess: (result) => {
       setFeedback('');
       setRoomToken(roomId, result.seat_token);
+      if (result.recovery_token) {
+        setRoomRecoveryToken(roomId, result.recovery_token, result.room.viewer_seat_id);
+        setRecoveryToken(result.recovery_token);
+      }
       setToken(result.seat_token);
       queryClient.setQueryData(['room', roomId, result.seat_token], result.room);
+      if (result.room.status === 'completed') navigate(`/room/${roomId}/result`, { replace: true });
+      else if (result.room.status === 'in_progress' || result.room.status === 'paused')
+        navigate(`/room/${roomId}/game`, { replace: true });
     },
     onError: showError,
   });
   const reconnect = useMutation({
-    mutationFn: (seatId: string) => api.roomReconnect(roomId, seatId),
+    mutationFn: ({ seatId, capability }: { seatId: string; capability: string }) => api.roomReconnect(roomId, seatId, capability),
     onSuccess: (result) => {
       setFeedback('');
       setRoomToken(roomId, result.seat_token);
+      if (result.recovery_token) {
+        setRoomRecoveryToken(roomId, result.recovery_token, result.room.viewer_seat_id);
+        setRecoveryToken(result.recovery_token);
+      }
       setToken(result.seat_token);
       queryClient.setQueryData(['room', roomId, result.seat_token], result.room);
+      if (result.room.status === 'completed') navigate(`/room/${roomId}/result`, { replace: true });
+      else if (result.room.status === 'in_progress' || result.room.status === 'paused')
+        navigate(`/room/${roomId}/game`, { replace: true });
     },
     onError: showError,
   });
@@ -188,8 +204,8 @@ export function RoomPage() {
 
   const roles = metaQuery.data.roles;
   const takenRoles = new Set(room.seats.map((item) => item.role_id).filter(Boolean));
-  const startedWithoutToken = room.play_mode === 'multi_device' && !token && room.status !== 'lobby';
-  const selectedReconnectSeatId = reconnectSeatId || room.seats[0]?.seat_id || '';
+  const startedWithoutToken = !token && room.status !== 'lobby';
+  const selectedReconnectSeatId = reconnectSeatId || recoverySeatId || room.seats[0]?.seat_id || '';
   const activeSeat = room.seats.find((item) => item.seat_id === activeSeatId) || viewer;
   const canPickRole = Boolean(
     room.status === 'lobby' &&
@@ -316,7 +332,7 @@ export function RoomPage() {
               <Shield size={15} />
               恢复同行席位
             </div>
-            <p>这段旅程仍保存在房间中。选择你原来的席位，服务端会重新发放进入凭证，进度不会丢失。</p>
+            <p>这段旅程仍保存在房间中。请输入创建或加入时保存的恢复凭证，服务端才会重新发放进入凭证。</p>
             <label>
               恢复席位
               <select value={selectedReconnectSeatId} onChange={(event) => setReconnectSeatId(event.target.value)}>
@@ -327,10 +343,14 @@ export function RoomPage() {
                 ))}
               </select>
             </label>
+            <label>
+              恢复凭证
+              <input value={recoveryToken} onChange={(event) => setRecoveryToken(event.target.value)} placeholder="粘贴本机保存的恢复凭证" />
+            </label>
             <Button
               context="room-card"
-              disabled={reconnect.isPending || !selectedReconnectSeatId}
-              onClick={() => reconnect.mutate(selectedReconnectSeatId)}
+              disabled={reconnect.isPending || !selectedReconnectSeatId || recoveryToken.length < 32}
+              onClick={() => reconnect.mutate({ seatId: selectedReconnectSeatId, capability: recoveryToken })}
             >
               <DoorOpen size={16} />
               继续这段旅程

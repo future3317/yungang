@@ -1,5 +1,5 @@
 import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
 import styles from './JourneyTimeline.module.css';
@@ -39,6 +39,7 @@ function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
     .filter((effect) => effect.label || effect.before !== null || effect.after !== null || effect.delta !== null);
 }
 type TimelineFilter = 'all' | 'action' | 'event' | 'project' | 'choice' | 'system';
+type ResizeCorner = 'nw' | 'ne' | 'sw' | 'se';
 
 const filters: Array<{ id: TimelineFilter; label: string }> = [
   { id: 'all', label: '全部' },
@@ -59,9 +60,12 @@ const entryTypeLabels: Record<string, string> = {
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [size, setSize] = useState({ width: 560, height: 300 });
   const [dragging, setDragging] = useState(false);
+  const [resizing, setResizing] = useState(false);
   const drawerRef = useRef<HTMLDetailsElement | null>(null);
   const dragStart = useRef<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
+  const resizeStart = useRef<{ x: number; y: number; width: number; height: number; corner: ResizeCorner } | null>(null);
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
 
   const beginDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
@@ -94,12 +98,42 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
     setDragging(false);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
+  const beginResize = (event: ReactPointerEvent<HTMLButtonElement>, corner: ResizeCorner) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    resizeStart.current = { x: event.clientX, y: event.clientY, width: size.width, height: size.height, corner };
+    setResizing(true);
+  };
+  const moveResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const start = resizeStart.current;
+    const parent = drawerRef.current?.parentElement;
+    if (!start || !parent) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    const fromLeft = start.corner.includes('w');
+    const fromTop = start.corner.includes('n');
+    const nextWidth = Math.max(320, Math.min(parent.clientWidth - 32, start.width + (fromLeft ? -dx : dx)));
+    const nextHeight = Math.max(150, Math.min(Math.max(220, parent.clientHeight - 90), start.height + (fromTop ? -dy : dy)));
+    setSize({ width: nextWidth, height: nextHeight });
+    if (fromLeft || fromTop) {
+      setOffset((current) => ({
+        x: fromLeft ? current.x + (start.width - nextWidth) : current.x,
+        y: fromTop ? current.y + (start.height - nextHeight) : current.y,
+      }));
+    }
+  };
+  const endResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    resizeStart.current = null;
+    setResizing(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  };
 
   return (
     <details
       ref={drawerRef}
-      className={`${styles.drawer} ${dragging ? styles.dragging : ''}`.trim()}
-      style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+      className={`${styles.drawer} ${dragging || resizing ? styles.dragging : ''}`.trim()}
+      style={{ '--timeline-width': `${size.width}px`, '--timeline-body-height': `${size.height}px`, transform: `translate(${offset.x}px, ${offset.y}px)` } as CSSProperties}
     >
       <summary className={styles.summary} aria-label="旅程时间线">
         <span
@@ -155,6 +189,19 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
           )}
         </div>
       </div>
+      {(['nw', 'ne', 'sw', 'se'] as ResizeCorner[]).map((corner) => (
+        <button
+          key={corner}
+          type="button"
+          className={`${styles.resizeHandle} ${styles[`resize${corner.toUpperCase()}`]}`}
+          aria-label={`调整时间线大小（${corner}）`}
+          onPointerDown={(event) => beginResize(event, corner)}
+          onPointerMove={moveResize}
+          onPointerUp={endResize}
+          onPointerCancel={endResize}
+          onClick={(event) => event.stopPropagation()}
+        />
+      ))}
     </details>
   );
 }
