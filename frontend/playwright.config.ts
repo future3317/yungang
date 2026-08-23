@@ -34,7 +34,7 @@ export default defineConfig({
       cwd: '..',
       env: { YUNGANG_TEST_MODE: '1' },
       url: 'http://127.0.0.1:8000/api/meta',
-      reuseExistingServer: false,
+      reuseExistingServer: true,
       timeout: 120_000,
     },
     {

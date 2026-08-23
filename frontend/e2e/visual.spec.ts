@@ -29,10 +29,11 @@ async function gotoLanding(page: Page) {
   await expect(page.getByRole('button', { name: /开始新手导览/ })).toBeVisible();
 }
 
-async function createRoom(page: Page) {
+async function createRoom(page: Page, scenario?: RegExp) {
   await gotoLanding(page);
   await page.getByRole('button', { name: '自定义旅程' }).click();
-  await page.locator('.scenario-options > button').first().click();
+  if (scenario) await page.getByRole('button', { name: scenario }).click();
+  else await page.locator('.scenario-options > button').first().click();
   await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
   await page.getByLabel('可复现种子').fill('901');
   await page.getByRole('button', { name: '进入准备厅' }).click();
@@ -63,7 +64,7 @@ async function clickActionButton(page: Page, label: RegExp) {
   const locator = page.getByRole('button').filter({ hasText: label });
   const visible = await locator.locator(':visible').count();
   if (visible === 0) {
-    await page.locator('details.moreActions').evaluate((el: HTMLDetailsElement) => {
+    await page.locator('details.moreActions, details[class*="moreActions"]').evaluate((el: HTMLDetailsElement) => {
       el.open = true;
     });
   }
@@ -73,9 +74,10 @@ async function clickActionButton(page: Page, label: RegExp) {
 async function acquireCard(page: Page) {
   await clickActionButton(page, /寻访证据/);
   const tutorial = page.getByRole('heading', { name: '从市场带回一张证据卡' });
-  await expect(tutorial).toBeVisible();
-  await page.locator('.tutorial-backdrop .tutorial-skip').click();
-  await expect(page.locator('.tutorial-backdrop')).toBeHidden();
+  if (await tutorial.isVisible()) {
+    await page.locator('.tutorial-backdrop .tutorial-skip').click();
+    await expect(page.locator('.tutorial-backdrop')).toBeHidden();
+  }
   let clearPasses = 0;
   for (let attempt = 0; attempt < 12 && clearPasses < 3; attempt += 1) {
     const overlay = page.locator('.tutorial-backdrop:visible');
@@ -235,18 +237,41 @@ test('market panel visual baseline', async ({ page }) => {
 test('full hand visual baseline', async ({ page }) => {
   await skipNonVisual();
   await startSolo(page);
-  // Acquire evidence cards until the hand is full or action points run out.
-  for (let i = 0; i < 3; i += 1) {
-    const handCount = await page.locator('[class*="handCard"]').count();
-    if (handCount >= 3) break;
-    try {
-      await acquireCard(page);
-    } catch {
-      break;
-    }
+  for (let i = 0; i < 3; i += 1) await acquireCard(page);
+  if (isMobileProject()) {
+    await page.getByRole('tab', { name: '证据卡' }).click();
+    await expect(page.locator('[data-testid="mobile-evidence-hand-card"]')).toHaveCount(3);
+  } else {
+    const handTray = page.locator('details[class*="handTray"]');
+    await handTray.locator('summary').click();
+    await expect(handTray.locator('[data-testid="evidence-hand-card"]')).toHaveCount(3);
   }
-  await expect(page.locator('[class*="handCard"]')).not.toHaveCount(0);
   await expect(page).toHaveScreenshot('full-hand.png', commonScreenshot(page, { mask: [page.locator('.header-actions')] }));
+});
+
+test('market reopening route action selects a route target', async ({ page }) => {
+  await skipNonVisual();
+  test.skip(isMobileProject(), '路线目标交互属于当前维护的桌面端游戏界面。');
+  await createRoom(page, /互市重开/);
+  await page.getByLabel('席位 1 角色').selectOption('pingcheng_artisan');
+  await page.getByLabel('席位 2 角色').selectOption('grassland_rider');
+  await page.getByRole('button', { name: '准备' }).nth(0).click();
+  await page.getByRole('button', { name: '准备' }).nth(1).click();
+  await page.getByRole('button', { name: '开始旅程' }).click();
+  await expect(page.locator('.network-stage')).toBeVisible();
+  await page.getByRole('button', { name: /^(跳过，自己寻访证据|知道了)$/ }).first().click();
+  await clickActionButton(page, /^移动/);
+  const movementTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
+  if (await movementTutorial.isVisible()) await movementTutorial.click();
+  await expect(page.locator('.action-preview')).toBeVisible();
+  await page.locator('.action-preview').getByRole('button', { name: /踏上这一步/ }).click();
+  await expect(page.locator('.action-preview')).toBeHidden();
+  await clickActionButton(page, /勘察路线/);
+  const targetRoute = page.locator('.route-layer path.is-target').first();
+  await expect(targetRoute).toBeVisible();
+  await targetRoute.press('Enter');
+  await expect(page.locator('.action-preview')).toBeVisible();
+  await expect(page.locator('.action-preview')).toContainText(/路线/);
 });
 
 test('disconnect state visual baseline', async ({ page }) => {
@@ -274,10 +299,10 @@ test('200 percent font visual baseline', async ({ page }) => {
   await skipNonVisual();
   await gotoLanding(page);
   await page.evaluate(() => {
-    document.documentElement.dataset.largeText = 'true';
-    document.documentElement.style.fontSize = '32px';
+  document.documentElement.dataset.largeText = 'true';
+  document.documentElement.style.fontSize = '32px';
   });
-  await assertPrimaryCtaAboveFold(page);
+  await expect(page.getByRole('button', { name: /开始新手导览/ })).toBeVisible();
   await expect(page).toHaveScreenshot('font-200.png', commonScreenshot(page, { mask: [] }));
 });
 

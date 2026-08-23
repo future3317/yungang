@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Site } from '../../types/game';
-import { computeLabelLayouts, computeNodePositions, labelBox } from './HeritageNetwork';
+import { computeLabelLayouts, computeNodePositions, getTargetRouteIds, labelBox } from './HeritageNetwork';
 
 const site = (id: string, name: string, x: number, y: number): Site => ({
   id,
@@ -70,5 +70,14 @@ describe('map label layout', () => {
         expect(Math.hypot(values[index].x - values[next].x, values[index].y - values[next].y)).toBeGreaterThanOrEqual(
           9
         );
+  });
+
+  it('uses route ids for route actions instead of endpoint ids', () => {
+    const routes = [
+      { id: 'route-a-b', from: 'a', to: 'b' },
+      { id: 'route-a-c', from: 'a', to: 'c' },
+    ];
+    expect(getTargetRouteIds(routes, new Set(['route-a-c']), 'survey_route', 'a')).toEqual(new Set(['route-a-c']));
+    expect(getTargetRouteIds(routes, new Set(['b']), 'move', 'a')).toEqual(new Set(['route-a-b']));
   });
 });

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   eventDecisionBrief,
   interpretationConfidenceGuidance,
-  localizeTimelineMessage,
+  formatTimelineEntry,
   optionAction,
 } from './gameUi';
 import { errorText } from './contentLabels';
@@ -16,7 +16,7 @@ describe('game UI localization and previews', () => {
 
   it('resolves timeline target ids into player-facing names', () => {
     expect(
-      localizeTimelineMessage('放置规划标记（目标：route_shanhua_temple_yungang）', {
+      formatTimelineEntry({ message: '放置规划标记', target: { kind: 'route', id: 'route_shanhua_temple_yungang' } }, {
         sites: {},
         routes: { route_shanhua_temple_yungang: { name: '善化寺—云冈石窟' } as never },
         projects: {},
@@ -24,9 +24,9 @@ describe('game UI localization and previews', () => {
     ).toBe('放置规划标记（目标：善化寺—云冈石窟）');
   });
 
-  it('resolves half-width timeline target markers too', () => {
+  it('formats structured timeline targets', () => {
     expect(
-      localizeTimelineMessage('规划目标 (目标: project_01)', {
+      formatTimelineEntry({ message: '规划目标', target: { kind: 'project', id: 'project_01' } }, {
         sites: {},
         routes: {},
         projects: { project_01: { name: '云冈造像线索工程' } as never },

@@ -8,7 +8,9 @@ test('two devices can join, ready, and start a room', async ({ browser }) => {
   const host = await hostContext.newPage();
   const guest = await guestContext.newPage();
   await host.goto('/');
+  await host.getByRole('button', { name: '自定义旅程' }).click();
   await host.getByRole('button', { name: '多设备房间' }).click();
+  await host.locator('.scenario-options > button').first().click();
   await host.getByLabel('你的名字').fill('房主');
   await host.getByRole('button', { name: '进入准备厅' }).click();
   await expect(host).toHaveURL(/\/room\/room-/);
@@ -47,7 +49,9 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   const guest = await guestContext.newPage();
 
   await host.goto('/');
+  await host.getByRole('button', { name: '自定义旅程' }).click();
   await host.getByRole('button', { name: '多设备房间' }).click();
+  await host.locator('.scenario-options > button').first().click();
   await host.getByLabel('你的名字').fill('房主');
   await host.getByRole('button', { name: '进入准备厅' }).click();
   await expect(host).toHaveURL(/\/room\/room-/);

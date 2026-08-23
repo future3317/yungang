@@ -90,7 +90,7 @@ test('evidence selection opens the market without exposing internal terms', asyn
   await clickGameAction(page, /^(寻访|探索)/);
   const explorationTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await explorationTutorialClose.isVisible()) await explorationTutorialClose.click();
-  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点' }).click();
+  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await page.getByRole('tab', { name: '市场' }).click();
   await page.locator('.inspector-content').evaluate(element => { element.scrollTop = element.scrollHeight; });
   await expect(page.locator('.culture-card').first()).toBeVisible();

@@ -1,27 +1,28 @@
 from pathlib import Path
-import re
 import sys
 
 
 ROOT = Path(__file__).resolve().parents[1] / "frontend" / "src"
-MIN_REM = 0.8125
-FONT_SIZE = re.compile(r"font-size\s*:\s*([0-9.]+)(rem|px)")
-FONT_SHORTHAND = re.compile(r"(?<!-)\bfont\s*:\s*[^;{}]*?([0-9.]+)(rem|px)")
+import re
+
+DECLARATION = re.compile(r"(?P<property>font-size|(?<!-)font)\s*:\s*(?P<value>[^;{}]+)")
+SEMANTIC_TOKEN = re.compile(r"var\(--(?:(?:type|map-type)-[a-z0-9-]+|editor-map-label)\)")
 
 
 def main() -> int:
     failures: list[str] = []
     for path in ROOT.rglob("*.css"):
-        if path.name in {"tokens.css", "map.css"}:
+        if path.name == "tokens.css":
             continue
         text = path.read_text(encoding="utf-8")
-        for match in [*FONT_SIZE.finditer(text), *FONT_SHORTHAND.finditer(text)]:
-            value = float(match.group(1))
-            unit = match.group(2)
-            too_small = value < (MIN_REM if unit == "rem" else 13)
-            if too_small:
-                line = text.count("\n", 0, match.start()) + 1
-                failures.append(f"{path.relative_to(ROOT)}:{line}: visible text smaller than 13px")
+        for match in DECLARATION.finditer(text):
+            value = match.group("value").strip()
+            if value in {"inherit", "initial", "unset", "revert"} or SEMANTIC_TOKEN.search(value):
+                continue
+            line = text.count("\n", 0, match.start()) + 1
+            failures.append(
+                f"{path.relative_to(ROOT)}:{line}: {match.group('property')} must use a semantic typography token"
+            )
     if failures:
         print("Typography contract violations:")
         print("\n".join(failures))
