@@ -1,5 +1,5 @@
-import { ChevronDown, Clock3 } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
+import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
 
@@ -57,11 +57,51 @@ const entryTypeLabels: Record<string, string> = {
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const dragStart = useRef<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
 
+  const beginDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragStart.current = { x: event.clientX, y: event.clientY, offsetX: offset.x, offsetY: offset.y };
+    setDragging(true);
+  };
+  const moveDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    if (!dragStart.current) return;
+    setOffset({
+      x: dragStart.current.offsetX + event.clientX - dragStart.current.x,
+      y: dragStart.current.offsetY + event.clientY - dragStart.current.y,
+    });
+  };
+  const endDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
+    dragStart.current = null;
+    setDragging(false);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+  };
+
   return (
-    <details className="timeline-drawer">
+    <details
+      className={`timeline-drawer ${dragging ? 'is-dragging' : ''}`}
+      style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
+    >
       <summary aria-label="旅程时间线">
+        <span
+          className="timeline-drag-handle"
+          aria-label="拖动旅行时间线"
+          onPointerDown={beginDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+          }}
+        >
+          <GripVertical size={16} aria-hidden="true" />
+        </span>
         <Clock3 size={15} aria-hidden="true" />
         <span>旅程时间线</span>
         <small>{entries.length} 条记录</small>

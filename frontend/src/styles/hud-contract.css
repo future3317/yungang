@@ -1034,4 +1034,101 @@
     grid-column: auto;
     grid-row: auto;
   }
+
+  .hud-layout > .stage-column > .stage-caption[data-focused='true'] {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 10px;
+    width: min(760px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 9px 11px;
+    background: rgba(20, 34, 25, 0.94);
+    border: 1px solid rgba(220, 190, 112, 0.34);
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .hud-layout > .stage-column > .stage-caption.focus-card-collapsed {
+    right: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    margin: 0;
+    padding: 9px 12px;
+    color: #f0e5cc;
+    background: rgba(20, 34, 25, 0.94);
+    border: 1px solid rgba(220, 190, 112, 0.42);
+    border-radius: 8px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    font: 700 0.76rem/1.35 var(--font-body);
+    text-align: left;
+  }
+
+  .hud-layout > .stage-column > .stage-caption.focus-card-collapsed:hover,
+  .hud-layout > .stage-column > .stage-caption.focus-card-collapsed:focus-visible {
+    color: #fff4d8;
+    background: rgba(74, 67, 37, 0.94);
+    border-color: #d8b866;
+  }
+}
+
+.timeline-drawer {
+  width: min(620px, 100%);
+  margin: 0 auto 12px;
+  color: var(--ink-secondary);
+  transition: transform var(--motion-standard) var(--ease-out);
+}
+
+.timeline-drawer.is-dragging {
+  transition: none;
+}
+
+.timeline-drawer summary {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 11px;
+  color: #e9dcc1;
+  background: rgba(20, 34, 25, 0.94);
+  border: 1px solid rgba(220, 190, 112, 0.34);
+  border-radius: 9px;
+  box-shadow: 0 9px 22px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  list-style: none;
+}
+
+.timeline-drawer summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline-drawer summary small {
+  color: var(--ink-muted);
+}
+
+.timeline-drag-handle {
+  display: grid;
+  place-items: center;
+  color: var(--connection);
+  cursor: grab;
+  touch-action: none;
+}
+
+.timeline-drag-handle:active {
+  cursor: grabbing;
+}
+
+.timeline-drawer > .timeline-body {
+  max-height: min(48dvh, 440px);
+  margin-top: 7px;
+  overflow: auto;
+  padding: 10px;
+  color: var(--ink-secondary);
+  background: rgba(20, 34, 25, 0.97);
+  border: 1px solid rgba(220, 190, 112, 0.3);
+  border-radius: 9px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
