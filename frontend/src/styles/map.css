@@ -307,12 +307,12 @@
 }
 .route-layer path.is-hovered {
   stroke: #f5dd9b;
-  stroke-width: 1.35;
+  stroke-width: 0.86;
 }
 .map-node.node-route-hover .node-back,
 .map-node.node-focused .node-back {
   stroke: #f5dd9b;
-  stroke-width: 1.4;
+  stroke-width: 0.72;
 }
 .region-layer.lod-detail text {
   opacity: 0.3;
@@ -344,8 +344,10 @@
   pointer-events: stroke;
 }
 .route-layer path:focus-visible {
-  stroke: #fff2bf;
-  stroke-width: 1.6;
+  stroke: var(--connection);
+  stroke-width: 0.72;
+  stroke-dasharray: 2 1;
+  filter: drop-shadow(0 0 0.8px rgba(220, 190, 112, 0.45));
   outline: none;
 }
 .route-layer path.road-main {

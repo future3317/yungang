@@ -885,3 +885,29 @@ min-height: 0;
 visibility: hidden;
   pointer-events: none;
 }
+
+/* Desktop HUD contract: the rails own their scroll, while the world keeps
+   its full stage height and never inherits a panel's overflow rules. */
+@media (min-width: 1101px) {
+  :global(.game-shell) {
+    --hud-left-width: clamp(300px, 18vw, 360px);
+    --hud-right-width: 332px;
+  }
+
+  :global(.hud-slot-left),
+  :global(.hud-slot-right) {
+    min-height: 0;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
+    scrollbar-width: thin;
+  }
+
+  :global(.site-inspector) {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+}

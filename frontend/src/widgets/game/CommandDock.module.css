@@ -1,7 +1,7 @@
 .commandDeck {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 216px minmax(0, 1fr) 248px;
+  grid-template-columns: 360px minmax(0, 1fr) 264px;
   gap: 16px;
   height: 100%;
   box-sizing: border-box;
@@ -92,7 +92,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 920px;
+  max-width: 980px;
   min-width: 0;
   justify-self: center;
   justify-content: center;

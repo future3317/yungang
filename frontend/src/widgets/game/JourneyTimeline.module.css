@@ -101,7 +101,8 @@
 }
 
 @media (min-width: 1101px) {
-  .drawer {
+  .drawer,
+  .drawer[open] {
     left: max(16px, calc(50% - 280px));
     right: auto;
     width: min(560px, calc(100% - 32px));
