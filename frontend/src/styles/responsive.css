@@ -92,10 +92,7 @@
   }
 }
 @media (max-width: 430px) {
-  .network-corner span {
-    max-width: 250px;
-  }
   .sync-state {
-    font-size: 0.65rem;
+    font-size: var(--type-label);
   }
 }

@@ -8,6 +8,12 @@
 .map-selection-focus-art {
   pointer-events: none;
 }
+.network-frame {
+  --map-type-node: 1.5px;
+  --map-type-node-focus: 1.65px;
+  --map-type-status: 1.12px;
+  --map-type-region: 1.65px;
+}
 .network-frame > svg {
   position: absolute;
   inset: 0;
@@ -31,7 +37,7 @@
   mix-blend-mode: screen;
 }
 .node-back {
-  fill: rgba(17, 34, 23, 0.82);
+  fill: rgba(17, 34, 23, 0.48);
   stroke: rgba(229, 208, 151, 0.42);
   stroke-width: 0.28;
 }
@@ -45,7 +51,7 @@
 }
 .map-node .node-label {
   fill: #f2e5c5;
-  font-size: 1.45px;
+  font-size: var(--map-type-node);
   font-weight: 700;
   paint-order: stroke;
   stroke: rgba(17, 35, 25, 0.9);
@@ -54,7 +60,7 @@
 }
 .map-node .node-status {
   fill: #d7c58d;
-  font-size: 1.02px;
+  font-size: var(--map-type-status);
   paint-order: stroke;
   stroke: rgba(17, 35, 25, 0.86);
   stroke-width: 0.16px;
@@ -123,22 +129,19 @@
   stroke-dasharray: 2.2 1.2;
   filter: drop-shadow(0 0 1.2px rgba(213, 138, 89, 0.42));
 }
-.node-hover-card rect {
-  fill: rgba(17, 35, 25, 0.96);
-  stroke: rgba(224, 190, 103, 0.72);
-  stroke-width: 0.25;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.42));
+
+.event-target-ring {
+  fill: none;
+  stroke: #d58a59;
+  stroke-width: 0.42;
+  stroke-dasharray: 1.1 0.7;
+  filter: drop-shadow(0 0 0.9px rgba(213, 138, 89, 0.5));
 }
-.node-hover-card text {
-  fill: #f2e5c5;
-  font-size: 1.45px;
-  paint-order: stroke;
-  stroke: rgba(17, 35, 25, 0.86);
-  stroke-width: 0.18px;
-}
-.node-hover-card text + text {
-  fill: #d7c58d;
-  font-size: 1.05px;
+
+.event-target-dot {
+  fill: #f0c889;
+  stroke: rgba(38, 46, 34, 0.9);
+  stroke-width: 0.18;
 }
 .scene-thumb,
 .inspector-scene-art {
@@ -154,7 +157,7 @@
   display: grid;
   place-items: center;
   color: rgba(226, 201, 145, 0.55);
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   letter-spacing: 0.12em;
   content: '遗产图卷';
 }
@@ -205,46 +208,18 @@
 }
 .event-history-bar b {
   color: #f1d39a;
-  font-size: 0.86rem;
+  font-size: var(--type-label);
 }
 .event-history-bar span {
   color: #cfc4aa;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   line-height: 1.4;
 }
 .event-history-bar .event-history-kicker {
   color: #d9b866;
-  font-size: 0.66rem;
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: 0.08em;
-}
-.event-map-notice {
-  position: absolute;
-  z-index: 9;
-  top: 12px;
-  left: 16px;
-  display: grid;
-  gap: 3px;
-  max-width: 310px;
-  padding: 8px 11px;
-  color: #eadfc8;
-  background: rgba(61, 45, 33, 0.88);
-  border: 1px solid rgba(219, 160, 92, 0.46);
-  border-left: 3px solid var(--risk);
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.26);
-  backdrop-filter: blur(10px);
-  pointer-events: none;
-}
-.event-map-notice b {
-  color: #f0c889;
-  font-size: 0.76rem;
-}
-.event-map-notice span,
-.event-map-notice small {
-  color: #e0d2b7;
-  font-size: 0.7rem;
-  line-height: 1.4;
 }
 .condition-row {
   width: 100%;
@@ -267,64 +242,6 @@
 .condition-row:disabled {
   cursor: default;
 }
-.route-inspector {
-  position: absolute;
-  z-index: 7;
-  top: 74px;
-  right: 16px;
-  width: min(286px, calc(100% - 32px));
-  display: grid;
-  gap: 7px;
-  padding: 14px;
-  color: var(--ink-primary);
-  background: rgba(25, 37, 29, 0.96);
-  border: 1px solid rgba(218, 188, 116, 0.5);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lift);
-}
-.route-inspector > button {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 30px;
-  height: 30px;
-  color: var(--ink-primary);
-  background: transparent;
-  border: 1px solid var(--line-subtle);
-  border-radius: 50%;
-}
-.route-inspector h3 {
-  margin: 0;
-  padding-right: 25px;
-  font-size: 1rem;
-}
-.route-inspector p,
-.route-inspector small {
-  margin: 0;
-  color: var(--ink-secondary);
-  font-size: 0.77rem;
-  line-height: 1.5;
-}
-.route-inspector dl {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
-  margin: 0;
-}
-.route-inspector dl div {
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 5px;
-}
-.route-inspector dt {
-  color: var(--ink-muted);
-  font-size: 0.67rem;
-}
-.route-inspector dd {
-  margin: 2px 0 0;
-  color: var(--connection);
-  font: 700 0.78rem var(--font-data);
-}
 .network-access-list {
   position: absolute;
   z-index: 5;
@@ -342,7 +259,7 @@
   align-items: center;
   padding: 0 10px;
   cursor: pointer;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 .network-access-list > div {
   display: grid;
@@ -358,24 +275,18 @@
   background: transparent;
   border: 0;
   border-radius: 4px;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 .network-access-list button:hover,
 .network-access-list button:focus-visible {
   color: var(--ink-primary);
   background: var(--surface-selected);
 }
-.network-access-list + .network-corner {
-  pointer-events: none;
-}
 @media (max-width: 760px) {
   .network-access-list {
     left: 16px;
     right: auto;
     bottom: 16px;
-  }
-  .route-inspector {
-    top: 64px;
   }
 }
 @media (max-width: 1100px) {
@@ -391,11 +302,6 @@
     left: 16px;
     width: auto;
   }
-  .event-map-notice {
-    top: 62px;
-    left: 16px;
-    max-width: calc(100% - 90px);
-  }
 }
 @media (max-width: 760px) {
   .game-header .brand-group {
@@ -404,7 +310,7 @@
   .game-header .brand-scenario {
     max-width: 125px;
     padding-left: 8px;
-    font-size: 0.68rem;
+    font-size: var(--type-label);
   }
   .game-header .goal-summary {
     grid-template-columns: repeat(2, auto);
@@ -452,21 +358,20 @@
   stroke-width: 1.4;
 }
 .region-layer.lod-detail text {
-  opacity: 0.16;
+  opacity: 0.3;
 }
-.region-shape path {
-  fill: rgba(109, 132, 104, 0.08);
-  stroke: rgba(214, 196, 142, 0.16);
-  stroke-width: 0.28;
-}
-.region-shape text {
+.region-label text {
   stroke: none;
-  fill: rgba(235, 225, 194, 0.42);
-  font-size: 1.8px;
+  fill: rgba(235, 225, 194, 0.48);
+  font-size: var(--map-type-region);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  pointer-events: none;
 }
 .route-layer path {
   fill: none;
-  stroke: rgba(205, 210, 187, 0.48);
+  stroke: rgba(176, 185, 160, 0.34);
+  opacity: 0.38;
   cursor: pointer;
 }
 .route-layer path:focus-visible {
@@ -475,13 +380,13 @@
   outline: none;
 }
 .route-layer path.road-main {
-  stroke-width: 0.62;
+  stroke-width: 0.54;
 }
 .route-layer path.road-regional {
-  stroke-width: 0.5;
+  stroke-width: 0.42;
 }
 .route-layer path.road-local {
-  stroke-width: 0.38;
+  stroke-width: 0.3;
 }
 .map-node .node-label,
 .map-node .node-status {

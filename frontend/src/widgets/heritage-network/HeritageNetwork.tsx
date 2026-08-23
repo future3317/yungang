@@ -13,9 +13,6 @@ type MapActionMode = Extract<
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
 
-function routeStatusName(value: string | undefined, catalog: Meta | undefined) {
-  return displayText(catalog, 'statuses', value, '未标注状态');
-}
 function siteStatusName(value: string | undefined, catalog: Meta | undefined) {
   return displayText(catalog, 'statuses', value, '未标注状态');
 }
@@ -26,14 +23,6 @@ function nodeReason(site: Site, meta: SiteReference, current: boolean, target: b
   if (target) return '金色标记：这是当前行动可以选择的合法目标。';
   if (current) return '这里是当前行动者的位置。';
   return `${meta.name || '此处节点'}目前${siteStatusName(site.status, catalog)}。点击可查看地点任务、团队项目和事件说明。`;
-}
-
-function wrapMapText(value: string, maxChars = 18) {
-  const chars = Array.from(value);
-  const lines: string[] = [];
-  for (let index = 0; index < chars.length; index += maxChars)
-    lines.push(chars.slice(index, index + maxChars).join(''));
-  return lines.slice(0, 4);
 }
 
 function point(site: Site | ContentSite | undefined): Point {
@@ -82,7 +71,8 @@ export function computeNodePositions(sites: Site[], metas: Record<string, SiteRe
   [...sites]
     .sort((a, b) => a.id.localeCompare(b.id))
     .forEach((site, index) => {
-      const origin = point(metas[site.id] || site);
+      const meta = metas[site.id];
+      const origin = meta?.layout ? point(meta) : point(site);
       const width = labelWidth((metas[site.id] || site).name || site.id);
       let candidate = origin;
       const separated = (next: Point) =>
@@ -186,43 +176,6 @@ function regionLabelPosition(region: Region, sites: Record<string, SiteReference
     ? label
     : region.site_ids.map((id) => point(sites[id])).filter(Boolean)[0] || { x: 50, y: 50 };
 }
-function convexHull(points: Point[]) {
-  if (points.length < 3) return points;
-  const sorted = [...points].sort((a, b) => a.x - b.x || a.y - b.y);
-  const cross = (a: Point, b: Point, c: Point) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-  const half = (values: Point[]) =>
-    values.reduce<Point[]>((stack, item) => {
-      while (stack.length > 1 && cross(stack[stack.length - 2], stack[stack.length - 1], item) <= 0) stack.pop();
-      stack.push(item);
-      return stack;
-    }, []);
-  const lower = half(sorted);
-  const upper = half([...sorted].reverse());
-  return [...lower.slice(0, -1), ...upper.slice(0, -1)];
-}
-function softHull(points: Point[]) {
-  const hull = convexHull(points);
-  if (hull.length < 3) return '';
-  const expanded = hull.map((item, index) => {
-    const prev = hull[(index + hull.length - 1) % hull.length];
-    const next = hull[(index + 1) % hull.length];
-    return {
-      x: Math.max(2, Math.min(98, item.x + (item.x - (prev.x + next.x) / 2) * 0.22)),
-      y: Math.max(4, Math.min(96, item.y + (item.y - (prev.y + next.y) / 2) * 0.22)),
-    };
-  });
-  return (
-    expanded
-      .map((item, index) => {
-        const next = expanded[(index + 1) % expanded.length];
-        const mid = { x: (item.x + next.x) / 2, y: (item.y + next.y) / 2 };
-        return index
-          ? `Q ${item.x} ${item.y} ${mid.x} ${mid.y}`
-          : `M ${mid.x} ${mid.y} Q ${item.x} ${item.y} ${mid.x} ${mid.y}`;
-      })
-      .join(' ') + ' Z'
-  );
-}
 function routePath(from: Site | ContentSite, to: Site | ContentSite, route: RouteState) {
   const points = [point(from), ...(route.waypoints || []).map(([x, y]) => ({ x, y })), point(to)];
   return points.reduce(
@@ -230,15 +183,14 @@ function routePath(from: Site | ContentSite, to: Site | ContentSite, route: Rout
     ''
   );
 }
-function fitTransform(sites: Site[]) {
-  const points = sites.map(point);
+function fitTransform(points: Point[]) {
   if (!points.length) return zoomIdentity;
   const minX = Math.min(...points.map((item) => item.x)) - 5;
   const maxX = Math.max(...points.map((item) => item.x)) + 5;
   const minY = Math.min(...points.map((item) => item.y)) - 7;
   const maxY = Math.max(...points.map((item) => item.y)) + 7;
   const span = Math.max(maxX - minX, maxY - minY, 1);
-  const scale = Math.max(0.78, Math.min(2.2, 76 / span));
+  const scale = Math.max(1, Math.min(1.55, 82 / span));
   return zoomIdentity.translate(50 - ((minX + maxX) / 2) * scale, 50 - ((minY + maxY) / 2) * scale).scale(scale);
 }
 
@@ -275,7 +227,6 @@ export function HeritageNetwork({
   const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity);
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
-  const [hoveredSiteId, setHoveredSiteId] = useState<string | null>(null);
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -302,17 +253,12 @@ export function HeritageNetwork({
   );
   const nodePositions = useMemo(() => computeNodePositions(enabledSites, metaSites), [enabledSites, metaSites]);
   const mapPoint = (siteId: string) => nodePositions[siteId] || point(metaSites[siteId]);
-  const regionShapes = useMemo(
+  const regionLabels = useMemo(
     () =>
       regions
-        .map((region) => {
-          const points = region.hull_points?.length
-            ? region.hull_points
-            : region.site_ids.map((id) => nodePositions[id] || point(metaSites[id]));
-          return { ...region, shape: softHull(points), label: regionLabelPosition(region, metaSites) };
-        })
-        .filter((region) => region.shape),
-    [metaSites, nodePositions, regions]
+        .filter((region) => region.name)
+        .map((region) => ({ ...region, label: regionLabelPosition(region, metaSites) })),
+    [metaSites, regions]
   );
   const applyTransform = (next: ZoomTransform, duration = 0) => {
     if (!svgRef.current || !zoomRef.current) return;
@@ -334,12 +280,12 @@ export function HeritageNetwork({
     };
     requestAnimationFrame(step);
   };
-  const fitBounds = () => applyTransform(fitTransform(enabledSites), 280);
+  const fitBounds = () => applyTransform(fitTransform(Object.values(nodePositions)), 280);
   useEffect(() => {
     if (!svgRef.current) return;
     const selection = select(svgRef.current);
     const behavior = zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.72, 2.2])
+      .scaleExtent([0.85, 2.2])
       .on('zoom', (event) => {
         transformRef.current = event.transform;
         setTransform(event.transform);
@@ -382,8 +328,6 @@ export function HeritageNetwork({
   );
   const currentPoint = mapPoint(active.location);
   const selectedPoint = focusedId && focusedId !== active.location ? mapPoint(focusedId) : null;
-  const hintSiteId = hoveredSiteId;
-  const hintSite = hintSiteId ? enabledSites.find((site) => site.id === hintSiteId) : undefined;
   return (
     <div className="network-frame world-stage">
       <div className="network-tools">
@@ -423,9 +367,8 @@ export function HeritageNetwork({
         </g>
         <g className="map-world" transform={transform.toString()}>
           <g className={`region-layer lod-${lod}`}>
-            {regionShapes.map((region) => (
-              <g key={region.id} className={`region-shape region-${region.visual_token || region.id}`}>
-                <path d={region.shape} />
+            {regionLabels.map((region) => (
+              <g key={region.id} className={`region-label region-${region.visual_token || region.id}`}>
                 <text x={region.label.x} y={region.label.y}>
                   {region.name}
                 </text>
@@ -515,11 +458,9 @@ export function HeritageNetwork({
                 const kind = meta.node_kind || 'core';
                 const size = kind === 'core' ? 4.2 : kind === 'support' ? 3.1 : 2.7;
                 const labelPosition = labelLayouts[site.id];
-                const icon = meta.icon_asset
-                  ? assetUrl(meta.icon_asset)
-                  : assetUrl(
-                      `generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.webp`
-                    );
+                const icon = assetUrl(
+                  `generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.webp`
+                );
                 const frame =
                   site.status === 'closed' || site.status === 'at_risk'
                     ? 'damaged'
@@ -542,10 +483,6 @@ export function HeritageNetwork({
                     role="button"
                     tabIndex={0}
                     aria-label={`${meta.name || '此处节点'}：${reason}`}
-                    onPointerEnter={() => setHoveredSiteId(site.id)}
-                    onPointerLeave={() => setHoveredSiteId(null)}
-                    onFocus={() => setHoveredSiteId(site.id)}
-                    onBlur={() => setHoveredSiteId(null)}
                     onPointerDown={(event) => {
                       pointerRef.current = { x: event.clientX, y: event.clientY, time: performance.now() };
                     }}
@@ -595,7 +532,6 @@ export function HeritageNetwork({
                       height={size * 1.3}
                       preserveAspectRatio="xMidYMid meet"
                     />
-                    {alert && <circle className="node-mark" cx={size * 0.76} cy={-size * 0.76} r=".8" />}
                     {labelPosition && (kind === 'core' || lod === 'detail' || focusedId === site.id) && (
                       <text
                         className="node-label"
@@ -620,38 +556,7 @@ export function HeritageNetwork({
                 );
               })}
           </g>
-          {hintSite &&
-            (() => {
-              const meta = metaSites[hintSite.id] || hintSite;
-              const current = active.location === hintSite.id;
-              const target = actionMode !== null && reachableIds.has(hintSite.id) && !current;
-              const reason = nodeReason(hintSite, meta, current, target, eventTargets.has(hintSite.id), catalog);
-              const location = mapPoint(hintSite.id);
-              const lines = wrapMapText(reason);
-              const title = meta.name || '此处节点';
-              const width = Math.min(
-                64,
-                Math.max(38, Math.max(title.length * 1.8, ...lines.map((line) => line.length * 1.15)) + 4)
-              );
-              const height = 5 + lines.length * 2.7;
-              return (
-                <g
-                  className="node-hover-card"
-                  transform={`translate(${Math.max(8, Math.min(100 - width - 8, location.x - width / 2))} ${Math.max(8, location.y - height - 4)})`}
-                  pointerEvents="none"
-                >
-                  <rect width={width} height={height} rx="1.2" />
-                  <text x="1.2" y="2.8">
-                    {meta.name || '此处节点'}
-                  </text>
-                  {lines.map((line, index) => (
-                    <text key={index} x="1.2" y={5.6 + index * 2.5}>
-                      {line}
-                    </text>
-                  ))}
-                </g>
-              );
-            })()}
+
           <g className="event-target-layer" aria-hidden="true">
             {eventTargetIds.map((id) => {
               const target = metaSites[id];
@@ -705,16 +610,7 @@ export function HeritageNetwork({
           ))}
         </div>
       </details>
-      <div className="network-corner">
-        本局地图
-        <span>
-          {hoveredRoute
-            ? `线路：${routeStatusName(hoveredRoute.route.status, catalog)} · ${hoveredRoute.route.cost} 行动点 · 风险 ${hoveredRoute.route.risk}`
-            : actionMode
-              ? `正在选择目标 · 已突出合法线路 · Escape 取消`
-              : '滚轮缩放 · 拖动地图 · 双击适应全部节点'}
-        </span>
-      </div>
+
     </div>
   );
 }

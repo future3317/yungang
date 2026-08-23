@@ -60,6 +60,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
+  const drawerRef = useRef<HTMLDetailsElement | null>(null);
   const dragStart = useRef<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
 
@@ -72,9 +73,18 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   };
   const moveDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (!dragStart.current) return;
-    setOffset({
+    const drawer = drawerRef.current;
+    const stage = drawer?.closest('.game-shell')?.querySelector<HTMLElement>('.network-stage');
+    if (!drawer || !stage) return;
+    const drawerBox = drawer.getBoundingClientRect();
+    const stageBox = stage.getBoundingClientRect();
+    const next = {
       x: dragStart.current.offsetX + event.clientX - dragStart.current.x,
       y: dragStart.current.offsetY + event.clientY - dragStart.current.y,
+    };
+    setOffset({
+      x: Math.min(Math.max(next.x, offset.x + stageBox.left - drawerBox.left), offset.x + stageBox.right - drawerBox.right),
+      y: Math.min(Math.max(next.y, offset.y + stageBox.top - drawerBox.top), offset.y + stageBox.bottom - drawerBox.bottom),
     });
   };
   const endDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
@@ -85,6 +95,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
 
   return (
     <details
+      ref={drawerRef}
       className={`${styles.drawer} ${dragging ? styles.dragging : ''}`.trim()}
       style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
     >

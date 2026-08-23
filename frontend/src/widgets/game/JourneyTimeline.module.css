@@ -2,7 +2,7 @@
   position: absolute;
   right: 0;
   bottom: calc(100% + 10px);
-  width: min(620px, calc(100vw - 40px));
+  width: min(220px, calc(100vw - 40px));
   margin: 0;
   color: var(--ink-secondary);
   transition: transform var(--motion-standard) var(--ease-out);
@@ -34,6 +34,11 @@
 
 .summary small {
   color: var(--ink-muted);
+  font-size: var(--type-label);
+}
+
+.drawer[open] {
+  width: min(620px, calc(100vw - 40px));
 }
 
 .dragHandle {
@@ -75,4 +80,13 @@
 
 .entry:last-child {
   border-bottom: 0;
+}
+
+.entry b {
+  font-size: var(--type-body);
+}
+
+.entry small,
+.entry span {
+  font-size: var(--type-label);
 }

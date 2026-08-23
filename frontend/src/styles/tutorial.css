@@ -13,7 +13,7 @@
   border: 1px solid rgba(219, 184, 95, 0.55);
   border-radius: 999px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 .tutorial-trigger:hover,
 .tutorial-trigger:focus-visible {
@@ -85,7 +85,7 @@
   color: #e8ce8b;
   background: rgba(13, 24, 17, 0.38);
   border-left: 2px solid #d3ad57;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 .tutorial-progress {
   display: flex;
@@ -111,7 +111,7 @@
 }
 .tutorial-progress small {
   color: #cbbd9f;
-  font: 700 0.72rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
 }
 .tutorial-actions {
   display: flex;
@@ -125,7 +125,7 @@
   color: #c9bda4;
   background: transparent;
   border: 0;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 .tutorial-skip:hover {
   color: #f0dfba;
@@ -136,7 +136,7 @@
   gap: 6px;
   margin-bottom: 7px;
   color: #d5b869;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -149,7 +149,7 @@
   color: #ead8ae;
   background: rgba(184, 142, 62, 0.12);
   border-left: 2px solid #c8a457;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
   line-height: 1.5;
 }
 .task-rule-callout svg {
@@ -164,7 +164,7 @@
   background: rgba(185, 143, 61, 0.18);
   border: 1px solid rgba(221, 188, 104, 0.48);
   border-radius: 7px;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 .market-heading {
   display: flex;
@@ -177,7 +177,7 @@
 }
 .market-heading > span {
   color: #d7b865;
-  font: 700 0.72rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
 }
 .market-legend {
   display: flex;
@@ -185,7 +185,7 @@
   gap: 6px;
   margin-top: 10px;
   color: #bfb49e;
-  font-size: 0.69rem;
+  font-size: var(--type-label);
 }
 .market-legend span {
   padding: 4px 6px;
@@ -201,7 +201,7 @@
   overflow: hidden;
   margin-top: 3px;
   color: #718075;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-style: normal;
   line-height: 1.35;
   white-space: nowrap;
@@ -215,12 +215,12 @@
   gap: 3px;
   align-items: center;
   color: #80683c;
-  font-size: 0.74rem;
+  font-size: var(--type-label);
   text-align: right;
 }
 .market-row .culture-card > strong small {
   color: #9b7b3f;
-  font: 700 0.7rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
 }
 .market-outcome {
   display: grid;
@@ -234,15 +234,15 @@
 }
 .market-outcome b {
   color: #f0d58d;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 .market-outcome span {
-  font-size: 0.75rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 .market-outcome small {
   color: #bdb19a;
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   line-height: 1.4;
 }
 .empty-tab {
@@ -263,7 +263,7 @@
 }
 .scenario-name {
   color: #e5d3a7;
-  font: 700 0.76rem var(--font-display);
+  font: 700 var(--type-label) var(--font-display);
   letter-spacing: 0.06em;
   text-align: center;
 }
@@ -284,11 +284,11 @@
 }
 .evidence-legend strong {
   color: #ebd18c;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
 }
 .evidence-legend small {
   color: #bfb49e;
-  font-size: 0.64rem;
+  font-size: var(--type-label);
   line-height: 1.35;
 }
 .card-how-to-use {
@@ -298,7 +298,7 @@
   color: #e8d7ad;
   background: rgba(184, 142, 62, 0.12);
   border-left: 2px solid #c8a457;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
   line-height: 1.5;
 }
 .card-how-to-use b {
@@ -344,7 +344,7 @@
   box-shadow:
     0 16px 34px rgba(0, 0, 0, 0.42),
     inset 0 1px rgba(255, 246, 215, 0.08);
-  font-size: 0.76rem;
+  font-size: var(--type-label);
   line-height: 1.45;
   opacity: 0;
   visibility: hidden;
@@ -369,7 +369,7 @@
 }
 .market-card-tooltip b {
   color: #e1c477;
-  font: 700 0.7rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
   letter-spacing: 0.04em;
 }
 .market-card-tooltip span {
@@ -377,7 +377,7 @@
 }
 .market-card-tooltip small {
   color: #c4b68f;
-  font-size: 0.69rem;
+  font-size: var(--type-label);
 }
 .market-row .culture-card:hover .market-card-tooltip,
 .market-row .culture-card:focus-visible .market-card-tooltip {

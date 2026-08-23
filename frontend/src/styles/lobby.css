@@ -36,7 +36,7 @@
 }
 .play-mode-options button small {
   color: #6b776f;
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   line-height: 1.35;
 }
 .play-mode-options button.selected {
@@ -64,7 +64,7 @@
   justify-content: space-between;
   margin: 0 auto 18px;
   color: #cfc2a8;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 .room-topbar > span {
   display: inline-flex;
@@ -177,7 +177,7 @@
   color: #263b2d;
   background: #d0b268;
   border-radius: 50%;
-  font: 700 0.8rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
 }
 .seat-person {
   display: grid;
@@ -189,14 +189,14 @@
 }
 .seat-person small {
   color: #c7bca5;
-  font-size: 0.75rem;
+  font-size: var(--type-label);
 }
 .seat-status {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   color: #bcb39f;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 .seat-status.ready {
   color: #d8bf75;
@@ -278,7 +278,7 @@
   gap: 6px;
   margin: -10px 0 0;
   color: #d8bf75;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 .room-error {
   color: #e39b86;
@@ -303,7 +303,7 @@
   align-items: center;
   gap: 6px;
   color: #d7b866;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
   font-weight: 700;
 }
 @media (max-width: 680px) {
@@ -383,7 +383,7 @@
 }
 .help-grid p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--type-label);
   line-height: 1.55;
 }
 .help-card kbd {
@@ -392,7 +392,7 @@
   background: #1a291f;
   border: 1px solid rgba(214, 187, 119, 0.35);
   border-radius: 4px;
-  font: 0.75rem var(--font-data);
+  font: var(--type-data-sm) var(--font-data);
 }
 @media (max-width: 680px) {
   .help-grid {
@@ -507,7 +507,7 @@
 .role-selection-count {
   flex: none;
   color: #e3c675;
-  font: 700 0.75rem var(--font-data);
+  font: 700 var(--type-data-sm) var(--font-data);
 }
 .role-seat-switcher {
   display: flex;
@@ -527,7 +527,7 @@
   border-radius: 8px 8px 0 0;
 }
 .role-seat-switcher button span {
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -631,13 +631,13 @@
 .role-choice-copy small {
   overflow: hidden;
   color: #c4bba4;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .role-choice-copy em {
   color: #d5b867;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-style: normal;
 }
 .role-choice-arrow {
@@ -668,12 +668,12 @@
   border: 1px solid rgba(220, 187, 101, 0.28);
   border-left: 3px solid #d4b566;
   border-radius: 8px;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 .role-fit-note b {
   color: #f0d28a;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   letter-spacing: 0.04em;
 }
 .role-detail-card {
@@ -720,7 +720,7 @@
 .role-detail-heading span,
 .role-detail-section > span {
   color: #d7b866;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 .role-detail-heading h3 {
   margin: 4px 0;
@@ -732,7 +732,7 @@
 .role-detail-section p {
   margin: 0;
   color: #c8bea7;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -755,7 +755,7 @@
   color: #d9ccb0;
   background: rgba(196, 157, 75, 0.1);
   border-left: 2px solid #d4b566;
-  font-size: 0.74rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 .role-solo-note {
@@ -803,12 +803,12 @@
   gap: 6px;
   margin-top: 13px;
   color: #cfc2a8;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 .team-role-summary > b {
   flex-basis: 100%;
   color: #e1c676;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 .team-role-summary > span {
   display: inline-flex;
@@ -822,7 +822,7 @@
 }
 .team-role-summary > span i {
   color: #9da596;
-  font-size: 0.64rem;
+  font-size: var(--type-label);
   font-style: normal;
 }
 .team-role-summary > span.covered {
@@ -840,7 +840,7 @@
 .team-role-summary > small {
   flex-basis: 100%;
   color: #a9a999;
-  font-size: 0.68rem;
+  font-size: var(--type-label);
 }
 /* Historical archive browser: keep the restore flow in the same dark, mineral UI as the lobby. */
 .resume-actions {
@@ -908,7 +908,7 @@
 .archive-mode,
 .archive-status {
   color: #e5c889;
-  font-size: 0.75rem;
+  font-size: var(--type-label);
 }
 .archive-status {
   color: #b9caa9;
@@ -922,7 +922,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   color: #bdb6a5;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 .archive-meta span {
   display: inline-flex;
@@ -949,11 +949,11 @@
 }
 .archive-players small {
   color: #aebca7;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
 }
 .archive-progress {
   color: #b9c2af;
-  font: 0.76rem var(--font-data);
+  font: var(--type-data-sm) var(--font-data);
 }
 .archive-state {
   display: flex;

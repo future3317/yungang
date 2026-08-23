@@ -8,14 +8,12 @@ export function ScenarioHeader({
   state,
   scenarioName,
   connection,
-  gameReference,
   onFocusGoal,
   onOpenHelp,
 }: {
   state: GameState;
   scenarioName: string;
   connection: string;
-  gameReference?: string;
   onFocusGoal?: (ids: string[]) => void;
   onOpenHelp?: () => void;
 }) {
@@ -95,11 +93,6 @@ export function ScenarioHeader({
       <div className="header-actions">
         <span className="header-turn">第 {state.shared.turn} 回合</span>
         <span className="header-phase">{phase}</span>
-        {gameReference && (
-          <span className="game-reference" title="这段旅程的编号">
-            编号 {gameReference}
-          </span>
-        )}
         {connection !== '已连接' && (
           <span className={`sync-state ${connection === '离线' ? 'offline' : ''}`} aria-live="polite">
             <span />

@@ -102,6 +102,7 @@ export function TutorialGuide({
   actionOptions = [],
   triggerAction,
   progress,
+  showTrigger = true,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -109,6 +110,7 @@ export function TutorialGuide({
   actionOptions?: ActionOption[];
   triggerAction?: TutorialContext | null;
   progress: TutorialProgress;
+  showTrigger?: boolean;
 }) {
   const [step, setStep] = useState(0);
   const { markManualSeen, hasSeenContext, markContextSeen } = progress;
@@ -165,7 +167,7 @@ export function TutorialGuide({
 
   return (
     <>
-      <button
+      {showTrigger && <button
         type="button"
         className="tutorial-trigger"
         onClick={() => onOpenChange(true)}
@@ -174,7 +176,7 @@ export function TutorialGuide({
       >
         <HelpCircle size={18} />
         <span>怎么玩</span>
-      </button>
+      </button>}
       {open && (
         <div className="tutorial-backdrop" role="dialog" aria-modal="true" aria-labelledby="tutorial-title">
           <section className="tutorial-dialog">

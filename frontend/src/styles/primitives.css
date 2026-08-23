@@ -1,4 +1,4 @@
-@layer components {
+
   .ghost-button {
     min-height: 44px;
     border-radius: var(--radius-sm);
@@ -34,6 +34,5 @@
     border-radius: var(--radius-pill);
     color: var(--repair);
     border: 1px solid currentColor;
-    font: 700 var(--text-micro)/1 var(--font-data);
+    font: 700 var(--type-label)/1 var(--font-data);
   }
-}

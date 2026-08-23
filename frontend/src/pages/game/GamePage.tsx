@@ -36,7 +36,6 @@ import { CommandDock } from '../../widgets/game/CommandDock';
 import { PlanningPhase } from '../../widgets/game/PlanningPhase';
 import { ScenarioHeader } from '../../widgets/game/ScenarioHeader';
 import { SiteInspector } from '../../widgets/game/SiteInspector';
-import { ActionTargetGuide } from '../../widgets/game/JourneyGuide';
 import { RoundSummary } from '../../widgets/game/RoundSummary';
 import { ActionPreview } from '../../widgets/game/ActionPreview';
 import { TutorialGuide } from '../../widgets/game/TutorialGuide';
@@ -467,7 +466,6 @@ export function GamePage() {
               '未命名旅程'
             }
             connection={connection}
-            gameReference={roomId || state.session_id}
             onFocusGoal={(ids) => {
               const target = ids.find((id) => sites[id] || state.routes?.[id] || state.projects?.[id]);
               if (!target) return;
@@ -617,22 +615,6 @@ export function GamePage() {
                   </button>
                 </div>
               )}
-              <ActionTargetGuide
-                mode={actionMode === 'explore' ? null : actionMode}
-                actions={
-                  selectedOption?.type === actionMode
-                    ? selectedOption.targets.map((target) => optionAction(selectedOption, target))
-                    : []
-                }
-                sites={sites}
-                routes={state.routes}
-                cards={cards}
-                onRun={selectAction}
-                onCancel={() => {
-                  setActionMode(null);
-                  setSelectedOption(null);
-                }}
-              />
               <HeritageNetwork
                 sites={state.sites}
                 metaSites={sites}
@@ -785,6 +767,7 @@ export function GamePage() {
             actionOptions={actionOptions}
             triggerAction={tutorialIntent}
             progress={tutorialProgress}
+            showTrigger={false}
           />
           {handoffName && <SeatHandoff name={handoffName} onContinue={() => setHandoffName(null)} />}
           {strategyOption && (

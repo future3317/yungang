@@ -34,9 +34,15 @@
   height: 44px;
   padding: 0;
   color: var(--ink-secondary);
-  background: rgba(20, 34, 25, 0.9);
-  border: 1px solid var(--line-subtle);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 50%;
+}
+
+.site-inspector .inspector-collapse:hover,
+.site-inspector .inspector-collapse:focus-visible {
+  background: rgba(20, 34, 25, 0.9);
+  border-color: var(--line-subtle);
 }
 
 .inspector-rail {
@@ -59,27 +65,32 @@
 .site-inspector .inspector-summary {
   flex: 0 1 auto;
   min-height: 0;
-  max-height: 190px;
+  max-height: 144px;
   overflow-y: auto;
-  padding-right: 30px;
+  padding: 2px 38px 2px 0;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  column-gap: 9px;
+  align-content: start;
 }
 
 .site-inspector .inspector-summary h2 {
-  margin: 6px 0 4px;
+  margin: 0 0 3px;
   color: var(--ink-primary);
-  font: 700 1.42rem/1.16 var(--font-display);
+  font: 700 var(--type-entity)/var(--leading-title) var(--font-display);
 }
 
 .site-inspector .inspector-summary p {
   margin: 0;
   color: var(--ink-secondary);
-  font-size: var(--text-micro);
-  line-height: 1.48;
+  grid-column: 1 / -1;
+  font-size: var(--type-label);
+  line-height: var(--leading-label);
 }
 
 .site-inspector .inspector-summary .eyebrow {
   color: var(--connection);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
 }
 
 .site-inspector .inspector-summary h2,
@@ -91,7 +102,7 @@
 .site-inspector .inspector-site-mark {
   width: 52px;
   height: 52px;
-  margin: 5px 0;
+  margin: 0;
   overflow: hidden;
   border: 1px solid rgba(83, 88, 69, 0.28);
   border-radius: 10px;
@@ -143,6 +154,24 @@
   height: 100%;
 }
 
+.site-inspector .inspector-site-copy {
+  min-width: 0;
+}
+
+.site-inspector .inspector-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  color: var(--ink-muted);
+  font-size: var(--type-label);
+}
+
+.site-inspector .inspector-meta span:not(:last-child)::after {
+  margin-left: 4px;
+  color: var(--ink-muted);
+  content: '·';
+}
+
 .site-inspector .inspector-tabs {
   display: flex;
   flex-wrap: nowrap;
@@ -160,7 +189,7 @@
   background: rgba(20, 34, 25, 0.86);
   border: 1px solid var(--line-subtle);
   border-radius: 7px;
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
 }
 
 .site-inspector .inspector-tabs button[aria-selected='true'] {
@@ -174,6 +203,8 @@
   min-height: 0;
   overflow-y: auto;
   padding-right: 4px;
+  scrollbar-color: rgba(220, 190, 112, 0.38) transparent;
+  scrollbar-width: thin;
 }
 
 .site-inspector .inspector-content h3,
@@ -187,7 +218,7 @@
 .site-inspector .inspector-content > p {
   margin: 7px 0;
   color: var(--ink-secondary);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   line-height: 1.48;
 }
 
@@ -214,7 +245,7 @@
   background: rgba(20, 34, 25, 0.72);
   border: 1px solid var(--line-subtle);
   border-radius: 50%;
-  font: 700 var(--text-micro)/1 var(--font-data);
+  font: 700 var(--type-label)/1 var(--font-data);
 }
 
 .site-inspector .task-step > span.complete {
@@ -232,14 +263,14 @@
 .site-inspector .task-step b,
 .site-inspector .requirement-list b {
   color: var(--ink-primary);
-  font-size: 0.78rem;
+  font-size: var(--type-label);
   line-height: 1.35;
 }
 
 .site-inspector .task-step small,
 .site-inspector .requirement-list small {
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   line-height: 1.4;
 }
 
@@ -261,7 +292,7 @@
   background: rgba(20, 34, 25, 0.55);
   border: 1px solid var(--line-subtle);
   border-radius: 6px;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 
 .site-inspector .domain-list img {
@@ -297,12 +328,12 @@
 
 .site-inspector .evidence-ledger-head b {
   color: var(--ink-primary);
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 
 .site-inspector .evidence-ledger-head small {
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
 }
 
 .site-inspector .evidence-combo {
@@ -327,7 +358,7 @@
 .site-inspector .evidence-combo span {
   display: block;
   min-width: 0;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   line-height: 1.38;
 }
 
@@ -356,12 +387,12 @@
 
 .site-inspector .evidence-legend strong {
   color: var(--connection);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
 }
 
 .site-inspector .evidence-legend small {
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   line-height: 1.3;
 }
 
@@ -376,7 +407,7 @@
 
 .site-inspector .interpretation-hint {
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   line-height: 1.4;
 }
 
@@ -431,7 +462,7 @@
 .site-inspector .culture-card-copy small {
   overflow: hidden;
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   line-height: 1.35;
   text-overflow: ellipsis;
 }
@@ -467,7 +498,7 @@
   .game-shell {
     display: grid;
     grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
-    grid-template-rows: var(--hud-header-height) minmax(0, 1fr) auto;
+    grid-template-rows: var(--hud-header-height) minmax(0, 1fr) clamp(136px, 18vh, 176px);
     height: 100%;
     min-height: 0;
     padding: 0;
@@ -503,12 +534,12 @@
     background: rgba(24, 38, 29, 0.72);
     border: 1px solid rgba(220, 190, 112, 0.25);
     border-radius: var(--radius-sm);
-    font-size: 0.72rem;
+    font-size: var(--type-label);
   }
   .game-shell > .hud-slot-top .event-history-bar b {
     display: block;
     color: #f4e3b4;
-    font-size: 0.8rem;
+    font-size: var(--type-label);
   }
   .game-shell > .hud-slot-top .goal-summary {
     width: fit-content;
@@ -520,9 +551,11 @@
     grid-row: 2;
     display: grid;
     grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
+    grid-template-rows: minmax(0, 1fr);
     gap: var(--hud-rail-gap);
     min-width: 0;
     min-height: 0;
+    height: 100%;
     padding-top: 12px;
     overflow: hidden;
   }
@@ -556,6 +589,8 @@
     gap: 0;
     min-width: 0;
     min-height: 0;
+    height: 100%;
+    align-self: stretch;
     padding: 0 10px 8px;
   }
   .hud-layout > .stage-column > .round-summary {
@@ -566,6 +601,7 @@
     position: relative;
     min-width: 0;
     min-height: 0;
+    height: 100%;
     overflow: hidden;
   }
   .hud-layout > .stage-column > .network-stage .network-frame {
@@ -613,9 +649,10 @@
     background-clip: padding-box;
   }
   .game-shell > .hud-slot-bottom {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 3;
     min-width: 0;
+    margin: 0 12px 12px;
     z-index: 15;
     position: relative;
     pointer-events: auto;
@@ -704,8 +741,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .goal-drawer,
-  .stage-caption {
+  .goal-drawer {
     transition: none;
   }
 }
@@ -862,37 +898,6 @@
   scrollbar-width: thin;
 }
 
-.stage-caption .focus-card-toggle,
-.stage-caption .focus-clear {
-  appearance: none;
-  color: #f0e5cc;
-  background: rgba(20, 34, 25, 0.82);
-  border: 1px solid rgba(220, 190, 112, 0.42);
-  border-radius: 7px;
-  box-shadow: none;
-}
-
-.stage-caption .focus-card-toggle {
-  min-height: 34px;
-  padding: 0 12px;
-  white-space: nowrap;
-}
-
-.stage-caption .focus-clear {
-  min-width: 32px;
-  min-height: 32px;
-  padding: 0;
-}
-
-.stage-caption .focus-card-toggle:hover,
-.stage-caption .focus-card-toggle:focus-visible,
-.stage-caption .focus-clear:hover,
-.stage-caption .focus-clear:focus-visible {
-  color: #fff4d8;
-  background: rgba(101, 83, 43, 0.86);
-  border-color: #d8b866;
-}
-
 .site-inspector .project-tab {
   display: grid;
   gap: 10px;
@@ -918,12 +923,12 @@
 
 .site-inspector .project-stage-track b {
   color: var(--connection);
-  font-size: 0.74rem;
+  font-size: var(--type-label);
 }
 
 .site-inspector .project-stage-track span {
   color: var(--ink-primary);
-  font-size: 0.78rem;
+  font-size: var(--type-label);
 }
 
 .site-inspector .project-stage-track strong {
@@ -950,7 +955,7 @@
 .site-inspector .project-stage-card span,
 .site-inspector .project-stage-card small {
   color: var(--ink-secondary);
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 
@@ -980,12 +985,12 @@
 
 .site-inspector .project-stage-list b {
   color: inherit;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
 }
 
 .site-inspector .project-stage-list small {
   color: var(--ink-muted);
-  font-size: 0.67rem;
+  font-size: var(--type-label);
   line-height: 1.35;
 }
 

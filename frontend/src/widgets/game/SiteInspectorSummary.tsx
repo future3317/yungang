@@ -23,11 +23,13 @@ export function SiteInspectorSummary({
         <div className="inspector-site-mark">
           <img src={assetUrl(site.icon_asset || undefined, 'ornaments/heritage-medallion-1.webp')} alt="" />
         </div>
-        <h2>{site.name}</h2>
-        <div className="inspector-meta">
-          <span>{siteType}</span>
-          <span className="content-class-badge">{contentClassName(site.content_class)}</span>
-          <span className={site.status}>{statusName(site.status)}</span>
+        <div className="inspector-site-copy">
+          <h2>{site.name}</h2>
+          <div className="inspector-meta">
+            <span>{siteType}</span>
+            <span className="content-class-badge">{contentClassName(site.content_class)}</span>
+            <span className={site.status}>{statusName(site.status)}</span>
+          </div>
         </div>
         {site.status === 'at_risk' && (
           <div className="site-alert-explanation">

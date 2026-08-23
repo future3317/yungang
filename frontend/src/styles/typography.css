@@ -1,7 +1,7 @@
 body {
   font-family: var(--font-body);
-  font-size: var(--text-body);
-  line-height: 1.5;
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
 }
 h1,
 h2,
@@ -14,16 +14,15 @@ h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.16;
+  line-height: var(--leading-title);
 }
 .eyebrow,
 .section-label,
 .panel-kicker {
   color: var(--ink-muted);
-  font-size: var(--text-micro);
+  font-size: var(--type-label);
   font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  letter-spacing: 0.07em;
 }
 .section-label {
   display: inline-flex;
@@ -32,5 +31,5 @@ h3 {
 }
 small {
   color: var(--ink-muted);
-  font-size: var(--text-caption);
+  font-size: var(--type-label);
 }

@@ -14,7 +14,7 @@
   max-width: 650px;
 }
 .landing-copy h1 {
-  font-size: var(--text-display);
+  font-size: var(--type-display);
   letter-spacing: -0.07em;
   margin: 12px 0 20px;
 }
@@ -73,7 +73,7 @@
   display: grid;
   gap: 7px;
   font-weight: 700;
-  font-size: var(--text-caption);
+  font-size: var(--type-label);
 }
 .start-panel select,
 .start-panel input,
@@ -132,14 +132,14 @@
   align-items: baseline;
   gap: 6px;
   color: #4d5c52;
-  font-size: 0.75rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 .scenario-face-line em {
   flex: none;
   min-width: 52px;
   color: #8f7a52;
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   font-style: normal;
   font-weight: 700;
 }
@@ -154,7 +154,7 @@
   padding-top: 6px;
   border-top: 1px dashed rgba(180, 162, 122, 0.35);
   color: #7a6847;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   line-height: 1.45;
   font-style: normal;
 }
@@ -170,13 +170,13 @@
   color: #47574b;
   background: #eee8d8;
   border-left: 2px solid #b58b3d;
-  font-size: 0.76rem;
+  font-size: var(--type-label);
   line-height: 1.45;
 }
 .scenario-detail small,
 .field-note {
   color: #66746a;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   line-height: 1.45;
 }
@@ -190,7 +190,7 @@
   background: #f1ddd0;
   border: 1px solid #d19a83;
   border-radius: 7px;
-  font-size: 0.78rem;
+  font-size: var(--type-label);
   line-height: 1.4;
 }
 .landing-feedback button {
@@ -200,7 +200,7 @@
   background: transparent;
   border: 1px solid currentColor;
   border-radius: 5px;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
 }
 .scenario-options button.selected em {
   color: #f0dfbd;
