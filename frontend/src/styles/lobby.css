@@ -765,6 +765,46 @@
 .role-solo-note b {
   color: #f0d28a;
 }
+
+.role-selection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  color: #f0d28a;
+  font-size: var(--type-label);
+}
+
+.room-starting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 2px 0 0;
+  padding: 10px 12px;
+  color: #f0d28a;
+  background: rgba(196, 157, 75, 0.11);
+  border: 1px solid rgba(220, 187, 101, 0.28);
+  border-left: 3px solid #d4b566;
+  border-radius: 8px;
+}
+
+.room-starting > span {
+  display: grid;
+  gap: 2px;
+}
+
+.room-starting b {
+  font-size: var(--type-label);
+}
+
+.room-starting small {
+  color: #c8bea7;
+  font-size: var(--type-label);
+}
+
+.room-starting .spin {
+  flex: none;
+}
 @media (max-width: 760px) {
   .role-selection-panel {
     padding: 15px;

@@ -99,3 +99,11 @@
 .entry span {
   font-size: var(--type-label);
 }
+
+@media (min-width: 1101px) {
+  .drawer {
+    left: max(16px, calc(50% - 280px));
+    right: auto;
+    width: min(560px, calc(100% - 32px));
+  }
+}

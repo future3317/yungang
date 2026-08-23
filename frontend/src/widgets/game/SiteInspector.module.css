@@ -817,6 +817,12 @@ min-height: 100dvh;
     padding: 8px;
     overflow-x: hidden;
 }
+
+@media (min-width: 1101px) {
+  :global(.game-shell > .hud-slot-bottom) {
+    margin: 0 8px 8px;
+  }
+}
 :global(.game-header) {
 grid-template-columns: 1fr auto;
     height: auto;

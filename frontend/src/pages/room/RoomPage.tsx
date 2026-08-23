@@ -42,6 +42,7 @@ export function RoomPage() {
   const [token, setToken] = useState(() => getRoomToken(roomId));
   const [name, setName] = useState('同行者');
   const [roleId, setRoleId] = useState('');
+  const [pendingRoleSelection, setPendingRoleSelection] = useState<{ seatId: string; roleId: string } | null>(null);
   const [reconnectSeatId, setReconnectSeatId] = useState('');
   const [activeSeatId, setActiveSeatId] = useState('seat-1');
   const [feedback, setFeedback] = useState('');
@@ -115,7 +116,11 @@ export function RoomPage() {
   });
   const role = useMutation({
     mutationFn: (next: string) => update(api.roomRole(roomId, token, next)),
-    onError: showError,
+    onSuccess: () => setPendingRoleSelection(null),
+    onError: (error) => {
+      setPendingRoleSelection(null);
+      showError(error);
+    },
   });
   const seat = useMutation({
     mutationFn: ({
@@ -125,7 +130,11 @@ export function RoomPage() {
       seatId: string;
       update: { name?: string; role_id?: string; ready?: boolean };
     }) => update(api.roomSeat(roomId, token, seatId, next)),
-    onError: showError,
+    onSuccess: () => setPendingRoleSelection(null),
+    onError: (error) => {
+      setPendingRoleSelection(null);
+      showError(error);
+    },
   });
   const leave = useMutation({
     mutationFn: () => update(api.roomLeave(roomId, token)),
@@ -182,7 +191,6 @@ export function RoomPage() {
   const startedWithoutToken = room.play_mode === 'multi_device' && !token && room.status !== 'lobby';
   const selectedReconnectSeatId = reconnectSeatId || room.seats[0]?.seat_id || '';
   const activeSeat = room.seats.find((item) => item.seat_id === activeSeatId) || viewer;
-  const galleryRoleId = room.play_mode === 'multi_device' && !token ? roleId : activeSeat?.role_id || '';
   const canPickRole = Boolean(
     room.status === 'lobby' &&
     ((isManagedMode && isHost) || (!isManagedMode && token) || (room.play_mode === 'multi_device' && !token))
@@ -197,11 +205,14 @@ export function RoomPage() {
     }
     if (!activeSeat || (takenRoles.has(nextRoleId) && activeSeat.role_id !== nextRoleId)) return;
     if (!isManagedMode && viewer?.seat_id === activeSeat.seat_id) {
+      setPendingRoleSelection({ seatId: activeSeat.seat_id, roleId: nextRoleId });
       role.mutate(nextRoleId);
       return;
     }
-    if (isManagedMode && isHost)
+    if (isManagedMode && isHost) {
+      setPendingRoleSelection({ seatId: activeSeat.seat_id, roleId: nextRoleId });
       seat.mutate({ seatId: activeSeat.seat_id, update: { role_id: nextRoleId, ready: false } });
+    }
   };
   const modeLabel = room.play_mode === 'solo' ? '单人旅程' : room.play_mode === 'local' ? '本地协作' : '多设备房间';
   const title =
@@ -218,6 +229,12 @@ export function RoomPage() {
   const roomDifficulty = metaQuery.data.difficulty.find((item) => item.id === difficultyId);
   const selectedRoleIds = new Set(room.seats.map((item) => item.role_id).filter(Boolean));
   const missingRoles = roles.filter((role) => !selectedRoleIds.has(role.id));
+  const serverGalleryRoleId = room.play_mode === 'multi_device' && !token ? roleId : activeSeat?.role_id || '';
+  const galleryRoleId =
+    pendingRoleSelection && pendingRoleSelection.seatId === activeSeat?.seat_id
+      ? pendingRoleSelection.roleId
+      : serverGalleryRoleId;
+  const roleSelectionPending = role.isPending || seat.isPending;
 
   return (
     <main className="room-screen">
@@ -288,6 +305,7 @@ export function RoomPage() {
             selectedRoleId={galleryRoleId}
             takenRoles={takenRoles}
             managed={isManagedMode && isHost}
+            selectionPending={roleSelectionPending}
             onSeatChange={setActiveSeatId}
             onSelect={selectRole}
           />
@@ -398,6 +416,15 @@ export function RoomPage() {
             </div>
           </section>
         ) : null}
+        {start.isPending && (
+          <div className="room-starting" role="status" aria-live="polite">
+            <LoaderCircle className="spin" size={19} />
+            <span>
+              <b>正在点亮旅程…</b>
+              <small>正在保存角色配置并准备地图，请稍候。</small>
+            </span>
+          </div>
+        )}
         <div className="room-actions">
           {feedback && (
             <div className="room-feedback" role="alert">
@@ -416,10 +443,10 @@ export function RoomPage() {
           {isHost && (
             <Button context="room-card" disabled={!canStart || start.isPending} onClick={() => start.mutate()}>
               <Play size={16} />
-              开始旅程
+              {start.isPending ? '正在点亮旅程…' : '开始旅程'}
             </Button>
           )}
-          <button className="ghost-button" onClick={() => (token ? leave.mutate() : navigate('/'))}>
+          <button className="ghost-button" disabled={start.isPending || leave.isPending} onClick={() => (token ? leave.mutate() : navigate('/'))}>
             <ArrowLeft size={15} />
             {token ? '离开旅舍' : '返回首页'}
           </button>
@@ -442,6 +469,7 @@ function RoleGallery({
   selectedRoleId,
   takenRoles,
   managed,
+  selectionPending,
   onSeatChange,
   onSelect,
 }: {
@@ -451,6 +479,7 @@ function RoleGallery({
   selectedRoleId: string;
   takenRoles: Set<string | null | undefined>;
   managed: boolean;
+  selectionPending: boolean;
   onSeatChange: (seatId: string) => void;
   onSelect: (roleId: string) => void;
 }) {
@@ -467,7 +496,7 @@ function RoleGallery({
       ? `当前队伍还缺少“${selected.team_role}”，选择它能补齐这项分工。`
       : '当前队伍已有相近分工，可以按专长和行动风格选择。';
   return (
-    <section className="role-selection-panel" aria-labelledby="role-selection-title">
+    <section className="role-selection-panel" aria-labelledby="role-selection-title" aria-busy={selectionPending}>
       <div className="role-selection-heading">
         <div>
           <span className="eyebrow">角色展台</span>
@@ -477,6 +506,11 @@ function RoleGallery({
         <span className="role-selection-count">
           {roles.filter((role) => !takenRoles.has(role.id) || role.id === selectedRoleId).length} 位可选
         </span>
+        {selectionPending && (
+          <span className="role-selection-status" role="status">
+            <LoaderCircle className="spin" size={14} /> 正在保存角色选择…
+          </span>
+        )}
       </div>
       {managed && (
         <div className="role-seat-switcher" role="tablist" aria-label="选择要配置的席位">
@@ -486,6 +520,7 @@ function RoleGallery({
               role="tab"
               aria-selected={seat.seat_id === activeSeatId}
               className={seat.seat_id === activeSeatId ? 'active' : ''}
+              disabled={selectionPending}
               onClick={() => onSeatChange(seat.seat_id)}
             >
               <span>席位 {index + 1}</span>
@@ -504,7 +539,7 @@ function RoleGallery({
               <button
                 key={role.id}
                 className={`role-choice-card ${role.id === selectedRoleId ? 'selected' : ''} ${unavailable ? 'unavailable' : ''} role-accent-${asset.accent}`}
-                disabled={unavailable}
+                disabled={unavailable || selectionPending}
                 onClick={() => onSelect(role.id)}
                 aria-pressed={role.id === selectedRoleId}
               >
