@@ -250,7 +250,7 @@ function fitTransform(sites: Site[]) {
   const minY = Math.min(...points.map((item) => item.y)) - 7;
   const maxY = Math.max(...points.map((item) => item.y)) + 7;
   const span = Math.max(maxX - minX, maxY - minY, 1);
-  const scale = Math.max(0.78, Math.min(1.32, 76 / span));
+  const scale = Math.max(0.78, Math.min(2.2, 76 / span));
   return zoomIdentity.translate(50 - ((minX + maxX) / 2) * scale, 50 - ((minY + maxY) / 2) * scale).scale(scale);
 }
 

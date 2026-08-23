@@ -16,9 +16,9 @@
   height: 100%;
   overflow: hidden;
   padding: 12px;
-  color: #2b3028;
-  background: #e7e0d0;
-  border: 1px solid rgba(220, 190, 112, 0.55);
+  color: var(--ink-primary);
+  background: rgba(31, 40, 34, 0.96);
+  border: 1px solid var(--line-subtle);
   border-radius: 12px;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
 }
@@ -33,9 +33,9 @@
   width: 28px;
   height: 28px;
   padding: 0;
-  color: #5a604f;
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(78, 83, 67, 0.25);
+  color: var(--ink-secondary);
+  background: rgba(20, 34, 25, 0.9);
+  border: 1px solid var(--line-subtle);
   border-radius: 50%;
 }
 
@@ -66,7 +66,7 @@
 .site-inspector .inspector-summary h2,
 .site-inspector .inspector-summary p,
 .site-inspector .inspector-summary span {
-  color: #2b3028;
+  color: var(--ink-primary);
 }
 
 .site-inspector .inspector-site-mark {
@@ -112,9 +112,9 @@
   flex: 1 1 44%;
   min-width: 0;
   padding: 7px 8px;
-  color: #384033;
-  background: rgba(255, 255, 255, 0.42);
-  border: 1px solid rgba(83, 88, 69, 0.24);
+  color: var(--ink-secondary);
+  background: rgba(20, 34, 25, 0.86);
+  border: 1px solid var(--line-subtle);
   border-radius: 7px;
   font-size: 0.72rem;
 }
@@ -141,9 +141,9 @@
 }
 
 .site-inspector .inspector-content button:not(.primary-action) {
-  color: #354033;
-  background: rgba(255, 255, 255, 0.34);
-  border: 1px solid rgba(83, 88, 69, 0.25);
+  color: var(--ink-primary);
+  background: rgba(178, 139, 70, 0.18);
+  border: 1px solid rgba(223, 193, 118, 0.38);
   border-radius: 7px;
 }
 
@@ -152,7 +152,7 @@
   height: 112px;
   margin: 8px 0 12px;
   overflow: hidden;
-  border: 1px solid rgba(83, 88, 69, 0.25);
+  border: 1px solid var(--line-subtle);
   border-radius: 9px;
 }
 
@@ -190,7 +190,7 @@
 .site-inspector .culture-card-copy i,
 .site-inspector .culture-card-copy small {
   overflow: hidden;
-  color: #5d6558;
+  color: var(--ink-muted);
   font-size: 0.68rem;
   line-height: 1.35;
   text-overflow: ellipsis;
