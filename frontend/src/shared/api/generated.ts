@@ -2283,8 +2283,6 @@ export interface components {
             region_id?: string | null;
             /** Scene Asset */
             scene_asset?: string | null;
-            /** Site Tags */
-            site_tags?: string[];
             /** Source Ids */
             source_ids?: string[];
             /** Start Damage */
@@ -2669,6 +2667,10 @@ export interface components {
             /** Actions */
             actions: {
                 [key: string]: components["schemas"]["TerminologyEntryContract"];
+            };
+            /** Route Classes */
+            route_classes: {
+                [key: string]: string;
             };
             /** Resources */
             resources: {

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   eventDecisionBrief,
   interpretationConfidenceGuidance,
-  localizeActionText,
   localizeTimelineMessage,
   optionAction,
 } from './gameUi';
@@ -13,21 +12,6 @@ describe('game UI localization and previews', () => {
     expect(
       errorText({ terminology: { errors: { invalid_route: '请选择一条可通行路线。' } } } as never, 'invalid_route')
     ).toBe('请选择一条可通行路线。');
-  });
-
-  it('localizes planning target prefixes', () => {
-    expect(
-      localizeActionText('Route: route_shanhua_temple_yungang', {
-        sites: {},
-        routes: { route_shanhua_temple_yungang: { name: '善化寺—云冈石窟' } as never },
-      })
-    ).toBe('路线：善化寺—云冈石窟');
-    expect(
-      localizeActionText('Project: project_01', {
-        sites: {},
-        projects: { project_01: { name: '云冈造像线索工程' } as never },
-      })
-    ).toBe('团队项目：云冈造像线索工程');
   });
 
   it('resolves timeline target ids into player-facing names', () => {

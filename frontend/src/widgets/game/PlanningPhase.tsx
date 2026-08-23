@@ -1,6 +1,6 @@
 import { Flag, Plus, Users } from 'lucide-react';
 import type { Action, GameState, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
-import { localizeActionText, resolveTargetName } from './gameUi';
+import { resolveTargetName } from './gameUi';
 import { Panel } from '../ui/Primitives';
 
 export function PlanningPhase({
@@ -83,7 +83,7 @@ export function PlanningPhase({
               <button key={action.target_id} disabled={!canAct} onClick={() => onChoose(action)}>
                 <span>
                   {resolveTargetName(action.target_id, sites, routes, projects) === action.target_id
-                    ? localizeActionText(action.label)
+                    ? action.label || '未命名目标'
                     : resolveTargetName(action.target_id, sites, routes, projects)}
                 </span>
                 <small>

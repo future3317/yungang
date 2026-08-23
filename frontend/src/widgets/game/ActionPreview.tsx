@@ -1,6 +1,6 @@
 import { AlertTriangle, Check, X } from 'lucide-react';
 import type { Action, ContentCard, Player, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
-import { actionLabels, localizeActionText, previewDeltaText, resolveTargetName } from './gameUi';
+import { actionPresentation, previewDeltaText, resolveTargetName } from './gameUi';
 import { Button } from '../ui/Primitives';
 
 export function resolveActionTargetName(
@@ -55,12 +55,11 @@ export function ActionPreview({
           action.target_id || ''
         ] || ''
       : '';
+  const presentation = actionPresentation(action);
   const heading =
     action.type === 'move' && targetName !== '当前地点'
       ? `移动到${targetName}`
-      : localizeActionText(action.label, { sites, routes, projects, players }) ||
-        actionLabels[action.type] ||
-        '确认行动';
+      : presentation.label;
   return (
     <div className="dialog-backdrop">
       <section className="dialog action-preview" role="dialog" aria-modal="true" aria-labelledby="action-preview-title">
@@ -91,7 +90,7 @@ export function ActionPreview({
           )}
           <span>
             <small>消耗</small>
-            <b>{action.cost || 0} 行动点</b>
+            <b>{presentation.cost} 行动点</b>
           </span>
           {cardName && (
             <span>
@@ -100,7 +99,7 @@ export function ActionPreview({
             </span>
           )}
         </div>
-        <p>{action.description || '确认后将立即结算这次行动，并更新地图上的路线、资源或地点状态。'}</p>
+        <p>{presentation.description}</p>
         {action.requirements?.length ? (
           <div className="action-requirements" aria-label="行动前提">
             <b>行动前提</b>

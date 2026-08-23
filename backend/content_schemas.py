@@ -423,8 +423,6 @@ class SiteContract(ContentItemContract):
 
     scene_asset: str | None = None
 
-    site_tags: list[str] = Field(default_factory=list)
-
     source_ids: list[str] = Field(default_factory=list)
 
     start_damage: int | None = None
@@ -761,7 +759,7 @@ class RouteContract(BaseModel):
 
     evidence_tags: list[str] = Field(default_factory=list)
 
-    labelPosition: list[float] | None = None  # noqa: N815
+    label_position: list[float] | None = None
 
     name: str | None = None
 
@@ -769,7 +767,7 @@ class RouteContract(BaseModel):
 
     risk_profile: str | None = None
 
-    roadClass: str | None = None  # noqa: N815
+    road_class: str | None = None
 
     status: str = "open"
 
@@ -781,7 +779,7 @@ class RouteContract(BaseModel):
 
     ui_hint: str | None = None
 
-    waypoints: list[float] = Field(default_factory=list)
+    waypoints: list[list[float]] = Field(default_factory=list)
 
 
 
@@ -950,6 +948,8 @@ class TerminologyContract(BaseModel):
     statuses: dict[str, TerminologyEntryContract]
 
     actions: dict[str, TerminologyEntryContract]
+
+    route_classes: dict[str, str]
 
     resources: dict[str, TerminologyEntryContract]
 

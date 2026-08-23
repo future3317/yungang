@@ -26,13 +26,6 @@ export type ActionMode = Extract<
   | 'exchange'
   | 'plan'
 > | null;
-export type DisplayContext = {
-  sites: Record<string, SiteReference>;
-  routes?: Record<string, RouteState>;
-  projects?: Record<string, ProjectState>;
-  players?: Record<string, Player>;
-};
-
 export const actionLabels: Partial<Record<ActionType, string>> = {
   move: '移动',
   survey_route: '勘察路线',
@@ -129,6 +122,18 @@ export function previewDeltaText(delta: Record<string, unknown> | undefined, fal
   return text || fallback;
 }
 
+export function actionPresentation(
+  action: Pick<Action, 'type' | 'label' | 'description' | 'cost'> | Pick<ActionOption, 'type' | 'label' | 'description' | 'cost'>
+) {
+  const rawCost = action.cost;
+  const cost = typeof rawCost === 'number' ? rawCost : rawCost?.ap || 0;
+  return {
+    label: action.label || actionLabels[action.type] || '确认行动',
+    description: action.description || '确认后将立即结算这次行动，并更新地图上的路线、资源或地点状态。',
+    cost,
+  };
+}
+
 export function interpretationConfidenceGuidance(confidence = 0) {
   if (confidence <= 2) return '可信度较低：立即处理会增加 1 点风化压力；先记录可获得 3 点研究点。';
   if (confidence <= 4) return '可信度一般：先记录可以保留研究点，立即处理不会额外增加风化压力。';
@@ -143,55 +148,6 @@ export function eventDecisionBrief(
     ifIgnored: event?.description || '如果不回应，事件会按预告中的风险结算。',
     whatYouCanDo: event?.mitigation_hint || '从下方应对选项中选择一种处理方式。',
   };
-}
-
-export function localizeActionText(value?: string, context?: DisplayContext) {
-  let text = (value || '')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\btwo_open_sites\b/gi, '两处仍可守护的节点')
-    .replace(/\ball_players\b/gi, '所有同行者')
-    .replace(/\bshared_resource\b/gi, '团队修护资源')
-    .replace(/\btarget_site\b/gi, '目标地点')
-    .replace(/\btarget_route\b/gi, '目标路线')
-    .replace(/\bafter_arrival\b/gi, '抵达后')
-    .replace(/\bround_end\b/gi, '回合结束时')
-    .replace(/\bplayer_action\b/gi, '玩家行动阶段')
-    .replace(/\bplayer-seat-(\d+)\b/gi, '第 $1 位同行者')
-    .replace(/\bseat-(\d+)\b/gi, '第 $1 个同行席位')
-    .replace(/\broute_risk\b/gi, '路线风险')
-    .replace(/\bweathering_track\b/gi, '风化压力')
-    .replace(/\bweathering_delta\b/gi, '风化压力变化')
-    .replace(/\brisk_delta\b/gi, '路线风险变化')
-    .replace(/\brestore_discount\b/gi, '修护费用减免')
-    .replace(/\bexchange_discount\b/gi, '交换费用减免')
-    .replace(/\bfree_exchange\b/gi, '本次交换免费')
-    .replace(/\barchive_inspect\b/gi, '查看档案牌')
-    .replace(
-      /\b(open|blocked|strained|restored|illuminated)\b/gi,
-      (match) =>
-        ({ open: '通行', blocked: '阻断', strained: '承压', restored: '已修护', illuminated: '已点亮' })[
-          match.toLowerCase()
-        ] || match
-    )
-    .replace(/Use Action Card/gi, '使用策略牌')
-    .replace(/\bRoute:\s*/gi, '路线：')
-    .replace(/\bProject:\s*/gi, '团队项目：')
-    .replace(/use_action_card/gi, '使用策略牌');
-  if (context) {
-    text = text
-      .replace(
-        /路线：\s*([A-Za-z0-9_-]+)/gi,
-        (_, target: string) =>
-          `路线：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}`
-      )
-      .replace(
-        /团队项目：\s*([A-Za-z0-9_-]+)/gi,
-        (_, target: string) =>
-          `团队项目：${resolveTargetName(target, context.sites, context.routes, context.projects, context.players)}`
-      );
-  }
-  return text;
 }
 
 export function resolveTargetName(
@@ -214,7 +170,7 @@ export function localizeTimelineMessage(
     players?: Record<string, Player>;
   }
 ) {
-  return localizeActionText(message).replace(
+  return message.replace(
     /\s*[（(]目标[：:]\s*([^）)]+)[）)]/g,
     (_, target: string) =>
       `（目标：${resolveTargetName(target.trim(), context.sites, context.routes, context.projects, context.players)}）`
@@ -236,7 +192,7 @@ export function localizeActionError(error: unknown, meta?: Meta) {
   }
   if (/network|failed to fetch|fetch|timeout|offline|连接|网络/i.test(message))
     return '网络暂时中断，状态未确定。请先重新连接，再继续选择行动。';
-  return localizeActionText(message) || '操作暂时无法完成，请重新选择。';
+  return message || '操作暂时无法完成，请重新选择。';
 }
 
 export function findCardAction(actions: Action[], type: ActionType, cardId: string) {

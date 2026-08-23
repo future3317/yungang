@@ -2,6 +2,7 @@ import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
+import styles from './JourneyTimeline.module.css';
 
 type TimelineChange = {
   label?: string;
@@ -84,12 +85,12 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
 
   return (
     <details
-      className={`timeline-drawer ${dragging ? 'is-dragging' : ''}`}
+      className={`${styles.drawer} ${dragging ? styles.dragging : ''}`.trim()}
       style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
     >
-      <summary aria-label="旅程时间线">
+      <summary className={styles.summary} aria-label="旅程时间线">
         <span
-          className="timeline-drag-handle"
+          className={styles.dragHandle}
           aria-label="拖动旅行时间线"
           onPointerDown={beginDrag}
           onPointerMove={moveDrag}
@@ -107,7 +108,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         <small>{entries.length} 条记录</small>
         <ChevronDown size={15} aria-hidden="true" />
       </summary>
-      <div className="timeline-body">
+      <div className={styles.body}>
         <div className="timeline-filter" role="tablist" aria-label="时间线筛选">
           {filters.map((item) => (
             <button
@@ -124,7 +125,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         <div className="timeline-events" aria-live="polite">
           {visibleEntries.length ? (
             visibleEntries.map((entry, index) => (
-              <p key={`${entry.id}-${index}`}>
+              <article className={styles.entry} key={`${entry.id}-${index}`}>
                 <b>
                   回合 {entry.round}
                   <small>{entryTypeLabels[entry.type] || '旅程记录'}</small>
@@ -134,7 +135,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
                   {entry.message}
                   <StateChangeList compact changes={structuredEffects(entry.effects || entry.changes)} />
                 </span>
-              </p>
+              </article>
             ))
           ) : (
             <p className="timeline-empty">这个筛选下还没有记录。</p>

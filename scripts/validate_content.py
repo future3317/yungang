@@ -37,7 +37,14 @@ def main():
     assert all(set(task.get("required_domains", [])) <= domains for task in tasks.values())
     assert all(card.get("domain") in domains for card in cards.values())
     assert all(site.get("content_class") in {"documented", "interpretive", "gameplay"} for site in sites.values())
-    assert all(route.get("waypoints") is not None and route.get("roadClass") for route in routes)
+    assert all(site.get("domains") is not None and "site_tags" not in site for site in sites.values())
+    assert all(
+        route.get("road_class")
+        and "roadClass" not in route
+        and "labelPosition" not in route
+        and all(isinstance(point, list) and len(point) == 2 for point in route.get("waypoints", []))
+        for route in routes
+    )
     content_items = [*cards.values(), *events.values(), *tasks.values(), *(projects.values() if isinstance(projects, dict) else projects), *action_cards, *role_upgrades]
     assert all(item.get("content_class") in {"documented", "interpretive", "gameplay"} for item in content_items)
     files = {name: load(name) for name in entry["content"].values()}

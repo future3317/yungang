@@ -69,7 +69,7 @@ describe('ScenarioHeader', () => {
 
     const drawer = screen.getByLabelText('胜利条件清单');
     expect(drawer).toBeVisible();
-    expect(screen.getAllByText(/完成核心项目/).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText(/完成核心项目/).length).toBe(1);
     expect(screen.getByText('关联：云冈多域总汇')).toBeVisible();
   });
 

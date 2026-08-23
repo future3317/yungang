@@ -1,36 +1,20 @@
 import type { ContentCard, Meta, Task } from '../../types/game';
-import { comboNames, contentTagName, displayText, domainName } from './contentLabels';
+import { contentTagName, displayText, domainName } from './contentLabels';
 import { actionLabels } from './gameUi';
 
 export type CardRecord = Record<string, unknown>;
-export { comboNames, contentTagName, domainName } from './contentLabels';
+export { contentTagName, domainName } from './contentLabels';
 
-const originNames: Record<string, string> = {
-  central: '中原',
-  western: '西域',
-  frontier: '边地',
-  craft: '工坊',
-  silk: '丝路',
-};
 export function originName(value?: string, meta?: Meta) {
-  return displayText(meta, 'origins', value, originNames[value || ''] || '未标注来源');
+  return displayText(meta, 'origins', value, '未标注来源');
 }
-
-const requirementNames: Record<string, string> = {
-  cross_origin: '跨来源互证',
-  image_reconstruction: '图像重构',
-  material_diagnosis: '材料诊断',
-  craft_coordination: '工序协同',
-  route_governance: '路线治理',
-  archive_context: '档案互证',
-};
 
 export function formatRequirementValues(meta: Meta, key: string, values: string[]) {
   return values
     .map((value) => {
       if (meta.domain_meta?.[value]) return domainName(meta, value);
       if (key.includes('origin')) return originName(value, meta);
-      return requirementNames[value] || comboNames[value] || '未标注条件';
+      return contentTagName(value, meta);
     })
     .join('、');
 }
@@ -124,16 +108,7 @@ export function eventTypeName(type?: string) {
 }
 
 export function eventTargetRuleName(rule?: string, meta?: Meta) {
-  const labels: Record<string, string> = {
-    two_open_sites: '两处尚未关闭的节点',
-    one_at_risk_site: '一处处于风险中的节点',
-    one_site: '一处指定节点',
-    one_route: '一条开放路线',
-    all_players: '所有同行者',
-    shared_resource: '共同修护资源',
-    weathering: '风化压力轨',
-  };
-  return displayText(meta, 'event_target_rules', rule, labels[rule || ''] || '由本局旅程决定的影响范围');
+  return displayText(meta, 'event_target_rules', rule, '由本局旅程决定的影响范围');
 }
 
 function cardRecord(card?: ContentCard): CardRecord {

@@ -42,7 +42,7 @@
   background: rgba(185, 154, 88, 0.12);
   border-left: 2px solid var(--connection);
   border-radius: 4px;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   line-height: 1.35;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .dockSummary :global(.ghost-button) {
-  min-height: 31px;
+  min-height: 44px;
   justify-self: start;
   padding: 0 9px;
   font-size: var(--text-caption);
@@ -132,7 +132,7 @@
 .actionCardCopy small {
   overflow: hidden;
   color: var(--ink-muted);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -146,7 +146,7 @@
 .actionCost small {
   display: block;
   color: var(--ink-muted);
-  font: 0.58rem var(--font-data);
+  font: 0.75rem var(--font-data);
 }
 
 .moreActions {
@@ -186,7 +186,7 @@
 }
 
 .moreActions button {
-  min-height: 35px;
+  min-height: 44px;
   display: grid;
   grid-template-columns: 19px 1fr auto;
   align-items: center;
@@ -208,8 +208,45 @@
 }
 
 .handTray {
+  min-width: 0;
   padding-left: 13px;
   border-left: 1px solid var(--line-subtle);
+}
+
+.handTrigger {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px;
+  color: var(--ink-primary);
+  cursor: pointer;
+  list-style: none;
+  background: rgba(32, 42, 36, 0.78);
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+}
+
+.handTrigger::-webkit-details-marker {
+  display: none;
+}
+
+.handTrigger span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.handTray[open] .handTrigger > svg {
+  transform: rotate(180deg);
+}
+
+.handContent {
+  display: grid;
+  gap: 8px;
+  margin-top: 7px;
 }
 
 .handCards {
@@ -252,7 +289,7 @@
 }
 
 .handCard small {
-  font-size: 0.64rem;
+  font-size: 0.75rem;
 }
 
 .handEmpty {
@@ -264,7 +301,7 @@
 .strategyHandNote {
   margin: 5px 0 0;
   color: var(--ink-muted);
-  font-size: 0.64rem;
+  font-size: 0.75rem;
   line-height: 1.4;
 }
 
@@ -298,7 +335,7 @@
     0 16px 34px rgba(0, 0, 0, 0.42),
     inset 0 1px rgba(255, 246, 215, 0.08);
   content: attr(data-detail);
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.5;
   opacity: 0;
@@ -319,65 +356,6 @@
   transform: translateY(0);
 }
 
-/* Layout variants */
-:global(.roster-column) > .commandDeck {
-  min-width: 0;
-  grid-template-columns: 1fr;
-}
-
-:global(.roster-column) > .commandDeck .featuredActions {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-:global(.roster-column) > .commandDeck .handTray,
-:global(.roster-column) > .commandDeck .handCards {
-  min-width: 0;
-}
-
-:global(.roster-column) > .commandDeck .handCards {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-:global(.roster-column) > .commandDeck .handCard {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-:global(.roster-column) > .commandDeck .moreActions {
-  width: 100%;
-  position: static;
-  overflow: hidden;
-}
-
-:global(.roster-column) > .commandDeck .moreActions summary {
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5px;
-  padding: 0 9px;
-  color: var(--ink-primary);
-  background: rgba(49, 63, 52, 0.52);
-  border: 1px solid var(--line-subtle);
-  border-radius: var(--radius-sm);
-}
-
-:global(.roster-column) > .commandDeck .moreActions[open] > div {
-  position: static;
-  width: 100%;
-  box-sizing: border-box;
-  display: grid;
-  margin-top: 5px;
-  padding: 5px;
-  background: rgba(20, 29, 23, 0.7);
-  border: 1px solid var(--line-subtle);
-  border-radius: var(--radius-sm);
-  box-shadow: none;
-}
 
 :global(.roster-column) > .commandDeck .moreActions button {
   min-width: 0;

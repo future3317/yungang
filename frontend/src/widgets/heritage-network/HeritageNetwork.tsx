@@ -2,8 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { LocateFixed, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
-import type { ActionType, ContentSite, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
+import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
+import { displayText } from '../game/contentLabels';
 
 type MapActionMode = Extract<
   ActionType,
@@ -12,32 +13,22 @@ type MapActionMode = Extract<
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
 
-const routeRoadNames: Record<string, string> = { main: '主干道', regional: '区域道路', local: '支路' };
-const routeStatusNames: Record<string, string> = {
-  open: '通行',
-  blocked: '阻断',
-  strained: '承压',
-  restored: '已修护',
-  illuminated: '已点亮',
-  closed: '已关闭',
-};
-const siteStatusNames: Record<string, string> = { stable: '稳定', at_risk: '有风险', closed: '已关闭', normal: '稳定' };
-function routeRoadName(value?: string) {
-  return routeRoadNames[value || ''] || '支路';
+function routeRoadName(value: string | undefined, catalog: Meta | undefined) {
+  return displayText(catalog, 'route_classes', value, '未标注路线');
 }
-function routeStatusName(value?: string) {
-  return routeStatusNames[value || ''] || '通行';
+function routeStatusName(value: string | undefined, catalog: Meta | undefined) {
+  return displayText(catalog, 'statuses', value, '未标注状态');
 }
-function siteStatusName(value?: string) {
-  return siteStatusNames[value || ''] || '稳定';
+function siteStatusName(value: string | undefined, catalog: Meta | undefined) {
+  return displayText(catalog, 'statuses', value, '未标注状态');
 }
-function nodeReason(site: Site, meta: SiteReference, current: boolean, target: boolean, eventTarget: boolean) {
+function nodeReason(site: Site, meta: SiteReference, current: boolean, target: boolean, eventTarget: boolean, catalog?: Meta) {
   if (site.status === 'closed') return '红点：这个节点已经关闭，先完成修护才能继续推进。';
   if (site.status === 'at_risk') return '红点：节点接近关闭，优先修护可避免回合结算后失去它。';
   if (eventTarget) return '橙色标记：本轮事件可能影响这里，提前准备可以降低损伤。';
   if (target) return '金色标记：这是当前行动可以选择的合法目标。';
   if (current) return '这里是当前行动者的位置。';
-  return `${meta.name || site.id}目前${siteStatusName(site.status)}。点击可查看地点任务、团队项目和事件说明。`;
+  return `${meta.name || '此处节点'}目前${siteStatusName(site.status, catalog)}。点击可查看地点任务、团队项目和事件说明。`;
 }
 
 function wrapMapText(value: string, maxChars = 18) {
@@ -267,6 +258,7 @@ export function HeritageNetwork({
   eventTargetIds = [],
   eventTargetLabels = [],
   eventName,
+  catalog,
   onFocus,
 }: {
   sites: Record<string, Site>;
@@ -281,6 +273,7 @@ export function HeritageNetwork({
   eventTargetIds?: ReadonlyArray<string>;
   eventTargetLabels?: string[];
   eventName?: string;
+  catalog?: Meta;
   onFocus: (id: string) => void;
 }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -291,7 +284,6 @@ export function HeritageNetwork({
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [hoveredSiteId, setHoveredSiteId] = useState<string | null>(null);
-  const [failedNodeIconIds, setFailedNodeIconIds] = useState<Set<string>>(() => new Set());
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -536,7 +528,7 @@ export function HeritageNetwork({
                 const reachable = reachableIds.has(site.id);
                 const target = actionMode !== null && reachable && !current;
                 const eventTarget = eventTargets.has(site.id);
-                const reason = nodeReason(site, meta, current, target, eventTarget);
+                const reason = nodeReason(site, meta, current, target, eventTarget, catalog);
                 const hoverEndpoint = hoveredRoute && (hoveredRoute.from === site.id || hoveredRoute.to === site.id);
                 const kind = meta.node_kind || 'core';
                 const size = kind === 'core' ? 4.2 : kind === 'support' ? 3.1 : 2.7;
@@ -546,9 +538,6 @@ export function HeritageNetwork({
                   : assetUrl(
                       `generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.webp`
                     );
-                const displayedIcon = failedNodeIconIds.has(site.id)
-                  ? assetUrl('ornaments/heritage-medallion-1.webp')
-                  : icon;
                 const frame =
                   site.status === 'closed' || site.status === 'at_risk'
                     ? 'damaged'
@@ -570,7 +559,7 @@ export function HeritageNetwork({
                     transform={`translate(${position.x} ${position.y})`}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${meta.name || site.id}：${reason}`}
+                    aria-label={`${meta.name || '此处节点'}：${reason}`}
                     onPointerEnter={() => setHoveredSiteId(site.id)}
                     onPointerLeave={() => setHoveredSiteId(null)}
                     onFocus={() => setHoveredSiteId(site.id)}
@@ -617,17 +606,12 @@ export function HeritageNetwork({
                     />
                     <image
                       className="node-image"
-                      href={displayedIcon}
+                      href={icon}
                       x={-size * 0.65}
                       y={-size * 0.65}
                       width={size * 1.3}
                       height={size * 1.3}
                       preserveAspectRatio="xMidYMid meet"
-                      onError={() =>
-                        setFailedNodeIconIds((ids) =>
-                          ids.has(site.id) ? ids : new Set(ids).add(site.id)
-                        )
-                      }
                     />
                     {alert && <circle className="node-mark" cx={size * 0.76} cy={-size * 0.76} r=".8" />}
                     {labelPosition && (kind === 'core' || lod === 'detail' || focusedId === site.id) && (
@@ -637,7 +621,7 @@ export function HeritageNetwork({
                         y={labelPosition.y}
                         textAnchor={labelPosition.anchor}
                       >
-                        {meta.name || site.id}
+                        {meta.name || '此处节点'}
                       </text>
                     )}
                     {labelPosition && lod === 'detail' && (current || target || focusedId === site.id) && (
@@ -659,10 +643,10 @@ export function HeritageNetwork({
               const meta = metaSites[hintSite.id] || hintSite;
               const current = active.location === hintSite.id;
               const target = actionMode !== null && reachableIds.has(hintSite.id) && !current;
-              const reason = nodeReason(hintSite, meta, current, target, eventTargets.has(hintSite.id));
+              const reason = nodeReason(hintSite, meta, current, target, eventTargets.has(hintSite.id), catalog);
               const location = mapPoint(hintSite.id);
               const lines = wrapMapText(reason);
-              const title = meta.name || hintSite.id;
+              const title = meta.name || '此处节点';
               const width = Math.min(
                 64,
                 Math.max(38, Math.max(title.length * 1.8, ...lines.map((line) => line.length * 1.15)) + 4)
@@ -676,7 +660,7 @@ export function HeritageNetwork({
                 >
                   <rect width={width} height={height} rx="1.2" />
                   <text x="1.2" y="2.8">
-                    {meta.name || hintSite.id}
+                    {meta.name || '此处节点'}
                   </text>
                   {lines.map((line, index) => (
                     <text key={index} x="1.2" y={5.6 + index * 2.5}>
@@ -741,7 +725,7 @@ export function HeritageNetwork({
           <dl>
             <div>
               <dt>道路</dt>
-              <dd>{routeRoadName(selectedRoute.route.road_class)}</dd>
+              <dd>{routeRoadName(selectedRoute.route.road_class, catalog)}</dd>
             </div>
             <div>
               <dt>成本</dt>
@@ -753,7 +737,7 @@ export function HeritageNetwork({
             </div>
             <div>
               <dt>状态</dt>
-              <dd>{routeStatusName(selectedRoute.route.status)}</dd>
+              <dd>{routeStatusName(selectedRoute.route.status, catalog)}</dd>
             </div>
           </dl>
           <small>相关行动：勘察、修护或建立连接会根据当前合法行动出现。</small>
@@ -764,7 +748,7 @@ export function HeritageNetwork({
         <div>
           {enabledSites.map((site) => (
             <button key={site.id} onClick={() => onFocus(site.id)}>
-              {metaSites[site.id]?.name || site.name || site.id}
+              {metaSites[site.id]?.name || site.name || '未命名节点'}
             </button>
           ))}
           {routeLines.map((line) => (
@@ -785,7 +769,7 @@ export function HeritageNetwork({
         本局地图
         <span>
           {hoveredRoute
-            ? `线路：${routeStatusName(hoveredRoute.route.status)} · ${hoveredRoute.route.cost} 行动点 · 风险 ${hoveredRoute.route.risk}`
+            ? `线路：${routeStatusName(hoveredRoute.route.status, catalog)} · ${hoveredRoute.route.cost} 行动点 · 风险 ${hoveredRoute.route.risk}`
             : actionMode
               ? `正在选择目标 · 已突出合法线路 · Escape 取消`
               : '滚轮缩放 · 拖动地图 · 双击适应全部节点'}

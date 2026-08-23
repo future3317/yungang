@@ -109,7 +109,7 @@ export function CommandDock({
           {!canAct
             ? '轮到你时，行动按钮会自动恢复。'
             : actionMode
-              ? `正在选择「${actionLabels[actionMode]}」的落脚处`
+              ? `正在选择「${actionLabels[actionMode]}」的合法目标`
               : featured.length
                 ? `建议先做：${actionLabels[featured[0].type] || featured[0].label}${showRecommendationReasons && featured[0].reason ? ` · ${featured[0].reason}` : ''}`
                 : '此刻风平浪静，等待下一段变化。'}
@@ -132,7 +132,7 @@ export function CommandDock({
             : [option.description, option.requirements?.length ? `行动前提：${option.requirements.join('；')}` : '']
                 .filter(Boolean)
                 .join(' · ');
-          const label = option.label || actionLabels[type] || type;
+          const label = option.label || actionLabels[type] || '未命名行动';
           return (
             <button
               type="button"
@@ -180,7 +180,7 @@ export function CommandDock({
                 : [option.description, option.requirements?.length ? `行动前提：${option.requirements.join('；')}` : '']
                     .filter(Boolean)
                     .join(' · ');
-              const label = option.label || actionLabels[type] || type;
+              const label = option.label || actionLabels[type] || '未命名行动';
               return (
                 <button
                   type="button"
@@ -208,12 +208,18 @@ export function CommandDock({
           </div>
         </details>
       </div>
-      <div className={styles.handTray}>
-        <div className={styles.sectionLabel}>
-          <Archive size={14} />
-          我的证据卡 <b>{active.hand.length} / 3</b>
-        </div>
-        <div className={styles.handCards}>
+      <details className={styles.handTray}>
+        <summary className={styles.handTrigger}>
+          <span><Archive size={14} />证据 {active.hand.length} / 3</span>
+          <span><Sparkles size={14} />策略 {active.action_hand?.length || 0} / 3</span>
+          <ChevronDown size={16} />
+        </summary>
+        <div className={styles.handContent}>
+          <div className={styles.sectionLabel}>
+            <Archive size={14} />
+            我的证据卡 <b>{active.hand.length} / 3</b>
+          </div>
+          <div className={styles.handCards}>
           {active.hand.length ? (
             active.hand.map((id) => {
               const item = cards[id];
@@ -229,15 +235,15 @@ export function CommandDock({
           ) : (
             <div className={styles.handEmpty}>寻访所得的证据卡，会在研究台中成为支持、冲突或待确认的见证。</div>
           )}
-        </div>
-        {active.action_hand?.length ? (
-          <div className={styles.strategyHand}>
-            <div className={styles.sectionLabel}>
-              <Sparkles size={14} />
-              策略牌 <b>{active.action_hand.length} / 3</b>
-            </div>
-            <p className={styles.strategyHandNote}>每轮每位同行者抽 1 张；使用后不会立即补牌，满手时需要先弃置。</p>
-            <div className={styles.handCards}>
+          </div>
+          {active.action_hand?.length ? (
+            <div className={styles.strategyHand}>
+              <div className={styles.sectionLabel}>
+                <Sparkles size={14} />
+                策略牌 <b>{active.action_hand.length} / 3</b>
+              </div>
+              <p className={styles.strategyHandNote}>每轮每位同行者抽 1 张；使用后不会立即补牌，满手时需要先弃置。</p>
+              <div className={styles.handCards}>
               {active.action_hand.map((id) => {
                 const definition = actionCards[id] || {};
                 const option =
@@ -286,10 +292,11 @@ export function CommandDock({
                   </button>
                 );
               })}
+              </div>
             </div>
-          </div>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+      </details>
       {strategy && (
         <StrategyCardDialog
           option={strategy}

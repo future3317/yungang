@@ -50,7 +50,6 @@ import {
   feedbackChangeText,
   findCardAction,
   localizeActionError,
-  localizeActionText,
   localizeTimelineMessage,
   metricLabel,
   optionAction,
@@ -483,11 +482,6 @@ export function GamePage() {
             }
             connection={connection}
             gameReference={roomId || state.session_id}
-            eventSummary={{
-              name: currentEvent?.name,
-              targets: eventTargetLabels,
-              historyCount: timelineEvents.filter((entry) => entry.type === 'event').length,
-            }}
             onFocusGoal={(ids) => {
               const target = ids.find((id) => sites[id] || state.routes?.[id] || state.projects?.[id]);
               if (!target) return;
@@ -616,25 +610,6 @@ export function GamePage() {
               canAct={canAct && !mutation.isPending}
               onChoose={run}
             />
-            <CommandDock
-              state={state}
-              active={active}
-              cards={cards}
-              actionCards={actionCards}
-              legal={legal}
-              actionOptions={actionOptions}
-              actionMode={actionMode}
-              actionLabels={actionLabels}
-              mutationPending={mutation.isPending}
-              canAct={canAct}
-              onRun={run}
-              onChooseOption={chooseOption}
-              onCancel={() => {
-                setActionMode(null);
-                setSelectedOption(null);
-              }}
-              onCard={setCard}
-            />
           </aside>
           <section className={`stage-column hud-slot hud-slot-world ${mobileView !== 'map' ? 'mobile-hidden' : ''}`}>
             <RoundSummary
@@ -692,6 +667,7 @@ export function GamePage() {
                 eventTargetIds={eventTargetIds}
                 eventTargetLabels={eventTargetLabels}
                 eventName={currentEvent?.name}
+                catalog={meta}
                 onFocus={selectNode}
               />
             </div>
@@ -706,7 +682,7 @@ export function GamePage() {
                 </div>
                 <div>
                   <span className="eyebrow">当前聚焦</span>
-                  <h2>{focusedMeta.name || focused.id}</h2>
+                  <h2>{focusedMeta.name || '当前聚焦节点'}</h2>
                   <p>{focusedMeta.summary || '等待寻访证据后显示节点的文化摘要。'}</p>
                 </div>
                 <button
@@ -743,7 +719,7 @@ export function GamePage() {
                 data-focused="false"
                 onClick={() => setFocusCardOpen(true)}
               >
-                打开当前聚焦：{focusedMeta.name || focused.id}
+                打开当前聚焦：{focusedMeta.name || '当前聚焦节点'}
               </button>
             )}
           </section>
@@ -780,6 +756,25 @@ export function GamePage() {
           onStrategy={setStrategyOption}
         />
         <HudSlot name="bottom">
+          <CommandDock
+            state={state}
+            active={active}
+            cards={cards}
+            actionCards={actionCards}
+            legal={legal}
+            actionOptions={actionOptions}
+            actionMode={actionMode}
+            actionLabels={actionLabels}
+            mutationPending={mutation.isPending}
+            canAct={canAct}
+            onRun={run}
+            onChooseOption={chooseOption}
+            onCancel={() => {
+              setActionMode(null);
+              setSelectedOption(null);
+            }}
+            onCard={setCard}
+          />
           <JourneyTimeline entries={timelineEvents} />
         </HudSlot>
         <GameOverlayHost>
@@ -1050,14 +1045,9 @@ function ActionTargetDialog({
           <X />
         </button>
         <span className="eyebrow">行动目标</span>
-        <h2 id="action-target-title">{localizeActionText(option.label, { sites, routes, projects, players })}</h2>
+        <h2 id="action-target-title">{option.label || '选择行动目标'}</h2>
         <p id="action-target-description">
-          {localizeActionText(option.confirmation || option.description || '选择一个合法目标后继续。', {
-            sites,
-            routes,
-            projects,
-            players,
-          })}
+          {option.confirmation || option.description || '选择一个合法目标后继续。'}
         </p>
         {option.requirements?.length ? (
           <div className="action-requirements" aria-label="行动前提">
@@ -1069,10 +1059,10 @@ function ActionTargetDialog({
           {option.targets.map((target) => (
             <button className="choice-option" key={target.id} disabled={disabled} onClick={() => onChoose(target)}>
               <span>
-                <b>{localizeActionText(target.label, { sites, routes, projects, players })}</b>
+                <b>{target.label || '合法目标'}</b>
                 {target.reason && (
                   <small className="choice-reason">
-                    {localizeActionText(target.reason, { sites, routes, projects, players })}
+                    {target.reason}
                   </small>
                 )}
                 <small>{previewDeltaText(target.preview_delta, `${option.cost?.ap || 0} 点行动点`)}</small>
@@ -1187,9 +1177,9 @@ function ChoiceDialog({
           {choices.map((action, index) => (
             <button disabled={disabled} key={`${action.type}-${index}`} onClick={() => onChoose(action)}>
               <span>
-                <b>{localizeActionText(action.label)}</b>
+                <b>{action.label || '确认回应'}</b>
                 <small>
-                  {disabled ? '正在同步回应…' : localizeActionText(action.description) || '确认后查看实际变化'}
+                  {disabled ? '正在同步回应…' : action.description || '确认后查看实际变化'}
                 </small>
                 {
                   <em>

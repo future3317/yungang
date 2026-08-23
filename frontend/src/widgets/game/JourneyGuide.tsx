@@ -11,7 +11,7 @@ import type {
   Task,
 } from '../../types/game';
 import { contentTagName, domainName } from './contentLabels';
-import { actionLabels, localizeActionText } from './gameUi';
+import { actionLabels } from './gameUi';
 import { resolveActionTargetName } from './ActionPreview';
 
 export function JourneyGuide({
@@ -36,6 +36,16 @@ export function JourneyGuide({
   const matchingHand = active.hand.filter((id) => requiredDomains.includes(cards[id]?.domain || '')).length;
   const canInterpret = legal.some((action) => action.type === 'interpret_evidence');
   const canExplore = legal.some((action) => action.type === 'explore');
+  const nextRequirement = task?.progress?.requirements?.find((item) => !item.complete);
+  const nextStep = nextRequirement
+    ? typeof nextRequirement.current === 'number' && typeof nextRequirement.target === 'number'
+      ? `${nextRequirement.label}还差 ${Math.max(0, nextRequirement.target - nextRequirement.current)}。`
+      : `${nextRequirement.label}尚未满足。`
+    : canInterpret
+      ? '手中已有可归类证据，下一步可在研究台判断它们的关系。'
+      : canExplore
+        ? '下一步从公开市场选择一张与当前任务相关的证据。'
+        : '先沿可通行路线抵达需要处理的地点。';
   return (
     <section className="journey-guide" aria-label="行动指引">
       <div className="section-label">
@@ -43,11 +53,11 @@ export function JourneyGuide({
         旅途中的下一步
       </div>
       {actionMode ? (
-        <p>风向已经显现，金色标记是此刻可以前往的去处。</p>
+        <p>正在选择{actionLabels[actionMode] || '当前行动'}的合法目标。确认前会显示行动点消耗和预计变化。</p>
       ) : task ? (
         <>
           <h3>{task.name}</h3>
-          <p>这里的故事需要证据关系，而不只是正确配对。抵达节点后，在研究台判断它们互相说明了什么。</p>
+          <p><b>下一步：</b>{nextStep}</p>
           <ul>
             <li>
               <b>
@@ -118,27 +128,32 @@ export function ActionTargetGuide({
   onCancel: () => void;
 }) {
   if (!mode) return null;
-  const title =
-    mode === 'explore'
-      ? '从市场中取一件证据卡'
-      : mode === 'interpret_evidence'
-        ? '回到研究台判断证据关系'
-        : '选择下一处落脚点';
+  const presentation: Partial<Record<ActionType, { title: string; description: string }>> = {
+    move: { title: '选择要前往的地点', description: '选择一处可达地点，确认后消耗行动点前往。' },
+    explore: { title: '从市场中取一件证据卡', description: '公开文化市场已经打开，选择一张证据卡带回研究台。' },
+    interpret_evidence: { title: '在研究台判断证据关系', description: '选择一张手中证据，判断它与当前任务是支持、冲突还是待确认。' },
+    restore: { title: '选择要修护的节点', description: '选择一处承压节点，确认后消耗行动点和修护资源。' },
+    restore_route: { title: '选择要修护的路线', description: '选择一条受损路线，确认后降低路线风险。' },
+    survey_route: { title: '选择要勘察的路线', description: '选择一条路线，确认后揭示或改善它的通行状况。' },
+    establish_connection: { title: '选择要建立连接的路线', description: '选择一条符合条件的路线，确认后推进遗产网络连接。' },
+  };
+  const guide = presentation[mode] || {
+    title: actionLabels[mode] || '选择行动目标',
+    description: '请选择一个合法目标，确认后将显示这次行动的实际变化。',
+  };
   const name = (action: Action) =>
     action.card_id ? cards[action.card_id]?.name || '已选证据' : resolveActionTargetName(action, sites, routes);
   return (
     <section className="action-target-guide" role="status" aria-live="polite">
       <div>
-        <span>{title}</span>
+        <span>{guide.title}</span>
         <button type="button" className="action-target-guide-close" onClick={onCancel} aria-label="取消目标选择">
           <X size={15} />
           <span>取消选择</span>
         </button>
       </div>
       <p>
-        {mode === 'explore'
-          ? '公开文化市场已经打开，选择一张证据卡带回研究台。'
-          : '金色标记已经显出路径，选择一处，便可启程。'}
+        {guide.description}
       </p>
       <div>
         {actions.map((action, index) => (
@@ -147,9 +162,9 @@ export function ActionTargetGuide({
             key={`${action.type}-${action.card_id || action.target_id || index}`}
             onClick={() => onRun(action)}
           >
-            <b>{localizeActionText(name(action))}</b>
+            <b>{name(action)}</b>
             <small>
-              {action.cost || 0} 行动点 · {actionLabels[action.type] || localizeActionText(action.label)}
+              {action.cost || 0} 行动点 · {actionLabels[action.type] || action.label || '当前行动'}
             </small>
           </button>
         ))}

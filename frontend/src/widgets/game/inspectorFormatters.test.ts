@@ -7,6 +7,10 @@ const meta = {
     statue: { name: '造像', short_name: '造像' },
     pattern: { name: '纹样', short_name: '纹样' },
   },
+  terminology: {
+    domains: { statue: '造像', pattern: '纹样' },
+    combo_tags: {},
+  },
 } as unknown as Meta;
 
 describe('inspector player-facing labels', () => {

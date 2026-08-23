@@ -9,11 +9,11 @@
 - [x] 路线状态、事件目标、项目阶段证据和终局结果由后端结算。
 - [x] 游戏行动写入结构化旅程时间线；前端支持按行动、事件和项目筛选。
 - [x] 房间席位令牌、SSE revision 推送和轮询兜底。
-- [x] SQLite WAL 与 busy timeout。
+- [x] 生产环境通过 `DATABASE_URL` 使用 PostgreSQL；本地测试数据库独立注入，不提交运行时数据文件。
 
 ## 地图与界面
 
-- [x] 节点使用 `layout` 字段，路线使用 `waypoints`、`roadClass`、`terrain`、`labelPosition`。
+- [x] 节点使用 `layout` 字段，路线使用 `waypoints`、`road_class`、`terrain`、`label_position`。
 - [x] fit-to-bounds 使用当前启用节点和标签安全边距；重置和窗口尺寸变化均重新 fit。
 - [x] 中央视觉引导固定在视口，玩家位置和点击聚焦跟随地图变换。
 - [x] 路线可点击、键盘聚焦并打开路线检查器；地图提供地点与路线的等价键盘清单。

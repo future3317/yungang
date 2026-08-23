@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target, X } from 'lucide-react';
+import { useState } from 'react';
+import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target } from 'lucide-react';
 import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, SiteReference, Task } from '../../types/game';
-import { contentClassName, contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatProjectReward, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, statusName, textField } from './inspectorFormatters';
+import { contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatProjectReward, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, textField } from './inspectorFormatters';
 import { interpretationConfidenceGuidance, metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
 import { resolveEventSceneAsset } from './eventArtwork';
+import { SiteInspectorSummary } from './SiteInspectorSummary';
 
 type InspectorTab = 'task' | 'project' | 'event' | 'market';
 
@@ -42,11 +43,6 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   eventTargetIds = eventTargetIds || [];
   const initialTab: InspectorTab = actionMode === 'explore' ? 'market' : 'task';
   const [tab, setTab] = useState<InspectorTab>(initialTab);
-  useEffect(() => {
-    if (actionMode === 'explore') setTab('market');
-    else if (site.id !== state.players[state.shared.active_player_id]?.location) setTab('task');
-  }, [actionMode, site.id, state.players, state.shared.active_player_id]);
-
   const active = state.players[state.shared.active_player_id];
   const siteType = siteTypeName(recordText(site, 'type', 'kind'));
   const siteDescription = recordText(site, 'description');
@@ -78,17 +74,13 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   }
 
   return <aside className={`site-inspector ${className}`.trim()} aria-label="地点详情">
-    <button type="button" className="inspector-collapse" onPointerUp={() => onCollapsedChange(true)} onClick={() => onCollapsedChange(true)} aria-label="收起地点详情"><X size={16} /></button>
-      <header className="inspector-summary" tabIndex={0} aria-label="地点摘要，可滚动查看">
-      <span className="eyebrow">当前聚焦地点</span>
-      <div className="inspector-site-mark"><img src={assetUrl(site.icon_asset || undefined, 'ornaments/heritage-medallion-1.webp')} alt="" /></div>
-      <h2>{site.name}</h2>
-      <div className="inspector-meta"><span>{siteType}</span><span className="content-class-badge">{contentClassName(site.content_class)}</span><span className={site.status}>{statusName(site.status)}</span></div>
-      {site.status === 'at_risk' && <div className="site-alert-explanation"><b>红点提醒</b><span>节点已经承压，再受到一次事件损伤可能关闭。优先修护，或先降低本轮事件影响。</span></div>}
-      {site.status === 'closed' && <div className="site-alert-explanation is-closed"><b>节点已关闭</b><span>这里暂时不能继续行动，需要先通过修护或事件应对恢复网络。</span></div>}
-      <p>{site.summary || siteDescription || '在这里寻找能够连接不同地点与文化脉络的证据。'}</p>
-      {action && <div className="relevant-action"><span>当前相关行动</span><b>{action.label}</b><small>{action.cost || 0} 行动点</small></div>}
-    </header>
+    <SiteInspectorSummary
+      site={site}
+      siteType={siteType}
+      siteDescription={siteDescription}
+      action={action}
+      onCollapse={() => onCollapsedChange(true)}
+    />
     <div className="inspector-tabs" role="tablist" aria-label="地点信息">
       <button type="button" id={tabId('task')} role="tab" aria-selected={tab === 'task'} aria-controls={panelId('task')} tabIndex={tab === 'task' ? 0 : -1} onClick={() => setTab('task')}><Target size={15} aria-hidden="true" />地点任务</button>
       <button type="button" id={tabId('project')} role="tab" aria-selected={tab === 'project'} aria-controls={panelId('project')} tabIndex={tab === 'project' ? 0 : -1} onClick={() => setTab('project')}><HandHeart size={15} aria-hidden="true" />团队项目</button>
@@ -138,7 +130,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
           const combo = textField(item, 'combo_name');
           const displayDomain = item.domain ? domainName(meta, item.domain) : '证据卡';
           const reason = marketReason(item, task, useful, meta);
-          return <button type="button" key={item.id} data-card-id={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name}，${reason}`}>
+          return <button type="button" key={item.id} data-card-id={item.id} className={`culture-card ${useful ? 'useful' : ''} ${actionMode === 'explore' && explore ? 'selected' : ''}`} disabled={!isCurrentSite || !explore} onClick={() => onExplore(item.id)} aria-label={`选择${item.name || '这件证据'}，${reason}`}>
             <img src={assetUrl(item.icon_asset)} alt="" />
             <span className="culture-card-copy"><b>{item.name}</b><small>{displayDomain} · {reason}</small><em>{description}</em>{combo && <i>{contentTagName(combo)} · 组合后获得额外影响</i>}</span>
             <strong>{!isCurrentSite ? '抵达后' : explore ? '选这件' : '不可选'}<small>{explore ? `${explore.cost || 1} 行动点` : ''}</small></strong>

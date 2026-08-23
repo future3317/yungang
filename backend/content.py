@@ -9,9 +9,9 @@ class Content:
     def __init__(self, root=None):
         self.root = Path(root or Path(__file__).resolve().parents[1] / "data")
         entry = self._read("game_data.json")
-        if entry.get("content_schema_version") not in {2, 3}:
-            raise ValueError("content_schema_version must be 2 or 3")
-        self.schema_version = entry.get("content_schema_version", 2)
+        if entry.get("content_schema_version") != 3:
+            raise ValueError("content_schema_version must be 3")
+        self.schema_version = 3
         self.domains = entry["domains"]
         self.domain_meta = entry.get("domain_meta", {domain: {"name": domain, "short_name": domain} for domain in self.domains})
         self.files = {key: self._read(name) for key, name in entry["content"].items()}
@@ -40,23 +40,6 @@ class Content:
         self.achievements = self._items(self.files.get("achievements", []), "achievements")
         self.terminology = self.files.get("terminology", {})
         validate_content_mechanisms(self.files)
-        for index, route in enumerate(self.routes):
-            route.setdefault("id", f"route_{route['from']}_{route['to']}_{index}")
-            route.setdefault("status", "open")
-            route.setdefault("risk", 0)
-            route.setdefault("connection_level", 0)
-            route.setdefault("active_project_id", None)
-            route.setdefault("tags", [])
-            route.setdefault("waypoints", [])
-            if len(route["waypoints"]) == 2 and all(isinstance(value, (int, float)) for value in route["waypoints"]):
-                route["waypoints"] = [route["waypoints"]]
-            route.setdefault("roadClass", "main" if "main" in route.get("tags", []) else "local")
-            route.setdefault("terrain", "valley" if "gate" in route.get("tags", []) else "plain")
-            route.setdefault("labelPosition", None)
-            route.setdefault("event_tags", [])
-        for site in self.sites.values():
-            tags = set(site.get("domains", site.get("site_tags", [])))
-            site["domains"] = [domain for domain in self.domains if domain in tags or (domain == "architecture" and tags & {"construction", "craft", "worship"}) or (domain == "statue" and tags & {"buddha", "statue"}) or (domain == "frontier" and tags & {"frontier", "security"}) or (domain == "trade" and tags & {"trade", "exchange", "mobility"})]
         self._validate()
 
     def _read(self, name):

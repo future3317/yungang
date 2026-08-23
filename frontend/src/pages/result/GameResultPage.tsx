@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../../shared/api/client';
 import { getRoomToken } from '../../shared/roomToken';
 import type { GameState, Meta } from '../../types/game';
-import { localizeActionText, metricLabel } from '../../widgets/game/gameUi';
+import { metricLabel } from '../../widgets/game/gameUi';
 import { StateChangeList } from '../../widgets/game/StateChangeList';
 import { Button } from '../../widgets/ui/Primitives';
 
@@ -118,7 +118,7 @@ export function GameResultPage() {
       targets: targetIds.map((id) => siteNames[id] || state.routes?.[id]?.name || '受影响路线').filter(Boolean),
       changes,
       reason: resolution
-        .map((result) => (typeof result.reason === 'string' ? localizeActionText(result.reason) : ''))
+        .map((result) => (typeof result.reason === 'string' ? result.reason : ''))
         .filter(Boolean)
         .join('；'),
     };

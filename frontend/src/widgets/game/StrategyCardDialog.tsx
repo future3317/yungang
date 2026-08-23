@@ -1,6 +1,6 @@
 import { Check, X } from 'lucide-react';
 import type { ActionOption } from '../../types/game';
-import { localizeActionText, previewDeltaText } from './gameUi';
+import { actionPresentation, previewDeltaText } from './gameUi';
 import { Button } from '../ui/Primitives';
 
 export function StrategyCardDialog({
@@ -17,6 +17,7 @@ export function StrategyCardDialog({
   const payload = (option.payload || {}) as Record<string, unknown>;
   const effect = (payload.effect || {}) as Record<string, unknown>;
   const effectType = String(effect.type || '');
+  const presentation = actionPresentation(option);
   const immediateEffects: Record<string, string> = {
     survey_route: `目标路线风险 ${Number(effect.risk_delta ?? -1) > 0 ? '+' : ''}${Number(effect.risk_delta ?? -1)}，研究点 +${Number(effect.clues || 0)}`,
     restore_route: '目标路线恢复通行；本次不消耗研究点。',
@@ -34,9 +35,7 @@ export function StrategyCardDialog({
         : `将 ${Number(effect.amount || 1)} 点团队修护资源转给目标同行者。`,
     team_prepare: `为最多 ${Number(effect.max_targets || 2)} 位同行者准备当前事件，结算时风化压力 -1。`,
   };
-  const immediateEffect = localizeActionText(
-    String(effect.description || immediateEffects[effectType] || option.description || '这张牌会在确认后按目标结算。')
-  );
+  const immediateEffect = String(effect.description || immediateEffects[effectType] || presentation.description);
   return (
     <div className="dialog-backdrop">
       <section
@@ -49,12 +48,12 @@ export function StrategyCardDialog({
           <X />
         </button>
         <span className="eyebrow">策略牌说明</span>
-        <h2 id="strategy-card-dialog-title">{localizeActionText(option.label)}</h2>
-        <p>{localizeActionText(option.description)}</p>
+        <h2 id="strategy-card-dialog-title">{presentation.label}</h2>
+        <p>{presentation.description}</p>
         <dl>
           <div>
             <dt>使用时机</dt>
-            <dd>{localizeActionText(String(payload.timing || '当前行动阶段'))}</dd>
+            <dd>{String(payload.timing || '当前行动阶段')}</dd>
           </div>
           <div>
             <dt>消耗</dt>
@@ -66,7 +65,7 @@ export function StrategyCardDialog({
               {option.targets.length
                 ? option.targets
                     .slice(0, 4)
-                    .map((target) => localizeActionText(target.label))
+                    .map((target) => target.label)
                     .join('、') + (option.targets.length > 4 ? ` 等 ${option.targets.length} 个目标` : '')
                 : '当前地点或团队'}
             </dd>
@@ -77,11 +76,11 @@ export function StrategyCardDialog({
           </div>
           <div>
             <dt>最适合</dt>
-            <dd>{localizeActionText(String(payload.best_use || option.reason || '根据当前风险选择目标。'))}</dd>
+            <dd>{String(payload.best_use || option.reason || '根据当前风险选择目标。')}</dd>
           </div>
           <div>
             <dt>限制</dt>
-            <dd>{localizeActionText(String(payload.limitations || option.disabled_reason || '请先选择合法目标。'))}</dd>
+            <dd>{String(payload.limitations || option.disabled_reason || '请先选择合法目标。')}</dd>
           </div>
           <div>
             <dt>预计变化</dt>

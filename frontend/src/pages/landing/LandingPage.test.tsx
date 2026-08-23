@@ -61,19 +61,18 @@ function Wrapper({ children }: { children: React.ReactNode }) {
 }
 
 describe('LandingPage', () => {
-  it('shows the primary tutorial and secondary custom buttons by default', () => {
+  it('shows the tutorial and ready-to-configure journey form by default', () => {
     render(<LandingPage />, { wrapper: Wrapper });
     expect(screen.getByRole('button', { name: /开始新手导览/ })).toBeVisible();
-    expect(screen.getByRole('button', { name: /自定义旅程/ })).toBeVisible();
-    expect(screen.queryByRole('button', { name: /进入准备厅/ })).not.toBeInTheDocument();
-  });
-
-  it('reveals the custom form when the secondary button is clicked', () => {
-    render(<LandingPage />, { wrapper: Wrapper });
-    fireEvent.click(screen.getByRole('button', { name: /自定义旅程/ }));
     expect(screen.getByRole('button', { name: /进入准备厅/ })).toBeVisible();
     expect(screen.getByText('旅程场景')).toBeInTheDocument();
     expect(screen.getByLabelText('旅程难度')).toBeInTheDocument();
+  });
+
+  it('keeps advanced seed controls progressively disclosed', () => {
+    render(<LandingPage />, { wrapper: Wrapper });
+    fireEvent.click(screen.getByRole('button', { name: /高级设置/ }));
+    expect(screen.getByRole('button', { name: /收起/ })).toBeVisible();
   });
 
   it('loads scenario metadata from the API', async () => {
@@ -83,7 +82,6 @@ describe('LandingPage', () => {
     } as Response);
 
     render(<LandingPage />, { wrapper: Wrapper });
-    fireEvent.click(screen.getByRole('button', { name: /自定义旅程/ }));
     await waitFor(() => expect(screen.getByText('风沙与石')).toBeInTheDocument());
     expect(screen.getByRole('button', { name: /风沙与石/ })).toHaveAttribute('aria-pressed', 'false');
   });

@@ -9,7 +9,6 @@ export function ScenarioHeader({
   scenarioName,
   connection,
   gameReference,
-  eventSummary,
   onFocusGoal,
   onOpenHelp,
 }: {
@@ -17,7 +16,6 @@ export function ScenarioHeader({
   scenarioName: string;
   connection: string;
   gameReference?: string;
-  eventSummary?: { name?: string; targets?: string[]; historyCount?: number };
   onFocusGoal?: (ids: string[]) => void;
   onOpenHelp?: () => void;
 }) {
@@ -46,12 +44,6 @@ export function ScenarioHeader({
   const totalTarget = visibleVictory.reduce((sum, item) => sum + item.target, 0) || projectTarget + objectiveTarget;
   const weathering = goal?.weathering ?? state.shared.weathering_track ?? 0;
   const weatheringLimit = goal?.weathering_limit ?? state.shared.weathering_limit ?? 5;
-  const summaryLabel = (item: (typeof victory)[number]) =>
-    item.id === 'core_project' && item.related_labels?.length
-      ? item.related_labels[0]
-      : item.id === 'objectives' && item.related_labels?.length
-        ? item.related_labels.join('、')
-        : item.label;
   const conditionRow = (item: (typeof victory)[number], failureCondition = false) => {
     const safe = item.operator === 'lt' || item.operator === 'lte' ? conditionComplete(item) : item.status === 'safe';
     const complete = failureCondition
@@ -79,16 +71,6 @@ export function ScenarioHeader({
     );
   };
 
-  const summaryItems = visibleVictory.length
-    ? [
-        `胜利条件 ${totalProgress} / ${totalTarget}`,
-        ...visibleVictory.slice(0, 2).map((item) => `${summaryLabel(item)} · ${item.current} / ${item.target}`),
-      ]
-    : [
-        `核心团队项目 ${completedProjects} / ${projectTarget}`,
-        `胜利目标 ${completedObjectives} / ${objectiveTarget}`,
-      ];
-
   return (
     <header className="game-header">
       <div className="brand-group">
@@ -103,23 +85,9 @@ export function ScenarioHeader({
       </div>
 
       <div className="header-center">
-        <div className="event-history-bar top-event-summary" role="status" aria-live="polite">
-          <span className="event-history-kicker">{eventSummary?.name ? '当前事件' : '历史事件'}</span>
-          <b>{eventSummary?.name || '旅程事件记录'}</b>
-          <span>
-            {eventSummary?.targets?.length
-              ? `影响范围：${eventSummary.targets.join('、')}`
-              : `${eventSummary?.historyCount || 0} 条事件记录`}
-          </span>
-        </div>
         <section className="goal-summary" aria-label="胜利摘要">
-          {summaryItems.map((text) => (
-            <span key={text}>{text}</span>
-          ))}
-          <span>
-            风化压力 {weathering} / {weatheringLimit}
-          </span>
-          <span>剩余 {goal?.rounds_remaining ?? state.shared.max_rounds - state.shared.turn + 1} 回合</span>
+          <span>核心目标 {completedProjects} / {projectTarget || totalTarget}</span>
+          <span>风化压力 {weathering} / {weatheringLimit}</span>
           <Progress value={totalProgress} max={totalTarget} />
         </section>
       </div>

@@ -25,12 +25,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      36.580785012432884,
-      36.774090990882556
+      [
+        36.580785012432884,
+        36.774090990882556
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       39,
       35
     ]
@@ -61,12 +63,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      58.64104498353273,
-      34.14653534420429
+      [
+        58.64104498353273,
+        34.14653534420429
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       61,
       36
     ]
@@ -97,12 +101,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      51.99482311952499,
-      67.17616606585442
+      [
+        51.99482311952499,
+        67.17616606585442
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       49,
       67
     ]
@@ -133,12 +139,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      69.56435002836193,
-      58.44015449904413
+      [
+        69.56435002836193,
+        58.44015449904413
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       68,
       61
     ]
@@ -169,12 +177,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      35.58999682000954,
-      62.543994912015265
+      [
+        35.58999682000954,
+        62.543994912015265
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       34,
       60
     ]
@@ -205,12 +215,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      53.66227492123987,
-      49.722847203232455
+      [
+        53.66227492123987,
+        49.722847203232455
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       57,
       46
     ]
@@ -241,12 +253,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      55.337159508629554,
-      51.19502948721144
+      [
+        55.337159508629554,
+        51.19502948721144
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       60,
       53
     ]
@@ -279,12 +293,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      30.309266547943597,
-      44.753571107880425
+      [
+        30.309266547943597,
+        44.753571107880425
+      ]
     ],
-    "roadClass": "main",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       31.5,
       42
     ]
@@ -317,12 +333,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      22.172376902759485,
-      55.6877230678931
+      [
+        22.172376902759485,
+        55.6877230678931
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       24,
       56.5
     ]
@@ -355,12 +373,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      68.74831455224307,
-      31.971285862357263
+      [
+        68.74831455224307,
+        31.971285862357263
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       67,
       31
     ]
@@ -393,12 +413,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      42.7475681826467,
-      40.96383749954431
+      [
+        42.7475681826467,
+        40.96383749954431
+      ]
     ],
-    "roadClass": "main",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       44.5,
       40
     ]
@@ -433,12 +455,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      46.661925774045,
-      21.995626819832523
+      [
+        46.661925774045,
+        21.995626819832523
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       46.5,
       19
     ]
@@ -470,12 +494,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      86.02721215233571,
-      59.671202025389285
+      [
+        86.02721215233571,
+        59.671202025389285
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       88,
       60
     ]
@@ -507,12 +533,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      85.40895995607006,
-      80.5965499862719
+      [
+        85.40895995607006,
+        80.5965499862719
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       83.5,
       80
     ]
@@ -544,12 +572,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      59.211990655183975,
-      86.13102453014207
+      [
+        59.211990655183975,
+        86.13102453014207
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       58.5,
       88
     ]
@@ -581,12 +611,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      39.19836233196058,
-      85.66768533019562
+      [
+        39.19836233196058,
+        85.66768533019562
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       40,
       87.5
     ]
@@ -619,12 +651,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      12.211145618000169,
-      62.89442719099991
+      [
+        12.211145618000169,
+        62.89442719099991
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       14,
       62
     ]
@@ -656,12 +690,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      86.05671532086349,
-      47.82880260780655
+      [
+        86.05671532086349,
+        47.82880260780655
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       90,
       48.5
     ]
@@ -696,12 +732,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      52.976743395301234,
-      56.19588563149212
+      [
+        52.976743395301234,
+        56.19588563149212
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       51,
       56.5
     ]
@@ -733,12 +771,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      25.695885631492118,
-      30.023256604698766
+      [
+        25.695885631492118,
+        30.023256604698766
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       26,
       32
     ]
@@ -770,12 +810,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      52.83811635492349,
-      25.815918769000902
+      [
+        52.83811635492349,
+        25.815918769000902
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       52,
       24
     ]
@@ -809,12 +851,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      75.45055774420524,
-      45.92304789528165
+      [
+        75.45055774420524,
+        45.92304789528165
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       76,
       44
     ]
@@ -846,12 +890,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      90.02957649036065,
-      36.157317650497504
+      [
+        90.02957649036065,
+        36.157317650497504
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       92,
       36.5
     ]
@@ -882,12 +928,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      75.63245553203367,
-      91.89736659610102
+      [
+        75.63245553203367,
+        91.89736659610102
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       75,
       90
     ]
@@ -919,12 +967,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      50.58105148404375,
-      88.50109509038144
+      [
+        50.58105148404375,
+        88.50109509038144
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       50.5,
       91.5
     ]
@@ -958,12 +1008,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      18.421392335938016,
-      74.03322617863145
+      [
+        18.421392335938016,
+        74.03322617863145
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       21,
       72.5
     ]
@@ -995,12 +1047,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      19.03616250045569,
-      46.7475681826467
+      [
+        19.03616250045569,
+        46.7475681826467
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       20,
       48.5
     ]
@@ -1035,12 +1089,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      39.654654412007375,
-      54.479880146791885
+      [
+        39.654654412007375,
+        54.479880146791885
+      ]
     ],
-    "roadClass": "main",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "main",
+    "label_position": [
       41,
       53
     ]
@@ -1072,12 +1128,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      68.23232231905115,
-      70.40011568358453
+      [
+        68.23232231905115,
+        70.40011568358453
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       69,
       67.5
     ]
@@ -1109,12 +1167,14 @@
     ],
     "ui_hint": "勘察可获得研究点；修护后可进一步建立稳定连接。",
     "waypoints": [
-      48.03532286715505,
-      73.12577578422001
+      [
+        48.03532286715505,
+        73.12577578422001
+      ]
     ],
-    "roadClass": "local",
     "terrain": "plain",
-    "labelPosition": [
+    "road_class": "local",
+    "label_position": [
       50,
       73.5
     ]
@@ -1142,12 +1202,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      60.485071250072664,
-      25.059714999709335
+      [
+        60.485071250072664,
+        25.059714999709335
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       60,
       27
     ]
@@ -1175,12 +1237,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      71.023166369859,
-      46.37210420376763
+      [
+        71.023166369859,
+        46.37210420376763
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       74,
       46
     ]
@@ -1208,12 +1272,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      52.33589941132431,
-      42.89059960754954
+      [
+        52.33589941132431,
+        42.89059960754954
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       54,
       44
     ]
@@ -1241,12 +1307,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      59.10557280900009,
-      40.78885438199983
+      [
+        59.10557280900009,
+        40.78885438199983
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       60,
       39
     ]
@@ -1274,12 +1342,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      32.92229123600033,
-      62.78885438199983
+      [
+        32.92229123600033,
+        62.78885438199983
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       36.5,
       61
     ]
@@ -1307,12 +1377,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      37.53989389379149,
-      32.70839711122888
+      [
+        37.53989389379149,
+        32.70839711122888
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       36.5,
       31
     ]
@@ -1340,12 +1412,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      37.548094632188345,
-      32.124510704178434
+      [
+        37.548094632188345,
+        32.124510704178434
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       39,
       33.5
     ]
@@ -1373,12 +1447,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      29.649557612645545,
-      44.814928877812314
+      [
+        29.649557612645545,
+        44.814928877812314
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       33,
       47
     ]
@@ -1406,12 +1482,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      80.58578643762691,
-      69.41421356237309
+      [
+        80.58578643762691,
+        69.41421356237309
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       82,
       68
     ]
@@ -1439,12 +1517,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      76.98511157062997,
-      41.701488842937
+      [
+        76.98511157062997,
+        41.701488842937
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       74,
       42
     ]
@@ -1472,12 +1552,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      88.41421356237309,
-      71.58578643762691
+      [
+        88.41421356237309,
+        71.58578643762691
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       87,
       73
     ]
@@ -1505,12 +1587,14 @@
     ],
     "ui_hint": "悬停查看通行状态、行动点成本和当前风险。",
     "waypoints": [
-      70.87665560679706,
-      65.63094528684599
+      [
+        70.87665560679706,
+        65.63094528684599
+      ]
     ],
-    "roadClass": "regional",
     "terrain": "slope",
-    "labelPosition": [
+    "road_class": "regional",
+    "label_position": [
       70,
       68.5
     ]
@@ -1534,12 +1618,14 @@
     "event_tags": [],
     "ui_hint": "练习相邻节点移动。",
     "waypoints": [
-      40,
-      45
+      [
+        40,
+        45
+      ]
     ],
-    "roadClass": "path",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "path",
+    "label_position": [
       40,
       45
     ]
@@ -1563,12 +1649,14 @@
     "event_tags": [],
     "ui_hint": "练习相邻节点移动。",
     "waypoints": [
-      60,
-      45
+      [
+        60,
+        45
+      ]
     ],
-    "roadClass": "path",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "path",
+    "label_position": [
       60,
       45
     ]
@@ -1592,12 +1680,14 @@
     "event_tags": [],
     "ui_hint": "练习相邻节点移动。",
     "waypoints": [
-      40,
-      72
+      [
+        40,
+        72
+      ]
     ],
-    "roadClass": "path",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "path",
+    "label_position": [
       40,
       72
     ]
@@ -1621,12 +1711,14 @@
     "event_tags": [],
     "ui_hint": "练习相邻节点移动。",
     "waypoints": [
-      60,
-      72
+      [
+        60,
+        72
+      ]
     ],
-    "roadClass": "path",
     "terrain": "valley",
-    "labelPosition": [
+    "road_class": "path",
+    "label_position": [
       60,
       72
     ]

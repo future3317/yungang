@@ -15,7 +15,7 @@ class PlanningMixin:
         if any(str(mark.get("turn")) == str(state.shared.turn) for mark in marks):
             raise ValueError("planning_limit_reached")
         marks.append({"target_id": target, "turn": str(state.shared.turn)})
-        self._record_journal(state, "plan", player.id, f"{player.name} 放置规划标记：{target}")
+        self._record_journal(state, "plan", player.id, self._journal_message("plan", target, {}))
 
     def _resolve_planning_collaboration(self, state: GameState, player: PlayerState, action: str, req: dict[str, Any]) -> None:
         target_ids = {value for value in (req.get("target_id"), req.get("target_site_id"), req.get("route_id")) if value}

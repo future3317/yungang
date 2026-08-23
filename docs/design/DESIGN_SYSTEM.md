@@ -1,6 +1,6 @@
 # Design system
 
-Tokens live in `frontend/src/styles/tokens.css`; global behavior lives in `frontend/src/styles/globals.css`.
+Tokens live in `frontend/src/styles/tokens.css`. Base reset and typography live in the global style entry; page geometry belongs only to the game HUD layout, map visuals to the map stylesheet, and widget visuals to CSS Modules. `components.css` and `hud-contract.css` are migration-only files: do not add new widget rules there.
 
 ## Semantic colors
 
@@ -8,4 +8,6 @@ Tokens live in `frontend/src/styles/tokens.css`; global behavior lives in `front
 
 ## Interaction rules
 
-Interactive targets are at least 44px on the touch layout. Focus is visible with `--focus-ring`. Reduced motion disables route flow and transition movement. Cultural images use `alt=""` when decorative and descriptive alt text when they carry meaning.
+Desktop controls have a 44px minimum hit area even when their visible icon is smaller. Ordinary body text is at least 14px, auxiliary text at least 12px, and focus is visible with `--focus-ring`. Reduced motion disables route flow and transition movement. Cultural images use `alt=""` when decorative and descriptive alt text when they carry meaning.
+
+Use at most two simultaneous emphasis signals on one object. Gold denotes task relevance or completion, cinnabar primary action, azure discovery, malachite repair, and red only danger. Map states are limited to default, current location, currently actionable, and danger/event; selected state uses a focus ring rather than another color system.

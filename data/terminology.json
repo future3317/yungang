@@ -62,6 +62,10 @@
       "name": "稳定",
       "description": "当前没有需要优先处理的损伤。"
     },
+    "normal": {
+      "name": "稳定",
+      "description": "当前没有需要优先处理的损伤。"
+    },
     "at_risk": {
       "name": "受风险影响",
       "description": "节点已出现损伤，应安排修护。"
@@ -168,6 +172,11 @@
       "name": "结束回合",
       "description": "结束当前玩家行动并推进轮次。"
     }
+  },
+  "route_classes": {
+    "main": "主干道",
+    "regional": "区域道路",
+    "local": "支路"
   },
   "resources": {
     "ap": {

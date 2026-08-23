@@ -30,7 +30,6 @@ async function gotoLanding(page: Page) {
 
 async function createRoom(page: Page) {
   await gotoLanding(page);
-  await page.getByRole('button', { name: /自定义旅程/ }).click();
   await page.locator('.scenario-options > button').first().click();
   await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
   await page.getByLabel('可复现种子').fill('901');
@@ -86,6 +85,8 @@ async function acquireCard(page: Page) {
     }
     await page.waitForTimeout(250);
   }
+  await openInspector(page);
+  await page.getByRole('tab', { name: '市场' }).click();
   const card = page.locator('[data-card-id]').first();
   await expect(card).toBeVisible();
   await card.click();
@@ -168,6 +169,7 @@ test('action preview dialog visual baseline', async ({ page }) => {
   }
   if (isMobileProject()) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await openInspector(page);
+  await page.getByRole('tab', { name: '市场' }).click();
   const card = page.locator('[data-card-id]').first();
   await expect(card).toBeVisible();
   await card.click();

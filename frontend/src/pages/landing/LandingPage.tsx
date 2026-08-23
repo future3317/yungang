@@ -61,7 +61,7 @@ function scenarioFaceFields(item: Scenario) {
 
 export function LandingPage() {
   const navigate = useNavigate();
-  const [customOpen, setCustomOpen] = useState(false);
+  const [customOpen, setCustomOpen] = useState(true);
   const [name, setName] = useState('');
   const [mode, setMode] = useState<PlayMode>('solo');
   const [count, setCount] = useState(2);
@@ -202,8 +202,8 @@ export function LandingPage() {
                 {busy ? '正在点亮路线…' : '进入准备厅'}
                 <ArrowRight />
               </Button>
-              <button type="button" className="ghost-button" onClick={() => setCustomOpen(false)} disabled={busy}>
-                返回快捷入口
+              <button type="button" className="ghost-button" onClick={createTutorial} disabled={busy}>
+                开始新手导览
               </button>
             </div>
             <label htmlFor="player-name">
