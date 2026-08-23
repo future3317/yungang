@@ -10,7 +10,7 @@
   align-items: center;
   gap: 9px;
   text-decoration: none;
-  font: 700 1.25rem/1 var(--font-display);
+  font: 700 var(--type-control)/1 var(--font-display);
   white-space: nowrap;
 }
 .brand-mark img {
@@ -61,7 +61,7 @@
 }
 .header-turn {
   color: var(--connection);
-  font: 700 0.9375rem var(--font-data);
+  font: 700 var(--type-body) var(--font-data);
 }
 .header-phase {
   color: var(--ink-secondary);
@@ -133,7 +133,7 @@
 }
 .goal-drawer-head b {
   color: #f0dfb4;
-  font-size: 0.86rem;
+  font-size: var(--type-label);
 }
 .goal-drawer-head button {
   width: 44px;
@@ -206,7 +206,7 @@
   display: grid;
 }
 .roster-row b {
-  font-size: 0.82rem;
+  font-size: var(--type-label);
 }
 .roster-row small {
   overflow: hidden;
@@ -216,7 +216,7 @@
 }
 .roster-row > strong {
   color: var(--connection);
-  font: 700 0.9rem var(--font-data);
+  font: 700 var(--type-body) var(--font-data);
 }
 .roster-row > strong small {
   color: #b7c1b6;
@@ -239,7 +239,7 @@
   display: grid;
 }
 .player-resources b {
-  font: 700 1.1rem var(--font-data);
+  font: 700 var(--type-data-md) var(--font-data);
   color: var(--connection);
 }
 .player-resources small {

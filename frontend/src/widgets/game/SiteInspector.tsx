@@ -4,6 +4,7 @@ import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameS
 import { contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatProjectReward, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, textField } from './inspectorFormatters';
 import { interpretationConfidenceGuidance, metricLabel, optionAction, previewDeltaText } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
+import styles from './SiteInspector.module.css';
 import { resolveEventSceneAsset } from './eventArtwork';
 import { SiteInspectorSummary } from './SiteInspectorSummary';
 
@@ -72,7 +73,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     return <aside className="inspector-rail"><button type="button" className="inspector-expand" onPointerUp={() => onCollapsedChange(false)} onClick={() => onCollapsedChange(false)} aria-label="展开地点详情"><ChevronLeft size={17} /><span>地点详情</span></button></aside>;
   }
 
-  return <aside className={`site-inspector ${className}`.trim()} aria-label="地点详情">
+  return <aside className={`${styles.root} site-inspector ${className}`.trim()} aria-label="地点详情">
     <SiteInspectorSummary
       site={site}
       siteType={siteType}

@@ -5,6 +5,7 @@ import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zo
 import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 import { displayText } from '../game/contentLabels';
+import styles from './HeritageNetwork.module.css';
 
 type MapActionMode = Extract<
   ActionType,
@@ -12,6 +13,24 @@ type MapActionMode = Extract<
 > | null;
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
+export function getTargetRouteIds(
+  routeLines: ReadonlyArray<Pick<RouteLine, 'id' | 'from' | 'to'>>,
+  reachableIds: ReadonlySet<string>,
+  actionMode: MapActionMode,
+  activeLocation: string
+) {
+  const routeAction = actionMode === 'survey_route' || actionMode === 'restore_route' || actionMode === 'establish_connection';
+  return new Set(
+    routeLines
+      .filter((line) =>
+        routeAction
+          ? reachableIds.has(line.id)
+          : actionMode === 'move' && (reachableIds.has(line.from) || reachableIds.has(line.to)) &&
+            (line.from === activeLocation || line.to === activeLocation)
+      )
+      .map((line) => line.id)
+  );
+}
 
 function siteStatusName(value: string | undefined, catalog: Meta | undefined) {
   return displayText(catalog, 'statuses', value, '未标注状态');
@@ -207,6 +226,7 @@ export function HeritageNetwork({
   eventTargetIds = [],
   catalog,
   onFocus,
+  onRouteSelect,
 }: {
   sites: Record<string, Site>;
   metaSites: Record<string, SiteReference>;
@@ -220,6 +240,7 @@ export function HeritageNetwork({
   eventTargetIds?: ReadonlyArray<string>;
   catalog?: Meta;
   onFocus: (id: string) => void;
+  onRouteSelect: (id: string) => void;
 }) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
@@ -307,16 +328,8 @@ export function HeritageNetwork({
     () => computeLabelLayouts(enabledSites, metaSites, lod, focusedId, nodePositions),
     [enabledSites, focusedId, lod, metaSites, nodePositions]
   );
-  const targetRouteIds = new Set(
-    routeLines
-      .filter(
-        (line) =>
-          actionMode &&
-          (reachableIds.has(line.from) || reachableIds.has(line.to)) &&
-          (line.from === active.location || line.to === active.location)
-      )
-      .map((line) => line.id)
-  );
+  const routeAction = actionMode === 'survey_route' || actionMode === 'restore_route' || actionMode === 'establish_connection';
+  const targetRouteIds = getTargetRouteIds(routeLines, reachableIds, actionMode, active.location);
   const eventTargetRouteIds = new Set(eventTargetIds.filter((id) => routeLines.some((line) => line.id === id)));
   const hoveredRoute = routeLines.find((line) => line.id === hoveredRouteId);
   const visibleLines = routeLines.filter(
@@ -329,7 +342,7 @@ export function HeritageNetwork({
   const currentPoint = mapPoint(active.location);
   const selectedPoint = focusedId && focusedId !== active.location ? mapPoint(focusedId) : null;
   return (
-    <div className="network-frame world-stage">
+    <div className={`${styles.root} network-frame world-stage ${routeAction ? 'route-action' : ''}`.trim()}>
       <div className="network-tools">
         <button title="聚焦当前玩家" onClick={centerCurrent} aria-label="聚焦当前玩家">
           <LocateFixed />
@@ -414,15 +427,17 @@ export function HeritageNetwork({
               ]
                 .filter(Boolean)
                 .join(' ');
-              return (
-                <path
-                  key={line.id}
-                  className={classes}
-                  d={routePath(
+              const d = routePath(
                     { ...metaSites[line.from], layout: mapPoint(line.from) },
                     { ...metaSites[line.to], layout: mapPoint(line.to) },
                     line.route
-                  )}
+                  );
+              return (
+                <g key={line.id} className="route-hit-group">
+                  <path className="route-hit-area" d={d} aria-hidden="true" />
+                  <path
+                  className={classes}
+                  d={d}
                   tabIndex={0}
                   role="button"
                   aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
@@ -432,15 +447,18 @@ export function HeritageNetwork({
                   onBlur={() => setHoveredRouteId(null)}
                   onClick={(event) => {
                     event.stopPropagation();
-                    onFocus(line.to);
+                    if (routeAction) onRouteSelect(line.id);
+                    else onFocus(line.to);
                   }}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault();
-                      onFocus(line.to);
+                      if (routeAction) onRouteSelect(line.id);
+                      else onFocus(line.to);
                     }
                   }}
-                />
+                  />
+                </g>
               );
             })}
           </g>
@@ -604,7 +622,7 @@ export function HeritageNetwork({
             </button>
           ))}
           {routeLines.map((line) => (
-            <button key={line.id} onClick={() => onFocus(line.to)}>
+            <button key={line.id} onClick={() => (routeAction ? onRouteSelect(line.id) : onFocus(line.to))}>
               {line.route.name || `${metaSites[line.from]?.name}—${metaSites[line.to]?.name}`}
             </button>
           ))}

@@ -35,6 +35,10 @@ const actionAssets: Partial<Record<ActionType, string>> = {
   restore: 'repair',
 };
 const primaryOrder: ActionType[] = ['move', 'explore', 'interpret_evidence', 'restore', 'survey_route'];
+function orderOf(type: ActionType) {
+  const index = primaryOrder.indexOf(type);
+  return index === -1 ? primaryOrder.length : index;
+}
 
 export function CommandDock({
   state,
@@ -47,7 +51,6 @@ export function CommandDock({
   actionLabels,
   mutationPending,
   canAct = true,
-  onRun: _onRun,
   onChooseOption,
   onCancel,
   onCard,
@@ -62,7 +65,6 @@ export function CommandDock({
   actionLabels: Partial<Record<ActionType, string>>;
   mutationPending: boolean;
   canAct?: boolean;
-  onRun?: (action?: Action) => void;
   onChooseOption: (option: ActionOption) => void;
   onCancel: () => void;
   onCard: (id: string) => void;
@@ -74,7 +76,7 @@ export function CommandDock({
   const ranked = [...actionOptions].sort(
     (left, right) =>
       (right.recommendation_score || 0) - (left.recommendation_score || 0) ||
-      primaryOrder.indexOf(left.type) - primaryOrder.indexOf(right.type) ||
+      orderOf(left.type) - orderOf(right.type) ||
       left.label.localeCompare(right.label, 'zh-CN')
   );
   const featured = ranked.filter((item) => item.enabled !== false).slice(0, 3);
@@ -207,7 +209,14 @@ export function CommandDock({
                 </button>
               );
             })}
-            {unavailable.length ? <div className={styles.unavailableLabel}>暂不可用 {unavailable.length} 项</div> : null}
+            {unavailable.length ? (
+              <div className={styles.unavailableLabel}>
+                <b>暂不可用 {unavailable.length} 项</b>
+                {unavailable.map((option) => (
+                  <span key={option.id}>{option.label || actionLabels[option.type] || '行动'} · {option.disabled_reason || '当前条件未满足'}</span>
+                ))}
+              </div>
+            ) : null}
           </div>
         </details>
       </div>
@@ -229,7 +238,7 @@ export function CommandDock({
               const interpretAction = findCardAction(legal, 'interpret_evidence', id);
               const playAction = findCardAction(legal, 'play_card', id);
               return (
-                <button type="button" key={id} className={styles.handCard} onClick={() => onCard(id)}>
+                <button type="button" key={id} className={styles.handCard} data-testid="evidence-hand-card" onClick={() => onCard(id)}>
                   <img src={assetUrl(item?.icon_asset, 'interaction/resource-icons/scroll.webp')} alt="" />
                   <b>{item?.name || id}</b>
                   <small>{interpretAction ? '可用于当前研判' : playAction ? '可发动即时效果' : '查看这件证据'}</small>

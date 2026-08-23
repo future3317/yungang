@@ -22,7 +22,7 @@
 }
 .seat-handoff h2 {
   margin: 0;
-  font-size: 1.65rem;
+  font-size: var(--type-entity);
 }
 .seat-handoff p {
   margin: 0;

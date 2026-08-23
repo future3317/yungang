@@ -3,7 +3,7 @@
   z-index: 45;
   right: 18px;
   bottom: 18px;
-  min-height: 42px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -36,7 +36,7 @@
   width: min(530px, 100%);
   display: grid;
   gap: 13px;
-  padding: clamp(25px, 5vw, 42px);
+  padding: var(--type-page);
   color: #f3e7ce;
   background: linear-gradient(145deg, #34493a, #202e26);
   border: 1px solid rgba(220, 187, 101, 0.58);
@@ -68,13 +68,13 @@
 .tutorial-dialog h2 {
   margin: 0;
   color: #fff5dc;
-  font: 700 clamp(1.55rem, 4vw, 2.15rem)/1.15 var(--font-display);
+  font: 700 var(--type-page);
 }
 .tutorial-dialog p {
   max-width: 46ch;
   margin: 0;
   color: #d8ccb3;
-  font-size: 0.96rem;
+  font-size: var(--type-body);
   line-height: 1.7;
 }
 .tutorial-cue {
@@ -157,7 +157,7 @@
   margin-top: 2px;
 }
 .primary-action {
-  min-height: 40px;
+  min-height: 44px;
   margin-top: 13px;
   padding: 0 13px;
   color: #fff1d2;

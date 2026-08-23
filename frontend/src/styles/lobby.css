@@ -9,7 +9,7 @@
   margin-bottom: 2px;
   color: #36463b;
   font-weight: 700;
-  font-size: 0.86rem;
+  font-size: var(--type-label);
 }
 .play-mode-options {
   display: grid;
@@ -32,7 +32,7 @@
   color: #9f8250;
 }
 .play-mode-options button b {
-  font-size: 0.86rem;
+  font-size: var(--type-label);
 }
 .play-mode-options button small {
   color: #6b776f;
@@ -86,7 +86,7 @@
   display: grid;
   gap: 22px;
   margin: 0 auto;
-  padding: clamp(24px, 4vw, 42px);
+  padding: var(--type-page);
   background: linear-gradient(145deg, rgba(53, 70, 58, 0.98), rgba(24, 35, 28, 0.99));
   border: 1px solid rgba(215, 182, 103, 0.42);
   border-radius: 20px;
@@ -104,7 +104,7 @@
 }
 .room-card h1 {
   margin: 8px 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: var(--type-page);
 }
 .room-card-heading p {
   margin: 0;
@@ -134,7 +134,7 @@
   min-width: 0;
   overflow-wrap: anywhere;
   color: #f2d88e;
-  font: 700 0.95rem var(--font-data);
+  font: 700 var(--type-body) var(--font-data);
 }
 .room-code button {
   grid-column: 2;
@@ -185,7 +185,7 @@
   min-width: 0;
 }
 .seat-person b {
-  font-size: 0.95rem;
+  font-size: var(--type-body);
 }
 .seat-person small {
   color: #c7bca5;
@@ -214,12 +214,12 @@
   display: grid;
   gap: 6px;
   color: #d8ccb4;
-  font-size: 0.82rem;
+  font-size: var(--type-label);
 }
 .join-panel input,
 .join-panel select,
 .seat-buttons select {
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 10px;
   color: #f2e8d5;
   background: #24372b;
@@ -247,7 +247,7 @@
 }
 .seat-buttons button,
 .room-actions button {
-  min-height: 42px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -379,7 +379,7 @@
 .help-grid h2 {
   margin: 0;
   color: #f4e6c9;
-  font-size: 1rem;
+  font-size: var(--type-control);
 }
 .help-grid p {
   margin: 0;
@@ -410,13 +410,13 @@
 }
 .room-seat .seat-person input {
   width: 100%;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 10px;
   color: #f2e8d5;
   background: rgba(20, 39, 29, 0.94);
   border: 1px solid rgba(213, 190, 128, 0.3);
   border-radius: 6px;
-  font: 600 0.92rem var(--font-body);
+  font: 600 var(--type-body) var(--font-body);
 }
 .room-seat .seat-person input::placeholder {
   color: #a99d83;
@@ -495,13 +495,13 @@
 .role-selection-heading h2 {
   margin: 5px 0 6px;
   color: #f4e7cb;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-size: var(--type-page);
 }
 .role-selection-heading p {
   max-width: 56ch;
   margin: 0;
   color: #c8bea7;
-  font-size: 0.82rem;
+  font-size: var(--type-label);
   line-height: 1.55;
 }
 .role-selection-count {
@@ -533,7 +533,7 @@
 }
 .role-seat-switcher button b {
   color: #ece0c5;
-  font-size: 0.85rem;
+  font-size: var(--type-label);
 }
 .role-seat-switcher button small {
   overflow: hidden;
@@ -624,7 +624,7 @@
 .role-choice-copy b {
   overflow: hidden;
   color: #f3e5c8;
-  font: 700 1rem var(--font-display);
+  font: 700 var(--type-control) var(--font-display);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -725,7 +725,7 @@
 .role-detail-heading h3 {
   margin: 4px 0;
   color: #f4e7cb;
-  font: 700 1.45rem/1.15 var(--font-display);
+  font: 700 var(--type-entity)/1.15 var(--font-display);
   overflow-wrap: anywhere;
 }
 .role-detail-heading p,
@@ -747,7 +747,7 @@
 }
 .role-detail-section b {
   color: #f0d28a;
-  font-size: 0.9rem;
+  font-size: var(--type-body);
 }
 .role-solo-note,
 .role-start-note {
@@ -916,7 +916,7 @@
 .archive-card h3 {
   margin: 0;
   color: #fff0cf;
-  font-size: 1.05rem;
+  font-size: var(--type-control);
 }
 .archive-meta {
   justify-content: flex-start;
@@ -945,7 +945,7 @@
 }
 .archive-players b {
   color: #f0e2c2;
-  font-size: 0.82rem;
+  font-size: var(--type-label);
 }
 .archive-players small {
   color: #aebca7;
@@ -975,7 +975,7 @@
   border-radius: 8px;
 }
 .archive-error .ghost-button {
-  min-height: 30px;
+  min-height: 44px;
 }
 .archive-state .spin,
 .archive-progress .spin {

@@ -13,6 +13,10 @@
   --map-type-node-focus: 1.65px;
   --map-type-status: 1.12px;
   --map-type-region: 1.65px;
+  --map-type-marker: 1.15px;
+}
+.map-editor-canvas {
+  --editor-map-label: 1.6px;
 }
 .network-frame > svg {
   position: absolute;
@@ -80,7 +84,7 @@
 .player-marker text {
   fill: #15271b;
   text-anchor: middle;
-  font: 700 1.15px var(--font-data);
+  font: 700 var(--map-type-marker) var(--font-data);
 }
 .marker-0 .player-marker-core {
   fill: #d7b866;
@@ -242,53 +246,6 @@
 .condition-row:disabled {
   cursor: default;
 }
-.network-access-list {
-  position: absolute;
-  z-index: 5;
-  right: 16px;
-  bottom: 16px;
-  width: min(190px, calc(100% - 32px));
-  color: var(--ink-primary);
-  background: rgba(14, 25, 18, 0.88);
-  border: 1px solid var(--line-subtle);
-  border-radius: var(--radius-sm);
-}
-.network-access-list summary {
-  min-height: 36px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  cursor: pointer;
-  font-size: var(--type-label);
-}
-.network-access-list > div {
-  display: grid;
-  max-height: 180px;
-  overflow-y: auto;
-  padding: 5px;
-}
-.network-access-list button {
-  min-height: 34px;
-  padding: 5px 7px;
-  color: var(--ink-secondary);
-  text-align: left;
-  background: transparent;
-  border: 0;
-  border-radius: 4px;
-  font-size: var(--type-label);
-}
-.network-access-list button:hover,
-.network-access-list button:focus-visible {
-  color: var(--ink-primary);
-  background: var(--surface-selected);
-}
-@media (max-width: 760px) {
-  .network-access-list {
-    left: 16px;
-    right: auto;
-    bottom: 16px;
-  }
-}
 @media (max-width: 1100px) {
   .game-shell {
     background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, 0.12), transparent 42%), #0c1711;
@@ -373,6 +330,18 @@
   stroke: rgba(176, 185, 160, 0.34);
   opacity: 0.38;
   cursor: pointer;
+}
+.world-stage.route-action .node-layer {
+  pointer-events: none;
+}
+.route-hit-group {
+  pointer-events: stroke;
+}
+.route-layer .route-hit-area {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 4.5;
+  pointer-events: stroke;
 }
 .route-layer path:focus-visible {
   stroke: #fff2bf;

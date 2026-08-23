@@ -15,13 +15,13 @@
     margin: 9px 0;
   }
   .mobile-tabs button {
-    min-height: 42px;
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     color: var(--ink-secondary);
-    font-size: 0.86rem;
+    font-size: var(--type-label);
     background: transparent;
     border: 1px solid var(--line-subtle);
     border-radius: var(--radius-sm);
@@ -43,7 +43,7 @@
     gap: 36px;
   }
   .landing-copy h1 {
-    font-size: clamp(3.3rem, 18vw, 5rem);
+    font-size: var(--type-page);
   }
   .start-panel {
     padding: 24px;
@@ -58,13 +58,13 @@
 
   html[data-large-text='true'] .landing-copy h1 {
     margin: 4px 0 10px;
-    font-size: clamp(2.5rem, 16vw, 3.8rem);
+    font-size: var(--type-page);
     line-height: 0.95;
   }
 
   html[data-large-text='true'] .landing-copy > p {
     max-width: 30em;
-    font-size: 0.82rem;
+    font-size: var(--type-label);
     line-height: 1.4;
   }
 
@@ -83,11 +83,11 @@
 
   html[data-large-text='true'] .start-panel h2 {
     margin: 6px 0 8px;
-    font-size: 1.55rem;
+    font-size: var(--type-entity);
   }
 
   html[data-large-text='true'] .start-panel > p {
-    font-size: 0.86rem;
+    font-size: var(--type-label);
     line-height: 1.4;
   }
 }

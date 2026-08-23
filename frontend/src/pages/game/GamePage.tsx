@@ -49,7 +49,7 @@ import {
   feedbackChangeText,
   findCardAction,
   localizeActionError,
-  localizeTimelineMessage,
+  formatTimelineEntry,
   metricLabel,
   optionAction,
   previewDeltaText,
@@ -275,14 +275,17 @@ export function GamePage() {
     .filter((id) => (state.routes?.[id] ? state.routes[id].status !== 'blocked' : state.sites[id]?.status !== 'closed'))
     .map((id) => sites[id]?.name || state.routes?.[id]?.name || '事件目标');
   const targetIds = new Set(
-    (selectedOption?.type === actionMode ? selectedOption.targets : []).map((target) =>
-      String(target.payload?.target_id || target.payload?.target_site_id || target.id)
-    )
+    (selectedOption?.type === actionMode ? selectedOption.targets : []).map((target) => {
+      const payload = target.payload || {};
+      const routeSelection = actionMode === 'survey_route' || actionMode === 'restore_route' || actionMode === 'establish_connection';
+      return String(routeSelection ? payload.route_id || target.id : payload.target_id || payload.target_site_id || target.id);
+    })
   );
+  const routeMode = actionMode === 'survey_route' || actionMode === 'restore_route' || actionMode === 'establish_connection';
   const modeStatus =
     actionMode === 'explore'
       ? `正在选择证据卡 · 公开市场显示 ${state.market.length} 张可取线索 · Escape 取消`
-      : `正在选择${actionModeLabel(actionMode)}目标 · 已显示 ${targetIds.size} 个合法目标 · Escape 取消`;
+      : `正在选择${actionModeLabel(actionMode)} · ${selectedOption?.cost?.ap || 0} 行动点 · 点击${routeMode ? '金色路线' : '金色地点'} · Escape 取消`;
   const connection =
     mutation.isPending || gameQuery.isFetching || metaQuery.isFetching
       ? '同步中'
@@ -445,7 +448,7 @@ export function GamePage() {
   ].map((entry) => ({
     ...entry,
     player_name: entry.player_id ? state.players[entry.player_id]?.name : undefined,
-    message: localizeTimelineMessage(entry.message, {
+    message: formatTimelineEntry(entry, {
       sites,
       routes: state.routes || {},
       projects: state.projects || {},
@@ -628,6 +631,7 @@ export function GamePage() {
                 eventTargetIds={eventTargetIds}
                 catalog={meta}
                 onFocus={selectNode}
+                onRouteSelect={selectNode}
               />
             </div>
           </section>
@@ -675,7 +679,6 @@ export function GamePage() {
             actionLabels={actionLabels}
             mutationPending={mutation.isPending}
             canAct={canAct}
-            onRun={run}
             onChooseOption={chooseOption}
             onCancel={() => {
               setActionMode(null);
@@ -863,7 +866,7 @@ function MobileHandPanel({
       </div>
       <div className="mobile-hand-grid">
         {active.hand.map((id) => (
-          <button key={id} className="mobile-hand-card" onClick={() => onCard(id)}>
+          <button key={id} className="mobile-hand-card" data-testid="mobile-evidence-hand-card" onClick={() => onCard(id)}>
             <img src={assetUrl(cards[id]?.icon_asset)} alt="" />
             <b>{cards[id]?.name || id}</b>
             <small>{cards[id]?.strategic_role || '打开查看这件证据卡'}</small>
