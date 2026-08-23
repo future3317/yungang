@@ -15,7 +15,7 @@ export default defineConfig({
   reporter: [['html', { outputFolder: 'playwright-report', open: 'never' }], ['json', { outputFile: 'test-results/results.json' }]],
   use: { baseURL: 'http://127.0.0.1:3000', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
   webServer: [
-    { command: `${pythonCommand} -m uvicorn backend.app:app --host 127.0.0.1 --port 8000`, cwd: '..', url: 'http://127.0.0.1:8000/api/meta', reuseExistingServer: false, timeout: 120_000 },
+    { command: `${pythonCommand} -m uvicorn backend.app:app --host 127.0.0.1 --port 8000`, cwd: '..', env: { YUNGANG_TEST_MODE: '1' }, url: 'http://127.0.0.1:8000/api/meta', reuseExistingServer: false, timeout: 120_000 },
     { command: 'node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 3000', cwd: '.', url: 'http://127.0.0.1:3000', reuseExistingServer: false, timeout: 120_000 },
   ],
   projects: [

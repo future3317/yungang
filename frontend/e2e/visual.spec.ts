@@ -24,6 +24,16 @@ test('landing visual baseline', async ({ page }) => {
   await expect(page).toHaveScreenshot('landing.png', { animations: 'disabled' });
 });
 
+test('role selection visual baseline', async ({ page }) => {
+  test.skip(!test.info().project.name.startsWith('visual-'), 'Visual baselines use fixed viewport projects.');
+  await page.goto('/');
+  await page.getByRole('button', { name: /旅程种子：高级设置/ }).click();
+  await page.getByLabel('可复现种子').fill('901');
+  await page.getByRole('button', { name: '进入准备厅' }).click();
+  await expect(page.locator('.role-selection-panel')).toBeVisible();
+  await expect(page.locator('.role-selection-panel')).toHaveScreenshot('role-selection.png', { animations: 'disabled' });
+});
+
 test('game HUD visual baseline', async ({ page }) => {
   test.skip(!test.info().project.name.startsWith('visual-'), 'Visual baselines use fixed viewport projects.');
   await startSolo(page);

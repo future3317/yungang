@@ -6,6 +6,10 @@
 
 运行时规则以 FastAPI 服务端和 `data/` 内容为唯一来源。前端只渲染服务端返回的合法行动、目标和预览，不复制胜负计算。
 
+项目采用“服务端规则引擎 + React 游戏界面”的分层：后端负责内容加载、回合状态、合法行动、权限、持久化和结果；前端负责地图、HUD、行动预览、反馈和无障碍交互。`generated.ts` 由后端 OpenAPI 契约生成，接口 DTO 不在前端重复维护。
+
+生产环境使用 Render Web Service 运行应用，Neon PostgreSQL 保存游戏、房间、玩家席位、回合摘要和事件历史。Render 重新部署、休眠或重启不会清空存档；本地开发和隔离测试才允许使用 SQLite fallback。
+
 已落地的核心体验：
 
 - 服务端生成 `ActionOption`，包含费用、描述、合法目标、预览变化和确认文案。
@@ -16,6 +20,9 @@
 - 事件预告和结算使用同一组确定性目标，并返回实际影响对象、数值变化和原因。
 - 房间使用席位令牌；大厅和游戏页支持 revision SSE 推送，并保留轮询作为断线兜底。
 - 单人旅程在大厅中明确为一人轮流调度两位角色。
+- 角色选择页采用内容驱动的双栏展台：角色主图与徽章固定在同一视觉单元内，详情文字不会越界或被裁切。
+- 首页模式与场景选择在桌面端使用更宽的配置列，降低场景卡的纵向压缩。
+- Landing、角色选择页和游戏 HUD 已纳入 `2048 / 1920 / 1440 / 1280 / 390` 视觉回归矩阵。
 
 ## 当前内容规模
 
@@ -76,6 +83,16 @@ npm run dev
 
 打开 `http://127.0.0.1:5173/`。生产构建后也可以由 FastAPI 托管 `frontend/dist`，访问 `http://127.0.0.1:8000/`。
 
+## Render 部署
+
+Render Web Service 的环境变量必须设置：
+
+```text
+DATABASE_URL=<Neon PostgreSQL connection string>
+```
+
+生产环境没有 `DATABASE_URL` 时应直接启动失败，不得回退到本地 SQLite。部署使用仓库中的生产依赖和启动配置；数据库表初始化与索引迁移必须保持幂等，不执行清空或全量覆盖。不要把连接字符串写入代码、README、日志或 Git 历史。
+
 ## 验证命令
 
 ```powershell
@@ -87,7 +104,14 @@ cd frontend
 npm run typecheck
 npm run test
 npm run build
+npx playwright test visual.spec.ts --reporter=line
+npx playwright test game.spec.ts --project=desktop --reporter=line
+npx playwright test game.spec.ts --project=mobile --reporter=line
+npx playwright test room.spec.ts --project=desktop --reporter=line
+npx playwright test room.spec.ts --project=mobile --reporter=line
 ```
+
+视觉回归覆盖首页、角色选择页和游戏 HUD；固定分辨率项目会在本地服务启动后生成并比对截图。若视觉调整是有意变更，使用 `--update-snapshots` 更新对应基线后必须再次执行一次不带该参数的回归。
 
 OpenAPI 类型生成要求后端运行在 `127.0.0.1:8000`：
 
@@ -104,8 +128,13 @@ npm run api:generate
 - `POST /api/rooms`：创建大厅。
 - `GET /api/rooms/{room_id}`：读取大厅与席位状态。
 - `GET /api/rooms/{room_id}/game`：读取带 viewer 权限的游戏状态。
-- `GET /api/rooms/{room_id}/events?seat_token=...`：订阅 revision SSE。
+- `POST /api/rooms/{room_id}/events/ticket`：使用席位令牌换取短时 SSE 订阅票据。
+- `GET /api/rooms/{room_id}/events?ticket=...`：使用短时票据订阅 revision SSE。
 - `POST /api/rooms/{room_id}/actions`：使用席位令牌提交多人行动。
+
+## 存档与继续游戏
+
+创建单人旅程、本地协作或网络房间后，游戏状态都会写入对应的持久化存储。大厅和结果页保留旅程编号、房间编号、玩家名称、角色、场景、回合和最近更新时间；首页的“继续历史游戏”通过归档列表选择记录后恢复到原状态。网络房间继续游戏仍需对应席位凭证，不能仅凭房间编号绕过席位权限。
 
 ## 文档入口
 
@@ -142,7 +171,7 @@ cd ..; pytest -q
 
 ## 交付边界
 
-当前后端测试、前端类型检查、Vitest 和 production build 已纳入本地验收。Playwright、axe、Lighthouse、五种分辨率视觉回归和真人试玩必须在本地服务启动后实际执行，不能仅凭代码推断通过。测试产生的 `data/games.sqlite3`、截图和 `audit_output/` 不应提交。
+当前后端测试、前端类型检查、Vitest、production build、Playwright、axe 和五种分辨率视觉回归均有本地验收入口，必须在本地服务启动后实际执行，不能仅凭代码推断通过。测试使用隔离的临时 SQLite；手动本地运行可能产生 `data/games.sqlite3`、截图、Playwright 报告和 `audit_output/`，这些运行产物不应提交。
 
 Git 回退应回到功能提交，不要删除用户素材和本地存档数据库。
 
@@ -151,6 +180,8 @@ Git 回退应回到功能提交，不要删除用户素材和本地存档数据�
 当前版本包含六个可选场景，场景牌池严格按 `data/scenarios.json` 的 `card_pool` 构建，场景规则使用结构化 `trigger` 与 `effect` 并由引擎执行。规划阶段支持地点、路线和项目三类目标；房间结果通过房间专用接口读取。
 
 房间 SSE 使用短时一次性订阅票据，长期席位令牌只通过 `X-Seat-Token` 请求头传输，并仅保存在当前浏览器会话。房间码是访问标识而非强私密凭证，不应当公开分享。
+
+生产部署必须设置 `DATABASE_URL` 指向 Neon PostgreSQL。Render 不保存生产 SQLite；本地开发和隔离测试可以使用 SQLite fallback，但生产环境缺少 `DATABASE_URL` 时应用会直接拒绝启动。Neon 中保存游戏、房间、时间线和事件历史，重新部署、休眠或重启不会清空存档。
 
 旧的指定 session 创建接口和旧玩家加入接口已删除。运行数据库、审计截图、Playwright 报告、覆盖率和日志均为本地产物，已在 `.gitignore` 中排除。
 

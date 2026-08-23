@@ -2,6 +2,7 @@ from pathlib import Path
 from uuid import uuid4
 import asyncio
 import json
+import os
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -70,7 +71,7 @@ async def security_and_rate_limit(request: Request, call_next):
         _rate_buckets.update({key: stamps for key, stamps in _rate_buckets.items() if stamps and now - stamps[-1] < 60})
     category = _rate_limit_category(request.url.path)
     key = (request.client.host if request.client else "unknown", category)
-    if request.method in {"POST", "PUT", "PATCH"} and category:
+    if request.method in {"POST", "PUT", "PATCH"} and category and os.getenv("YUNGANG_TEST_MODE") != "1":
         bucket = [stamp for stamp in _rate_buckets.get(key, []) if now - stamp < 60]
         if len(bucket) >= 30:
             return Response(content=json.dumps({"detail": {"code": "rate_limited", "message": "请求过于频繁，请稍后再试。"}}, ensure_ascii=False), status_code=429, media_type="application/json")

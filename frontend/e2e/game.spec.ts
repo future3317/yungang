@@ -135,7 +135,7 @@ test('strict learning chain completes interpretation, strategy response, and rou
   const finishSeat = async () => {
     const contextualTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
     if (await contextualTutorial.isVisible()) await contextualTutorial.click();
-    if (test.info().project.name === 'mobile') await page.getByRole('tab', { name: '地图' }).click();
+    if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地图' }).click();
     let endTurn = page.getByRole('button', { name: '结束回合' }).first();
     if (!await endTurn.isVisible()) {
       await page.locator('.more-actions > summary').click();
@@ -148,7 +148,7 @@ test('strict learning chain completes interpretation, strategy response, and rou
     if (await handoff.isVisible()) await handoff.click();
   };
   const openInspectorTab = async (name: '任务' | '市场') => {
-    if (test.info().project.name === 'mobile') await page.getByRole('tab', { name: '地点' }).click();
+    if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点' }).click();
     await page.getByRole('tab', { name }).click({ force: true });
   };
   const selectMove = async (name: string) => {
@@ -211,7 +211,7 @@ test('strict learning chain completes interpretation, strategy response, and rou
   await page.getByRole('button', { name: '继续旅程' }).click();
 
   let strategy = page.locator('[aria-label^="整备行装：事件将影响"]').first();
-  if (test.info().project.name === 'mobile') {
+  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) {
     await page.getByRole('tab', { name: '手牌' }).click();
     strategy = page.locator('.strategy-card:visible').filter({ hasText: '整备行装' }).first();
   }

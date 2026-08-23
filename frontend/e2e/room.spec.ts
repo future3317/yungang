@@ -80,7 +80,13 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   await expect(move).toBeVisible();
   await move.click();
   const actionTutorial = host.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-  if (await actionTutorial.isVisible()) await actionTutorial.click();
+  if (await actionTutorial.isVisible()) {
+    try {
+      await actionTutorial.click({ timeout: 1000 });
+    } catch {
+      await expect(actionTutorial).toBeHidden({ timeout: 1000 });
+    }
+  }
   const preview = host.locator('.action-preview');
   await expect(preview).toBeVisible();
   await preview.getByRole('button', { name: /踏上这一步/ }).click();
