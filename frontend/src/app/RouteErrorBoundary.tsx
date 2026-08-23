@@ -14,9 +14,7 @@ export class RouteErrorBoundary extends Component<Props, State> {
   }
   render() {
     if (!this.state.error) return this.props.children;
-    const retry = () => {
-      this.setState({ error: null, diagnosticId: crypto.randomUUID() });
-    };
+    const retry = () => window.location.reload();
     return (
       <main className="state-screen danger" role="alert">
         <h1>这一页暂时无法显影</h1>

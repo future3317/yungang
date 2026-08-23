@@ -468,6 +468,8 @@
   font-size: 1.8px;
 }
 .route-layer path {
+  fill: none;
+  stroke: rgba(205, 210, 187, 0.48);
   cursor: pointer;
 }
 .route-layer path:focus-visible {

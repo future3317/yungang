@@ -291,6 +291,7 @@ export function HeritageNetwork({
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
   const [hoveredSiteId, setHoveredSiteId] = useState<string | null>(null);
+  const [failedNodeIconIds, setFailedNodeIconIds] = useState<Set<string>>(() => new Set());
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -545,6 +546,9 @@ export function HeritageNetwork({
                   : assetUrl(
                       `generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.webp`
                     );
+                const displayedIcon = failedNodeIconIds.has(site.id)
+                  ? assetUrl('ornaments/heritage-medallion-1.webp')
+                  : icon;
                 const frame =
                   site.status === 'closed' || site.status === 'at_risk'
                     ? 'damaged'
@@ -613,12 +617,17 @@ export function HeritageNetwork({
                     />
                     <image
                       className="node-image"
-                      href={icon}
+                      href={displayedIcon}
                       x={-size * 0.65}
                       y={-size * 0.65}
                       width={size * 1.3}
                       height={size * 1.3}
                       preserveAspectRatio="xMidYMid meet"
+                      onError={() =>
+                        setFailedNodeIconIds((ids) =>
+                          ids.has(site.id) ? ids : new Set(ids).add(site.id)
+                        )
+                      }
                     />
                     {alert && <circle className="node-mark" cx={size * 0.76} cy={-size * 0.76} r=".8" />}
                     {labelPosition && (kind === 'core' || lod === 'detail' || focusedId === site.id) && (
