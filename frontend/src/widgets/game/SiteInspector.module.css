@@ -418,16 +418,21 @@ width: 48px;
 
 }
 :global(.site-inspector) {
-display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr);
+display: block;
     min-height: 0;
     max-height: 100%;
-    overflow: hidden;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
+    scrollbar-width: thin;
 }
 :global(.site-inspector .inspector-summary) {
 min-width: 0;
     min-height: 0;
-    overflow: auto;
+    max-height: none;
+    overflow: visible;
     scrollbar-color: rgba(213, 183, 105, 0.62) rgba(16, 27, 20, 0.38);
     scrollbar-width: thin;
 }
@@ -462,11 +467,8 @@ color: #f1d37f;
 :global(.site-inspector .inspector-content) {
 min-width: 0;
     min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-gutter: stable;
-    scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
-    scrollbar-width: thin;
+    overflow: visible;
+    padding-bottom: 16px;
 }
 :global(.site-inspector .inspector-content > *) {
 min-width: 0;
@@ -668,7 +670,8 @@ grid-column: 1 / -1;
     min-width: 0;
     min-height: 0;
     height: 100%;
-    padding-top: 12px;
+    padding: 12px 4px 0;
+    box-sizing: border-box;
     overflow: hidden;
 }
 :global(.hud-layout > .hud-slot-left) {
@@ -703,7 +706,7 @@ display: grid;
     min-height: 0;
     height: 100%;
     align-self: stretch;
-    padding: 0 10px 8px;
+    padding: 0 0 8px;
 }
 :global(.hud-layout > .stage-column > .round-summary) {
 min-width: 0;
@@ -750,7 +753,7 @@ background: rgba(220, 188, 105, 0.68);
 grid-column: 1 / -1;
     grid-row: 3;
     min-width: 0;
-    margin: 0 12px 12px;
+    margin: 0 4px 6px;
     z-index: 15;
     position: relative;
     pointer-events: auto;
@@ -764,9 +767,15 @@ position: fixed;
 
 }
 @media (min-width: 1101px) and (max-width: 1400px) {
+:global(.game-shell) {
+--hud-rail-gap: 8px;
+}
+:global(.hud-layout) {
+gap: 8px;
+}
 :global(:root) {
---hud-left-width: 240px;
-    --hud-right-width: 280px;
+--hud-left-width: 232px;
+    --hud-right-width: 300px;
     --hud-rail-gap: 8px;
 }
 

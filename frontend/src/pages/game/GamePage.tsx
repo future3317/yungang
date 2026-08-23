@@ -469,6 +469,8 @@ export function GamePage() {
               '未命名旅程'
             }
             connection={connection}
+            referenceId={roomId || state.session_id || undefined}
+            referenceKind={roomId ? '房间' : '存档'}
             onFocusGoal={(ids) => {
               const target = ids.find((id) => sites[id] || state.routes?.[id] || state.projects?.[id]);
               if (!target) return;
@@ -567,7 +569,6 @@ export function GamePage() {
                   <Sparkles size={13} />
                   {roles[active.role_id]?.ability?.name}
                   <span className="role-skill-popover" role="tooltip">
-                    <b>{roles[active.role_id]?.ability?.name}</b>
                     <span>{roles[active.role_id]?.ability?.description || '这项能力会改变这位角色最擅长的行动。'}</span>
                   </span>
                 </span>

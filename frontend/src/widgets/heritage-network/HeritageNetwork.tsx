@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { LocateFixed, Maximize2 } from 'lucide-react';
+import { LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
@@ -323,6 +323,10 @@ export function HeritageNetwork({
     const scale = Math.max(transform.k, 1.12);
     applyTransform(zoomIdentity.translate(50 - target.x * scale, 50 - target.y * scale).scale(scale), 360);
   };
+  const zoomBy = (factor: number) => {
+    const nextScale = Math.max(0.85, Math.min(2.2, transform.k * factor));
+    applyTransform(zoomIdentity.translate(50, 50).scale(nextScale).translate(-50, -50), 220);
+  };
   const lod = transform.k < 0.94 ? 'overview' : transform.k > 1.34 ? 'detail' : 'standard';
   const labelLayouts = useMemo(
     () => computeLabelLayouts(enabledSites, metaSites, lod, focusedId, nodePositions),
@@ -346,6 +350,12 @@ export function HeritageNetwork({
       <div className="network-tools">
         <button title="聚焦当前玩家" onClick={centerCurrent} aria-label="聚焦当前玩家">
           <LocateFixed />
+        </button>
+        <button title="放大地图" onClick={() => zoomBy(1.2)} aria-label="放大地图">
+          <Plus />
+        </button>
+        <button title="缩小地图" onClick={() => zoomBy(1 / 1.2)} aria-label="缩小地图">
+          <Minus />
         </button>
         <button title="适应全部节点" onClick={fitBounds} aria-label="适应全部节点">
           <Maximize2 />
@@ -476,9 +486,7 @@ export function HeritageNetwork({
                 const kind = meta.node_kind || 'core';
                 const size = kind === 'core' ? 4.2 : kind === 'support' ? 3.1 : 2.7;
                 const labelPosition = labelLayouts[site.id];
-                const icon = assetUrl(
-                  `generated/nodes/states/${site.id}_${current ? 'active' : site.status === 'closed' ? 'closed' : target ? 'reachable' : 'normal'}.webp`
-                );
+                const icon = assetUrl(meta.icon_asset || 'generated/nodes/icon_node_yungang.webp');
                 const frame =
                   site.status === 'closed' || site.status === 'at_risk'
                     ? 'damaged'
@@ -614,18 +622,28 @@ export function HeritageNetwork({
         </g>
       </svg>
       <details className="network-access-list">
-        <summary>地点与路线清单</summary>
-        <div>
-          {enabledSites.map((site) => (
-            <button key={site.id} onClick={() => onFocus(site.id)}>
-              {metaSites[site.id]?.name || site.name || '未命名节点'}
-            </button>
-          ))}
-          {routeLines.map((line) => (
-            <button key={line.id} onClick={() => (routeAction ? onRouteSelect(line.id) : onFocus(line.to))}>
-              {line.route.name || `${metaSites[line.from]?.name}—${metaSites[line.to]?.name}`}
-            </button>
-          ))}
+        <summary><span>地点与路线清单</span><small>点击可聚焦地图</small></summary>
+        <div className="network-access-content">
+          <section>
+            <b>地点</b>
+            {enabledSites.map((site) => {
+              const isCurrent = site.id === active.location;
+              const status = isCurrent ? '当前位置' : site.status === 'closed' ? '已关闭' : site.status === 'at_risk' ? '有风险' : '可查看';
+              return <button key={site.id} className={isCurrent ? 'is-current' : ''} onClick={() => onFocus(site.id)}>
+                <span>{metaSites[site.id]?.name || site.name || '未命名节点'}</span><small>{status}</small>
+              </button>;
+            })}
+          </section>
+          <section>
+            <b>路线</b>
+            {routeLines.map((line) => {
+              const neighbor = line.from === active.location || line.to === active.location;
+              const routeStatus = line.route.status === 'blocked' ? '已阻断' : line.route.status === 'strained' ? '承压' : neighbor ? '相邻路线' : '可查看';
+              return <button key={line.id} className={neighbor ? 'is-current' : ''} onClick={() => (routeAction ? onRouteSelect(line.id) : onFocus(line.to))}>
+                <span>{line.route.name || `${metaSites[line.from]?.name}—${metaSites[line.to]?.name}`}</span><small>{routeStatus} · 风险 {line.route.risk}</small>
+              </button>;
+            })}
+          </section>
         </div>
       </details>
 

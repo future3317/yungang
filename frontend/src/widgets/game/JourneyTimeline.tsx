@@ -74,17 +74,19 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const moveDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
     if (!dragStart.current) return;
     const drawer = drawerRef.current;
-    const stage = drawer?.closest('.game-shell')?.querySelector<HTMLElement>('.network-stage');
-    if (!drawer || !stage) return;
+    const parent = drawer?.parentElement;
+    if (!drawer || !parent) return;
     const drawerBox = drawer.getBoundingClientRect();
-    const stageBox = stage.getBoundingClientRect();
+    const parentBox = parent.getBoundingClientRect();
     const next = {
       x: dragStart.current.offsetX + event.clientX - dragStart.current.x,
       y: dragStart.current.offsetY + event.clientY - dragStart.current.y,
     };
+    const maxX = Math.max(140, parentBox.width * 0.42);
+    const maxY = Math.max(180, parentBox.height + drawerBox.height);
     setOffset({
-      x: Math.min(Math.max(next.x, offset.x + stageBox.left - drawerBox.left), offset.x + stageBox.right - drawerBox.right),
-      y: Math.min(Math.max(next.y, offset.y + stageBox.top - drawerBox.top), offset.y + stageBox.bottom - drawerBox.bottom),
+      x: Math.max(-maxX, Math.min(maxX, next.x)),
+      y: Math.max(-maxY, Math.min(maxY, next.y)),
     });
   };
   const endDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {

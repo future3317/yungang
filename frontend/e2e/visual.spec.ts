@@ -315,7 +315,10 @@ test('game HUD at 200 percent font remains readable', async ({ page }) => {
   });
   await expect(page.locator('.network-stage')).toBeVisible();
   await expect(page.locator('.site-inspector, .inspector-rail')).toBeVisible();
-  await expect(page).toHaveScreenshot('game-hud-font-200.png', commonScreenshot(page, { mask: [page.locator('.header-actions')] }));
+  await expect(page).toHaveScreenshot(
+    'game-hud-font-200.png',
+    commonScreenshot(page, { mask: [page.locator('.header-actions'), page.locator('.game-reference')] })
+  );
 });
 
 test('high contrast visual baseline', async ({ page }) => {

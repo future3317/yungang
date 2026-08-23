@@ -84,16 +84,20 @@
 }
 
 .featuredActions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   gap: 8px;
+  width: 100%;
+  max-width: 660px;
   min-width: 0;
+  justify-content: start;
 }
 
 .actionCard {
   min-width: 0;
   min-height: 68px;
-  flex: 1;
+  width: 100%;
   display: grid;
   grid-template-columns: 33px minmax(0, 1fr) auto;
   align-items: center;
@@ -219,7 +223,8 @@
   z-index: var(--z-dock);
   right: 0;
   bottom: calc(100% + 8px);
-  width: 210px;
+  width: min(360px, 42vw);
+  min-width: 320px;
   display: grid;
   gap: 4px;
   padding: 7px;
@@ -441,6 +446,17 @@
 
 .moreActions[open] summary svg {
   transform: rotate(180deg);
+}
+
+.moreActions button {
+  min-width: 0;
+  white-space: normal;
+}
+
+.moreActions button b,
+.moreActions button small {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Responsive layout */

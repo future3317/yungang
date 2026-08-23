@@ -8,12 +8,16 @@ export function ScenarioHeader({
   state,
   scenarioName,
   connection,
+  referenceId,
+  referenceKind = '存档',
   onFocusGoal,
   onOpenHelp,
 }: {
   state: GameState;
   scenarioName: string;
   connection: string;
+  referenceId?: string;
+  referenceKind?: '房间' | '存档';
   onFocusGoal?: (ids: string[]) => void;
   onOpenHelp?: () => void;
 }) {
@@ -91,6 +95,7 @@ export function ScenarioHeader({
       </div>
 
       <div className="header-actions">
+        {referenceId && <span className="game-reference" title="继续这局时使用这个房间码或存档号">{referenceKind} {referenceId}</span>}
         <span className="header-turn">第 {state.shared.turn} 回合</span>
         <span className="header-phase">{phase}</span>
         {connection !== '已连接' && (
