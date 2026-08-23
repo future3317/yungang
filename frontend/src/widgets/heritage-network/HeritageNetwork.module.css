@@ -41,14 +41,49 @@ position: absolute;
   background: rgba(14, 25, 18, 0.88);
   border: 1px solid var(--line-subtle);
   border-radius: var(--radius-sm);
+  transform-origin: bottom right;
+  transition: transform var(--motion-standard) var(--ease-out);
+}
+:global(.network-access-list.is-interacting) {
+  transition: none;
+}
+:global(.network-access-list:not([open])) {
+  width: fit-content;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+}
+:global(.network-access-list:not([open]) summary) {
+  min-width: 286px;
+}
+:global(.network-access-list:not([open]) .network-access-content),
+:global(.network-access-list:not([open]) .resizeHandle) {
+  display: none;
 }
 :global(.network-access-list summary) {
 min-height: 44px;
-  display: flex;
+  display: grid;
   align-items: center;
   padding: 0 10px;
   cursor: pointer;
   font-size: var(--type-label);
+  list-style: none;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 7px;
+}
+:global(.network-access-list summary::-webkit-details-marker) {
+  display: none;
+}
+.dragHandle {
+  display: grid;
+  place-items: center;
+  color: var(--connection);
+  cursor: grab;
+  touch-action: none;
+}
+.dragHandle:active {
+  cursor: grabbing;
 }
 :global(.network-access-list summary small) {
   margin-left: auto;

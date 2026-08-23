@@ -188,7 +188,7 @@
 @media (min-width: 1101px) {
   :global(.game-shell) {
     --hud-left-width: clamp(300px, 18vw, 360px);
-    --hud-right-width: clamp(400px, 23vw, 480px);
+    --hud-right-width: clamp(360px, 20vw, 420px);
   }
 
   :global(.hud-layout > .hud-slot-left),
@@ -201,7 +201,7 @@
    enough room to wrap instead of colliding with neighboring slots. */
 :global(html[data-large-text='true'] .game-shell) {
   --hud-left-width: clamp(330px, 22vw, 400px);
-  --hud-right-width: clamp(420px, 30vw, 520px);
+  --hud-right-width: clamp(390px, 25vw, 460px);
   grid-template-rows: 180px minmax(0, 1fr) clamp(300px, 36vh, 360px);
 }
 

@@ -1,7 +1,8 @@
 import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
-import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
+import { useFloatingPanel, type ResizeCorner } from '../../shared/useFloatingPanel';
 import styles from './JourneyTimeline.module.css';
 
 type TimelineChange = {
@@ -39,8 +40,6 @@ function structuredEffects(effects: unknown[] | undefined): TimelineChange[] {
     .filter((effect) => effect.label || effect.before !== null || effect.after !== null || effect.delta !== null);
 }
 type TimelineFilter = 'all' | 'action' | 'event' | 'project' | 'choice' | 'system';
-type ResizeCorner = 'nw' | 'ne' | 'sw' | 'se';
-
 const filters: Array<{ id: TimelineFilter; label: string }> = [
   { id: 'all', label: '全部' },
   { id: 'action', label: '行动' },
@@ -59,75 +58,9 @@ const entryTypeLabels: Record<string, string> = {
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [size, setSize] = useState({ width: 560, height: 300 });
-  const [dragging, setDragging] = useState(false);
-  const [resizing, setResizing] = useState(false);
-  const drawerRef = useRef<HTMLDetailsElement | null>(null);
-  const dragStart = useRef<{ x: number; y: number; offsetX: number; offsetY: number } | null>(null);
-  const resizeStart = useRef<{ x: number; y: number; width: number; height: number; corner: ResizeCorner } | null>(null);
+  const { panelRef: drawerRef, offset, size, dragging, resizing, beginDrag, moveDrag, endDrag, beginResize, moveResize, endResize } =
+    useFloatingPanel<HTMLDetailsElement>({ initialSize: { width: 560, height: 300 }, minWidth: 320, minHeight: 150, maxHeightInset: 90, maxHeightFloor: 220 });
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
-
-  const beginDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    dragStart.current = { x: event.clientX, y: event.clientY, offsetX: offset.x, offsetY: offset.y };
-    setDragging(true);
-  };
-  const moveDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    if (!dragStart.current) return;
-    const drawer = drawerRef.current;
-    const parent = drawer?.parentElement;
-    if (!drawer || !parent) return;
-    const drawerBox = drawer.getBoundingClientRect();
-    const parentBox = parent.getBoundingClientRect();
-    const next = {
-      x: dragStart.current.offsetX + event.clientX - dragStart.current.x,
-      y: dragStart.current.offsetY + event.clientY - dragStart.current.y,
-    };
-    const maxX = Math.max(140, parentBox.width * 0.42);
-    const maxY = Math.max(180, parentBox.height + drawerBox.height);
-    setOffset({
-      x: Math.max(-maxX, Math.min(maxX, next.x)),
-      y: Math.max(-maxY, Math.min(maxY, next.y)),
-    });
-  };
-  const endDrag = (event: ReactPointerEvent<HTMLSpanElement>) => {
-    dragStart.current = null;
-    setDragging(false);
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-  };
-  const beginResize = (event: ReactPointerEvent<HTMLButtonElement>, corner: ResizeCorner) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    resizeStart.current = { x: event.clientX, y: event.clientY, width: size.width, height: size.height, corner };
-    setResizing(true);
-  };
-  const moveResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const start = resizeStart.current;
-    const parent = drawerRef.current?.parentElement;
-    if (!start || !parent) return;
-    const dx = event.clientX - start.x;
-    const dy = event.clientY - start.y;
-    const fromLeft = start.corner.includes('w');
-    const fromTop = start.corner.includes('n');
-    const nextWidth = Math.max(320, Math.min(parent.clientWidth - 32, start.width + (fromLeft ? -dx : dx)));
-    const nextHeight = Math.max(150, Math.min(Math.max(220, parent.clientHeight - 90), start.height + (fromTop ? -dy : dy)));
-    setSize({ width: nextWidth, height: nextHeight });
-    if (fromLeft || fromTop) {
-      setOffset((current) => ({
-        x: fromLeft ? current.x + (start.width - nextWidth) : current.x,
-        y: fromTop ? current.y + (start.height - nextHeight) : current.y,
-      }));
-    }
-  };
-  const endResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    resizeStart.current = null;
-    setResizing(false);
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-  };
 
   return (
     <details

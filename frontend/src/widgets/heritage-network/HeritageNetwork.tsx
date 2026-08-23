@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
-import { LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
+import { GripVertical, LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 import { displayText } from '../game/contentLabels';
+import { useFloatingPanel } from '../../shared/useFloatingPanel';
 import styles from './HeritageNetwork.module.css';
 
 type MapActionMode = Extract<
@@ -13,7 +14,6 @@ type MapActionMode = Extract<
 > | null;
 type Point = { x: number; y: number };
 type RouteLine = { id: string; from: string; to: string; route: RouteState };
-type ResizeCorner = 'nw' | 'ne' | 'sw' | 'se';
 export function getTargetRouteIds(
   routeLines: ReadonlyArray<Pick<RouteLine, 'id' | 'from' | 'to'>>,
   reachableIds: ReadonlySet<string>,
@@ -249,8 +249,19 @@ export function HeritageNetwork({
   const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity);
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
-  const [accessListSize, setAccessListSize] = useState({ width: 300, height: 360 });
-  const accessResizeStart = useRef<{ x: number; y: number; width: number; height: number; corner: ResizeCorner } | null>(null);
+  const {
+    panelRef: accessListRef,
+    offset: accessOffset,
+    size: accessListSize,
+    dragging: accessDragging,
+    resizing: accessResizing,
+    beginDrag: beginAccessDrag,
+    moveDrag: moveAccessDrag,
+    endDrag: endAccessDrag,
+    beginResize: beginAccessResize,
+    moveResize: moveAccessResize,
+    endResize: endAccessResize,
+  } = useFloatingPanel<HTMLDetailsElement>({ initialSize: { width: 300, height: 360 }, minWidth: 240, minHeight: 180 });
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -331,27 +342,6 @@ export function HeritageNetwork({
   const zoomBy = (factor: number) => {
     const nextScale = Math.max(0.85, Math.min(2.2, transform.k * factor));
     applyTransform(zoomIdentity.translate(50, 50).scale(nextScale).translate(-50, -50), 220);
-  };
-  const beginAccessResize = (event: ReactPointerEvent<HTMLButtonElement>, corner: ResizeCorner) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.currentTarget.setPointerCapture(event.pointerId);
-    accessResizeStart.current = { x: event.clientX, y: event.clientY, width: accessListSize.width, height: accessListSize.height, corner };
-  };
-  const moveAccessResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const start = accessResizeStart.current;
-    const frame = svgRef.current?.parentElement;
-    if (!start || !frame) return;
-    const fromLeft = start.corner.includes('w');
-    const fromTop = start.corner.includes('n');
-    setAccessListSize({
-      width: Math.max(240, Math.min(frame.clientWidth - 32, start.width + (fromLeft ? -(event.clientX - start.x) : event.clientX - start.x))),
-      height: Math.max(180, Math.min(frame.clientHeight - 32, start.height + (fromTop ? -(event.clientY - start.y) : event.clientY - start.y))),
-    });
-  };
-  const endAccessResize = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    accessResizeStart.current = null;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   };
   const lod = transform.k < 0.94 ? 'overview' : transform.k > 1.34 ? 'detail' : 'standard';
   const labelLayouts = useMemo(
@@ -653,10 +643,16 @@ export function HeritageNetwork({
         </g>
       </svg>
       <details
-        className="network-access-list"
-        style={{ '--access-width': `${accessListSize.width}px`, '--access-height': `${accessListSize.height}px` } as CSSProperties}
+        ref={accessListRef}
+        className={`network-access-list ${accessDragging || accessResizing ? 'is-interacting' : ''}`.trim()}
+        style={{ '--access-width': `${accessListSize.width}px`, '--access-height': `${accessListSize.height}px`, transform: `translate(${accessOffset.x}px, ${accessOffset.y}px)` } as CSSProperties}
       >
-        <summary><span>地点与路线清单</span><small>点击可聚焦地图</small></summary>
+        <summary>
+          <span className={styles.dragHandle} aria-label="拖动地点与路线清单" onPointerDown={beginAccessDrag} onPointerMove={moveAccessDrag} onPointerUp={endAccessDrag} onPointerCancel={endAccessDrag} onClick={(event) => { event.preventDefault(); event.stopPropagation(); }}>
+            <GripVertical size={16} aria-hidden="true" />
+          </span>
+          <span>地点与路线清单</span><small>点击可聚焦地图</small>
+        </summary>
         <div className="network-access-content">
           <section>
             <b>地点</b>
@@ -679,7 +675,7 @@ export function HeritageNetwork({
             })}
           </section>
         </div>
-        {(['nw', 'ne', 'sw', 'se'] as ResizeCorner[]).map((corner) => (
+        {(['nw', 'ne', 'sw', 'se'] as const).map((corner) => (
           <button
             key={corner}
             type="button"
