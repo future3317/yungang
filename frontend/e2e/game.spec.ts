@@ -22,7 +22,6 @@ async function startSolo(page: Page, seed?: string) {
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
-  if (test.info().project.use.isMobile) await page.getByRole('tab', { name: '地图', exact: true }).click();
   await expect(page.locator('.network-stage')).toBeVisible();
   const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await tutorialClose.isVisible()) await tutorialClose.click();
@@ -59,13 +58,32 @@ test('game page keeps the map inside the viewport', async ({ page }) => {
   expect(overflow).toBe(false);
 });
 test('desktop HUD keeps side rails below the top bar and expands the fixed victory list', async ({ page }) => {
-  test.skip(test.info().project.name !== 'desktop', 'This geometry contract is desktop-only.');
   await startSolo(page);
   const header = await page.locator('.game-header').boundingBox();
+  const layout = await page.locator('.hud-layout').boundingBox();
   const roster = await page.locator('.roster-column').boundingBox();
+  const world = await page.locator('.hud-slot-world').boundingBox();
+  const inspector = await page.locator('.hud-slot-right').boundingBox();
+  const dock = await page.locator('.hud-slot-bottom').boundingBox();
+  const viewport = page.viewportSize();
   expect(header).not.toBeNull();
+  expect(layout).not.toBeNull();
   expect(roster).not.toBeNull();
+  expect(world).not.toBeNull();
+  expect(inspector).not.toBeNull();
+  expect(dock).not.toBeNull();
+  expect(viewport).not.toBeNull();
   expect(roster!.y).toBeGreaterThanOrEqual(header!.y + header!.height + 12);
+  expect(roster!.x + roster!.width).toBeLessThanOrEqual(world!.x + 1);
+  expect(world!.x + world!.width).toBeLessThanOrEqual(inspector!.x + 1);
+  expect(inspector!.x + inspector!.width).toBeLessThanOrEqual(viewport!.width);
+  expect(world!.width).toBeGreaterThan(0);
+  expect(dock!.y).toBeGreaterThanOrEqual(layout!.y + layout!.height - 1);
+
+  const railOverflow = await page.locator('.hud-layout > .hud-slot-left, .hud-layout > .hud-slot-right').evaluateAll((elements) =>
+    elements.map((element) => getComputedStyle(element).overflowY),
+  );
+  expect(railOverflow).toEqual(['scroll', 'scroll']);
 
   const goalButton = page.getByRole('button', { name: /^胜利条件/ });
   const goalButtonBox = await goalButton.boundingBox();
@@ -73,6 +91,13 @@ test('desktop HUD keeps side rails below the top bar and expands the fixed victo
   expect(goalButtonBox!.y).toBeLessThanOrEqual(header!.y + header!.height);
   await goalButton.click();
   await expect(page.getByLabel('胜利条件清单')).toBeVisible();
+});
+
+test('narrow viewport shows the desktop-only notice instead of a partial game UI', async ({ page }) => {
+  await page.setViewportSize({ width: 800, height: 900 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: '请使用桌面端访问' })).toBeVisible();
+  await expect(page.locator('.game-viewport')).toHaveCount(0);
 });
 
 test('game actions expose a guided target mode without internal enums', async ({ page }) => {
@@ -90,7 +115,6 @@ test('evidence selection opens the market without exposing internal terms', asyn
   await clickGameAction(page, /^(寻访|探索)/);
   const explorationTutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await explorationTutorialClose.isVisible()) await explorationTutorialClose.click();
-  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await page.getByRole('tab', { name: '市场' }).click();
   await page.locator('.inspector-content').evaluate(element => { element.scrollTop = element.scrollHeight; });
   await expect(page.locator('.culture-card').first()).toBeVisible();

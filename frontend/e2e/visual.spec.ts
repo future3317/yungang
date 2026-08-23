@@ -14,9 +14,6 @@ function commonScreenshot(page: Page, overrides: Record<string, unknown> = {}) {
   };
 }
 
-function isMobileProject() {
-  return Boolean(test.info().project.use.isMobile);
-}
 
 async function skipNonVisual() {
   if (!test.info().project.name.startsWith('visual-')) {
@@ -47,7 +44,6 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '准备' }).nth(0).click();
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
-  if (isMobileProject()) await page.getByRole('tab', { name: '地图', exact: true }).click();
   await expect(page.locator('.network-stage')).toBeVisible();
   const tutorial = page.getByRole('button', { name: /^(跳过，自己寻访证据|知道了)$/ }).first();
   if (await tutorial.isVisible()) await tutorial.click();
@@ -107,7 +103,6 @@ async function assertPrimaryCtaAboveFold(page: Page) {
 }
 
 async function assertMapWidthAtLeast(page: Page, ratio: number) {
-  if (isMobileProject()) return;
   const box = await page.locator('.network-stage').first().boundingBox();
   const viewport = page.viewportSize();
   const desktopRatio = viewport && viewport.width >= 2048 ? ratio : viewport && viewport.width >= 1920 ? 0.5 : viewport && viewport.width >= 1440 ? 0.44 : 0.38;
@@ -115,7 +110,6 @@ async function assertMapWidthAtLeast(page: Page, ratio: number) {
 }
 
 async function assertMapHeightAtLeast(page: Page, ratio: number) {
-  if (isMobileProject()) return;
   const map = page.locator('.network-stage').first();
   const box = await map.boundingBox();
   const viewport = page.viewportSize();
@@ -201,7 +195,6 @@ test('action preview dialog visual baseline', async ({ page }) => {
     await page.locator('.tutorial-backdrop .tutorial-skip').click();
     await expect(page.locator('.tutorial-backdrop')).toBeHidden();
   }
-  if (isMobileProject()) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await openInspector(page);
   await page.getByRole('tab', { name: '市场' }).click();
   const card = page.locator('[data-card-id]').first();
@@ -219,7 +212,6 @@ test('action preview dialog visual baseline', async ({ page }) => {
 test('event panel visual baseline', async ({ page }) => {
   await skipNonVisual();
   await startSolo(page);
-  if (isMobileProject()) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await openInspector(page);
   await page.getByRole('tab', { name: '事件' }).click();
   await expect(page.locator('.event-tab')).toBeVisible();
@@ -229,7 +221,6 @@ test('event panel visual baseline', async ({ page }) => {
 test('market panel visual baseline', async ({ page }) => {
   await skipNonVisual();
   await startSolo(page);
-  if (isMobileProject()) await page.getByRole('tab', { name: '地点', exact: true }).click();
   await openInspector(page);
   await page.getByRole('tab', { name: '市场' }).click();
   await expect(page.locator('.market-tab')).toBeVisible();
@@ -240,14 +231,9 @@ test('full hand visual baseline', async ({ page }) => {
   await skipNonVisual();
   await startSolo(page);
   for (let i = 0; i < 3; i += 1) await acquireCard(page);
-  if (isMobileProject()) {
-    await page.getByRole('tab', { name: '证据卡' }).click();
-    await expect(page.locator('[data-testid="mobile-evidence-hand-card"]')).toHaveCount(3);
-  } else {
-    const handTray = page.locator('details[class*="handTray"]');
-    await handTray.locator('summary').click();
-    await expect(handTray.locator('[data-testid="evidence-hand-card"]')).toHaveCount(3);
-  }
+  const handTray = page.locator('details[class*="handTray"]');
+  await handTray.locator('summary').click();
+  await expect(handTray.locator('[data-testid="evidence-hand-card"]')).toHaveCount(3);
   await expect(page).toHaveScreenshot('full-hand.png', commonScreenshot(page, { mask: [page.locator('.header-actions')] }));
 });
 
@@ -268,7 +254,6 @@ test('market reopening route action selects a route target', async ({ page }) =>
   await page.locator('.action-preview').getByRole('button', { name: /确认行动/ }).click();
   await expect(page.locator('.action-preview')).toBeHidden();
   await clickActionButton(page, /勘察路线/);
-  if (isMobileProject()) await page.getByRole('tab', { name: '地图', exact: true }).click();
   const targetRoute = page.locator('.route-hit-group:has(path.is-target) .route-hit-area').first();
   await expect(targetRoute).toBeVisible();
   await targetRoute.press('Enter');
@@ -336,31 +321,4 @@ test('high contrast visual baseline', async ({ page }) => {
   await expect(page.getByRole('button', { name: /开始新手导览/ })).toBeVisible();
   await expect(page.locator('html[data-high-contrast="true"]')).toBeAttached();
   await expect(page).toHaveScreenshot('high-contrast.png', commonScreenshot(page, { mask: [] }));
-});
-
-test('mobile landing visual baseline', async ({ page }) => {
-  await skipNonVisual();
-  if (!isMobileProject()) test.skip(true, 'Mobile snapshot uses the visual-390 project.');
-  await gotoLanding(page);
-  await assertPrimaryCtaAboveFold(page);
-  await expect(page).toHaveScreenshot('mobile-landing.png', {
-    animations: 'disabled',
-    mask: [page.locator('.header-actions')],
-    maskColor: NEUTRAL_MASK,
-    maxDiffPixels: 1000,
-  });
-});
-
-test('mobile game HUD visual baseline', async ({ page }) => {
-  await skipNonVisual();
-  if (!isMobileProject()) test.skip(true, 'Mobile snapshot uses the visual-390 project.');
-  await startSolo(page);
-  await page.getByRole('tab', { name: '地图' }).click();
-  await expect(page.locator('.network-stage')).toBeVisible();
-  await expect(page).toHaveScreenshot('mobile-game-hud.png', {
-    animations: 'disabled',
-    mask: [page.locator('.header-actions')],
-    maskColor: NEUTRAL_MASK,
-    maxDiffPixels: 1000,
-  });
 });

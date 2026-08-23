@@ -1,4 +1,4 @@
-﻿"""Capture the React game shell at all required review viewports."""
+"""Capture the React game shell at all required review viewports."""
 import json
 import os
 from pathlib import Path
@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "audit_output" / "redesign"
 OUT.mkdir(exist_ok=True)
 BASE_URL = os.environ.get("AUDIT_BASE_URL", "http://127.0.0.1:8010")
-VIEWPORTS = [{"name":"desktop_1920","width":1920,"height":1080},{"name":"desktop_1440","width":1440,"height":900},{"name":"desktop_1280","width":1280,"height":800},{"name":"tablet_768","width":768,"height":1024},{"name":"mobile_390","width":390,"height":844}]
+VIEWPORTS = [{"name":"desktop_1920","width":1920,"height":1080},{"name":"desktop_1440","width":1440,"height":900},{"name":"desktop_1280","width":1280,"height":800}]
 SELECTORS = {"map":".network-frame","actions":".command-deck","site":".map-node","inspector":".site-inspector","header":".game-header"}
 
 def measure(page):
@@ -48,7 +48,7 @@ def main():
             page.goto(f"{BASE_URL}/room/{room_id}/game")
             page.wait_for_selector(SELECTORS["map"], timeout=10000)
             page.wait_for_selector(SELECTORS["site"], timeout=10000)
-            name = {"desktop_1920": "game_1920", "desktop_1440": "game_1440", "desktop_1280": "game_1280", "tablet_768": "game_768", "mobile_390": "game_390"}[viewport["name"]]
+            name = {"desktop_1920": "game_1920", "desktop_1440": "game_1440", "desktop_1280": "game_1280"}[viewport["name"]]
             page.screenshot(path=str(OUT / f"{name}.png"), full_page=True)
             metrics[viewport["name"]] = measure(page)
             context.close()
