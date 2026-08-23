@@ -11,7 +11,6 @@ import './styles/primitives.css';
 import './styles/landing.css';
 import './styles/game-shell.css';
 import './styles/map.css';
-import './styles/responsive.css';
 import './styles/motion.css';
 import './styles/components.css';
 

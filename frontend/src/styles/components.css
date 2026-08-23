@@ -55,11 +55,7 @@
     opacity: 1;
   }
 }
-@media (max-width: 760px) {
-  .mode-strip {
-    font-size: var(--type-label);
-  }
-}
+
 .landing::before {
   position: fixed;
   inset: 0;
@@ -216,24 +212,7 @@
   height: min(100px, 28vw);
   margin: 0 auto 4px;
 }
-@media (max-width: 560px) {
-  .dialog-backdrop {
-    place-items: end center;
-    padding: 10px;
-  }
-  .dialog.card-dialog {
-    width: 100%;
-    max-width: none;
-    max-height: min(78dvh, 620px);
-    padding: 20px 18px 18px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .dialog-card-art {
-    width: 84px;
-    height: 84px;
-  }
-}
+
 .site-preview-note {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -363,23 +342,7 @@
   border: 1px solid rgba(222, 201, 153, 0.26);
   border-radius: var(--radius-sm);
 }
-@media (max-width: 520px) {
-  .result-screen {
-    padding: 14px;
-  }
-  .result-card {
-    padding: 24px 17px;
-  }
-  .result-metrics {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .result-actions {
-    display: grid;
-  }
-  .result-actions button {
-    width: 100%;
-  }
-}
+
 .accessibility-control {
   position: fixed;
   z-index: 60;
@@ -561,11 +524,7 @@ html[data-reduced-motion='true'] *::after {
   line-height: 1.35;
   text-align: right;
 }
-@media (max-width: 760px) {
-  .goal-context {
-    display: none;
-  }
-}
+
 .choice-hint {
   display: grid;
   gap: 4px;
@@ -768,19 +727,7 @@ html[data-reduced-motion='true'] *::after {
   min-width: 92px;
   white-space: nowrap;
 }
-@media (max-width: 760px) {
-  .start-panel {
-    padding: 28px 22px;
-  }
-  .scenario-options {
-    grid-template-columns: 1fr;
-  }
-  .scenario-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
-  }
-}
+
 .roster-column {
   min-height: 0;
 }
@@ -875,55 +822,7 @@ html[data-reduced-motion='true'] *::after {
   .toast-queue + .toast-queue + .toast-queue {
     top: 186px;
   }
-  .mobile-hand-panel {
-    display: none;
-  }
-  @media (max-width: 760px) {
-    .mobile-hand-panel:not(.mobile-hidden) {
-      display: grid;
-      gap: 13px;
-      margin: 8px 0;
-      padding: 15px;
-      color: var(--ink-primary);
-      background: rgba(31, 43, 34, 0.9);
-      border: 1px solid var(--line-subtle);
-      border-radius: var(--radius-md);
-    }
-    .mobile-hand-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-    .mobile-hand-panel .mobile-hand-card {
-      min-height: 110px;
-      display: grid;
-      grid-template-columns: 38px minmax(0, 1fr);
-      gap: 5px 8px;
-      align-items: center;
-      padding: 9px;
-      color: var(--ink-primary);
-      text-align: left;
-      background: rgba(15, 25, 18, 0.55);
-      border: 1px solid var(--line-subtle);
-      border-radius: var(--radius-sm);
-    }
-    .mobile-hand-panel .mobile-hand-card img {
-      width: 38px;
-      height: 38px;
-      grid-row: span 2;
-      object-fit: contain;
-    }
-    .mobile-hand-panel .mobile-hand-card small {
-      color: var(--ink-secondary);
-      font-size: var(--type-label);
-      line-height: 1.35;
-    }
-    .hand-help {
-      color: var(--ink-muted);
-      font-size: var(--type-label);
-      line-height: 1.45;
-    }
-  }
+
 
 
   .map-editor {
@@ -1006,20 +905,7 @@ html[data-reduced-motion='true'] *::after {
     margin: 12px auto;
     font-size: var(--type-label);
   }
-  @media (max-width: 760px) {
-    .map-editor {
-      padding: 18px 12px;
-    }
-    .map-editor > header {
-      display: grid;
-    }
-    .map-editor-actions {
-      justify-content: start;
-    }
-    .map-editor-canvas {
-      height: 60dvh;
-    }
-  }
+
 
 
 /* Product finishing: keep every floating surface in the same dark stone-paper language. */
@@ -1217,15 +1103,7 @@ html[data-reduced-motion='true'] *::after {
   border-color: #d8b866;
 }
 
-@media (max-width: 760px) {
-  .accessibility-control {
-    right: 12px;
-    bottom: 12px;
-  }
-  .choice-dialog {
-    padding: 21px 17px;
-  }
-}
+
 .game-header,
 .header-center,
 .goal-hud,
@@ -1272,36 +1150,7 @@ html[data-reduced-motion='true'] *::after {
   min-width: 0;
   overflow: hidden;
 }
-@media (max-width: 760px) {
-  .header-center {
-    display: block;
-    width: 100%;
-  }
-  .goal-hud {
-    width: 100%;
-    padding: 5px 8px;
-    border-radius: 8px;
-  }
-  .goal-hud-head {
-    gap: 6px;
-  }
-  .goal-title {
-    font-size: var(--type-label);
-  }
-  .goal-phase {
-    display: none;
-  }
-  .goal-line {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 6px;
-  }
-  .goal-line b {
-    font-size: var(--type-label);
-  }
-  .goal-context {
-    display: none;
-  }
-}
+
 
 .inspector-scene-art {
   height: 92px;

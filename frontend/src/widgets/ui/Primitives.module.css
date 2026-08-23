@@ -120,20 +120,9 @@
     background: #ce6549;
   }
 
-  @media (max-width: 560px) {
-    .primaryCta[data-context='card'] {
-      position: sticky;
-      bottom: -18px;
-      padding: 13px;
-      background: #bd593d;
-    }
-  }
 
-  @media (max-width: 520px) {
-    .primaryCta[data-context='tutorial'] {
-      justify-content: center;
-    }
-  }
+
+
 
   .progress {
     min-width: 0;

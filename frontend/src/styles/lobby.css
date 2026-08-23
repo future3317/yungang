@@ -306,51 +306,7 @@
   font-size: var(--type-label);
   font-weight: 700;
 }
-@media (max-width: 680px) {
-  .play-mode-options {
-    grid-template-columns: 1fr;
-  }
-  .play-mode-options button {
-    min-height: 62px;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-  }
-  .play-mode-options button > span {
-    grid-row: span 2;
-  }
-  .room-screen {
-    padding: 12px;
-  }
-  .room-card {
-    padding: 22px 16px;
-  }
-  .room-card-heading {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  .room-code {
-    max-width: none;
-  }
-  .room-seats {
-    grid-template-columns: 1fr;
-  }
-  .seat-control-row {
-    display: grid;
-  }
-  .seat-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .seat-buttons select {
-    min-width: 0;
-  }
-  .room-actions {
-    display: grid;
-  }
-  .room-actions button {
-    width: 100%;
-  }
-}
+
 .help-card {
   max-width: 850px;
 }
@@ -394,11 +350,7 @@
   border-radius: 4px;
   font: var(--type-data-sm) var(--font-data);
 }
-@media (max-width: 680px) {
-  .help-grid {
-    grid-template-columns: 1fr;
-  }
-}
+
 
 /* Local seat editors must remain part of the dark stone-paper surface. */
 .room-seat .seat-person input,
@@ -805,34 +757,7 @@
 .room-starting .spin {
   flex: none;
 }
-@media (max-width: 760px) {
-  .role-selection-panel {
-    padding: 15px;
-  }
-  .role-selection-heading {
-    display: grid;
-    gap: 8px;
-    align-items: start;
-  }
-  .role-selection-count {
-    justify-self: start;
-  }
-  .role-selection-layout {
-    grid-template-columns: 1fr;
-  }
-  .role-card-grid {
-    grid-template-columns: 1fr;
-  }
-  .role-detail-card {
-    min-height: 0;
-  }
-  .role-seat-switcher {
-    overflow-x: auto;
-  }
-  .role-seat-switcher button {
-    min-width: 132px;
-  }
-}
+
 .play-mode-options button.selected > span {
   color: #e5d3a7;
 }

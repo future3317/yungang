@@ -189,14 +189,7 @@
   padding: 3px 5px;
   font-size: var(--type-label);
 }
-@media (max-width: 760px) {
-  .planning-targets {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .action-preview {
-    padding: 20px 17px;
-  }
-}
+
 .planning-target-picker {
   display: grid;
   gap: 7px;

@@ -246,37 +246,8 @@
 .condition-row:disabled {
   cursor: default;
 }
-@media (max-width: 1100px) {
-  .game-shell {
-    background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, 0.12), transparent 42%), #0c1711;
-  }
-  .network-stage {
-    background: radial-gradient(ellipse at 50% 46%, rgba(188, 155, 82, 0.12), transparent 66%);
-  }
-  .event-history-bar {
-    right: 16px;
-    bottom: 76px;
-    left: 16px;
-    width: auto;
-  }
-}
-@media (max-width: 760px) {
-  .game-header .brand-group {
-    gap: 8px;
-  }
-  .game-header .brand-scenario {
-    max-width: 125px;
-    padding-left: 8px;
-    font-size: var(--type-label);
-  }
-  .game-header .goal-summary {
-    grid-template-columns: repeat(2, auto);
-    gap: 4px 8px;
-  }
-  .game-header .goal-summary > span:nth-child(n + 3) {
-    display: none;
-  }
-}
+
+
 
 .route-layer path.is-neighbor {
   stroke: rgba(205, 210, 187, 0.48);
@@ -362,4 +333,19 @@
 .map-node .node-label,
 .map-node .node-status {
   pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .game-shell {
+    background: radial-gradient(ellipse at 50% 22%, rgba(173, 142, 74, 0.12), transparent 42%), #0c1711;
+  }
+  .network-stage {
+    background: radial-gradient(ellipse at 50% 46%, rgba(188, 155, 82, 0.12), transparent 66%);
+  }
+  .event-history-bar {
+    right: 16px;
+    bottom: 76px;
+    left: 16px;
+    width: auto;
+  }
 }

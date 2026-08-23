@@ -122,11 +122,3 @@ min-height: 44px;
   color: var(--ink-primary);
   background: var(--surface-selected);
 }
-@media (max-width: 760px) {
-:global(.network-access-list) {
-left: 16px;
-    right: auto;
-    bottom: 16px;
-}
-
-}

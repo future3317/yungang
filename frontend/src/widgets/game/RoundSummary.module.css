@@ -55,14 +55,3 @@
   border: 0;
   font-size: var(--type-label);
 }
-
-@media (max-width: 760px) {
-  .roundSummary {
-    align-items: start;
-    flex-direction: column;
-  }
-
-  .continueButton {
-    justify-self: end;
-  }
-}

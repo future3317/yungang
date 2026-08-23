@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
-  Archive,
   ChevronDown,
   CircleAlert,
   Clock3,
-  Map as MapIcon,
   Send,
   ShieldCheck,
   Sparkles,
-  Target,
   Users,
   X,
 } from 'lucide-react';
@@ -83,7 +80,6 @@ export function GamePage() {
   const [preview, setPreview] = useState<Action | null>(null);
   const [actionMode, setActionMode] = useState<ActionMode>(null);
   const [requestedInspectorTab, setRequestedInspectorTab] = useState<'market' | null>(null);
-  const [mobileView, setMobileView] = useState<'map' | 'mission' | 'hand'>('map');
   const [toasts, setToasts] = useState<Array<{ id: string; text: string }>>([]);
   const [inspectorOpen, setInspectorOpen] = useState(true);
   const [tutorialOpen, setTutorialOpen] = useState(false);
@@ -486,42 +482,9 @@ export function GamePage() {
             }}
           />
         </HudSlot>
-        <div className="mobile-tabs" role="tablist" aria-label="游戏内容">
-          <button
-            role="tab"
-            aria-selected={mobileView === 'map'}
-            aria-controls="mobile-map-panel"
-            className={mobileView === 'map' ? 'active' : ''}
-            onClick={() => setMobileView('map')}
-          >
-            <MapIcon size={16} />
-            地图
-          </button>
-          <button
-            role="tab"
-            aria-selected={mobileView === 'mission'}
-            aria-controls="mobile-mission-panel"
-            className={mobileView === 'mission' ? 'active' : ''}
-            onClick={() => setMobileView('mission')}
-          >
-            <Target size={16} />
-            地点
-          </button>
-          <button
-            role="tab"
-            aria-selected={mobileView === 'hand'}
-            aria-controls="mobile-hand-panel"
-            className={mobileView === 'hand' ? 'active' : ''}
-            onClick={() => setMobileView('hand')}
-          >
-            <Archive size={16} />
-            证据卡
-          </button>
-        </div>
         <main className={`hud-layout ${inspectorOpen ? '' : 'inspector-collapsed'}`}>
           <aside
-            className={`roster-column hud-slot hud-slot-left ${mobileView !== 'map' ? 'mobile-hidden' : ''}`}
-            id="mobile-map-panel"
+            className="roster-column hud-slot hud-slot-left"
           >
             <section className="roster">
               <div className="section-label">
@@ -600,7 +563,7 @@ export function GamePage() {
               onChoose={run}
             />
           </aside>
-          <section className={`stage-column hud-slot hud-slot-world ${mobileView !== 'map' ? 'mobile-hidden' : ''}`}>
+          <section className="stage-column hud-slot hud-slot-world">
             <RoundSummary
               state={state}
               sites={sites}
@@ -661,21 +624,9 @@ export function GamePage() {
             onInterpret={selectInterpretation}
             onFormInterpretation={formInterpretation}
             onChooseIntervention={chooseIntervention}
-            className={`hud-slot hud-slot-right ${mobileView !== 'mission' ? 'mobile-hidden' : ''}`}
+            className="hud-slot hud-slot-right"
           />
         </main>
-        <MobileHandPanel
-          id="mobile-hand-panel"
-          hidden={mobileView !== 'hand'}
-          active={active}
-          cards={cards}
-          actionCards={actionCards}
-          actionOptions={actionOptions}
-          mutationPending={mutation.isPending}
-          onCard={setCard}
-          onChooseOption={chooseOption}
-          onStrategy={setStrategyOption}
-        />
         <HudSlot name="bottom">
           <CommandDock
             state={state}
@@ -844,94 +795,6 @@ function TaskCompleteDialog({
     </div>
   );
 }
-function MobileHandPanel({
-  id,
-  hidden,
-  active,
-  cards,
-  actionCards = {},
-  actionOptions,
-  mutationPending,
-  onCard,
-  onChooseOption: _onChooseOption,
-  onStrategy,
-}: {
-  id: string;
-  hidden: boolean;
-  active: GameState['players'][string];
-  cards: Record<string, ContentCard>;
-  actionCards?: Record<string, Record<string, unknown>>;
-  actionOptions: ActionOption[];
-  mutationPending: boolean;
-  onCard: (id: string) => void;
-  onChooseOption: (option: ActionOption) => void;
-  onStrategy: (option: ActionOption) => void;
-}) {
-  return (
-    <section id={id} className={`mobile-hand-panel ${hidden ? 'mobile-hidden' : ''}`} aria-label="证据卡与角色能力">
-      <div className="section-label">
-        <Archive size={15} />
-        证据卡 <b>{active.hand.length} / 3</b>
-      </div>
-      <div className="mobile-hand-grid">
-        {active.hand.map((id, index) => (
-          <button key={`${id}-${index}`} className="mobile-hand-card" data-testid="mobile-evidence-hand-card" onClick={() => onCard(id)}>
-            <img src={assetUrl(cards[id]?.icon_asset)} alt="" />
-            <b>{cards[id]?.name || id}</b>
-            <small>{cards[id]?.strategic_role || '打开查看这件证据卡'}</small>
-          </button>
-        ))}
-      </div>
-      {active.action_hand?.length ? (
-        <>
-          <div className="section-label">
-            <Sparkles size={15} />
-            策略牌
-          </div>
-          <div className="mobile-hand-grid">
-            {active.action_hand.map((id, index) => {
-              const definition = actionCards[id] || {};
-              const option =
-                actionOptions.find((item) => item.type === 'use_action_card' && item.id.endsWith(`:${id}`)) ||
-                ({
-                  id: `action:use_action_card:${id}`,
-                  type: 'use_action_card' as const,
-                  label: String(definition.name || '策略牌'),
-                  category_label: '策略牌',
-                  action_label: '使用策略牌',
-                  description: String(definition.description || '查看这张策略牌的使用时机与效果。'),
-                  cost: { ap: Number(definition.cost || 1) },
-                  enabled: false,
-                  disabled_reason: definition.timing
-                    ? `当前不能使用 · 时机：${String(definition.timing)}`
-                    : '当前不能使用',
-                  targets: [],
-                  recommendation_score: 0,
-                  reason: '',
-                  confirmation: '',
-                  payload: definition,
-                } as ActionOption);
-              return (
-                <button
-                  key={`${id}-${index}`}
-                  className="mobile-hand-card"
-                  disabled={mutationPending}
-                  onClick={() => onStrategy(option)}
-                >
-                  <img src={assetUrl('icon_card_scroll.webp')} alt="" />
-                  <b>{option.label}</b>
-                  <small>{option.description || '查看策略牌效果'}</small>
-                </button>
-              );
-            })}
-          </div>
-        </>
-      ) : null}
-      <div className="hand-help">点击文化牌查看详情，策略牌先选择其目标再确认结算。</div>
-    </section>
-  );
-}
-
 function ActionTargetDialog({
   option,
   sites,

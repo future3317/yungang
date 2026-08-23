@@ -304,25 +304,7 @@
 .card-how-to-use b {
   color: #f0d58d;
 }
-@media (max-width: 520px) {
-  .tutorial-backdrop {
-    padding: 12px;
-  }
-  .tutorial-dialog {
-    padding: 25px 20px;
-  }
-  .tutorial-actions {
-    align-items: stretch;
-    flex-direction: column-reverse;
-  }
-  .tutorial-skip {
-    align-self: center;
-  }
-  .tutorial-trigger {
-    right: 12px;
-    bottom: 12px;
-  }
-}
+
 .market-row .culture-card {
   position: relative;
 }

@@ -412,28 +412,3 @@ main.landing .difficulty-detail {
     grid-template-columns: 1fr;
   }
 }
-
-@media (max-width: 760px) {
-  main.landing {
-    padding: 24px 14px 32px;
-    gap: 24px;
-  }
-  main.landing .landing-copy {
-    align-self: start;
-  }
-  main.landing .start-panel {
-    max-height: none;
-    overflow: visible;
-  }
-  main.landing .scenario-options {
-    max-height: none;
-    overflow: visible;
-  }
-  .landing-hero-actions,
-  .custom-actions {
-    grid-template-columns: 1fr;
-  }
-  .custom-actions {
-    display: grid;
-  }
-}
