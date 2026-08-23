@@ -457,6 +457,11 @@
 .region-layer.lod-detail text {
   opacity: 0.16;
 }
+.region-shape path {
+  fill: rgba(109, 132, 104, 0.08);
+  stroke: rgba(214, 196, 142, 0.16);
+  stroke-width: 0.28;
+}
 .region-shape text {
   stroke: none;
   fill: rgba(235, 225, 194, 0.42);

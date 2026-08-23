@@ -901,6 +901,14 @@
 
 /* Desktop world layer: the map is the full browser canvas; HUD rails float above it. */
 @media (min-width: 1101px) {
+  .game-shell > .hud-slot-top > .game-header {
+    position: relative;
+    z-index: 20;
+    background: linear-gradient(90deg, rgba(13, 23, 17, 0.99), rgba(16, 27, 20, 0.96));
+    border-bottom: 1px solid var(--line-subtle);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+  }
+
   .game-shell > .hud-layout {
     position: absolute;
     inset: 0;
@@ -930,6 +938,30 @@
     inset: 0;
     width: auto;
     height: auto;
+  }
+
+  .network-tools {
+    position: absolute;
+    top: calc(var(--hud-header-height) + 78px);
+    left: calc(var(--hud-left-width) + var(--hud-rail-gap) + 18px);
+    z-index: 6;
+    display: grid;
+    gap: 5px;
+  }
+
+  .network-stage .event-map-notice {
+    top: calc(var(--hud-header-height) + 78px);
+    left: calc(var(--hud-left-width) + var(--hud-rail-gap) + 58px);
+  }
+
+  .network-stage .route-inspector {
+    top: calc(var(--hud-header-height) + 78px);
+    right: calc(var(--hud-right-width) + var(--hud-rail-gap) + 18px);
+  }
+
+  .network-stage .network-access-list {
+    right: calc(var(--hud-right-width) + var(--hud-rail-gap) + 18px);
+    bottom: 62px;
   }
 
   .hud-layout > .stage-column > .stage-heading {
@@ -976,6 +1008,21 @@
   .hud-layout > .hud-slot-right {
     right: 0;
     width: var(--hud-right-width);
+  }
+
+  .hud-layout > .site-inspector {
+    grid-template-rows: minmax(170px, 260px) auto minmax(0, 1fr);
+    padding: 10px;
+    background: rgba(31, 40, 34, 0.98);
+  }
+
+  .hud-layout > .site-inspector .inspector-summary {
+    max-height: 260px;
+    padding-right: 26px;
+  }
+
+  .hud-layout > .site-inspector .inspector-tabs {
+    margin: 8px 0;
   }
 
   .game-shell > .hud-slot-bottom {
