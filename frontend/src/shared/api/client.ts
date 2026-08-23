@@ -42,7 +42,7 @@ async function requestRaw(url: string, init?: RequestInit): Promise<unknown> {
     });
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError')
-      throw new ApiError(408, '连接超时，请检查本地服务后重试。', null, 'request_timeout', 'retry');
+      throw new ApiError(408, '暂时无法连接旅程服务，请重新连接；问题持续时返回房间重新进入。', null, 'request_timeout', 'retry');
     throw error;
   } finally {
     window.clearTimeout(timeout);

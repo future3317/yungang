@@ -85,6 +85,7 @@ export type Shared = Omit<
     effects?: unknown[];
     created_at: string;
     player_id?: string | null;
+    target?: { kind?: string; id?: string; label?: string } | null;
   }>;
   event_targets?: string[];
   event_history?: Array<{

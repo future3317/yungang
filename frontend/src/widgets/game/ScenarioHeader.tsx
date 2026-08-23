@@ -19,12 +19,9 @@ export function ScenarioHeader({
 }) {
   const [goalsOpen, setGoalsOpen] = useState(false);
   const projects = Object.values(state.projects || {});
-  const objectives = Object.values(state.objectives || {});
   const goal = state.goal_status;
   const completedProjects =
     goal?.core_projects_completed ?? projects.filter((project) => project.status === 'completed').length;
-  const completedObjectives =
-    goal?.objectives_completed ?? objectives.filter((objective) => objective.completed).length;
   const phase =
     state.shared.phase === 'planning' ? '规划阶段' : state.shared.phase === 'pending_choice' ? '等待回应' : '行动阶段';
   const victory = goal?.victory_conditions || [];
@@ -37,9 +34,12 @@ export function ScenarioHeader({
         ? item.current <= item.target
         : item.current >= item.target;
   const projectTarget = goal?.core_projects_target || 0;
-  const objectiveTarget = goal?.objectives_target || 0;
-  const totalProgress = visibleVictory.reduce((sum, item) => sum + Math.min(item.current, item.target), 0);
-  const totalTarget = visibleVictory.reduce((sum, item) => sum + item.target, 0) || projectTarget + objectiveTarget;
+  const primaryGoal =
+    visibleVictory.find((item) => item.id === 'core_projects' || item.id === 'core_projects_completed') ||
+    visibleVictory[0] ||
+    ({ id: 'core_projects', label: '核心项目', current: completedProjects, target: projectTarget || 1 } as (typeof victory)[number]);
+  const totalProgress = Math.min(primaryGoal.current, primaryGoal.target);
+  const totalTarget = primaryGoal.target;
   const weathering = goal?.weathering ?? state.shared.weathering_track ?? 0;
   const weatheringLimit = goal?.weathering_limit ?? state.shared.weathering_limit ?? 5;
   const conditionRow = (item: (typeof victory)[number], failureCondition = false) => {
@@ -84,7 +84,7 @@ export function ScenarioHeader({
 
       <div className="header-center">
         <section className="goal-summary" aria-label="胜利摘要">
-          <span>核心目标 {completedProjects} / {projectTarget || totalTarget}</span>
+          <span title={primaryGoal.label || '核心目标'}>核心目标 · {primaryGoal.current} / {primaryGoal.target}</span>
           <span>风化压力 {weathering} / {weatheringLimit}</span>
           <Progress value={totalProgress} max={totalTarget} />
         </section>

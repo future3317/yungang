@@ -72,7 +72,7 @@ export function statusName(status?: string) {
     illuminated: '已点亮',
     closed: '已关闭',
   };
-  return labels[status || ''] || '稳定';
+  return labels[status || ''] || '未知状态';
 }
 
 export function siteTypeName(type?: string) {
@@ -82,7 +82,7 @@ export function siteTypeName(type?: string) {
     event: '事件节点',
     route: '路线节点',
   };
-  return labels[type || ''] || '遗产节点';
+  return labels[type || ''] || '未知节点';
 }
 
 export function contentClassName(value?: string) {
@@ -93,7 +93,7 @@ export function contentClassName(value?: string) {
         interpretive: '研究性解读',
         gameplay: '协作场景',
       } as Record<string, string>
-    )[value || ''] || '遗产节点'
+    )[value || ''] || '未知内容分类'
   );
 }
 

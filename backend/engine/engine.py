@@ -243,6 +243,13 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
         result = state if req.get("_preview") else self.refresh(state)
         after = self._metric_snapshot(result, pid, site_id=site_id, route_id=route_id)
         changes = self._feedback_changes(before, after)
-        self._record_journal(state, action, pid, self._journal_message(action, target, req), changes)
+        self._record_journal(
+            state,
+            action,
+            pid,
+            self._journal_message(action, target, req),
+            changes,
+            self._journal_target(state, target),
+        )
         result.feedback_events = [FeedbackEvent(message=self._feedback_message(action), changes=changes)]
         return result

@@ -1,4 +1,4 @@
-import { ArrowLeft, Compass, Keyboard, Library, Map, Users } from 'lucide-react';
+import { ArrowLeft, Compass, Keyboard, Library, Map, ShieldAlert, Sparkles, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/lobby.css';
 import { Button } from '../../widgets/ui/Primitives';
@@ -17,7 +17,7 @@ export function HelpPage() {
       <section className="room-card help-card">
         <span className="eyebrow">石窟光谱 · 旅程手册</span>
         <h1>让线索彼此照见</h1>
-        <p>你们会在有限回合中移动、寻访证据、交付和修护。地图展示关系，节点保存故事，证据卡保存尚未归位的证据关系。</p>
+        <p>你们会在有限回合中移动、寻访证据、研判证据并共同修护遗产网络。地图展示关系，节点保存故事，证据卡保存尚未归位的证据关系。</p>
         <div className="help-grid">
           <article>
             <Map />
@@ -27,7 +27,7 @@ export function HelpPage() {
           <article>
             <Library />
             <h2>寻访证据卡</h2>
-            <p>公开市场每回合展示三件证据卡。金边证据卡回应当前委托，其他证据卡可能在后续节点派上用场。</p>
+            <p>公开市场每回合展示三件证据卡。推荐标记表示它更适合当前任务，但其他证据卡可能在后续节点派上用场。</p>
           </article>
           <article>
             <Users />
@@ -40,6 +40,16 @@ export function HelpPage() {
             <p>
               <kbd>Escape</kbd> 收回当前选择；地图可用聚焦和缩放工具查看全局，行动确认前可以随时搁置。
             </p>
+          </article>
+          <article>
+            <Sparkles />
+            <h2>路线与策略牌</h2>
+            <p>勘察路线后才能修护，修护后才能建立连接。策略牌先查看时机、目标和预计变化，再确认使用。</p>
+          </article>
+          <article>
+            <ShieldAlert />
+            <h2>事件与失败条件</h2>
+            <p>事件会在回合结束时结算，节点关闭或风化压力达到上限可能导致失败。先查看影响范围，再决定修护、准备或回应。</p>
           </article>
         </div>
         <Button context="help" onClick={() => navigate('/')}>

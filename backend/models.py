@@ -405,6 +405,7 @@ class JournalEntry(DictModel):
     effects: List[JsonObject] = Field(default_factory=list)
     created_at: str = ""
     player_id: Optional[str] = None
+    target: Optional[JsonObject] = None
 
 
 class EventHistoryRecord(EventInstance):

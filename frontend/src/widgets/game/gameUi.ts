@@ -68,20 +68,11 @@ export function metricLabel(metric: string) {
     previewDeltaLabels[metric] ||
     {
       weathering_track: '风化压力',
-      weathering: '风化压力',
       route_status: '路线状态',
-      route_risk: '路线风险',
-      路线状态: '路线状态',
+      risk: '路线风险',
       site_status: '节点状态',
       site_damage: '节点损伤',
       site_influence: '地点影响',
-      节点状态: '节点状态',
-      修护资源: '修护资源',
-      共同修护资源: '修护资源',
-      研究点: '研究点',
-      路线风险: '路线风险',
-      节点损伤: '节点损伤',
-      个人声望: '个人声望',
     }[metric] ||
     '状态变化'
   );
@@ -161,8 +152,8 @@ export function resolveTargetName(
   return routes[target]?.name || sites[target]?.name || projects[target]?.name || players[target]?.name || '未知目标';
 }
 
-export function localizeTimelineMessage(
-  message: string,
+export function formatTimelineEntry(
+  entry: { message: string; target?: { kind?: string; id?: string; label?: string } | null },
   context: {
     sites: Record<string, SiteReference>;
     routes: Record<string, RouteState>;
@@ -170,11 +161,9 @@ export function localizeTimelineMessage(
     players?: Record<string, Player>;
   }
 ) {
-  return message.replace(
-    /\s*[（(]目标[：:]\s*([^）)]+)[）)]/g,
-    (_, target: string) =>
-      `（目标：${resolveTargetName(target.trim(), context.sites, context.routes, context.projects, context.players)}）`
-  );
+  if (!entry.target?.id) return entry.message;
+  const label = entry.target.label || resolveTargetName(entry.target.id, context.sites, context.routes, context.projects, context.players);
+  return `${entry.message}（目标：${label}）`;
 }
 
 export function localizeActionError(error: unknown, meta?: Meta) {
@@ -185,11 +174,7 @@ export function localizeActionError(error: unknown, meta?: Meta) {
     if (catalogMessage) return catalogMessage;
   }
   const message = typeof candidate?.message === 'string' ? candidate.message : '';
-  const embeddedCode = message.match(/\b[a-z][a-z0-9_]+\b/i)?.[0];
-  if (embeddedCode) {
-    const catalogMessage = errorText(meta, embeddedCode, '');
-    if (catalogMessage) return catalogMessage;
-  }
+  if (code) return '操作暂时无法完成，请根据提示调整后重试。';
   if (/network|failed to fetch|fetch|timeout|offline|连接|网络/i.test(message))
     return '网络暂时中断，状态未确定。请先重新连接，再继续选择行动。';
   return message || '操作暂时无法完成，请重新选择。';
@@ -236,8 +221,8 @@ export function actionFeedback(action: Action, before: GameState | undefined, af
   delta('修护资源', before?.shared.restoration_resource, after.shared.restoration_resource);
   delta(
     '风化压力',
-    before?.shared.weathering_track ?? before?.shared.weathering_track,
-    after.shared.weathering_track ?? after.shared.weathering_track
+    before?.shared.weathering_track,
+    after.shared.weathering_track
   );
   delta('共同影响', before?.shared.influence, after.shared.influence);
   const copy: Partial<Record<ActionType, string>> = {

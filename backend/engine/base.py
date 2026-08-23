@@ -20,7 +20,15 @@ class BaseEngineMixin:
         self.content = content or Content()
         self._preview_cache: dict[tuple[int, int, str], dict[str, int]] = {}
 
-    def _record_journal(self, state: GameState, action: str, player_id: str, message: str, changes: list[FeedbackChange] | None = None) -> None:
+    def _record_journal(
+        self,
+        state: GameState,
+        action: str,
+        player_id: str,
+        message: str,
+        changes: list[FeedbackChange] | None = None,
+        target: dict[str, Any] | None = None,
+    ) -> None:
         kind = "event" if action in {"resolve_event", "prepare"} else "project" if action in {"interpret_evidence", "form_interpretation", "choose_intervention", "restore", "restore_route", "establish_connection"} else "action"
         state.shared.journal.append(JournalEntry(
             id=f"journal-{state.revision + len(state.shared.journal) + 1}",
@@ -30,6 +38,7 @@ class BaseEngineMixin:
             effects=[change.model_dump() for change in (changes or [])],
             created_at=datetime.now(timezone.utc).isoformat(),
             player_id=player_id,
+            target=target,
         ))
         del state.shared.journal[:-120]
 
@@ -49,18 +58,23 @@ class BaseEngineMixin:
             "establish_connection": "建立区域连接", "prepare": "准备事件", "end_turn": "结束回合",
             "plan": "放置规划标记", "end_planning": "开始行动",
         }
-        target_label = target
-        if target:
-            target_label = self.content.sites.get(target, {}).get("name") or self.content.projects.get(target, {}).get("name")
-            if not target_label:
-                route = next((item for item in self.content.routes if item.get("id") == target), None)
-                if route:
-                    source = self.content.sites.get(route.get("from"), {}).get("name", route.get("from"))
-                    destination = self.content.sites.get(route.get("to"), {}).get("name", route.get("to"))
-                    target_label = route.get("name") or f"{source}—{destination}"
-            if not target_label:
-                target_label = "同行者" if str(target).startswith(("player-", "seat-")) else target
-        return labels.get(action, "完成一项行动") + (f"（目标：{target_label}）" if target_label else "")
+        return labels.get(action, "完成一项行动")
+
+    def _journal_target(self, state: GameState, target: str | None) -> dict[str, Any] | None:
+        if not target:
+            return None
+        if target in state.routes:
+            route = state.routes[target]
+            source = self.content.sites.get(route.from_site, {}).get("name", route.from_site)
+            destination = self.content.sites.get(route.to_site, {}).get("name", route.to_site)
+            return {"kind": "route", "id": target, "label": route.name or f"{source}—{destination}"}
+        if target in state.sites:
+            return {"kind": "site", "id": target, "label": self.content.sites.get(target, {}).get("name", target)}
+        if target in state.projects:
+            return {"kind": "project", "id": target, "label": self.content.projects.get(target, {}).get("name", target)}
+        if target in state.players:
+            return {"kind": "player", "id": target, "label": state.players[target].name}
+        return {"kind": "unknown", "id": target}
 
     @staticmethod
     def _feedback_message(action: str) -> str:
