@@ -93,7 +93,7 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
   }
   const preview = host.locator('.action-preview');
   await expect(preview).toBeVisible();
-  await preview.getByRole('button', { name: /踏上这一步/ }).click();
+  await preview.getByRole('button', { name: /确认行动/ }).click();
   await expect(preview).toBeHidden();
   const after = await host.evaluate(async ({ roomId, token }) => (await fetch(`/api/rooms/${roomId}/game`, { headers: { 'X-Seat-Token': token } })).json(), syncContext);
   expect(after.revision).toBeGreaterThan(before.revision);
@@ -105,7 +105,20 @@ test('a disconnected guest can recover the same room seat', async ({ browser }) 
     players: Object.fromEntries(Object.entries(after.players).map(([id, player]) => [id, { name: player.name, role_id: player.role_id, location: player.location, hand: player.hand, action_hand: player.action_hand }]))
   };
 
+  const guestRecoveryToken = await guest.evaluate(() => {
+    const roomId = location.pathname.split('/')[2];
+    return localStorage.getItem(`yungang-room-recovery:${roomId}`) || '';
+  });
+  const guestRecoverySeatId = await guest.evaluate(() => {
+    const roomId = location.pathname.split('/')[2];
+    return localStorage.getItem(`yungang-room-recovery-seat:${roomId}`) || '';
+  });
+
   await guestContext.close();
+  await recoveredContext.addInitScript(({ roomId, recoveryToken, recoverySeatId }) => {
+    localStorage.setItem(`yungang-room-recovery:${roomId}`, recoveryToken);
+    localStorage.setItem(`yungang-room-recovery-seat:${roomId}`, recoverySeatId || 'seat-2');
+  }, { roomId: syncContext.roomId, recoveryToken: guestRecoveryToken, recoverySeatId: guestRecoverySeatId });
   const recovered = await recoveredContext.newPage();
   await recovered.goto(roomUrl);
   await expect(recovered.getByText('恢复同行席位', { exact: true })).toBeVisible();

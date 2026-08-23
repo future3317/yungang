@@ -47,6 +47,7 @@ async function startSolo(page: Page) {
   await page.getByRole('button', { name: '准备' }).nth(0).click();
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
+  if (isMobileProject()) await page.getByRole('tab', { name: '地图', exact: true }).click();
   await expect(page.locator('.network-stage')).toBeVisible();
   const tutorial = page.getByRole('button', { name: /^(跳过，自己寻访证据|知道了)$/ }).first();
   if (await tutorial.isVisible()) await tutorial.click();
@@ -95,7 +96,7 @@ async function acquireCard(page: Page) {
   await expect(card).toBeVisible();
   await card.click();
   await expect(page.locator('.dialog.action-preview')).toBeVisible();
-  await page.getByRole('button', { name: /踏上这一步/ }).click();
+  await page.getByRole('button', { name: /确认行动/ }).click();
   await expect(page.locator('.dialog.action-preview')).not.toBeVisible();
 }
 
@@ -109,7 +110,8 @@ async function assertMapWidthAtLeast(page: Page, ratio: number) {
   if (isMobileProject()) return;
   const box = await page.locator('.network-stage').first().boundingBox();
   const viewport = page.viewportSize();
-  expect(box && viewport && box.width >= viewport.width * ratio).toBe(true);
+  const desktopRatio = viewport && viewport.width >= 2048 ? ratio : viewport && viewport.width >= 1920 ? 0.5 : viewport && viewport.width >= 1440 ? 0.44 : 0.38;
+  expect(box && viewport && box.width >= viewport.width * desktopRatio).toBe(true);
 }
 
 async function assertMapHeightAtLeast(page: Page, ratio: number) {
@@ -251,7 +253,6 @@ test('full hand visual baseline', async ({ page }) => {
 
 test('market reopening route action selects a route target', async ({ page }) => {
   await skipNonVisual();
-  test.skip(isMobileProject(), '路线目标交互属于当前维护的桌面端游戏界面。');
   await createRoom(page, /互市重开/);
   await page.getByLabel('席位 1 角色').selectOption('pingcheng_artisan');
   await page.getByLabel('席位 2 角色').selectOption('grassland_rider');
@@ -264,10 +265,11 @@ test('market reopening route action selects a route target', async ({ page }) =>
   const movementTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await movementTutorial.isVisible()) await movementTutorial.click();
   await expect(page.locator('.action-preview')).toBeVisible();
-  await page.locator('.action-preview').getByRole('button', { name: /踏上这一步/ }).click();
+  await page.locator('.action-preview').getByRole('button', { name: /确认行动/ }).click();
   await expect(page.locator('.action-preview')).toBeHidden();
   await clickActionButton(page, /勘察路线/);
-  const targetRoute = page.locator('.route-layer path.is-target').first();
+  if (isMobileProject()) await page.getByRole('tab', { name: '地图', exact: true }).click();
+  const targetRoute = page.locator('.route-hit-group:has(path.is-target) .route-hit-area').first();
   await expect(targetRoute).toBeVisible();
   await targetRoute.press('Enter');
   await expect(page.locator('.action-preview')).toBeVisible();

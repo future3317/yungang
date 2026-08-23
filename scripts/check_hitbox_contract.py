@@ -5,6 +5,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1] / "frontend" / "src"
 SMALL_HITBOX = re.compile(r"min-height\s*:\s*(?:3[0-9]|4[0-3])px")
+INTERACTIVE_BLOCK = re.compile(r"(?P<selector>[^{}]*(?:\bbutton\b|(?:^|[\s>+~])summary\b|role\s*=\s*[\"']?button)[^{}]*)\{(?P<body>[^{}]*)\}", re.I)
+SMALL_DIMENSION = re.compile(r"(?:width|height|inline-size|block-size)\s*:\s*(?:[0-3]?[0-9]|4[0-3])px")
 
 
 def main() -> int:
@@ -14,6 +16,10 @@ def main() -> int:
         for match in SMALL_HITBOX.finditer(text):
             line = text.count("\n", 0, match.start()) + 1
             failures.append(f"{path.relative_to(ROOT)}:{line}: interactive min-height must be at least 44px")
+        for match in INTERACTIVE_BLOCK.finditer(text):
+            for dimension in SMALL_DIMENSION.finditer(match.group("body")):
+                line = text.count("\n", 0, match.start() + dimension.start()) + 1
+                failures.append(f"{path.relative_to(ROOT)}:{line}: interactive {dimension.group(0).split(':', 1)[0].strip()} must be at least 44px")
     if failures:
         print("Hitbox contract violations:")
         print("\n".join(failures))

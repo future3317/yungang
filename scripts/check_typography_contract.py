@@ -7,6 +7,7 @@ import re
 
 DECLARATION = re.compile(r"(?P<property>font-size|(?<!-)font)\s*:\s*(?P<value>[^;{}]+)")
 SEMANTIC_TOKEN = re.compile(r"var\(--(?:(?:type|map-type)-[a-z0-9-]+|editor-map-label)\)")
+SPACING_WITH_TYPE = re.compile(r"(?:padding|margin|gap|(?:min-|max-)?(?:width|height)|inline-size|block-size)\s*:\s*[^;{}]*var\(--type-[a-z0-9-]+\)")
 
 
 def main() -> int:
@@ -23,6 +24,9 @@ def main() -> int:
             failures.append(
                 f"{path.relative_to(ROOT)}:{line}: {match.group('property')} must use a semantic typography token"
             )
+        for match in SPACING_WITH_TYPE.finditer(text):
+            line = text.count("\n", 0, match.start()) + 1
+            failures.append(f"{path.relative_to(ROOT)}:{line}: typography tokens cannot be used for spacing or geometry")
     if failures:
         print("Typography contract violations:")
         print("\n".join(failures))

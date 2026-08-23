@@ -22,6 +22,7 @@ async function startSolo(page: Page, seed?: string) {
   await page.getByRole('button', { name: '准备' }).nth(1).click();
   await page.getByRole('button', { name: '开始旅程' }).click();
   await expect(page).toHaveURL(/\/room\/room-.*\/game/);
+  if (test.info().project.use.isMobile) await page.getByRole('tab', { name: '地图', exact: true }).click();
   await expect(page.locator('.network-stage')).toBeVisible();
   const tutorialClose = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
   if (await tutorialClose.isVisible()) await tutorialClose.click();
@@ -57,7 +58,6 @@ test('game page keeps the map inside the viewport', async ({ page }) => {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
 });
-
 test('desktop HUD keeps side rails below the top bar and expands the fixed victory list', async ({ page }) => {
   test.skip(test.info().project.name !== 'desktop', 'This geometry contract is desktop-only.');
   await startSolo(page);
@@ -98,117 +98,6 @@ test('evidence selection opens the market without exposing internal terms', asyn
   await expectNoInternalTerms(page);
 });
 
-test('complete learning-chain state transitions are covered by the backend contract suite', async ({ page }) => {
-  test.skip(true, 'The deterministic full state chain is asserted in tests/test_release_mechanics.py; UI tests cover navigable decision surfaces.');
-  await startSolo(page, '4');
-
-  const confirmAction = async () => {
-    const contextualTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
-    const preview = page.locator('.action-preview');
-    await expect(preview).toBeVisible();
-    await preview.getByRole('button', { name: '确认行动：踏上这一步' }).click();
-    await expect(preview).toBeHidden();
-  };
-  const finishSeat = async () => {
-    const contextualTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
-    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
-    if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地图' }).click();
-    let endTurn = page.getByRole('button', { name: '结束回合' }).first();
-    if (!await endTurn.isVisible()) {
-      await page.locator('.more-actions > summary').click();
-      endTurn = page.getByRole('button', { name: '结束回合' }).first();
-    }
-    await expect(endTurn).toBeVisible();
-    await endTurn.click();
-    await confirmAction();
-    const handoff = page.getByRole('button', { name: '我已接过席位' });
-    if (await handoff.isVisible()) await handoff.click();
-  };
-  const openInspectorTab = async (name: '任务' | '市场') => {
-    if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) await page.getByRole('tab', { name: '地点' }).click();
-    await page.getByRole('tab', { name }).click({ force: true });
-  };
-  const selectMove = async (name: string) => {
-    const contextualTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-    if (await contextualTutorial.isVisible()) await contextualTutorial.click();
-    const preview = page.locator('.action-preview');
-    if (!await preview.isVisible()) {
-      const target = page.locator('.action-target-guide button').filter({ hasText: name }).first();
-      await expect(target).toBeVisible();
-      await target.evaluate(element => (element as HTMLButtonElement).click());
-    }
-    await confirmAction();
-  };
-  const moveToWorkshop = async () => {
-    await clickGameAction(page, /^(前往|移动)/);
-    await selectMove('云冈石窟');
-    await page.getByRole('button', { name: /^移动/ }).first().click();
-    await selectMove('北线工坊');
-  };
-
-  await moveToWorkshop();
-  await clickGameAction(page, /^(寻访|探索)/);
-  const exploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-  if (await exploreTutorial.isVisible()) await exploreTutorial.click();
-  await openInspectorTab('市场');
-  await page.locator('[data-card-id="culture_14"]').click();
-  await confirmAction();
-  await finishSeat();
-
-  await moveToWorkshop();
-  await clickGameAction(page, /^(寻访|探索)/);
-  const secondExploreTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-  if (await secondExploreTutorial.isVisible()) await secondExploreTutorial.click();
-  await openInspectorTab('市场');
-  await page.locator('[data-card-id="culture_27"]').click();
-  await confirmAction();
-  await finishSeat();
-
-  await openInspectorTab('任务');
-  const firstEvidence = page.locator('[data-card-id="culture_14"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
-  await expect(firstEvidence).toBeVisible();
-  await firstEvidence.getByRole('button', { name: /支持/ }).click();
-  await confirmAction();
-  await finishSeat();
-
-  await openInspectorTab('任务');
-  const secondEvidence = page.locator('[data-card-id="culture_27"]').filter({ has: page.getByRole('button', { name: /支持/ }) }).first();
-  await expect(secondEvidence).toBeVisible();
-  await secondEvidence.getByRole('button', { name: /支持/ }).click({ force: true });
-  await confirmAction();
-
-  const form = page.getByRole('button', { name: '完成当前研判', exact: true });
-  await expect(form).toBeEnabled();
-  await form.click();
-  await confirmAction();
-  const minimal = page.getByRole('button', { name: /^最小干预/ });
-  await expect(minimal).toBeVisible();
-  await minimal.click();
-  await confirmAction();
-  await page.getByRole('button', { name: '继续旅程' }).click();
-
-  let strategy = page.locator('[aria-label^="整备行装：事件将影响"]').first();
-  if (test.info().project.name === 'mobile' || test.info().project.name.endsWith('390')) {
-    await page.getByRole('tab', { name: '手牌' }).click();
-    strategy = page.locator('.strategy-card:visible').filter({ hasText: '整备行装' }).first();
-  }
-  await expect(strategy).toBeVisible();
-  await strategy.click();
-  const strategyTutorial = page.locator('.tutorial-backdrop .tutorial-skip');
-  if (await strategyTutorial.isVisible()) await strategyTutorial.click();
-  await expect(page.locator('.strategy-card-dialog')).toBeVisible();
-  await page.getByRole('button', { name: '继续选择目标' }).click();
-  await expect(page.locator('.strategy-card-dialog')).toBeHidden();
-
-  await finishSeat();
-  await finishSeat();
-  await expect(page.locator('.round-summary')).toBeVisible();
-  await expect(page.locator('.round-summary')).toContainText('上一回合');
-  await expect(page.locator('.event-history-bar')).toBeVisible();
-  await expectNoInternalTerms(page);
-});
-
 test('decision surfaces remain accessible when opened', async ({ page }) => {
   await startSolo(page);
 
@@ -220,4 +109,31 @@ test('decision surfaces remain accessible when opened', async ({ page }) => {
   const actionSerious = actionResults.violations.filter(item => item.impact === 'serious' || item.impact === 'critical');
   expect(actionSerious, actionSerious.map(item => `${item.id}: ${item.help}`).join('\\n')).toEqual([]);
   await page.getByRole('button', { name: '取消选择' }).click();
+});
+
+test('real display preference increases text and survives reload', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('打开显示与辅助设置').click();
+  const before = await page.locator('.landing-copy').evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  await page.getByRole('button', { name: '放大文字' }).click();
+  const after = await page.locator('.landing-copy').evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize));
+  expect(after).toBeGreaterThan(before);
+  await page.reload();
+  await expect(page.locator('html[data-large-text="true"]')).toBeAttached();
+});
+
+test('desktop interactive controls keep the shared hitbox contract', async ({ page }) => {
+  test.skip(test.info().project.name !== 'desktop', 'This runtime hitbox contract is desktop-only.');
+  await startSolo(page);
+  const violations = await page.locator('button, [role="button"], summary, select, input').evaluateAll((elements) =>
+    elements.flatMap((element) => {
+      const style = getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      if (style.display === 'none' || style.visibility === 'hidden' || rect.width === 0 || rect.height === 0) return [];
+      if (rect.width >= 44 && rect.height >= 44) return [];
+      const label = element.getAttribute('aria-label') || (element.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+      return [`${element.tagName}.${element.className} [${label}]: ${rect.width}x${rect.height}`];
+    })
+  );
+  expect(violations).toEqual([]);
 });
