@@ -819,26 +819,38 @@ color: var(--ink-muted);
   grid-column: 1 / -1;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   line-height: 1.4;
 }
 
 :global(.site-inspector .task-tab h3) {
+  display: block;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   color: var(--ink-primary);
   font-size: 18px;
   font-weight: 700;
   line-height: 1.3;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+:global(.site-inspector .task-tab .inspector-title-row) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+:global(.site-inspector .task-tab .task-seal-art) {
+  display: none;
 }
 
 :global(.site-inspector .task-tab > p) {
   color: var(--ink-secondary);
   font-size: var(--type-body);
   line-height: 1.45;
-}
-
-:global(.site-inspector .task-tab .task-seal-art) {
-  display: none;
 }
 
 :global(.site-inspector .task-status-strip) {

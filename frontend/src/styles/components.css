@@ -810,10 +810,18 @@ html[data-reduced-motion='true'] *::after {
     background: var(--connection);
   }
   .toast-queue {
+    left: auto;
     bottom: auto;
     right: 24px;
     top: 86px;
-    display: grid;
+    width: fit-content;
+    max-width: min(520px, calc(100vw - 48px));
+    height: auto;
+    min-height: 0;
+    max-height: min(96px, calc(100dvh - 32px));
+    box-sizing: border-box;
+    display: block;
+    overflow: auto;
     gap: 6px;
   }
   .toast-queue + .toast-queue {

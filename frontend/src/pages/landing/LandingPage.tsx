@@ -237,7 +237,13 @@ export function LandingPage() {
                 ))}
               </div>
             </fieldset>
-            {mode !== 'solo' && (
+            {mode === 'solo' ? (
+              <div className="solo-seat-note" aria-label="单人旅程人数">
+                <span>玩家人数</span>
+                <strong>1 位玩家 · 2 位角色</strong>
+                <small>你将轮流掌控两位角色，完整体验协作机制。</small>
+              </div>
+            ) : (
               <label>
                 房间席位
                 <div className="segmented">

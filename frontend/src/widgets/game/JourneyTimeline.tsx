@@ -58,7 +58,7 @@ const entryTypeLabels: Record<string, string> = {
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [size, setSize] = useState({ width: 560, height: 300 });
   const [position, setPosition] = useState({ x: 16, y: 16 });
   const [interacting, setInteracting] = useState(false);
