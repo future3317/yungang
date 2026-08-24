@@ -14,6 +14,15 @@ import type {
 } from '../../types/game';
 import { errorText } from './contentLabels';
 
+export function actionTimingLabel(timing?: string) {
+  return ({
+    player_action: '行动阶段',
+    event_forecast: '事件预告阶段',
+    event_response: '事件响应阶段',
+    any_action: '任意行动阶段',
+  } as Record<string, string>)[timing || ''] || timing || '当前行动阶段';
+}
+
 export type ActionMode = Extract<
   ActionType,
   | 'move'

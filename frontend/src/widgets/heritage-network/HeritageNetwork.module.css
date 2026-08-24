@@ -91,6 +91,17 @@ min-height: 44px;
   padding: 5px;
 }
 
+:global(.network-access-reset) {
+  justify-self: end;
+  min-height: 32px;
+  padding: 0 8px;
+  color: var(--ink-muted);
+  background: transparent;
+  border: 1px solid var(--line-subtle);
+  border-radius: var(--radius-sm);
+  font-size: var(--type-caption);
+}
+
 :global(.network-access-content section) {
   display: grid;
   gap: 3px;

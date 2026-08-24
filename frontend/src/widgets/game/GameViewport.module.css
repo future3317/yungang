@@ -10,6 +10,7 @@
 }
 
 :global(.game-shell) {
+  position: relative;
   display: grid;
   grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
   grid-template-rows: var(--hud-header-height) minmax(0, 1fr) clamp(120px, 17vh, 176px);
@@ -76,7 +77,7 @@
   background: rgba(11, 23, 16, 0.7);
   border: 1px solid rgba(215, 184, 103, 0.28);
   border-radius: 6px;
-  font-size: 11px;
+  font-size: var(--type-label);
   line-height: 1.4;
   pointer-events: none;
 }
@@ -182,6 +183,20 @@
   pointer-events: auto;
 }
 
+:global(.game-shell > .hud-floating-layer) {
+  position: absolute;
+  top: var(--hud-header-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+:global(.hud-floating-layer > *) {
+  pointer-events: auto;
+}
+
 :global(.game-shell > .hud-overlay-layer) {
   position: fixed;
   inset: 0;
@@ -276,7 +291,8 @@
 }
 
 :global(html[data-large-text='true'] .site-inspector .inspector-summary) {
-  max-height: 220px;
+  max-height: none;
+  overflow: visible;
 }
 
 :global(html[data-large-text='true'] .site-inspector .inspector-tabs) {

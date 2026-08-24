@@ -234,7 +234,7 @@ export function GamePage() {
       <div className="state-screen danger">
         <CircleAlert />
         <h1>旅程暂时无法打开</h1>
-        <p>请检查本地服务后重新进入旅程。</p>
+        <p>暂时无法连接旅程服务，请重新连接。</p>
         <button
           className="ghost-button"
           onClick={() => {
@@ -650,8 +650,10 @@ export function GamePage() {
             }}
             onCard={setCard}
           />
-          <JourneyTimeline entries={timelineEvents} />
         </HudSlot>
+        <div className="hud-floating-layer" aria-label="可移动旅程工具">
+          <JourneyTimeline entries={timelineEvents} />
+        </div>
         <GameOverlayHost>
           {roomId && roomEventState === 'unauthorized' && (
             <div className="room-state-notice" role="alert">

@@ -1,6 +1,6 @@
 import { Check, X } from 'lucide-react';
 import type { ActionOption } from '../../types/game';
-import { actionPresentation, previewDeltaText } from './gameUi';
+import { actionPresentation, actionTimingLabel, previewDeltaText } from './gameUi';
 import { Button } from '../ui/Primitives';
 
 export function StrategyCardDialog({
@@ -53,7 +53,7 @@ export function StrategyCardDialog({
         <dl>
           <div>
             <dt>使用时机</dt>
-            <dd>{String(payload.timing || '当前行动阶段')}</dd>
+            <dd>{actionTimingLabel(String(payload.timing || ''))}</dd>
           </div>
           <div>
             <dt>消耗</dt>

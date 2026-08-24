@@ -1,6 +1,5 @@
 import type { ContentCard, Meta, Task } from '../../types/game';
 import { contentTagName, displayText, domainName } from './contentLabels';
-import { actionLabels } from './gameUi';
 
 export type CardRecord = Record<string, unknown>;
 export { contentTagName, domainName } from './contentLabels';
@@ -32,6 +31,11 @@ export function formatProjectRequirements(meta: Meta, requirements: Record<strin
     contributors: '参与者',
     restore_actions: '修护行动',
     restoration_resource: '修护资源',
+    clues: '线索',
+    influence: '共同影响',
+    market_reserve: '市场储备',
+    archive_retrieve: '档案回收',
+    finale_unlock: '终局解锁',
   };
   const entries = Object.entries(requirements || {}).filter(([, value]) => hasMeaningfulProjectValue(value));
   return entries.map(([key, value]) => (labels[key] || key) + '：' + formatProjectValue(meta, key, value)).join(' · ');
@@ -48,6 +52,11 @@ export function formatProjectReward(reward?: Record<string, unknown>) {
     reputation: '个人声望',
     free_move: '免费移动',
     card_draw: '抽牌',
+    influence: '共同影响',
+    weathering_reduction: '风化压力降低',
+    market_reserve: '市场储备',
+    archive_retrieve: '档案回收',
+    finale_unlock: '终局解锁',
   };
   const entries = Object.entries(reward || {}).filter(([, value]) => hasMeaningfulProjectValue(value));
   if (!entries.length) return '暂无额外奖励';

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { GripVertical, LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
 import { Rnd } from 'react-rnd';
 import { select } from 'd3-selection';
@@ -254,14 +254,44 @@ export function HeritageNetwork({
   const [accessSize, setAccessSize] = useState({ width: 300, height: 360 });
   const [accessPosition, setAccessPosition] = useState({ x: 0, y: 0 });
   const [accessInteracting, setAccessInteracting] = useState(false);
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const saved = localStorage.getItem('yungang.access-panel');
+    if (!saved) return;
+    try {
+      const value = JSON.parse(saved) as { position?: typeof accessPosition; size?: typeof accessSize };
+      if (value.position && Number.isFinite(value.position.x) && Number.isFinite(value.position.y)) setAccessPosition(value.position);
+      if (value.size && Number.isFinite(value.size.width) && Number.isFinite(value.size.height)) setAccessSize(value.size);
+    } catch {
+      localStorage.removeItem('yungang.access-panel');
+    }
+  }, []);
+  useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    setAccessPosition({
-      x: Math.max(16, root.clientWidth - accessSize.width - 16),
-      y: Math.max(16, root.clientHeight - accessSize.height - 16),
-    });
-  }, []);
+    const clamp = () => {
+      const width = Math.min(accessSize.width, root.clientWidth * 0.9);
+      const height = accessOpen ? Math.min(accessSize.height, root.clientHeight * 0.8) : 44;
+      setAccessPosition((current) => ({
+        x: Math.max(0, Math.min(current.x, Math.max(0, root.clientWidth - width))),
+        y: Math.max(0, Math.min(current.y, Math.max(0, root.clientHeight - height))),
+      }));
+    };
+    const observer = new ResizeObserver(clamp);
+    observer.observe(root);
+    clamp();
+    return () => observer.disconnect();
+  }, [accessOpen, accessSize.width, accessSize.height]);
+
+  const persistAccessPanel = (nextPosition = accessPosition, nextSize = accessSize) => {
+    localStorage.setItem('yungang.access-panel', JSON.stringify({ position: nextPosition, size: nextSize }));
+  };
+  const resetAccessPanel = () => {
+    const nextPosition = { x: 16, y: 16 };
+    const nextSize = { width: 300, height: 360 };
+    setAccessPosition(nextPosition);
+    setAccessSize(nextSize);
+    persistAccessPanel(nextPosition, nextSize);
+  };
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -652,20 +682,24 @@ export function HeritageNetwork({
         position={accessPosition}
         size={{ width: accessSize.width, height: accessOpen ? accessSize.height : 44 }}
         minWidth={240}
-        minHeight={180}
+        minHeight={accessOpen ? 180 : 44}
         maxWidth="90%"
         maxHeight="80%"
         enableResizing={accessOpen}
         dragHandleClassName={styles.dragHandle}
         onDragStart={() => setAccessInteracting(true)}
         onDragStop={(_, data) => {
-          setAccessPosition({ x: data.x, y: data.y });
+          const nextPosition = { x: data.x, y: data.y };
+          setAccessPosition(nextPosition);
+          persistAccessPanel(nextPosition);
           setAccessInteracting(false);
         }}
         onResizeStart={() => setAccessInteracting(true)}
         onResizeStop={(_, __, ref, ___, position) => {
-          setAccessSize({ width: ref.offsetWidth, height: ref.offsetHeight });
+          const nextSize = { width: ref.offsetWidth, height: ref.offsetHeight };
+          setAccessSize(nextSize);
           setAccessPosition(position);
+          persistAccessPanel(position, nextSize);
           setAccessInteracting(false);
         }}
       >
@@ -677,6 +711,7 @@ export function HeritageNetwork({
           <span>地点与路线清单</span><small>点击可聚焦地图</small>
           </summary>
           <div className="network-access-content">
+          <button type="button" className="network-access-reset" onClick={resetAccessPanel}>重置窗口</button>
           <section>
             <b>地点</b>
             {enabledSites.map((site) => {

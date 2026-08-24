@@ -117,7 +117,6 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
             <span>领域 <b>{task.progress?.requirements?.find((item) => item.key.includes('domain'))?.current ?? 0}/{requiredDomains.length || 1}</b></span>
             <span>脉络 <b>{task.progress?.requirements?.find((item) => item.key.includes('origin'))?.current ?? 0}/{task.required_origin_diversity || 1}</b></span>
             <span>参与 <b>{task.progress?.requirements?.find((item) => item.key.includes('contributor'))?.current ?? 0}/{task.combo_requirement?.minimum_distinct_players || 1}</b></span>
-            <span><b>{task.interpretation?.formed ? '研判已完成' : '研判未完成'}</b></span>
           </div>
           <div className="task-next-step"><b>当前下一步</b><span>{!isCurrentSite ? `先沿路线抵达${site.name}。` : !cardRequirement?.complete ? '先取得一张符合任务的证据卡。' : !task.interpretation?.formed ? '在研究台归类证据并完成研判。' : '选择处理方式，完成这项委托。'}</span></div>
           <details className="task-rules">
@@ -180,7 +179,6 @@ function EvidenceLedger({ task, cards, hand, disabled, formAvailable, interventi
   const requiredTags = task.combo_requirement?.required_combo_tags || [];
   const requiredDomains = task.required_domains ?? [];
   const contributedCards = contributed.map(id => cards[id]).filter(Boolean);
-  const contributedTags = new Set(contributedCards.flatMap(item => item.combo_tags || []));
   const candidates = hand.map(id => cards[id]).filter((item): item is ContentCard => Boolean(item)).filter(item => !contributed.includes(item.id) && (requiredDomains.includes(item.domain || '') || (item.combo_tags || []).some(tag => requiredTags.includes(tag))));
 
   const relationLabel = { support: '支持', conflict: '冲突', pending: '待确认' } as const;

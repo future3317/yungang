@@ -1,6 +1,6 @@
 import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
 import { Rnd } from 'react-rnd';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
 import styles from './JourneyTimeline.module.css';
@@ -60,29 +60,80 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
   const [open, setOpen] = useState(true);
   const [size, setSize] = useState({ width: 560, height: 300 });
+  const [position, setPosition] = useState({ x: 16, y: 16 });
   const [interacting, setInteracting] = useState(false);
+  const hostRef = useRef<HTMLDivElement | null>(null);
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
 
+  useEffect(() => {
+    const saved = localStorage.getItem('yungang.timeline-panel');
+    if (!saved) return;
+    try {
+      const value = JSON.parse(saved) as { position?: typeof position; size?: typeof size };
+      if (value.position && Number.isFinite(value.position.x) && Number.isFinite(value.position.y)) setPosition(value.position);
+      if (value.size && Number.isFinite(value.size.width) && Number.isFinite(value.size.height)) setSize(value.size);
+    } catch {
+      localStorage.removeItem('yungang.timeline-panel');
+    }
+  }, []);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const clamp = () => {
+      const width = Math.min(size.width, host.clientWidth * 0.9);
+      const height = open ? Math.min(size.height, host.clientHeight * 0.8) : 44;
+      setPosition((current) => ({
+        x: Math.max(0, Math.min(current.x, Math.max(0, host.clientWidth - width))),
+        y: Math.max(0, Math.min(current.y, Math.max(0, host.clientHeight - height))),
+      }));
+    };
+    const observer = new ResizeObserver(clamp);
+    observer.observe(host);
+    clamp();
+    return () => observer.disconnect();
+  }, [open, size.width, size.height]);
+
+  const persist = (nextPosition = position, nextSize = size) => {
+    localStorage.setItem('yungang.timeline-panel', JSON.stringify({ position: nextPosition, size: nextSize }));
+  };
+  const resetPanel = () => {
+    const nextPosition = { x: 16, y: 16 };
+    const nextSize = { width: 560, height: 300 };
+    setPosition(nextPosition);
+    setSize(nextSize);
+    persist(nextPosition, nextSize);
+  };
+
   return (
-    <Rnd
-      className={`${styles.rnd} ${interacting ? styles.dragging : ''}`.trim()}
-      bounds="parent"
-      default={{ x: 16, y: 16, width: size.width, height: size.height }}
-      size={{ width: size.width, height: open ? size.height : 44 }}
-      minWidth={320}
-      minHeight={180}
-      maxWidth="90%"
-      maxHeight="80%"
-      enableResizing={open}
-      dragHandleClassName={styles.dragHandle}
-      onDragStart={() => setInteracting(true)}
-      onDragStop={() => setInteracting(false)}
-      onResizeStart={() => setInteracting(true)}
-      onResizeStop={(_, __, ref) => {
-        setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
-        setInteracting(false);
-      }}
-    >
+    <div ref={hostRef} className={styles.host}>
+      <Rnd
+        className={`${styles.rnd} ${interacting ? styles.dragging : ''}`.trim()}
+        bounds="parent"
+        position={position}
+        size={{ width: size.width, height: open ? size.height : 44 }}
+        minWidth={320}
+        minHeight={open ? 180 : 44}
+        maxWidth="90%"
+        maxHeight="80%"
+        enableResizing={open}
+        dragHandleClassName={styles.dragHandle}
+        onDragStart={() => setInteracting(true)}
+        onDragStop={(_, data) => {
+          const nextPosition = { x: data.x, y: data.y };
+          setPosition(nextPosition);
+          persist(nextPosition);
+          setInteracting(false);
+        }}
+        onResizeStart={() => setInteracting(true)}
+        onResizeStop={(_, __, ref, ___, nextPosition) => {
+          const nextSize = { width: ref.offsetWidth, height: ref.offsetHeight };
+          setSize(nextSize);
+          setPosition(nextPosition);
+          persist(nextPosition, nextSize);
+          setInteracting(false);
+        }}
+      >
       <details className={styles.drawer} open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
         <summary className={styles.summary} aria-label="旅程时间线">
         <span
@@ -101,6 +152,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         <ChevronDown size={15} aria-hidden="true" />
         </summary>
         <div className={styles.body}>
+          <div className={styles.panelTools}><button type="button" onClick={resetPanel}>重置窗口</button></div>
           <div className="timeline-filter" role="tablist" aria-label="时间线筛选">
             {filters.map((item) => (
               <button
@@ -135,6 +187,7 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
           </div>
         </div>
       </details>
-    </Rnd>
+      </Rnd>
+    </div>
   );
 }

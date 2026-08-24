@@ -12,7 +12,7 @@ import {
   WandSparkles,
 } from 'lucide-react';
 import type { Action, ActionOption, ActionType, ContentCard, GameState, Player } from '../../types/game';
-import { findCardAction } from './gameUi';
+import { actionTimingLabel, findCardAction } from './gameUi';
 import { assetUrl } from '../../shared/assetUrl';
 import { StrategyCardDialog } from './StrategyCardDialog';
 import styles from './CommandDock.module.css';
@@ -271,7 +271,7 @@ export function CommandDock({
                     cost: { ap: Number(definition.cost || 1) },
                     enabled: false,
                     disabled_reason: definition.timing
-                      ? `当前不能使用 · 时机：${String(definition.timing)}`
+                      ? `当前不能使用 · 时机：${actionTimingLabel(String(definition.timing))}`
                       : '当前不能使用',
                     targets: [],
                     recommendation_score: 0,
