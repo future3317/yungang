@@ -308,6 +308,10 @@
 .route-hit-group {
   pointer-events: stroke;
 }
+.route-hit-group:focus,
+.map-node:focus {
+  outline: none;
+}
 .route-hit-group:focus-visible,
 .map-node:focus-visible {
   outline: none;

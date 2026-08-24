@@ -135,7 +135,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
             {recordText(task, 'route_synergy') && <p className="task-note">完成后影响：{recordText(task, 'route_synergy')}</p>}
           </details>
           <EvidenceLedger task={task} cards={cards} hand={active.hand} disabled={!canAct || !isCurrentSite} formAvailable={legal.some(item => item.type === 'form_interpretation')} interventionActions={interventionActions} onInterpret={onInterpret} onForm={onFormInterpretation} onIntervene={onChooseIntervention} />
-          <div className="task-action-row"><button type="button" disabled={!canAct || !exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><small className="task-action-hint">优先寻找 {requiredDomains.map(domain => domainName(meta, domain)).join('、') || '符合任务的'} 证据</small><span className="task-action-status">{!canAct ? '等待当前行动者完成本轮行动' : exploreStatus}</span></div>
+        <div className="task-action-row"><button type="button" disabled={!canAct || !exploreAvailable} onClick={() => onSelectAction('explore')}><Compass size={15} />打开文化市场</button><span className="task-action-status">{!isCurrentSite ? '抵达此节点后可打开文化市场' : !canAct ? '等待当前行动者完成本轮行动' : exploreStatus}</span></div>
         </> : <div className="empty-tab"><Target size={22} /><h3>这里暂时没有开放任务</h3><p>先查看地图上其他节点，或等待事件目标出现。</p></div>}
       </section>}
 

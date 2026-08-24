@@ -33,8 +33,8 @@ export function SiteInspectorSummary({
         </div>
         {site.status === 'at_risk' && (
           <div className="site-alert-explanation">
-            <b>风险：再受 1 次损伤将关闭</b>
-            <span>优先修护，或先降低本轮事件影响。</span>
+            <b>高风险 · 再受 1 点损伤将关闭</b>
+            <span>建议优先修护或降低本轮事件影响。</span>
           </div>
         )}
         {site.status === 'closed' && (

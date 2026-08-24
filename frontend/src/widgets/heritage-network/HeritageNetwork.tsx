@@ -493,9 +493,11 @@ export function HeritageNetwork({
                 <g
                   key={line.id}
                   className="route-hit-group"
-                  tabIndex={0}
+                  tabIndex={-1}
+                  focusable="false"
                   role="button"
                   aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
+                  onPointerDown={(event) => event.preventDefault()}
                   onMouseEnter={() => setHoveredRouteId(line.id)}
                   onMouseLeave={() => setHoveredRouteId(null)}
                   onFocus={() => setHoveredRouteId(line.id)}
@@ -561,9 +563,11 @@ export function HeritageNetwork({
                     className={`map-node node-${kind} ${current ? 'node-current' : ''} ${focusedId === site.id ? 'node-focused' : ''} ${target ? 'node-reachable' : ''} ${alert ? 'node-alert' : ''} ${site.status === 'closed' ? 'node-closed' : ''} ${site.status === 'at_risk' ? 'node-risk' : ''} ${hoverEndpoint ? 'node-route-hover' : ''}`}
                     transform={`translate(${position.x} ${position.y})`}
                     role="button"
-                    tabIndex={0}
+                    tabIndex={-1}
+                    focusable="false"
                     aria-label={`${meta.name || '此处节点'}：${reason}`}
                     onPointerDown={(event) => {
+                      event.preventDefault();
                       pointerRef.current = { x: event.clientX, y: event.clientY, time: performance.now() };
                     }}
                     onPointerUp={(event) => {
