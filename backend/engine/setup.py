@@ -199,7 +199,8 @@ class SetupMixin:
             if sid not in enabled_site_ids:
                 continue
             maximum = definition.get("max_damage", 3)
-            damage = scenario.get("initial_damage", {}).get(sid, definition.get("start_damage", 0)) + effective_rules["node_damage_base"]
+            initial_damage = scenario.get("initial_damage", {}).get(sid, definition.get("start_damage", 0))
+            damage = initial_damage + (effective_rules["node_damage_base"] if initial_damage > 0 else 0)
             damage = min(maximum, damage)
             sites[sid] = SiteState(
                 id=sid,

@@ -75,12 +75,13 @@ class ProjectsMixin:
         origins = {origin for card in cards for origin in card.get("origin_tags", [])}
         contributors = {item.get("player_id") for item in project.stage_evidence if item.get("stage_id") == stage_id}
         receipts = project.stage_receipts.get(stage_id, {})
+        required_restore_actions = requirements.get("restore_actions", requirements.get("restoration_resource", 0)) if stage.get("action_type") == "restore" else 0
         return (
             set(requirements.get("domains", [])).issubset(domains)
             and len(origins) >= requirements.get("origin_diversity", 0)
             and len(contributors) >= requirements.get("contributors", 0)
             and receipts.get("research_clues", 0) >= requirements.get("clues", 0)
-            and receipts.get("restoration_resource", 0) >= requirements.get("restoration_resource", 0)
+            and receipts.get("restore_actions", 0) >= required_restore_actions
         )
 
     def _apply_reward(self, state: GameState, reward: dict[str, Any]) -> None:
@@ -89,6 +90,13 @@ class ProjectsMixin:
         state.shared.restoration_resource += int(reward.get("restoration_resource", 0))
         state.shared.route_connection_score += int(reward.get("route_connection", 0))
         state.shared.weathering_track = max(0, state.shared.weathering_track - int(reward.get("weathering_reduction", 0)))
+        state.shared.market_reserve += int(reward.get("market_reserve", 0))
+        state.shared.archive_retrieve += int(reward.get("archive_retrieve", 0))
+        state.shared.finale_unlock = state.shared.finale_unlock or bool(reward.get("finale_unlock", False))
+        for _ in range(int(reward.get("market_reserve", 0))):
+            if state.market:
+                state.shared.reserved_market_cards.append(state.market.pop(0))
+        self._refill_market(state)
 
     def _restore(self, state: GameState, player: PlayerState, site_id: str | None) -> None:
         if player.location != site_id:
@@ -114,5 +122,5 @@ class ProjectsMixin:
             player.flags["restore_discount"] -= 1
         site.damage -= 1
         self._update_site(site)
-        self._advance_project(state, state.projects.get(site.active_project_id or ""), player.id, "restore", receipts={"restoration_resource": resource_cost})
+        self._advance_project(state, state.projects.get(site.active_project_id or ""), player.id, "restore", receipts={"restoration_resource": resource_cost, "restore_actions": 1})
         self._emit_scenario_rule(state, "after_restore", {"player_id": player.id, "site_id": site_id})

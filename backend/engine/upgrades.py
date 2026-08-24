@@ -77,7 +77,8 @@ class UpgradesMixin:
         self._dispatch_effect(NODE_EFFECT_HANDLERS, state, player, effect, site_id)
 
     def _use_upgrade(self, state: GameState, player: PlayerState, upgrade_id: str) -> None:
-        if upgrade_id != "archive_retrieve" or not self._has_upgrade_effect(player, "archive_retrieve") or player.flags.get("archive_retrieve_round") == state.shared.turn:
+        shared_unlock = upgrade_id == "archive_retrieve" and state.shared.archive_retrieve > 0
+        if upgrade_id != "archive_retrieve" or (not self._has_upgrade_effect(player, "archive_retrieve") and not shared_unlock) or player.flags.get("archive_retrieve_round") == state.shared.turn:
             raise ValueError("upgrade_unavailable")
         if player.ap < 1:
             raise ValueError("not_enough_ap")
@@ -85,7 +86,7 @@ class UpgradesMixin:
         if not cards:
             raise ValueError("archive_retrieve_needs_matching_hand")
         player.ap -= 1
-        state.pending_choice = {"kind": "archive_retrieve", "cards": cards[:3]}
+        state.pending_choice = {"kind": "archive_retrieve", "cards": cards[:3], "shared_unlock": shared_unlock}
 
     def _offer_upgrade(self, state: GameState, player_id: str) -> None:
         player = state.players[player_id]

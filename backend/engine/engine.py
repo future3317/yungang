@@ -54,7 +54,7 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
                     "label": f"使用策略：{self.content.action_cards[card]['name']}",
                     "cost": int(self.content.action_cards[card].get("cost", 1)),
                     "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]) and self._action_card_target_available(state, active_player, self.content.action_cards[card]),
-                    "disabled_reason": f"当前不能使用 · 时机：{self.content.action_cards[card].get('timing', '当前行动阶段')}",
+                    "disabled_reason": f"当前不能使用 · 时机：{self._action_card_timing_label(self.content.action_cards[card])}",
                 } for card in active_player.action_hand)
             elif kind == "view_select":
                 actions = [{"type": ActionType.SELECT_MARKET_CARD.value, "card_id": card, "label": f"选择 {self.content.cards[card]['name']}"} for card in state.pending_choice["cards"]]
@@ -143,13 +143,13 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
                 "label": f"使用策略：{self.content.action_cards[card]['name']}",
                 "cost": int(self.content.action_cards[card].get("cost", 1)),
                 "enabled": self._action_card_timing_allowed(state, self.content.action_cards[card]) and self._action_card_target_available(state, active, self.content.action_cards[card]),
-                "disabled_reason": f"当前不能使用 · 时机：{self.content.action_cards[card].get('timing', '当前行动阶段')}",
+                "disabled_reason": f"当前不能使用 · 时机：{self._action_card_timing_label(self.content.action_cards[card])}",
             } for card in active.action_hand)
             ability = self.content.sites[active.location].get("node_ability", {})
             ability_key = f"{active.location}:use_node_ability:{state.shared.turn}"
             if ability.get("trigger") == "once_per_round" and ability_key not in state.shared.node_ability_uses:
                 actions.append({"type": ActionType.USE_NODE_ABILITY.value, "label": ability.get("name", "使用地点能力"), "cost": int(ability.get("cost", 1))})
-            if self._has_upgrade_effect(active, "archive_retrieve") and active.flags.get("archive_retrieve_round") != state.shared.turn:
+            if (self._has_upgrade_effect(active, "archive_retrieve") or state.shared.archive_retrieve > 0) and active.flags.get("archive_retrieve_round") != state.shared.turn:
                 if any(self.content.cards.get(card, {}).get("domain") in {self.content.cards[item].get("domain") for item in active.hand} for card in state.decks.get("archive", [])):
                     actions.append({"type": ActionType.USE_UPGRADE.value, "upgrade_id": "archive_retrieve", "label": "档案回收", "cost": 1})
             for other_id, other in state.players.items():

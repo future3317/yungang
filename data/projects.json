@@ -37,7 +37,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成一次节点修护，把风险记录纳入项目解释。"
         }
@@ -78,7 +78,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "先进行一次修护，验证结构判断。"
         },
@@ -147,7 +147,7 @@
           "required_progress": 2,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 2
+            "restore_actions": 2
           },
           "stage_text": "进行两次修护，完成稳定处理。"
         }
@@ -200,7 +200,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成一次节点修护，形成可持续通行方案。"
         }
@@ -256,7 +256,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成一次节点修护，保证交换网络持续运行。"
         }
@@ -313,7 +313,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 2
+            "restore_actions": 2
           },
           "stage_text": "在云冈核心节点完成最终修护。"
         }
@@ -367,7 +367,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "进行一次修护，完成档案保存环节。"
         }
@@ -420,7 +420,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "修护路线枢纽，完成联络方案。"
         }
@@ -469,7 +469,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成这一阶段后，团队会获得更清晰的下一步行动方向。"
         }
@@ -518,7 +518,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成这一阶段后，团队会获得更清晰的下一步行动方向。"
         }
@@ -567,7 +567,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成这一阶段后，团队会获得更清晰的下一步行动方向。"
         }
@@ -616,7 +616,7 @@
           "required_progress": 1,
           "action_type": "restore",
           "requirements": {
-            "restoration_resource": 1
+            "restore_actions": 1
           },
           "stage_text": "完成这一阶段后，团队会获得更清晰的下一步行动方向。"
         }

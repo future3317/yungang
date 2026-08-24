@@ -6,7 +6,7 @@ from ..models import GameState, PlayerState
 class RoutesMixin:
     def _restore_route_costs(self, state: GameState, player: PlayerState, route_id: str) -> tuple[int, int]:
         action_cost = self._event_action_cost(state, "restore_route", 1)
-        clue_discount = bool(player.flags.get("route_action_discount")) or (self._has_upgrade_effect(player, "route_action_discount") and player.flags.get("route_discount_round") != state.shared.turn)
+        clue_discount = bool(player.flags.get("route_action_discount")) or bool(state.shared.effective_rules.route_action_discount) or (self._has_upgrade_effect(player, "route_action_discount") and player.flags.get("route_discount_round") != state.shared.turn)
         return action_cost, 0 if clue_discount else 1
 
     def _can_restore_route(self, state: GameState, player: PlayerState, route_id: str) -> bool:
@@ -19,7 +19,8 @@ class RoutesMixin:
         if not route or player.location not in {route.from_site, route.to_site} or route.status not in {"strained", "blocked"}:
             raise ValueError("invalid_route_survey")
         self._trigger_node_ability(state, player, player.location, trigger="after_route_action")
-        cost = 0 if player.flags.pop("sprint_survey_available", False) else max(0, 1 - int(player.flags.pop("route_action_discount", 0)))
+        route_discount = int(player.flags.pop("route_action_discount", 0)) or int(state.shared.effective_rules.route_action_discount)
+        cost = 0 if player.flags.pop("sprint_survey_available", False) else max(0, 1 - route_discount)
         cost = self._event_action_cost(state, "survey_route", cost)
         if player.ap < cost:
             raise ValueError("not_enough_ap")
@@ -43,6 +44,7 @@ class RoutesMixin:
             raise ValueError("not_enough_research_clues")
         player.ap -= action_cost
         state.shared.research_clues -= clue_cost
+        player.flags.pop("route_action_discount", None)
         player.flags["route_discount_round"] = state.shared.turn
         route.status = "restored"
         route.risk = 0

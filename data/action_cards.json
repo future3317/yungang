@@ -6,7 +6,7 @@
       "action_type": "survey_route",
       "cost": 1,
       "description": "先勘察再修护，可避免把研究点投入错误路线。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "相邻承压或阻断路线",
       "effect": {
         "type": "survey_route",
@@ -26,7 +26,7 @@
       "action_type": "restore_route",
       "cost": 1,
       "description": "研究点不足但必须立即恢复通行时使用。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "相邻承压或阻断路线",
       "effect": {
         "type": "restore_route",
@@ -45,7 +45,7 @@
       "action_type": "establish_connection",
       "cost": 1,
       "description": "用于完成连通区域目标或提高终局路线评价。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "相邻已修复路线",
       "effect": {
         "type": "establish_connection",
@@ -64,7 +64,7 @@
       "action_type": "prepare",
       "cost": 1,
       "description": "事件将影响多个节点时，先投入准备比事后修护更节省。",
-      "timing": "事件预告阶段",
+      "timing": "event_forecast",
       "target_rule": "当前世界事件",
       "effect": {
         "type": "prepare_event"
@@ -82,7 +82,7 @@
       "action_type": "survey_route",
       "cost": 1,
       "description": "路线信息不完全或多个方向同时承压时使用。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "当前节点相邻的至多两条路线",
       "effect": {
         "type": "survey_multiple_routes",
@@ -101,7 +101,7 @@
       "action_type": "restore_route",
       "cost": 1,
       "description": "保留通行而不急于建立连接，适合资源紧张局面。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "相邻承压路线",
       "effect": {
         "type": "reduce_route_risk",
@@ -120,7 +120,7 @@
       "action_type": "establish_connection",
       "cost": 1,
       "description": "队伍分散在不同区域时维持证据流动。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "一名队友或一条已修复路线",
       "effect": {
         "type": "remote_exchange_or_connect",
@@ -139,7 +139,7 @@
       "action_type": "prepare",
       "cost": 1,
       "description": "本回合没有合适目标时，将行动转为事件响应能力。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "当前玩家",
       "effect": {
         "type": "reserve_ap",
@@ -158,7 +158,7 @@
       "action_type": "survey_route",
       "cost": 1,
       "description": "针对风沙、磨蚀和路径承压事件。",
-      "timing": "事件响应阶段",
+      "timing": "event_response",
       "target_rule": "受风沙影响的路线",
       "effect": {
         "type": "survey_and_mitigate",
@@ -178,7 +178,7 @@
       "action_type": "restore_route",
       "cost": 1,
       "description": "必须在同一回合恢复通行并赶往目标节点时使用。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "target_rule": "相邻阻断路线",
       "effect": {
         "type": "restore_and_move",
@@ -197,7 +197,7 @@
       "action_type": "establish_connection",
       "cost": 1,
       "description": "将团队资源和证据交换结合，支持分工明确的队伍。",
-      "timing": "任意行动阶段",
+      "timing": "any_action",
       "target_rule": "同节点队友",
       "effect": {
         "type": "transfer_resource",
@@ -217,7 +217,7 @@
       "action_type": "prepare",
       "cost": 1,
       "description": "面对多点事件时，将准备分配到不同节点或路线。",
-      "timing": "事件预告阶段",
+      "timing": "event_forecast",
       "target_rule": "两名玩家或两个目标",
       "effect": {
         "type": "team_prepare",
@@ -235,7 +235,7 @@
       "name": "巡线标记",
       "action_type": "survey_route",
       "description": "沿路线留下可复核的勘察标记，降低一条路线的风险。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "cost": 1,
       "target_rule": "route",
       "effect": {
@@ -256,7 +256,7 @@
       "name": "旧道测绘",
       "action_type": "survey_route",
       "description": "把模糊的通行关系重新画入共同图卷，为后续修护争取线索。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "cost": 1,
       "target_rule": "route",
       "effect": {
@@ -277,7 +277,7 @@
       "name": "同行分灯",
       "action_type": "exchange",
       "description": "将一枚行动资源交给另一位同行者，让团队保持接力。",
-      "timing": "行动阶段",
+      "timing": "player_action",
       "cost": 1,
       "target_rule": "player",
       "effect": {
@@ -298,7 +298,7 @@
       "name": "预备石灯",
       "action_type": "prepare",
       "description": "提前布置应对方案，抵消下一次事件带来的压力。",
-      "timing": "事件预告阶段",
+      "timing": "event_forecast",
       "cost": 1,
       "target_rule": "event",
       "effect": {

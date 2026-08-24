@@ -5,6 +5,7 @@ from typing import Any
 from ..models import (
     GameState,
     GoalStatus,
+    PlayerState,
     RoundSummary,
     SiteState,
     SiteStatus,
@@ -39,99 +40,99 @@ class ObjectivesMixin:
         state.score.total = state.score.tasks * 10 + state.score.routes * 5 + state.score.protection * 2 + state.score.discovery + state.score.diversity * 2 + state.score.efficiency
         state.score.grade = "gold" if state.score.total >= 55 else "silver" if state.score.total >= 35 else "bronze"
 
-    scenario = self.content.scenarios.get(state.scenario_id, {})
-    core_ids = {scenario.get("core_project_id")} if scenario.get("core_project_id") else set()
-    scenario = self.content.scenarios.get(state.scenario_id, {})
-    _core_target = len(core_ids)
-    _objective_target = len(state.objectives)
+        scenario = self.content.scenarios.get(state.scenario_id, {})
+        core_ids = {scenario.get("core_project_id")} if scenario.get("core_project_id") else set()
+        scenario = self.content.scenarios.get(state.scenario_id, {})
+        _core_target = len(core_ids)
+        _objective_target = len(state.objectives)
 
-    def related_labels(ids: list[str]) -> list[str]:
-        labels = []
-        for identifier in ids:
-            if identifier in self.content.projects:
-                labels.append(self.content.projects[identifier].get("name", identifier))
-            elif identifier in self.content.objectives:
-                labels.append(self.content.objectives[identifier].get("name", identifier))
-            elif identifier in self.content.sites:
-                labels.append(self.content.sites[identifier].get("name", identifier))
-            else:
-                route = next((item for item in self.content.routes if item.get("id") == identifier), None)
-                if route:
-                    from_name = self.content.sites.get(route.get("from"), {}).get("name", route.get("from"))
-                    to_name = self.content.sites.get(route.get("to"), {}).get("name", route.get("to"))
-                    labels.append(route.get("name") or f"{from_name}—{to_name}")
+        def related_labels(ids: list[str]) -> list[str]:
+            labels = []
+            for identifier in ids:
+                if identifier in self.content.projects:
+                    labels.append(self.content.projects[identifier].get("name", identifier))
+                elif identifier in self.content.objectives:
+                    labels.append(self.content.objectives[identifier].get("name", identifier))
+                elif identifier in self.content.sites:
+                    labels.append(self.content.sites[identifier].get("name", identifier))
                 else:
-                    labels.append(identifier)
-        return labels
+                    route = next((item for item in self.content.routes if item.get("id") == identifier), None)
+                    if route:
+                        from_name = self.content.sites.get(route.get("from"), {}).get("name", route.get("from"))
+                        to_name = self.content.sites.get(route.get("to"), {}).get("name", route.get("to"))
+                        labels.append(route.get("name") or f"{from_name}—{to_name}")
+                    else:
+                        labels.append(identifier)
+            return labels
 
-    core_completed = sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")
-    objectives_completed = sum(1 for objective in state.objectives.values() if objective.completed)
-    victory_conditions = []
-    for project_id in sorted(core_ids):
-        project = state.projects.get(project_id)
-        if not project:
-            continue
-        target = max(1, len(project.stages))
-        current = target if project.status == "completed" else min(project.stage_index, target)
-        site_name = self.content.sites.get(project.site_id, {}).get("name", project.site_id)
-        victory_conditions.append({
-            "id": f"project:{project.id}",
-            "label": f"项目：{project.name}",
-            "current": current,
-            "target": target,
-            "remaining": max(0, target - current),
-            "kind": "progress",
-            "operator": "gte",
-            "status": "completed" if project.status == "completed" else "incomplete",
-            "related_ids": [project.id, project.site_id],
-            "related_labels": [project.name, site_name],
-        })
-    for objective in state.objectives.values():
-        target = max(1, objective.target)
-        current = min(objective.progress, target)
-        objective_name = self.content.objectives.get(objective.id, {}).get("name", objective.name)
-        victory_conditions.append({
-            "id": f"objective:{objective.id}",
-            "label": f"目标：{objective_name}",
-            "current": current,
-            "target": target,
-            "remaining": max(0, target - current),
-            "kind": "progress",
-            "operator": "gte",
-            "status": "completed" if objective.completed else "incomplete",
-            "related_ids": [objective.id],
-            "related_labels": [objective_name],
-        })
-    if not victory_conditions:
-        victory_conditions.append({
-            "id": "journey_progress",
-            "label": "共同旅程进度",
-            "current": 0,
-            "target": 1,
-            "remaining": 1,
-            "kind": "progress",
-            "operator": "gte",
-            "status": "incomplete",
-            "related_ids": [],
-            "related_labels": [],
-        })
-    state.goal_status = GoalStatus(
-        core_projects_completed=core_completed,
-        core_projects_target=len(core_ids),
-        objectives_completed=objectives_completed,
-        objectives_target=len(state.objectives),
-        protected_sites=protected_sites,
-        protected_sites_target=int(next((objective.get("target", 0) for objective in self.content.objectives.values() if objective.get("type") == "site_protection"), 0)),
-        weathering=state.shared.weathering_track,
-        weathering_limit=state.shared.weathering_limit,
-        rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
-        victory_conditions=victory_conditions,
-        failure_conditions=[
-            {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED], "related_labels": related_labels([site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED])},
-            {"id": "weathering_limit", "label": "风化压力不达到上限", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "failed" if state.shared.weathering_track >= state.shared.weathering_limit else "safe", "related_ids": []},
-            {"id": "round_limit", "label": "在回合耗尽前完成", "current": state.shared.turn, "target": state.shared.max_rounds, "remaining": max(0, state.shared.max_rounds - state.shared.turn + 1), "kind": "deadline", "operator": "lte", "status": "failed" if state.shared.turn > state.shared.max_rounds else "safe", "related_ids": []},
-        ],
-    )
+        core_completed = sum(1 for project_id in core_ids if project_id in state.projects and state.projects[project_id].status == "completed")
+        objectives_completed = sum(1 for objective in state.objectives.values() if objective.completed)
+        victory_conditions = []
+        for project_id in sorted(core_ids):
+            project = state.projects.get(project_id)
+            if not project:
+                continue
+            target = max(1, len(project.stages))
+            current = target if project.status == "completed" else min(project.stage_index, target)
+            site_name = self.content.sites.get(project.site_id, {}).get("name", project.site_id)
+            victory_conditions.append({
+                "id": f"project:{project.id}",
+                "label": f"项目：{project.name}",
+                "current": current,
+                "target": target,
+                "remaining": max(0, target - current),
+                "kind": "progress",
+                "operator": "gte",
+                "status": "completed" if project.status == "completed" else "incomplete",
+                "related_ids": [project.id, project.site_id],
+                "related_labels": [project.name, site_name],
+            })
+        for objective in state.objectives.values():
+            target = max(1, objective.target)
+            current = min(objective.progress, target)
+            objective_name = self.content.objectives.get(objective.id, {}).get("name", objective.name)
+            victory_conditions.append({
+                "id": f"objective:{objective.id}",
+                "label": f"目标：{objective_name}",
+                "current": current,
+                "target": target,
+                "remaining": max(0, target - current),
+                "kind": "progress",
+                "operator": "gte",
+                "status": "completed" if objective.completed else "incomplete",
+                "related_ids": [objective.id],
+                "related_labels": [objective_name],
+            })
+        if not victory_conditions:
+            victory_conditions.append({
+                "id": "journey_progress",
+                "label": "共同旅程进度",
+                "current": 0,
+                "target": 1,
+                "remaining": 1,
+                "kind": "progress",
+                "operator": "gte",
+                "status": "incomplete",
+                "related_ids": [],
+                "related_labels": [],
+            })
+        state.goal_status = GoalStatus(
+            core_projects_completed=core_completed,
+            core_projects_target=len(core_ids),
+            objectives_completed=objectives_completed,
+            objectives_target=len(state.objectives),
+            protected_sites=protected_sites,
+            protected_sites_target=int(next((objective.get("target", 0) for objective in self.content.objectives.values() if objective.get("type") == "site_protection"), 0)),
+            weathering=state.shared.weathering_track,
+            weathering_limit=state.shared.weathering_limit,
+            rounds_remaining=max(0, state.shared.max_rounds - state.shared.turn + 1),
+            victory_conditions=victory_conditions,
+            failure_conditions=[
+                {"id": "closed_sites", "label": "关闭节点不超过上限", "current": sum(site.status == SiteStatus.CLOSED for site in state.sites.values()), "target": int(scenario.get("closed_site_limit", 2)), "remaining": max(0, int(scenario.get("closed_site_limit", 2)) - sum(site.status == SiteStatus.CLOSED for site in state.sites.values())), "kind": "guardrail", "operator": "lt", "status": "failed" if sum(site.status == SiteStatus.CLOSED for site in state.sites.values()) >= int(scenario.get("closed_site_limit", 2)) else "safe", "related_ids": [site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED], "related_labels": related_labels([site.id for site in state.sites.values() if site.status == SiteStatus.CLOSED])},
+                {"id": "weathering_limit", "label": "风化压力不达到上限", "current": state.shared.weathering_track, "target": state.shared.weathering_limit, "remaining": max(0, state.shared.weathering_limit - state.shared.weathering_track), "kind": "guardrail", "operator": "lt", "status": "failed" if state.shared.weathering_track >= state.shared.weathering_limit else "safe", "related_ids": []},
+                {"id": "round_limit", "label": "在回合耗尽前完成", "current": state.shared.turn, "target": state.shared.max_rounds, "remaining": max(0, state.shared.max_rounds - state.shared.turn + 1), "kind": "deadline", "operator": "lte", "status": "failed" if state.shared.turn > state.shared.max_rounds else "safe", "related_ids": []},
+            ],
+        )
 
     def _track_tutorial_action(self, state: GameState, action: str, player: PlayerState) -> None:
         scenario = self.content.scenarios.get(state.scenario_id, {})

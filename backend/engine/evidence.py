@@ -78,9 +78,10 @@ class EvidenceMixin:
         origin_tags, combo_tags = list(definition.get("origin_tags", [])), list(definition.get("combo_tags", []))
         if player.flags.pop("temporary_origin_tag", None):
             origin_tags.append("temporary_cross_origin")
-        if player.flags.pop("harmony_next_contribution", False) and self._has_upgrade_effect(player, "harmony_origin_bonus"):
+        if player.flags.pop("harmony_next_contribution", False):
             origin_tags.append("harmony_origin")
-            combo_tags.append("cross_origin")
+            if self._has_upgrade_effect(player, "harmony_origin_bonus"):
+                combo_tags.append("cross_origin")
         placement = {"player_id": player.id, "card_id": card, "relation": relation, "origin_tags": origin_tags, "combo_tags": combo_tags}
         placement_model = InterpretationPlacement.model_validate(placement)
         interpretation["placements"].append(placement_model)

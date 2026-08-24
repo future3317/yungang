@@ -301,7 +301,7 @@ class PreviewMixin:
                 option["label"] = card_definition.get("name") or option["label"]
                 option["action_label"] = "使用策略牌"
                 option["description"] = card_definition.get("description") or option["description"]
-                timing = card_definition.get("timing") or "当前行动阶段"
+                timing = self._action_card_timing_label(card_definition)
                 best_use = card_definition.get("best_use") or "在合适目标上使用，改变本回合的风险或资源。"
                 limitations = card_definition.get("limitations") or "使用前请确认目标和行动点。"
                 option["reason"] = f"时机：{timing}。最适合：{best_use}。限制：{limitations}"

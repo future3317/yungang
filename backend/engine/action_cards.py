@@ -3,17 +3,35 @@ from __future__ import annotations
 from typing import Any
 
 from ..mechanisms import ACTION_CARD_EFFECT_HANDLERS
-from ..models import ActionType, GameState, PlayerState
+from ..models import ActionCardTiming, ActionType, GameState, PlayerState
 
 
 class ActionCardsMixin:
+    @staticmethod
+    def _action_card_timing(card: dict[str, Any]) -> str:
+        raw = str(card.get("timing", ActionCardTiming.PLAYER_ACTION)).strip()
+        return {
+            "行动阶段": ActionCardTiming.PLAYER_ACTION.value,
+            "事件预告阶段": ActionCardTiming.EVENT_FORECAST.value,
+            "事件响应阶段": ActionCardTiming.EVENT_RESPONSE.value,
+            "任意行动阶段": ActionCardTiming.ANY_ACTION.value,
+        }.get(raw, raw)
+
+    def _action_card_timing_label(self, card: dict[str, Any]) -> str:
+        return {
+            ActionCardTiming.PLAYER_ACTION.value: "行动阶段",
+            ActionCardTiming.EVENT_FORECAST.value: "事件预告阶段",
+            ActionCardTiming.EVENT_RESPONSE.value: "事件响应阶段",
+            ActionCardTiming.ANY_ACTION.value: "任意行动阶段",
+        }.get(self._action_card_timing(card), "当前行动阶段")
+
     def _action_card_timing_allowed(self, state: GameState, card: dict[str, Any]) -> bool:
-        timing = str(card.get("timing", "")).strip()
+        timing = self._action_card_timing(card)
         if state.pending_choice and state.pending_choice.get("kind") == "event":
-            return "事件响应" in timing
-        if "事件响应" in timing:
+            return timing == ActionCardTiming.EVENT_RESPONSE.value
+        if timing == ActionCardTiming.EVENT_RESPONSE.value:
             return bool(state.pending_choice and state.pending_choice.get("kind") == "event")
-        if "事件预告" in timing:
+        if timing == ActionCardTiming.EVENT_FORECAST.value:
             return state.shared.phase == "player_action" and bool(state.shared.current_event_id)
         return state.shared.phase == "player_action" and not state.pending_choice
 
@@ -38,7 +56,7 @@ class ActionCardsMixin:
         definition = self.content.action_cards[card]
         effect = definition.get("effect", {})
         typ = effect.get("type")
-        if not self._action_card_timing_allowed(state, definition) and not (force_event_response and "事件响应" in str(definition.get("timing", ""))):
+        if not self._action_card_timing_allowed(state, definition) and not (force_event_response and self._action_card_timing(definition) == ActionCardTiming.EVENT_RESPONSE.value):
             raise ValueError("action_card_wrong_timing")
         cost = int(definition.get("cost", 1))
         if player.ap < cost:
@@ -224,6 +242,11 @@ class ActionCardsMixin:
             card = req.get("card_id")
             if action != ActionType.SELECT_MARKET_CARD.value or card not in state.pending_choice["cards"]:
                 raise ValueError("invalid_market_choice")
+            if len(player.hand) >= 3 + state.shared.effective_rules.hand_limit_bonus:
+                state.pending_choice = {"kind": "discard", "next_card_id": card, "view_select": True, "selected_cards": list(state.pending_choice["cards"]), "options": [{"id": item, "label": f"放下 {self.content.cards[item]['name']}"} for item in player.hand]}
+                state.shared.phase = "pending_choice"
+                state.revision += 1
+                return self.refresh(state)
             selected = list(state.pending_choice["cards"])
             if card in state.market:
                 state.market.remove(card)
@@ -245,6 +268,30 @@ class ActionCardsMixin:
         elif state.pending_choice["kind"] == "discard":
             player = state.players[state.shared.active_player_id]
             discard_id = req.get("card_id")
+            if state.pending_choice.get("view_select"):
+                next_card = state.pending_choice.get("next_card_id")
+                if action != ActionType.DISCARD.value or discard_id not in player.hand or next_card not in state.market and next_card not in state.decks.get("culture", []):
+                    raise ValueError("invalid_discard_choice")
+                player.hand.remove(discard_id)
+                state.decks.setdefault("discard", []).append(discard_id)
+                if next_card in state.market:
+                    state.market.remove(next_card)
+                else:
+                    state.decks["culture"].remove(next_card)
+                player.hand.append(next_card)
+                if self._has_upgrade_effect(player, "market_look_bonus"):
+                    reserve = next((item for item in state.pending_choice.get("selected_cards", []) if item != next_card and (item in state.market or item in state.decks.get("culture", []))), None)
+                    if reserve:
+                        if reserve in state.market:
+                            state.market.remove(reserve)
+                        else:
+                            state.decks["culture"].remove(reserve)
+                        state.shared.reserved_market_cards.append(reserve)
+                state.pending_choice = None
+                state.shared.phase = "player_action"
+                state.revision += 1
+                self._refill_market(state)
+                return self.refresh(state)
             next_action_card = state.pending_choice.get("next_action_card_id")
             if next_action_card:
                 if action != ActionType.DISCARD.value or discard_id not in player.action_hand or state.pending_choice.get("player_id") != player.id:
@@ -305,6 +352,8 @@ class ActionCardsMixin:
             state.decks["archive"].append(replacement)
             player.hand.append(card)
             player.flags["archive_retrieve_round"] = state.shared.turn
+            if state.pending_choice.get("shared_unlock"):
+                state.shared.archive_retrieve = max(0, state.shared.archive_retrieve - 1)
             state.pending_choice = None
         state.revision += 1
         self._check_outcome(state)

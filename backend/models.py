@@ -76,6 +76,13 @@ class Phase(StrEnum):
     GAME_OVER = "game_over"
 
 
+class ActionCardTiming(StrEnum):
+    PLAYER_ACTION = "player_action"
+    EVENT_FORECAST = "event_forecast"
+    EVENT_RESPONSE = "event_response"
+    ANY_ACTION = "any_action"
+
+
 class ChoiceKind(StrEnum):
     EVENT = "event"
     VIEW_SELECT = "view_select"
@@ -209,6 +216,7 @@ class StageRequirements(DictModel):
     clues: int = 0
     domains: List[str] = Field(default_factory=list)
     origin_diversity: int = 0
+    restore_actions: int = 0
     restoration_resource: int = 0
     contributors: int = 0
 
@@ -797,6 +805,9 @@ class SharedState(BaseModel):
     round_summary: RoundSummary = Field(default_factory=RoundSummary)
     round_snapshot: JsonObject = Field(default_factory=dict, exclude=True)
     reserved_market_cards: List[str] = Field(default_factory=list)
+    market_reserve: int = 0
+    archive_retrieve: int = 0
+    finale_unlock: bool = False
     scenario_rule_uses: List[str] = Field(default_factory=list)
     scenario_round_baseline: JsonObject = Field(default_factory=dict)
     tutorial_steps: Dict[str, bool] = Field(default_factory=dict)
@@ -829,6 +840,9 @@ class PublicSharedState(BaseModel):
     event_history: List[EventHistoryRecord] = Field(default_factory=list)
     round_summary: RoundSummary = Field(default_factory=RoundSummary)
     reserved_market_cards: List[str] = Field(default_factory=list)
+    market_reserve: int = 0
+    archive_retrieve: int = 0
+    finale_unlock: bool = False
 
 class GameState(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
