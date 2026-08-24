@@ -1,12 +1,4 @@
 .root {
-  min-width: 0;
-  min-height: 0;
-  overflow: visible;
-  contain: layout;
-}
-
-/* SiteInspector component styles. HUD geometry remains in hud-contract.css. */
-.root {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -20,7 +12,9 @@
   border: 1px solid var(--line-subtle);
   border-radius: 12px;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+  contain: layout;
 }
+/* SiteInspector component styles. HUD geometry remains in hud-contract.css. */
 .root:global(.inspector-rail) {
   display: grid;
   place-items: start center;
@@ -60,10 +54,10 @@
   border-radius: 8px;
 }
 .root :global(.inspector-summary ){
-flex: 0 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
-  max-height: 118px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   padding: 2px 38px 2px 0;
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);
@@ -158,13 +152,17 @@ margin-left: 4px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: stretch;
+  position: relative;
+  z-index: 2;
   width: 100%;
   min-width: 0;
+  min-height: 46px;
   flex: 0 0 auto;
   margin: 10px 0;
   overflow: hidden;
 }
 .root :global(.inspector-tabs button ){
+  appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -187,9 +185,12 @@ color: #f8efd9;
   border-color: #c9aa5c;
 }
 .root :global(.inspector-content ){
-flex: 1 1 auto;
+  min-width: 0;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  padding-bottom: 16px;
+  overscroll-behavior: contain;
   padding-right: 4px;
   scrollbar-color: rgba(220, 190, 112, 0.38) transparent;
   scrollbar-width: thin;
@@ -240,25 +241,6 @@ display: grid;
 }
 .root :global(.task-rules[open] > summary::before ){
   content: '▾';
-}
-.root :global(.task-status-strip ){
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 8px 0;
-}
-.root :global(.task-status-strip span ){
-  min-width: 0;
-  padding: 5px 7px;
-  color: var(--ink-secondary);
-  background: rgba(20, 34, 25, 0.56);
-  border: 1px solid var(--line-subtle);
-  border-radius: 6px;
-  font-size: var(--type-label);
-  line-height: 1.25;
-}
-.root :global(.task-status-strip b ){
-  color: var(--connection);
 }
 .root :global(.task-step ){
 display: grid;
@@ -502,33 +484,15 @@ overflow: hidden;
   text-overflow: ellipsis;
 }
 @media (max-width: 1400px) and (min-width: 1101px) {
-.root {
-padding: 10px;
-}
 .root :global(.inspector-site-mark ){
 width: 48px;
     height: 48px;
 }
-
-}
-.root :global(.inspector-summary ){
-min-width: 0;
-    min-height: 0;
-    max-height: 118px;
-    overflow-y: auto;
-    scrollbar-color: rgba(213, 183, 105, 0.62) rgba(16, 27, 20, 0.38);
-    scrollbar-width: thin;
 }
 .root :global(.inspector-tabs ){
-position: relative;
-    z-index: 2;
-    min-height: 46px;
-    flex: none;
-    overflow: hidden;
     background: rgba(16, 24, 19, 0.92);
 }
 .root :global(.inspector-tabs button ){
-appearance: none;
     min-height: 44px;
     color: #d8cfbd;
     background: transparent;
@@ -546,13 +510,6 @@ color: #fff0ca;
 color: #f1d37f;
     background: rgba(199, 157, 69, 0.16);
     border-bottom-color: #d8b866;
-}
-.root :global(.inspector-content ){
-min-width: 0;
-    min-height: 0;
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding-bottom: 16px;
 }
 .root :global(.event-section),
 .root :global(.event-rule-summary),
@@ -673,22 +630,6 @@ margin: 0;
   font-size: var(--type-control);
   line-height: 1.3;
 }
-.root :global(.project-stage-list > span ){
-display: grid;
-  gap: 2px;
-  padding: 8px 9px;
-  color: var(--ink-muted);
-  background: rgba(20, 34, 25, 0.42);
-  border: 1px solid var(--line-subtle);
-  border-radius: 7px;
-}
-.root :global(.project-stage-list > span.current ){
-color: var(--ink-primary);
-  border-color: rgba(220, 190, 112, 0.45);
-}
-.root :global(.project-stage-list > span.complete ){
-border-color: rgba(120, 154, 118, 0.48);
-}
 .root :global(.project-stage-list b ){
 color: inherit;
   font-size: var(--type-label);
@@ -697,19 +638,6 @@ color: inherit;
 color: var(--ink-muted);
   font-size: var(--type-label);
   line-height: 1.35;
-}
-
-/* Inspector owns one scroll region: the summary remains anchored above it. */
-.root :global(.inspector-summary ){
-  max-height: none;
-  overflow: visible;
-  flex: 0 0 auto;
-}
-
-.root :global(.inspector-content ){
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 .root :global(.project-stage-list ){
@@ -794,13 +722,6 @@ color: var(--ink-muted);
 
 /* Keep the location summary compact and prevent the risk message from
    becoming an implicit narrow third grid column. */
-.root :global(.inspector-summary ){
-  grid-template-columns: 52px minmax(0, 1fr);
-  align-items: start;
-  max-height: 140px;
-  overflow: visible;
-}
-
 .root :global(.site-alert-explanation ){
   grid-column: 1 / -1;
   width: 100%;
