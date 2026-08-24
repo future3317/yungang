@@ -193,10 +193,6 @@
   pointer-events: none;
 }
 
-:global(.hud-floating-layer > *) {
-  pointer-events: auto;
-}
-
 :global(.game-shell > .hud-overlay-layer) {
   position: fixed;
   inset: 0;

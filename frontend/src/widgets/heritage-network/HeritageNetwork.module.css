@@ -93,7 +93,7 @@ min-height: 44px;
 
 :global(.network-access-reset) {
   justify-self: end;
-  min-height: 32px;
+  min-height: 44px;
   padding: 0 8px;
   color: var(--ink-muted);
   background: transparent;

@@ -82,7 +82,7 @@
 }
 
 .panelTools button {
-  min-height: 32px;
+  min-height: 44px;
   padding: 0 8px;
   color: var(--ink-muted);
   background: transparent;

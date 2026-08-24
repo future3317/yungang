@@ -196,7 +196,7 @@ margin: 7px 0;
   font-size: var(--type-label);
   line-height: 1.48;
 }
-:global(.site-inspector .task-workflow) {
+:global(.site-inspector .task-rules) {
 display: grid;
   gap: 7px;
   margin: 0;
@@ -205,23 +205,28 @@ display: grid;
   border: 1px solid rgba(220, 190, 112, 0.14);
   border-radius: 8px;
 }
-:global(.site-inspector .task-workflow > summary) {
+:global(.site-inspector .task-rules > summary) {
   cursor: pointer;
   list-style: none;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 4px;
   color: var(--ink-primary);
   font-size: var(--type-label);
   font-weight: 700;
 }
-:global(.site-inspector .task-workflow > summary::-webkit-details-marker) {
+:global(.site-inspector .task-rules > summary::-webkit-details-marker) {
   display: none;
 }
-:global(.site-inspector .task-workflow > summary::before) {
+:global(.site-inspector .task-rules > summary::before) {
   display: inline-block;
   width: 1.1em;
   color: var(--connection);
   content: '▸';
 }
-:global(.site-inspector .task-workflow[open] > summary::before) {
+:global(.site-inspector .task-rules[open] > summary::before) {
   content: '▾';
 }
 :global(.site-inspector .task-status-strip) {
