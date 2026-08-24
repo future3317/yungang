@@ -4,6 +4,7 @@ import { assetUrl } from '../../shared/assetUrl';
 import { useDialogFocus } from './useDialogFocus';
 import { previewDeltaText } from './gameUi';
 import { Button } from '../ui/Primitives';
+import { DialogBackdrop } from './DialogBackdrop';
 
 type EvidenceCardDialogProps = {
   id: string;
@@ -28,7 +29,7 @@ export function EvidenceCardDialog({
   const instantText = item?.instant_use_text || action?.description || '发动牌面效果后，这张牌会进入弃牌堆。';
 
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         ref={ref}
         className="dialog card-dialog"
@@ -72,6 +73,6 @@ export function EvidenceCardDialog({
           </Button>
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }

@@ -148,17 +148,6 @@
   font-size: var(--type-label);
   line-height: 1.45;
 }
-.dialog-backdrop {
-  position: fixed;
-  z-index: 50;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  overflow-y: auto;
-  background: rgba(8, 14, 11, 0.72);
-  backdrop-filter: blur(7px);
-}
 .dialog.card-dialog {
   position: relative;
   width: min(430px, 100%);
@@ -809,30 +798,6 @@ html[data-reduced-motion='true'] *::after {
     color: var(--ink-dark);
     background: var(--connection);
   }
-  .toast-queue {
-    left: auto;
-    bottom: auto;
-    right: 24px;
-    top: 86px;
-    width: fit-content;
-    max-width: min(520px, calc(100vw - 48px));
-    height: auto;
-    min-height: 0;
-    max-height: min(96px, calc(100dvh - 32px));
-    box-sizing: border-box;
-    display: block;
-    overflow: auto;
-    gap: 6px;
-  }
-  .toast-queue + .toast-queue {
-    top: 136px;
-  }
-  .toast-queue + .toast-queue + .toast-queue {
-    top: 186px;
-  }
-
-
-
   .map-editor {
     min-height: 100dvh;
     padding: 32px;
@@ -1039,17 +1004,6 @@ html[data-reduced-motion='true'] *::after {
   font-size: var(--type-label);
   letter-spacing: 0.04em;
 }
-.dialog-backdrop .dialog:not(.card-dialog):not(.choice-dialog):not(.action-preview):not(.role-upgrade-dialog) {
-  background: linear-gradient(145deg, #35493c, #1c2921);
-  color: #f5ead8;
-  border: 1px solid rgba(220, 190, 112, 0.55);
-}
-.toast {
-  color: #f7ecd4;
-  background: rgba(24, 39, 29, 0.96);
-  border: 1px solid rgba(220, 190, 112, 0.4);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.34);
-}
 .roster-column > * {
   position: relative;
   flex-shrink: 0;
@@ -1175,16 +1129,6 @@ html[data-reduced-motion='true'] *::after {
   object-fit: cover;
 }
 
-.hud-overlay-layer {
-  position: fixed;
-  z-index: var(--z-overlay);
-  inset: 0;
-  pointer-events: none;
-  isolation: isolate;
-}
-.hud-overlay-layer > * {
-  pointer-events: auto;
-}
 .choice-hint.choice-impact {
   border-left-color: var(--risk, #c86b53);
   background: rgba(143, 64, 48, 0.14);

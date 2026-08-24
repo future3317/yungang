@@ -2,14 +2,14 @@
   display: block;
 }
 
-:global(.game-viewport) {
+.root :global(.game-viewport) {
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
   isolation: isolate;
 }
 
-:global(.game-shell) {
+.root :global(.game-shell) {
   position: relative;
   display: grid;
   grid-template-columns: var(--hud-left-width) minmax(0, 1fr) var(--hud-right-width);
@@ -19,7 +19,7 @@
   overflow: hidden;
 }
 
-:global(.game-shell > .hud-slot-top) {
+.root :global(.game-shell > .hud-slot-top) {
   position: relative;
   grid-column: 1 / -1;
   grid-row: 1;
@@ -28,7 +28,7 @@
   z-index: 20;
 }
 
-:global(.game-shell > .hud-slot-top > .game-header) {
+.root :global(.game-shell > .hud-slot-top > .game-header) {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr) minmax(0, 1fr);
   align-items: center;
@@ -39,13 +39,13 @@
   padding: 8px 16px;
 }
 
-:global(.game-shell > .hud-slot-top .header-center) {
+.root :global(.game-shell > .hud-slot-top .header-center) {
   display: grid;
   gap: 6px;
   min-width: 0;
 }
 
-:global(.game-shell > .hud-slot-top .event-history-bar) {
+.root :global(.game-shell > .hud-slot-top .event-history-bar) {
   min-width: 0;
   padding: 6px 10px;
   color: #f0e4c8;
@@ -55,34 +55,18 @@
   font-size: var(--type-label);
 }
 
-:global(.game-shell > .hud-slot-top .event-history-bar b) {
+.root :global(.game-shell > .hud-slot-top .event-history-bar b) {
   display: block;
   color: #f4e3b4;
   font-size: var(--type-label);
 }
 
-:global(.game-shell > .hud-slot-top .goal-summary) {
+.root :global(.game-shell > .hud-slot-top .goal-summary) {
   width: fit-content;
   justify-self: center;
 }
 
-:global(.network-era-note) {
-  position: absolute;
-  left: 16px;
-  bottom: 14px;
-  z-index: 3;
-  max-width: min(420px, 42%);
-  padding: 5px 9px;
-  color: rgba(239, 225, 188, 0.82);
-  background: rgba(11, 23, 16, 0.7);
-  border: 1px solid rgba(215, 184, 103, 0.28);
-  border-radius: 6px;
-  font-size: var(--type-label);
-  line-height: 1.4;
-  pointer-events: none;
-}
-
-:global(.game-shell > .hud-layout) {
+.root :global(.game-shell > .hud-layout) {
   display: grid;
   grid-column: 1 / -1;
   grid-row: 2;
@@ -97,8 +81,8 @@
   overflow: hidden;
 }
 
-:global(.hud-layout > .hud-slot-left),
-:global(.hud-layout > .hud-slot-right) {
+.root :global(.hud-layout > .hud-slot-left),
+.root :global(.hud-layout > .hud-slot-right) {
   min-width: 0;
   min-height: 0;
   max-height: 100%;
@@ -110,13 +94,13 @@
   scrollbar-width: thin;
 }
 
-:global(.hud-layout > .hud-slot-world) {
+.root :global(.hud-layout > .hud-slot-world) {
   min-width: 0;
   min-height: 0;
   overflow: hidden;
 }
 
-:global(.hud-layout > .stage-column) {
+.root :global(.hud-layout > .stage-column) {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
   align-self: stretch;
@@ -126,13 +110,13 @@
   padding: 0 0 8px;
 }
 
-:global(.hud-layout > .stage-column > .round-summary) {
+.root :global(.hud-layout > .stage-column > .round-summary) {
   min-width: 0;
   margin: 0;
 }
 
-:global(.hud-layout > .stage-column > .network-stage),
-:global(.hud-layout > .stage-column > .network-stage .network-frame) {
+.root :global(.hud-layout > .stage-column > .network-stage),
+.root :global(.hud-layout > .stage-column > .network-stage .network-frame) {
   position: relative;
   min-width: 0;
   min-height: 0;
@@ -140,40 +124,40 @@
   overflow: hidden;
 }
 
-:global(.hud-layout > .stage-column > .network-stage .network-frame > svg) {
+.root :global(.hud-layout > .stage-column > .network-stage .network-frame > svg) {
   width: 100%;
   height: 100%;
 }
 
 /* The rail owns scrolling. The inspector fills the rail so long mission
    content remains reachable without moving the map or bottom dock. */
-:global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector) {
+.root :global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector) {
   height: 100%;
   min-height: 0;
   overflow: hidden;
   contain: layout;
 }
 
-:global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector .inspector-content) {
+.root :global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector .inspector-content) {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
 
-:global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
-:global(.hud-layout > .hud-slot-right::-webkit-scrollbar) {
+.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
+.root :global(.hud-layout > .hud-slot-right::-webkit-scrollbar) {
   width: 10px;
 }
 
-:global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
-:global(.hud-layout > .hud-slot-right::-webkit-scrollbar-thumb) {
+.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
+.root :global(.hud-layout > .hud-slot-right::-webkit-scrollbar-thumb) {
   background: rgba(220, 188, 105, 0.68);
   border: 2px solid rgba(7, 15, 10, 0.3);
   border-radius: 999px;
   background-clip: padding-box;
 }
 
-:global(.game-shell > .hud-slot-bottom) {
+.root :global(.game-shell > .hud-slot-bottom) {
   position: relative;
   grid-column: 1 / -1;
   grid-row: 3;
@@ -183,7 +167,7 @@
   pointer-events: auto;
 }
 
-:global(.game-shell > .hud-floating-layer) {
+.root :global(.game-shell > .hud-floating-layer) {
   position: absolute;
   top: var(--hud-header-height);
   right: 0;
@@ -193,33 +177,14 @@
   pointer-events: none;
 }
 
-:global(.game-shell > .hud-overlay-layer) {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  pointer-events: none;
-}
-
-:global(.hud-overlay-layer > *) {
-  pointer-events: auto;
-}
-
-:global(.hud-overlay-layer .toast) {
-  pointer-events: none;
-}
-
-:global(.hud-overlay-layer .dialog-backdrop) {
-  z-index: 90;
-}
-
 @media (min-width: 1101px) {
-  :global(.game-shell) {
+  .root :global(.game-shell) {
     --hud-left-width: clamp(280px, 17vw, 340px);
     --hud-right-width: clamp(340px, 19vw, 400px);
   }
 
-  :global(.hud-layout > .hud-slot-left),
-  :global(.hud-layout > .hud-slot-right) {
+  .root :global(.hud-layout > .hud-slot-left),
+  .root :global(.hud-layout > .hud-slot-right) {
     height: 100%;
   }
 }
@@ -326,12 +291,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :global(.goal-drawer) {
+  .root :global(.goal-drawer) {
     transition: none;
   }
-}
-
-:global(.hud-overlay-layer:has(.dialog-backdrop) .tutorial-trigger) {
-  visibility: hidden;
-  pointer-events: none;
 }

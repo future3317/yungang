@@ -6,6 +6,7 @@ import { ApiError, api } from '../../shared/api/client';
 import type { ArchiveSummary, Meta } from '../../types/game';
 import { getKnownRoomIds } from '../../shared/roomToken';
 import { Button } from '../ui/Primitives';
+import { DialogBackdrop } from '../game/DialogBackdrop';
 
 const statusLabels: Record<string, string> = {
   in_progress: '进行中',
@@ -54,7 +55,7 @@ export function ArchiveBrowser({ meta, onClose }: { meta?: Meta; onClose: () => 
   }
 
   return (
-    <div className="dialog-backdrop archive-backdrop">
+    <DialogBackdrop className="archive-backdrop">
       <section
         className="dialog archive-browser"
         role="dialog"
@@ -158,6 +159,6 @@ export function ArchiveBrowser({ meta, onClose }: { meta?: Meta; onClose: () => 
           ))}
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }

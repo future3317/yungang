@@ -58,6 +58,8 @@ import { getRoomToken } from '../../shared/roomToken';
 import { JourneyTimeline } from '../../widgets/game/JourneyTimeline';
 import { GameViewport } from '../../widgets/game/GameViewport';
 import { GameOverlayHost } from '../../widgets/game/GameOverlayHost';
+import { DialogBackdrop } from '../../widgets/game/DialogBackdrop';
+import { Toast } from '../../widgets/game/Toast';
 import { HudSlot } from '../../widgets/game/HudSlot';
 import { StateChangeList } from '../../widgets/game/StateChangeList';
 
@@ -666,10 +668,10 @@ export function GamePage() {
               </Button>
             </div>
           )}
-          {toasts.map((item) => (
-            <div key={item.id} className="toast toast-queue" role="status">
+          {toasts.map((item, index) => (
+            <Toast key={item.id} index={index}>
               {item.text}
-            </div>
+            </Toast>
           ))}
           {completedTask && (
             <TaskCompleteDialog
@@ -773,7 +775,7 @@ function TaskCompleteDialog({
 }) {
   const ref = useDialogFocus();
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         ref={ref}
         className="dialog task-complete-dialog"
@@ -798,7 +800,7 @@ function TaskCompleteDialog({
         </div>
         <Button onClick={onClose}>继续旅程</Button>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }
 function ActionTargetDialog({
@@ -822,7 +824,7 @@ function ActionTargetDialog({
 }) {
   const ref = useDialogFocus();
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         ref={ref}
         className="dialog choice-dialog action-target-dialog"
@@ -865,7 +867,7 @@ function ActionTargetDialog({
           返回浏览
         </button>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }
 
@@ -934,7 +936,7 @@ function ChoiceDialog({
     option.targets.length ? option.targets.map((target) => optionAction(option, target)) : [optionAction(option)]
   );
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         ref={ref}
         className="dialog choice-dialog"
@@ -982,7 +984,7 @@ function ChoiceDialog({
           ))}
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }
 function RoleUpgradeDialog({
@@ -1007,7 +1009,7 @@ function RoleUpgradeDialog({
     option.targets.length ? option.targets.map((target) => optionAction(option, target)) : [optionAction(option)]
   );
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         ref={ref}
         className="dialog role-upgrade-dialog"
@@ -1039,6 +1041,6 @@ function RoleUpgradeDialog({
           })}
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }

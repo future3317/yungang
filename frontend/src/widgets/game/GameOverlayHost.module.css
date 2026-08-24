@@ -1,0 +1,57 @@
+.root {
+  position: fixed;
+  z-index: 300;
+  inset: 0;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.root > * {
+  pointer-events: auto;
+}
+
+.backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow-y: auto;
+  background: rgba(8, 14, 11, 0.72);
+  backdrop-filter: blur(7px);
+}
+
+.backdrop > :global(.dialog:not(.card-dialog):not(.choice-dialog):not(.action-preview):not(.role-upgrade-dialog)) {
+  color: #f5ead8;
+  background: linear-gradient(145deg, #35493c, #1c2921);
+  border: 1px solid rgba(220, 190, 112, 0.55);
+}
+
+.root [data-toast] {
+  position: fixed;
+  right: 24px;
+  bottom: 28px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.root [data-toast-index='0'] {
+  top: 86px;
+  right: 24px;
+  bottom: auto;
+  left: auto;
+}
+
+.root [data-toast-index='1'] {
+  top: 136px;
+}
+
+.root [data-toast-index='2'] {
+  top: 186px;
+}
+
+.root:has(.backdrop) :global(.tutorial-trigger) {
+  visibility: hidden;
+  pointer-events: none;
+}

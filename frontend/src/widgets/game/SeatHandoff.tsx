@@ -1,9 +1,10 @@
 import { ArrowRight, Handshake } from 'lucide-react';
 import { Button } from '../ui/Primitives';
+import { DialogBackdrop } from './DialogBackdrop';
 
 export function SeatHandoff({ name, onContinue }: { name: string; onContinue: () => void }) {
   return (
-    <div className="dialog-backdrop seat-handoff-backdrop">
+    <DialogBackdrop className="seat-handoff-backdrop">
       <section className="dialog seat-handoff" role="dialog" aria-modal="true" aria-labelledby="seat-handoff-title">
         <div className="handoff-icon">
           <Handshake size={26} />
@@ -17,6 +18,6 @@ export function SeatHandoff({ name, onContinue }: { name: string; onContinue: ()
           我已接过席位 <ArrowRight size={16} />
         </Button>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }

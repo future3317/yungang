@@ -6,7 +6,23 @@
   contain: layout paint;
 }
 
-:global(.network-tools) {
+.root :global(.network-era-note) {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 3;
+  max-width: min(420px, 42%);
+  padding: 5px 9px;
+  color: rgba(239, 225, 188, 0.82);
+  background: rgba(11, 23, 16, 0.7);
+  border: 1px solid rgba(215, 184, 103, 0.28);
+  border-radius: 6px;
+  font-size: var(--type-label);
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.root :global(.network-tools) {
   position: absolute;
   top: 14px;
   right: 14px;
@@ -16,13 +32,13 @@
   gap: 6px;
 }
 
-:global(.network-tools button) {
+.root :global(.network-tools button) {
   width: 44px;
   height: 44px;
 }
 
 /* HeritageNetwork list styles. Map SVG visuals remain in map.css. */
-:global(.network-access-list) {
+.root :global(.network-access-list) {
   width: 100%;
   height: 100%;
   min-width: 0;
@@ -42,16 +58,16 @@
 .interacting {
   transition: none;
 }
-:global(.network-access-list:not([open])) {
+.root :global(.network-access-list:not([open])) {
   overflow: visible;
 }
-:global(.network-access-list:not([open]) summary) {
+.root :global(.network-access-list:not([open]) summary) {
   min-width: 286px;
 }
-:global(.network-access-list:not([open]) .network-access-content) {
+.root :global(.network-access-list:not([open]) .network-access-content) {
   display: none;
 }
-:global(.network-access-list summary) {
+.root :global(.network-access-list summary) {
 min-height: 44px;
   display: grid;
   align-items: center;
@@ -62,7 +78,7 @@ min-height: 44px;
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 7px;
 }
-:global(.network-access-list summary::-webkit-details-marker) {
+.root :global(.network-access-list summary::-webkit-details-marker) {
   display: none;
 }
 .dragHandle {
@@ -75,12 +91,12 @@ min-height: 44px;
 .dragHandle:active {
   cursor: grabbing;
 }
-:global(.network-access-list summary small) {
+.root :global(.network-access-list summary small) {
   margin-left: auto;
   color: var(--ink-muted);
   font-size: var(--type-label);
 }
-:global(.network-access-content) {
+.root :global(.network-access-content) {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
@@ -92,7 +108,7 @@ min-height: 44px;
   padding: 5px;
 }
 
-:global(.network-access-reset) {
+.root :global(.network-access-reset) {
   grid-column: 1 / -1;
   justify-self: end;
   min-height: 44px;
@@ -104,17 +120,17 @@ min-height: 44px;
   font-size: var(--type-caption);
 }
 
-:global(.network-access-content section) {
+.root :global(.network-access-content section) {
   display: grid;
   gap: 3px;
   min-width: 0;
 }
-:global(.network-access-content section > b) {
+.root :global(.network-access-content section > b) {
   padding: 5px 7px 2px;
   color: var(--connection);
   font-size: var(--type-label);
 }
-:global(.network-access-content button) {
+.root :global(.network-access-content button) {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
@@ -127,23 +143,23 @@ min-height: 44px;
   border-radius: 4px;
   font-size: var(--type-label);
 }
-:global(.network-access-content button span) {
+.root :global(.network-access-content button span) {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-:global(.network-access-content button small) {
+.root :global(.network-access-content button small) {
   color: var(--ink-muted);
   white-space: nowrap;
 }
-:global(.network-access-content button.is-current) {
+.root :global(.network-access-content button.is-current) {
   color: var(--ink-primary);
   background: rgba(185, 154, 88, 0.14);
   border-left: 2px solid var(--connection);
 }
-:global(.network-access-content button:hover),
-:global(.network-access-content button:focus-visible) {
+.root :global(.network-access-content button:hover),
+.root :global(.network-access-content button:focus-visible) {
   color: var(--ink-primary);
   background: var(--surface-selected);
 }

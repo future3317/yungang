@@ -90,7 +90,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   const panelId = (name: InspectorTab) => `inspector-panel-${site.id}-${name}`;
 
   if (collapsed) {
-    return <aside className="inspector-rail"><button type="button" className="inspector-expand" onClick={() => onCollapsedChange(false)} aria-label="展开地点详情"><ChevronLeft size={17} /><span>地点详情</span></button></aside>;
+    return <aside className={`${styles.root} inspector-rail`.trim()}><button type="button" className="inspector-expand" onClick={() => onCollapsedChange(false)} aria-label="展开地点详情"><ChevronLeft size={17} /><span>地点详情</span></button></aside>;
   }
 
   return <aside className={`${styles.root} site-inspector ${className}`.trim()} aria-label="地点详情">

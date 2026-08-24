@@ -330,18 +330,6 @@
   border-radius: 50%;
   animation: spin 850ms linear infinite;
 }
-.toast {
-  position: fixed;
-  right: 24px;
-  bottom: 28px;
-  z-index: 40;
-  padding: 10px 13px;
-  color: var(--ink-primary);
-  background: linear-gradient(145deg, rgba(48, 67, 53, 0.98), rgba(23, 38, 28, 0.98));
-  border: 1px solid rgba(219, 192, 126, 0.38);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-lift);
-}
 .goal-conditions {
   display: grid;
   gap: 5px;

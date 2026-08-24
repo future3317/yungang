@@ -2,6 +2,7 @@ import { AlertTriangle, Check, X } from 'lucide-react';
 import type { Action, ContentCard, Player, ProjectState, RouteState, Site, SiteReference } from '../../types/game';
 import { actionPresentation, previewDeltaText, resolveTargetName } from './gameUi';
 import { Button } from '../ui/Primitives';
+import { DialogBackdrop } from './DialogBackdrop';
 
 export function resolveActionTargetName(
   action: Action,
@@ -62,7 +63,7 @@ export function ActionPreview({
       ? `移动到${targetName}`
       : presentation.label;
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section className="dialog action-preview" role="dialog" aria-modal="true" aria-labelledby="action-preview-title">
         <button className="dialog-close" disabled={isPending} onClick={onCancel} aria-label="取消行动">
           <X />
@@ -124,6 +125,6 @@ export function ActionPreview({
           </Button>
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }

@@ -2,6 +2,7 @@ import { Check, X } from 'lucide-react';
 import type { ActionOption } from '../../types/game';
 import { actionPresentation, actionTimingLabel, previewDeltaText } from './gameUi';
 import { Button } from '../ui/Primitives';
+import { DialogBackdrop } from './DialogBackdrop';
 
 export function StrategyCardDialog({
   option,
@@ -37,7 +38,7 @@ export function StrategyCardDialog({
   };
   const immediateEffect = String(effect.description || immediateEffects[effectType] || presentation.description);
   return (
-    <div className="dialog-backdrop">
+    <DialogBackdrop>
       <section
         className="dialog strategy-dialog strategy-card-dialog"
         role="dialog"
@@ -97,6 +98,6 @@ export function StrategyCardDialog({
           </Button>
         </div>
       </section>
-    </div>
+    </DialogBackdrop>
   );
 }
