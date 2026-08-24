@@ -57,8 +57,7 @@ class SetupMixin:
             return None
         first_allowed = scenario.get("first_turn_allowed_actions") or []
         unlock_schedule = scenario.get("tutorial_unlock_schedule", [])
-        player_count = max(1, len(state.shared.player_order))
-        round_number = (state.shared.turn - 1) // player_count + 1
+        round_number = state.shared.turn
         base = {ActionType.END_TURN.value, *(str(action) for action in first_allowed)}
         if round_number <= 1:
             return base
@@ -194,7 +193,7 @@ class SetupMixin:
             )
 
         enabled_site_ids = set(scenario.get("enabled_site_ids", self.content.sites))
-        enabled_site_ids.update(role.get("start_site_id", "yungang") for role in self.content.roles.values())
+        enabled_site_ids.update(player.location for player in players.values())
         sites = {}
         for sid, definition in self.content.sites.items():
             if sid not in enabled_site_ids:

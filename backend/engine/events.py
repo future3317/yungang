@@ -13,7 +13,7 @@ class EventsMixin:
             return
         event = self.content.events[event_id]
         prepared = event_id in state.shared.prepared_event_ids or any(item.flags.get("prepared_event_id") == event_id for item in state.players.values())
-        harmony = [item for item in state.players.values() if item.flags.pop("harmony_active", False)]
+        harmony = [item for item in state.players.values() if item.flags.pop("harmony_event_reduction", False) or item.flags.pop("harmony_active", False)]
         if prepared:
             if event_id in state.shared.prepared_event_ids:
                 state.shared.prepared_event_ids.remove(event_id)

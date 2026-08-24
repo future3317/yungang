@@ -19,10 +19,8 @@ class PlanningMixin:
 
     def _resolve_planning_collaboration(self, state: GameState, player: PlayerState, action: str, req: dict[str, Any]) -> None:
         target_ids = {value for value in (req.get("target_id"), req.get("target_site_id"), req.get("route_id")) if value}
-        if action == ActionType.MOVE.value and req.get("target_id"):
-            route = next((item for item in state.routes.values() if {item.from_site, item.to_site} == {player.location, req["target_id"]}), None)
-            if route:
-                target_ids.add(route.id)
+        if action == ActionType.MOVE.value and req.get("_move_route_id"):
+            target_ids.add(req["_move_route_id"])
         for project_id, project in state.projects.items():
             if project.site_id in target_ids:
                 target_ids.add(project_id)

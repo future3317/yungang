@@ -799,6 +799,7 @@ class SharedState(BaseModel):
     reserved_market_cards: List[str] = Field(default_factory=list)
     scenario_rule_uses: List[str] = Field(default_factory=list)
     scenario_round_baseline: JsonObject = Field(default_factory=dict)
+    tutorial_steps: Dict[str, bool] = Field(default_factory=dict)
 
 
 class PublicSharedState(BaseModel):

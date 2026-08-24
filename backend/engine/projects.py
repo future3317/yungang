@@ -6,6 +6,22 @@ from ..models import GameState, PlayerState, ProjectState, SiteStatus, StageEvid
 
 
 class ProjectsMixin:
+    def _restore_costs(self, state: GameState, player: PlayerState, site_id: str | None) -> tuple[int, int]:
+        action_cost = self._event_action_cost(state, "restore", 1)
+        if not site_id or site_id not in state.sites:
+            return action_cost, 1
+        discount = int(player.flags.get("restore_discount", 0))
+        if self._has_upgrade_effect(player, "project_restore_discount") and player.flags.get("project_restore_discount_round") != state.shared.turn:
+            discount = max(discount, 1)
+        return action_cost, 0 if discount else 1
+
+    def _can_restore(self, state: GameState, player: PlayerState, site_id: str | None) -> bool:
+        if not site_id or player.location != site_id or site_id not in state.sites:
+            return False
+        site = state.sites[site_id]
+        action_cost, resource_cost = self._restore_costs(state, player, site_id)
+        return site.damage > 0 and site.status != SiteStatus.CLOSED and player.ap >= action_cost and (resource_cost == 0 or state.shared.restoration_resource >= resource_cost or player.supplies >= resource_cost)
+
     def _advance_project(self, state: GameState, project: ProjectState | None, player_id: str, action_type: str = "interpret_evidence", card_id: str | None = None, receipts: dict[str, int] | None = None) -> None:
         if not project or project.status != "active" or project.stage_index >= len(project.stages):
             return
@@ -77,7 +93,7 @@ class ProjectsMixin:
     def _restore(self, state: GameState, player: PlayerState, site_id: str | None) -> None:
         if player.location != site_id:
             raise ValueError("invalid_restore")
-        action_cost = self._event_action_cost(state, "restore", 1)
+        action_cost, resource_cost = self._restore_costs(state, player, site_id)
         if player.ap < action_cost:
             raise ValueError("not_enough_ap")
         site = state.sites[site_id]
@@ -85,9 +101,7 @@ class ProjectsMixin:
             raise ValueError("site_does_not_need_restoration")
         discount = int(player.flags.get("restore_discount", 0))
         if self._has_upgrade_effect(player, "project_restore_discount") and player.flags.get("project_restore_discount_round") != state.shared.turn:
-            discount = max(discount, 1)
             player.flags["project_restore_discount_round"] = state.shared.turn
-        resource_cost = 0 if discount else 1
         if resource_cost and state.shared.restoration_resource < resource_cost and player.supplies < resource_cost:
             raise ValueError("not_enough_restoration_resource")
         player.ap -= action_cost

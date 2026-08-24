@@ -181,6 +181,10 @@ class BaseEngineMixin:
         return ordered + remainder
 
     def _ensure_runtime_state(self, state: GameState) -> None:
+        for player in state.players.values():
+            if player.flags.pop("harmony_active", False):
+                player.flags["harmony_next_contribution"] = True
+                player.flags["harmony_event_reduction"] = True
         if not state.routes:
             state.routes = {
                 route["id"]: RouteState(

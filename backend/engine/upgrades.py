@@ -128,7 +128,8 @@ class UpgradesMixin:
                 state.shared.weathering_track = max(0, state.shared.weathering_track - 1)
         elif ability["action"] == "harmony_hint":
             player.ap -= cost
-            player.flags["harmony_active"] = True
+            player.flags["harmony_next_contribution"] = True
+            player.flags["harmony_event_reduction"] = True
         elif ability["action"] == "sprint_move":
             player.ap -= cost
             player.flags["sprint_move"] = True

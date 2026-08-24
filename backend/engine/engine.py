@@ -89,7 +89,7 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
             actions.extend({"type": ActionType.PLAN.value, "target_id": site_id, "label": self.content.sites[site_id]["name"], "cost": 0} for site_id in state.sites)
             actions.extend({"type": ActionType.PLAN.value, "target_id": route_id, "label": f"路线：{next((item.get('name') for item in self.content.routes if item['id'] == route_id), route_id)}", "cost": 0} for route_id in state.routes)
             actions.extend({"type": ActionType.PLAN.value, "target_id": project_id, "label": f"项目：{state.projects[project_id].name}", "cost": 0} for project_id in state.projects)
-        if site.status != "closed" and active.ap > 0:
+        if site.status != "closed":
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
                     continue
@@ -106,8 +106,8 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
                         actions.append({"type": ActionType.MOVE.value, "target_id": target, "label": f"疾行至 {self.content.sites[target]['name']}", "cost": 1})
             if active.ap >= 1:
                 actions.extend({"type": ActionType.EXPLORE.value, "target_id": active.location, "card_id": card, "label": f"探索并选择 {self.content.cards[card]['name']}", "cost": 1} for card in state.market)
-            if active.ap >= 1 and state.shared.restoration_resource > 0 and site.damage > 0:
-                actions.append({"type": ActionType.RESTORE.value, "target_id": active.location, "label": "共同修护当前节点", "cost": self._event_action_cost(state, "restore", 1)})
+            if self._can_restore(state, active, active.location):
+                actions.append({"type": ActionType.RESTORE.value, "target_id": active.location, "label": "共同修护当前节点", "cost": self._restore_costs(state, active, active.location)[0]})
             for route in self.content.routes:
                 if active.location not in {route["from"], route["to"]}:
                     continue
@@ -117,9 +117,9 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
                     continue
                 if route_state.status in {"strained", "blocked"}:
                     actions.append({"type": ActionType.SURVEY_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"勘察路线 · {self.content.sites[target]['name']}", "cost": self._event_action_cost(state, "survey_route", 1)})
-                if route_state.status in {"strained", "blocked"} and state.shared.research_clues > 0:
-                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"修护路线 · {self.content.sites[target]['name']}", "cost": self._event_action_cost(state, "restore_route", 1)})
-                if route_state.status == "restored" and route_state.connection_level < 1:
+                if self._can_restore_route(state, active, route["id"]):
+                    actions.append({"type": ActionType.RESTORE_ROUTE.value, "route_id": route["id"], "target_id": target, "label": f"修护路线 · {self.content.sites[target]['name']}", "cost": self._restore_route_costs(state, active, route["id"])[0]})
+                if route_state.status == "restored" and route_state.connection_level < 2:
                     actions.append({"type": ActionType.ESTABLISH_CONNECTION.value, "route_id": route["id"], "target_id": target, "label": f"建立连接 · {self.content.sites[target]['name']}", "cost": self._event_action_cost(state, "establish_connection", 1)})
             if state.shared.current_event_id and state.shared.current_event_id not in state.shared.prepared_event_ids:
                 actions.append({"type": ActionType.PREPARE.value, "label": "准备应对事件", "cost": 1})
@@ -194,7 +194,11 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
             raise ValueError("not_active_player")
         player = state.players[pid]
         target = req.get("target_site_id") or req.get("target_id")
+        move_origin = None
+        move_route_id = None
         if action == ActionType.MOVE.value:
+            move_origin = player.location
+            move_route_id = next((item["id"] for item in self.content.routes if {item["from"], item["to"]} == {player.location, target}), None)
             self._move(state, player, target)
         elif action == ActionType.EXPLORE.value:
             self._request_explore(state, player, req.get("card_id"))
@@ -234,8 +238,12 @@ class GameEngine(EffectsMixin, SetupMixin, MovementMixin, EvidenceMixin, RoutesM
             self._end_planning(state, player)
         else:
             raise ValueError("unknown_action")
+        self._track_tutorial_action(state, action, player)
         if action not in {ActionType.PLAN.value, ActionType.END_TURN.value, ActionType.END_PLANNING.value}:
-            self._resolve_planning_collaboration(state, player, action, req)
+            collaboration_req = req
+            if move_origin is not None:
+                collaboration_req = {**req, "_move_origin": move_origin, "_move_route_id": move_route_id}
+            self._resolve_planning_collaboration(state, player, action, collaboration_req)
         state.revision += 1
         self._remember_request(state, request_id)
         if not req.get("_preview"):
