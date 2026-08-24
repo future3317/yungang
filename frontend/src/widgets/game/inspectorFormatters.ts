@@ -21,45 +21,64 @@ export function formatRequirementValues(meta: Meta, key: string, values: string[
 
 export function formatProjectRequirements(meta: Meta, requirements: Record<string, unknown>) {
   const labels: Record<string, string> = {
-    clues: '研究点',
     domains: '领域',
+    required_domains: '领域',
+    origins: '线索脉络',
+    required_origins: '线索脉络',
     origin_diversity: '线索脉络数',
-    restoration_resource: '修护资源',
     action_type: '行动',
+    tags: '标签',
+    cards: '证据',
+    contributors: '参与者',
+    restore_actions: '修护行动',
+    restoration_resource: '修护资源',
   };
-  return Object.entries(requirements)
-    .map(([key, value]) => {
-      if (key === 'domains' && Array.isArray(value))
-        return `${labels[key]}：${formatRequirementValues(meta, key, value.map(String))}`;
-      if (key === 'action_type' && typeof value === 'string')
-        return `${labels[key]}：${actionLabels[value as keyof typeof actionLabels] || '当前行动'}`;
-      if (key === 'origin_diversity') return `${labels[key]}：至少 ${String(value)} 种`;
-      return `${labels[key] || '阶段条件'}：${Array.isArray(value) ? value.join('、') : String(value)}`;
-    })
-    .join(' · ');
+  const entries = Object.entries(requirements || {}).filter(([, value]) => hasMeaningfulProjectValue(value));
+  return entries.map(([key, value]) => (labels[key] || key) + '：' + formatProjectValue(meta, key, value)).join(' · ');
 }
-
 export function formatProjectReward(reward?: Record<string, unknown>) {
-  if (!reward) return '完成后获得阶段奖励';
-  const labels: Record<string, (value: unknown) => string> = {
-    research_clues: (value) => `研究点 +${String(value)}`,
-    restoration_resource: (value) => `修护资源 +${String(value)}`,
-    influence: (value) => `共同影响 +${String(value)}`,
-    route_connection: (value) => `路线连接 +${String(value)}`,
-    weathering_reduction: (value) => `风化压力 -${String(value)}`,
-    market_reserve: (value) => `保留市场证据卡机会 ×${String(value)}`,
-    archive_retrieve: (value) => `获得档案回收机会 ×${String(value)}`,
-    finale_unlock: (value) => (value ? '解锁终局' : ''),
+  const labels: Record<string, string> = {
+    shared_impact: '共同影响',
+    research_points: '研究点',
+    research_clues: '研究点',
+    restoration_resource: '修护资源',
+    route_connection: '路线连接',
+    connection_level: '路线连接',
+    weathering: '风化压力',
+    reputation: '个人声望',
+    free_move: '免费移动',
+    card_draw: '抽牌',
   };
-  const text = Object.entries(reward)
-    .flatMap(([key, value]) => {
-      const formatter = labels[key];
-      return formatter ? [formatter(value)] : [];
-    })
-    .filter(Boolean);
-  return text.length ? text.join(' · ') : '完成后获得阶段奖励';
+  const entries = Object.entries(reward || {}).filter(([, value]) => hasMeaningfulProjectValue(value));
+  if (!entries.length) return '暂无额外奖励';
+  return entries.map(([key, value]) => {
+    const label = labels[key] || key;
+    if (typeof value === 'number') return label + ' ' + (value > 0 ? '+' : '') + value;
+    if (typeof value === 'boolean') return value ? label : '';
+    return label + ' ' + formatProjectValue(undefined, key, value);
+  }).filter(Boolean).join(' · ');
 }
 
+function hasMeaningfulProjectValue(value: unknown) {
+  if (value === null || value === undefined || value === false || value === 0 || value === '') return false;
+  if (Array.isArray(value)) return value.length > 0;
+  if (typeof value === 'object') return Object.values(value as Record<string, unknown>).some(hasMeaningfulProjectValue);
+  return true;
+}
+
+function formatProjectValue(meta: Meta | undefined, key: string, value: unknown) {
+  if (key === 'origin_diversity' && typeof value === 'number') return '至少 ' + value + ' 种';
+  if (key === 'action_type' && value === 'interpret_evidence') return '研判证据';
+  if (Array.isArray(value)) {
+    return value.map(item => key.includes('domain') && meta ? domainName(meta, String(item)) : String(item)).join('、');
+  }
+  if (typeof value === 'object' && value !== null) {
+    const record = value as Record<string, unknown>;
+    if (typeof record.current === 'number' && typeof record.target === 'number') return String(record.current) + ' / ' + String(record.target);
+    return Object.entries(record).filter(([, item]) => hasMeaningfulProjectValue(item)).map(([name, item]) => name + ' ' + String(item)).join(' · ');
+  }
+  return String(value);
+}
 export function statusName(status?: string) {
   const labels: Record<string, string> = {
     stable: '稳定',
@@ -78,6 +97,7 @@ export function statusName(status?: string) {
 export function siteTypeName(type?: string) {
   const labels: Record<string, string> = {
     heritage: '遗产节点',
+    gameplay: '协作节点',
     workshop: '协作节点',
     event: '事件节点',
     route: '路线节点',

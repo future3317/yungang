@@ -205,6 +205,44 @@ display: grid;
   border: 1px solid rgba(220, 190, 112, 0.14);
   border-radius: 8px;
 }
+:global(.site-inspector .task-workflow > summary) {
+  cursor: pointer;
+  list-style: none;
+  color: var(--ink-primary);
+  font-size: var(--type-label);
+  font-weight: 700;
+}
+:global(.site-inspector .task-workflow > summary::-webkit-details-marker) {
+  display: none;
+}
+:global(.site-inspector .task-workflow > summary::before) {
+  display: inline-block;
+  width: 1.1em;
+  color: var(--connection);
+  content: '▸';
+}
+:global(.site-inspector .task-workflow[open] > summary::before) {
+  content: '▾';
+}
+:global(.site-inspector .task-status-strip) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+:global(.site-inspector .task-status-strip span) {
+  min-width: 0;
+  padding: 5px 7px;
+  color: var(--ink-secondary);
+  background: rgba(20, 34, 25, 0.56);
+  border: 1px solid var(--line-subtle);
+  border-radius: 6px;
+  font-size: var(--type-label);
+  line-height: 1.25;
+}
+:global(.site-inspector .task-status-strip b) {
+  color: var(--connection);
+}
 :global(.site-inspector .task-step) {
 display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
@@ -618,51 +656,6 @@ margin: 0;
   font-size: var(--type-control);
   line-height: 1.3;
 }
-:global(.site-inspector .project-stage-track) {
-display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 3px 10px;
-  padding: 9px 10px;
-  background: rgba(185, 154, 88, 0.12);
-  border: 1px solid rgba(220, 190, 112, 0.28);
-  border-radius: 8px;
-}
-:global(.site-inspector .project-stage-track b) {
-color: var(--connection);
-  font-size: var(--type-label);
-}
-:global(.site-inspector .project-stage-track span) {
-color: var(--ink-primary);
-  font-size: var(--type-label);
-}
-:global(.site-inspector .project-stage-track strong) {
-grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
-  color: #f1d37f;
-  font: 700 var(--type-control) var(--font-data);
-}
-:global(.site-inspector .project-stage-card) {
-display: grid;
-  gap: 5px;
-  padding: 10px;
-  background: rgba(20, 34, 25, 0.62);
-  border-left: 2px solid var(--connection);
-}
-:global(.site-inspector .project-stage-card b) {
-color: var(--ink-primary);
-  font-size: var(--type-label);
-}
-:global(.site-inspector .project-stage-card span),
-:global(.site-inspector .project-stage-card small) {
-color: var(--ink-secondary);
-  font-size: var(--type-label);
-  line-height: 1.45;
-}
-:global(.site-inspector .project-stage-list) {
-display: grid;
-  gap: 6px;
-}
 :global(.site-inspector .project-stage-list > span) {
 display: grid;
   gap: 2px;
@@ -687,4 +680,97 @@ color: inherit;
 color: var(--ink-muted);
   font-size: var(--type-label);
   line-height: 1.35;
+}
+
+/* Inspector owns one scroll region: the summary remains anchored above it. */
+:global(.site-inspector .inspector-summary) {
+  max-height: none;
+  overflow: visible;
+  flex: 0 0 auto;
+}
+
+:global(.site-inspector .inspector-content) {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+:global(.site-inspector .project-stage-list) {
+  display: grid;
+  gap: 5px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+:global(.site-inspector .project-stage-item) {
+  position: relative;
+  min-width: 0;
+  padding: 7px 9px 7px 13px;
+  border-left: 1px solid var(--line-subtle);
+  color: var(--ink-muted);
+}
+
+:global(.site-inspector .project-stage-item.complete) {
+  color: var(--ink-secondary);
+}
+
+:global(.site-inspector .project-stage-item.current) {
+  color: var(--ink-primary);
+  border-left-color: var(--connection);
+  background: rgba(185, 154, 88, 0.08);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+:global(.site-inspector .project-stage-line) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  font-size: var(--type-label);
+}
+
+:global(.site-inspector .project-stage-line > span) {
+  flex: 0 0 17px;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+:global(.site-inspector .project-stage-item.complete .project-stage-line > span),
+:global(.site-inspector .project-stage-item.current .project-stage-line > span) {
+  color: var(--connection);
+}
+
+:global(.site-inspector .project-stage-line b) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 650;
+}
+
+:global(.site-inspector .project-stage-line strong) {
+  margin-left: auto;
+  color: var(--connection);
+  font-size: var(--type-caption);
+  white-space: nowrap;
+}
+
+:global(.site-inspector .project-stage-detail) {
+  display: grid;
+  gap: 5px;
+  margin: 5px 0 0 25px;
+  color: var(--ink-secondary);
+}
+
+:global(.site-inspector .project-stage-detail p) {
+  margin: 0;
+  line-height: 1.55;
+}
+
+:global(.site-inspector .project-stage-detail small) {
+  color: var(--ink-muted);
+  line-height: 1.45;
+}
+
+:global(.site-inspector .project-stage-progress) {
+  color: var(--connection);
+  font-size: var(--type-caption);
 }

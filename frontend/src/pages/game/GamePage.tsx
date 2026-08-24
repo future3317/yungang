@@ -261,7 +261,7 @@ export function GamePage() {
   const roles = Object.fromEntries(meta.roles.map((item) => [item.id, item]));
   const focused: Site =
     state.sites[focus || active.location] || state.sites[active.location] || Object.values(state.sites)[0];
-  const focusedMeta = sites[focused.id] || focused;
+  const focusedMeta = { ...(sites[focused.id] || {}), ...focused };
   const task = focusedMeta.active_task_id ? state.tasks[focusedMeta.active_task_id] : undefined;
   const currentEvent = state.shared.current_event_id ? events[state.shared.current_event_id] : undefined;
   const eventTargetLabel = (id: string) => {
@@ -608,7 +608,7 @@ export function GamePage() {
           <SiteInspector
             state={state}
             meta={meta}
-            site={focusedMeta}
+            site={{ ...focusedMeta, summary: focusedMeta.summary ?? undefined, icon_asset: focusedMeta.icon_asset ?? undefined, scene_asset: focusedMeta.scene_asset ?? undefined, layout: focusedMeta.layout ?? undefined, node_ability: focusedMeta.node_ability ?? undefined, gameplay_hint: focusedMeta.gameplay_hint ?? undefined, content_class: focusedMeta.content_class === 'documented' || focusedMeta.content_class === 'interpretive' || focusedMeta.content_class === 'gameplay' ? focusedMeta.content_class : undefined } as import('../../types/game').SiteReference}
             task={task}
             event={currentEvent}
             eventTargetIds={eventTargetIds}

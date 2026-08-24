@@ -42,7 +42,7 @@
 }
 .node-back {
   fill: rgba(17, 34, 23, 0.48);
-  stroke: rgba(229, 208, 151, 0.42);
+  stroke: rgba(190, 198, 172, 0.42);
   stroke-width: 0.28;
 }
 .map-node.node-current .node-back {
@@ -308,18 +308,25 @@
 .route-hit-group {
   pointer-events: stroke;
 }
+.route-hit-group:focus-visible,
+.map-node:focus-visible {
+  outline: none;
+}
+.route-hit-group:focus-visible > path:not(.route-hit-area) {
+  stroke: var(--connection);
+  stroke-width: 1.15;
+  filter: drop-shadow(0 0 1px rgba(220, 190, 112, 0.45));
+}
+.map-node:focus-visible .node-back {
+  stroke: var(--connection);
+  stroke-width: 0.72;
+  filter: drop-shadow(0 0 1px rgba(220, 190, 112, 0.45));
+}
 .route-layer .route-hit-area {
   fill: none;
   stroke: transparent;
   stroke-width: 4.5;
   pointer-events: stroke;
-}
-.route-layer path:focus-visible {
-  stroke: var(--connection);
-  stroke-width: 0.72;
-  stroke-dasharray: 2 1;
-  filter: drop-shadow(0 0 0.8px rgba(220, 190, 112, 0.45));
-  outline: none;
 }
 .route-layer path.road-main {
   stroke-width: 0.54;

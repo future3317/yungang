@@ -1,15 +1,15 @@
+.rnd {
+  z-index: 7;
+  min-width: 0;
+  min-height: 0;
+}
+
 .drawer {
-  --timeline-width: 560px;
-  position: absolute;
-  left: calc(var(--hud-left-width) + var(--hud-rail-gap));
-  right: calc(var(--hud-right-width) + var(--hud-rail-gap));
-  bottom: calc(100% + 10px);
-  width: min(var(--timeline-width), calc(100% - 32px));
-  min-width: 320px;
-  max-width: calc(100% - 32px);
+  width: 100%;
+  height: 100%;
   margin: 0;
   color: var(--ink-secondary);
-  transition: transform var(--motion-standard) var(--ease-out);
+  overflow: hidden;
 }
 
 .dragging {
@@ -42,10 +42,6 @@
   font-size: var(--type-label);
 }
 
-.drawer[open] {
-  width: min(var(--timeline-width), calc(100% - 32px));
-}
-
 .dragHandle {
   display: grid;
   place-items: center;
@@ -59,13 +55,10 @@
 }
 
 .body {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 7px);
   width: 100%;
   box-sizing: border-box;
-  height: var(--timeline-body-height, 300px);
-  max-height: min(60dvh, 620px);
+  height: calc(100% - 45px);
+  max-height: none;
   overflow: auto;
   padding: 10px;
   color: var(--ink-secondary);
@@ -73,30 +66,6 @@
   border: 1px solid rgba(220, 190, 112, 0.3);
   border-radius: 9px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
-}
-
-.resizeHandle {
-  position: absolute;
-  z-index: 3;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  touch-action: none;
-  cursor: nwse-resize;
-}
-.resizeNW { top: -22px; left: -22px; cursor: nwse-resize; }
-.resizeNE { top: -22px; right: -22px; cursor: nesw-resize; }
-.resizeSW { bottom: -22px; left: -22px; cursor: nesw-resize; }
-.resizeSE { right: -22px; bottom: -22px; cursor: nwse-resize; }
-.drawer:not([open]) .resizeHandle { display: none; }
-
-@media (max-width: 1100px) {
-  .drawer {
-    left: 8px;
-    right: 8px;
-  }
 }
 
 .entry {
@@ -119,13 +88,4 @@
 .entry small,
 .entry span {
   font-size: var(--type-label);
-}
-
-@media (min-width: 1101px) {
-  .drawer,
-  .drawer[open] {
-    left: max(16px, calc(50% - 280px));
-    right: auto;
-    width: min(var(--timeline-width), calc(100% - 32px));
-  }
 }

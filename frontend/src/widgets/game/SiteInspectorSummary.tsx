@@ -16,10 +16,10 @@ export function SiteInspectorSummary({
 }) {
   return (
     <>
-      <button type="button" className="inspector-collapse" onPointerUp={onCollapse} onClick={onCollapse} aria-label="收起地点详情">
+      <button type="button" className="inspector-collapse" onClick={onCollapse} aria-label="收起地点详情">
         <X size={16} />
       </button>
-      <header className="inspector-summary" tabIndex={0} aria-label="地点摘要，可滚动查看">
+      <header className="inspector-summary" tabIndex={0} aria-label="地点摘要">
         <div className="inspector-site-mark">
           <img src={assetUrl(site.icon_asset || undefined, 'ornaments/heritage-medallion-1.webp')} alt="" />
         </div>

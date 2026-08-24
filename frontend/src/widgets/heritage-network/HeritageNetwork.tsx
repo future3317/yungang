@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { GripVertical, LocateFixed, Maximize2, Minus, Plus } from 'lucide-react';
+import { Rnd } from 'react-rnd';
 import { select } from 'd3-selection';
 import { zoom, zoomIdentity, type ZoomBehavior, type ZoomTransform } from 'd3-zoom';
 import type { ActionType, ContentSite, Meta, Player, Region, RouteState, Site, SiteReference } from '../../types/game';
 import { assetUrl } from '../../shared/assetUrl';
 import { displayText } from '../game/contentLabels';
-import { useFloatingPanel } from '../../shared/useFloatingPanel';
 import styles from './HeritageNetwork.module.css';
 
 type MapActionMode = Extract<
@@ -243,25 +243,25 @@ export function HeritageNetwork({
   onFocus: (id: string) => void;
   onRouteSelect: (id: string) => void;
 }) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const zoomRef = useRef<ZoomBehavior<SVGSVGElement, unknown> | null>(null);
   const transformRef = useRef<ZoomTransform>(zoomIdentity);
   const pointerRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const [transform, setTransform] = useState<ZoomTransform>(zoomIdentity);
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
-  const {
-    panelRef: accessListRef,
-    offset: accessOffset,
-    size: accessListSize,
-    dragging: accessDragging,
-    resizing: accessResizing,
-    beginDrag: beginAccessDrag,
-    moveDrag: moveAccessDrag,
-    endDrag: endAccessDrag,
-    beginResize: beginAccessResize,
-    moveResize: moveAccessResize,
-    endResize: endAccessResize,
-  } = useFloatingPanel<HTMLDetailsElement>({ initialSize: { width: 300, height: 360 }, minWidth: 240, minHeight: 180 });
+  const [accessOpen, setAccessOpen] = useState(false);
+  const [accessSize, setAccessSize] = useState({ width: 300, height: 360 });
+  const [accessPosition, setAccessPosition] = useState({ x: 0, y: 0 });
+  const [accessInteracting, setAccessInteracting] = useState(false);
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    setAccessPosition({
+      x: Math.max(16, root.clientWidth - accessSize.width - 16),
+      y: Math.max(16, root.clientHeight - accessSize.height - 16),
+    });
+  }, []);
   const enabledSites = useMemo(() => Object.values(sites).filter((site) => metaSites[site.id]), [metaSites, sites]);
   const enabledSiteKey = useMemo(
     () =>
@@ -362,7 +362,7 @@ export function HeritageNetwork({
   const currentPoint = mapPoint(active.location);
   const selectedPoint = focusedId && focusedId !== active.location ? mapPoint(focusedId) : null;
   return (
-    <div className={`${styles.root} network-frame world-stage ${routeAction ? 'route-action' : ''}`.trim()}>
+    <div ref={rootRef} className={`${styles.root} network-frame world-stage ${routeAction ? 'route-action' : ''}`.trim()}>
       <div className="network-tools">
         <button title="聚焦当前玩家" onClick={centerCurrent} aria-label="聚焦当前玩家">
           <LocateFixed />
@@ -460,29 +460,32 @@ export function HeritageNetwork({
                     line.route
                   );
               return (
-                <g key={line.id} className="route-hit-group">
+                <g
+                  key={line.id}
+                  className="route-hit-group"
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
+                  onMouseEnter={() => setHoveredRouteId(line.id)}
+                  onMouseLeave={() => setHoveredRouteId(null)}
+                  onFocus={() => setHoveredRouteId(line.id)}
+                  onBlur={() => setHoveredRouteId(null)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (routeAction) onRouteSelect(line.id);
+                    else onFocus(line.to);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      if (routeAction) onRouteSelect(line.id);
+                      else onFocus(line.to);
+                    }
+                  }}
+                >
                   <path
                     className="route-hit-area"
                     d={d}
-                    tabIndex={0}
-                    role="button"
-                    aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
-                    onMouseEnter={() => setHoveredRouteId(line.id)}
-                    onMouseLeave={() => setHoveredRouteId(null)}
-                    onFocus={() => setHoveredRouteId(line.id)}
-                    onBlur={() => setHoveredRouteId(null)}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (routeAction) onRouteSelect(line.id);
-                      else onFocus(line.to);
-                    }}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        if (routeAction) onRouteSelect(line.id);
-                        else onFocus(line.to);
-                      }
-                    }}
                   />
                   <path
                     className={classes}
@@ -643,18 +646,37 @@ export function HeritageNetwork({
           </g>
         </g>
       </svg>
-      <details
-        ref={accessListRef}
-        className={`network-access-list ${accessDragging || accessResizing ? 'is-interacting' : ''}`.trim()}
-        style={{ '--access-width': `${accessListSize.width}px`, '--access-height': `${accessListSize.height}px`, transform: `translate(${accessOffset.x}px, ${accessOffset.y}px)` } as CSSProperties}
+      <Rnd
+        className={`${styles.accessRnd} ${accessInteracting ? styles.interacting : ''}`.trim()}
+        bounds="parent"
+        position={accessPosition}
+        size={{ width: accessSize.width, height: accessOpen ? accessSize.height : 44 }}
+        minWidth={240}
+        minHeight={180}
+        maxWidth="90%"
+        maxHeight="80%"
+        enableResizing={accessOpen}
+        dragHandleClassName={styles.dragHandle}
+        onDragStart={() => setAccessInteracting(true)}
+        onDragStop={(_, data) => {
+          setAccessPosition({ x: data.x, y: data.y });
+          setAccessInteracting(false);
+        }}
+        onResizeStart={() => setAccessInteracting(true)}
+        onResizeStop={(_, __, ref, ___, position) => {
+          setAccessSize({ width: ref.offsetWidth, height: ref.offsetHeight });
+          setAccessPosition(position);
+          setAccessInteracting(false);
+        }}
       >
-        <summary>
-          <span className={styles.dragHandle} aria-label="拖动地点与路线清单" onPointerDown={beginAccessDrag} onPointerMove={moveAccessDrag} onPointerUp={endAccessDrag} onPointerCancel={endAccessDrag} onClick={(event) => { event.preventDefault(); event.stopPropagation(); }}>
+        <details className="network-access-list" open={accessOpen} onToggle={(event) => setAccessOpen(event.currentTarget.open)}>
+          <summary>
+          <span className={styles.dragHandle} aria-label="拖动地点与路线清单" onClick={(event) => { event.preventDefault(); event.stopPropagation(); }}>
             <GripVertical size={16} aria-hidden="true" />
           </span>
           <span>地点与路线清单</span><small>点击可聚焦地图</small>
-        </summary>
-        <div className="network-access-content">
+          </summary>
+          <div className="network-access-content">
           <section>
             <b>地点</b>
             {enabledSites.map((site) => {
@@ -675,21 +697,9 @@ export function HeritageNetwork({
               </button>;
             })}
           </section>
-        </div>
-        {(['nw', 'ne', 'sw', 'se'] as const).map((corner) => (
-          <button
-            key={corner}
-            type="button"
-            className={`${styles.resizeHandle} ${styles[`resize${corner.toUpperCase()}`]}`}
-            aria-label={`调整地点与路线清单大小（${corner}）`}
-            onPointerDown={(event) => beginAccessResize(event, corner)}
-            onPointerMove={moveAccessResize}
-            onPointerUp={endAccessResize}
-            onPointerCancel={endAccessResize}
-            onClick={(event) => event.stopPropagation()}
-          />
-        ))}
-      </details>
+          </div>
+        </details>
+      </Rnd>
 
     </div>
   );

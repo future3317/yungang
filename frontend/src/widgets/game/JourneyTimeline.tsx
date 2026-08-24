@@ -1,8 +1,8 @@
 import { ChevronDown, Clock3, GripVertical } from 'lucide-react';
-import { useState, type CSSProperties } from 'react';
+import { Rnd } from 'react-rnd';
+import { useState } from 'react';
 import { StateChangeList } from './StateChangeList';
 import { metricLabel } from './gameUi';
-import { useFloatingPanel, type ResizeCorner } from '../../shared/useFloatingPanel';
 import styles from './JourneyTimeline.module.css';
 
 type TimelineChange = {
@@ -58,24 +58,36 @@ const entryTypeLabels: Record<string, string> = {
 
 export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
   const [filter, setFilter] = useState<TimelineFilter>('all');
-  const { panelRef: drawerRef, offset, size, dragging, resizing, beginDrag, moveDrag, endDrag, beginResize, moveResize, endResize } =
-    useFloatingPanel<HTMLDetailsElement>({ initialSize: { width: 560, height: 300 }, minWidth: 320, minHeight: 150, maxHeightInset: 90, maxHeightFloor: 220 });
+  const [open, setOpen] = useState(true);
+  const [size, setSize] = useState({ width: 560, height: 300 });
+  const [interacting, setInteracting] = useState(false);
   const visibleEntries = entries.filter((entry) => filter === 'all' || entry.type === filter).reverse();
 
   return (
-    <details
-      ref={drawerRef}
-      className={`${styles.drawer} ${dragging || resizing ? styles.dragging : ''}`.trim()}
-      style={{ '--timeline-width': `${size.width}px`, '--timeline-body-height': `${size.height}px`, transform: `translate(${offset.x}px, ${offset.y}px)` } as CSSProperties}
+    <Rnd
+      className={`${styles.rnd} ${interacting ? styles.dragging : ''}`.trim()}
+      bounds="parent"
+      default={{ x: 16, y: 16, width: size.width, height: size.height }}
+      size={{ width: size.width, height: open ? size.height : 44 }}
+      minWidth={320}
+      minHeight={180}
+      maxWidth="90%"
+      maxHeight="80%"
+      enableResizing={open}
+      dragHandleClassName={styles.dragHandle}
+      onDragStart={() => setInteracting(true)}
+      onDragStop={() => setInteracting(false)}
+      onResizeStart={() => setInteracting(true)}
+      onResizeStop={(_, __, ref) => {
+        setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
+        setInteracting(false);
+      }}
     >
-      <summary className={styles.summary} aria-label="旅程时间线">
+      <details className={styles.drawer} open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
+        <summary className={styles.summary} aria-label="旅程时间线">
         <span
           className={styles.dragHandle}
           aria-label="拖动旅行时间线"
-          onPointerDown={beginDrag}
-          onPointerMove={moveDrag}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -87,54 +99,42 @@ export function JourneyTimeline({ entries }: { entries: TimelineEntry[] }) {
         <span>旅程时间线</span>
         <small>{entries.length} 条记录</small>
         <ChevronDown size={15} aria-hidden="true" />
-      </summary>
-      <div className={styles.body}>
-        <div className="timeline-filter" role="tablist" aria-label="时间线筛选">
-          {filters.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              aria-selected={filter === item.id}
-              onClick={() => setFilter(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
+        </summary>
+        <div className={styles.body}>
+          <div className="timeline-filter" role="tablist" aria-label="时间线筛选">
+            {filters.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                role="tab"
+                aria-selected={filter === item.id}
+                onClick={() => setFilter(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+          <div className="timeline-events" aria-live="polite">
+            {visibleEntries.length ? (
+              visibleEntries.map((entry, index) => (
+                <article className={styles.entry} key={`${entry.id}-${index}`}>
+                  <b>
+                    回合 {entry.round}
+                    <small>{entryTypeLabels[entry.type] || '旅程记录'}</small>
+                  </b>
+                  <span>
+                    {entry.player_name ? `${entry.player_name} · ` : ''}
+                    {entry.message}
+                    <StateChangeList compact changes={structuredEffects(entry.effects || entry.changes)} />
+                  </span>
+                </article>
+              ))
+            ) : (
+              <p className="timeline-empty">这个筛选下还没有记录。</p>
+            )}
+          </div>
         </div>
-        <div className="timeline-events" aria-live="polite">
-          {visibleEntries.length ? (
-            visibleEntries.map((entry, index) => (
-              <article className={styles.entry} key={`${entry.id}-${index}`}>
-                <b>
-                  回合 {entry.round}
-                  <small>{entryTypeLabels[entry.type] || '旅程记录'}</small>
-                </b>
-                <span>
-                  {entry.player_name ? `${entry.player_name} · ` : ''}
-                  {entry.message}
-                  <StateChangeList compact changes={structuredEffects(entry.effects || entry.changes)} />
-                </span>
-              </article>
-            ))
-          ) : (
-            <p className="timeline-empty">这个筛选下还没有记录。</p>
-          )}
-        </div>
-      </div>
-      {(['nw', 'ne', 'sw', 'se'] as ResizeCorner[]).map((corner) => (
-        <button
-          key={corner}
-          type="button"
-          className={`${styles.resizeHandle} ${styles[`resize${corner.toUpperCase()}`]}`}
-          aria-label={`调整时间线大小（${corner}）`}
-          onPointerDown={(event) => beginResize(event, corner)}
-          onPointerMove={moveResize}
-          onPointerUp={endResize}
-          onPointerCancel={endResize}
-          onClick={(event) => event.stopPropagation()}
-        />
-      ))}
-    </details>
+      </details>
+    </Rnd>
   );
 }
