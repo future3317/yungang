@@ -1,7 +1,8 @@
 .root {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  box-sizing: border-box;
   min-width: 0;
   min-height: 0;
   height: 100%;
@@ -54,7 +55,6 @@
   border-radius: 8px;
 }
 .root :global(.inspector-summary ){
-  flex: 0 0 auto;
   min-height: 0;
   max-height: none;
   overflow: visible;
@@ -186,14 +186,26 @@ color: #f8efd9;
 }
 .root :global(.inspector-content ){
   min-width: 0;
-  flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  align-self: stretch;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   padding-bottom: 16px;
   overscroll-behavior: contain;
+  overflow-anchor: none;
   padding-right: 4px;
   scrollbar-color: rgba(220, 190, 112, 0.38) transparent;
   scrollbar-width: thin;
+}
+.root :global(.inspector-content::-webkit-scrollbar ){
+  width: 10px;
+}
+.root :global(.inspector-content::-webkit-scrollbar-thumb ){
+  background: rgba(220, 188, 105, 0.68);
+  border: 2px solid rgba(7, 15, 10, 0.3);
+  border-radius: 999px;
+  background-clip: padding-box;
 }
 .root :global(.inspector-content h3),
 .root :global(.inspector-content p),

@@ -2,7 +2,7 @@
   display: block;
 }
 
-.root :global(.game-viewport) {
+.root:global(.game-viewport) {
   height: 100dvh;
   min-height: 0;
   overflow: hidden;
@@ -144,22 +144,11 @@
   contain: layout;
 }
 
-.root :global(.game-shell > .hud-layout > .hud-slot-right.site-inspector .inspector-content) {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-color: rgba(220, 190, 112, 0.62) rgba(16, 27, 20, 0.34);
-  scrollbar-width: thin;
-}
-
-.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
-.root :global(.hud-layout > .hud-slot-right.site-inspector .inspector-content::-webkit-scrollbar) {
+.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar) {
   width: 10px;
 }
 
-.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
-.root :global(.hud-layout > .hud-slot-right.site-inspector .inspector-content::-webkit-scrollbar-thumb) {
+.root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb) {
   background: rgba(220, 188, 105, 0.68);
   border: 2px solid rgba(7, 15, 10, 0.3);
   border-radius: 999px;

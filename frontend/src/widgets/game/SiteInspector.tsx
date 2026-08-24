@@ -1,4 +1,4 @@
-import { useEffect, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { Check, ChevronLeft, CircleAlert, Compass, HandHeart, Info, Library, MapPinned, Target } from 'lucide-react';
 import type { Action, ActionOption, ActionType, ContentCard, ContentEvent, GameState, Meta, SiteReference, Task } from '../../types/game';
 import { contentTagName, domainName, eventTargetRuleName, eventTypeName, formatProjectRequirements, formatProjectReward, formatRequirementValues, marketOutcome, marketReason, recordText, siteTypeName, textField } from './inspectorFormatters';
@@ -45,10 +45,16 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
   eventTargetLabels = eventTargetLabels || [];
   eventTargetIds = eventTargetIds || [];
   const [tab, setTab] = useState<InspectorTab>('task');
+  const contentRef = useRef<HTMLDivElement>(null);
   const tabOrder: InspectorTab[] = ['task', 'project', 'event', 'market'];
+  const selectTab = (next: InspectorTab) => {
+    setTab(next);
+    requestAnimationFrame(() => contentRef.current?.scrollTo({ top: 0 }));
+  };
   useEffect(() => {
     if (!requestedInspectorTab) return;
     setTab(requestedInspectorTab);
+    requestAnimationFrame(() => contentRef.current?.scrollTo({ top: 0 }));
     onInspectorTabHandled?.();
   }, [onInspectorTabHandled, requestedInspectorTab]);
   const onTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, current: InspectorTab) => {
@@ -56,7 +62,7 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
     const next = event.key === 'ArrowRight' ? tabOrder[(index + 1) % tabOrder.length] : event.key === 'ArrowLeft' ? tabOrder[(index - 1 + tabOrder.length) % tabOrder.length] : event.key === 'Home' ? tabOrder[0] : event.key === 'End' ? tabOrder[tabOrder.length - 1] : null;
     if (!next) return;
     event.preventDefault();
-    setTab(next);
+    selectTab(next);
     requestAnimationFrame(() => document.getElementById(tabId(next))?.focus());
   };
   const active = state.players[state.shared.active_player_id];
@@ -101,12 +107,12 @@ export function SiteInspector({ state, meta, site, task, event, cards, legal, ac
       onCollapse={() => onCollapsedChange(true)}
     />
     <div className="inspector-tabs" role="tablist" aria-label="地点信息">
-      <button type="button" id={tabId('task')} role="tab" aria-selected={tab === 'task'} aria-controls={panelId('task')} tabIndex={tab === 'task' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'task')} onClick={() => setTab('task')}><Target size={15} aria-hidden="true" />地点任务</button>
-      <button type="button" id={tabId('project')} role="tab" aria-selected={tab === 'project'} aria-controls={panelId('project')} tabIndex={tab === 'project' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'project')} onClick={() => setTab('project')}><HandHeart size={15} aria-hidden="true" />团队项目</button>
-      <button type="button" id={tabId('event')} role="tab" aria-selected={tab === 'event'} aria-controls={panelId('event')} tabIndex={tab === 'event' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'event')} onClick={() => setTab('event')}><CircleAlert size={15} aria-hidden="true" />事件</button>
-      <button type="button" id={tabId('market')} role="tab" aria-selected={tab === 'market'} aria-controls={panelId('market')} tabIndex={tab === 'market' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'market')} onClick={() => setTab('market')}><Library size={15} aria-hidden="true" />市场</button>
+      <button type="button" id={tabId('task')} role="tab" aria-selected={tab === 'task'} aria-controls={panelId('task')} tabIndex={tab === 'task' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'task')} onClick={() => selectTab('task')}><Target size={15} aria-hidden="true" />地点任务</button>
+      <button type="button" id={tabId('project')} role="tab" aria-selected={tab === 'project'} aria-controls={panelId('project')} tabIndex={tab === 'project' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'project')} onClick={() => selectTab('project')}><HandHeart size={15} aria-hidden="true" />团队项目</button>
+      <button type="button" id={tabId('event')} role="tab" aria-selected={tab === 'event'} aria-controls={panelId('event')} tabIndex={tab === 'event' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'event')} onClick={() => selectTab('event')}><CircleAlert size={15} aria-hidden="true" />事件</button>
+      <button type="button" id={tabId('market')} role="tab" aria-selected={tab === 'market'} aria-controls={panelId('market')} tabIndex={tab === 'market' ? 0 : -1} onKeyDown={(event) => onTabKeyDown(event, 'market')} onClick={() => selectTab('market')}><Library size={15} aria-hidden="true" />市场</button>
     </div>
-    <div className="inspector-content">
+    <div ref={contentRef} className="inspector-content">
       {tab === 'task' && <section id={panelId('task')} className="task-tab" role="tabpanel" aria-labelledby={tabId('task')}>
         {task ? <>
           <div className="tab-kicker"><Target size={14} />地点任务</div>

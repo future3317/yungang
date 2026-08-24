@@ -81,7 +81,19 @@ test('desktop HUD keeps side rails below the top bar and expands the fixed victo
   expect(dock!.y).toBeGreaterThanOrEqual(layout!.y + layout!.height - 1);
 
   await expect(page.locator('.hud-layout > .hud-slot-left')).toHaveCSS('overflow-y', 'scroll');
-  await expect(page.locator('.hud-layout > .hud-slot-right.site-inspector .inspector-content')).toHaveCSS('overflow-y', 'auto');
+  await expect(page.locator('.hud-layout > .hud-slot-right.site-inspector .inspector-content')).toHaveCSS('overflow-y', 'scroll');
+
+  const inspectorBoxBeforeTabs = await page.locator('.site-inspector').boundingBox();
+  expect(inspectorBoxBeforeTabs).not.toBeNull();
+  for (const tabName of ['地点任务', '团队项目', '事件', '市场']) {
+    await page.getByRole('tab', { name: tabName }).click();
+    const inspectorBoxAfterTab = await page.locator('.site-inspector').boundingBox();
+    expect(inspectorBoxAfterTab).not.toBeNull();
+    expect(inspectorBoxAfterTab!.x).toBe(inspectorBoxBeforeTabs!.x);
+    expect(inspectorBoxAfterTab!.y).toBe(inspectorBoxBeforeTabs!.y);
+    expect(inspectorBoxAfterTab!.width).toBe(inspectorBoxBeforeTabs!.width);
+    expect(inspectorBoxAfterTab!.height).toBe(inspectorBoxBeforeTabs!.height);
+  }
 
   const goalButton = page.getByRole('button', { name: /^胜利条件/ });
   const goalButtonBox = await goalButton.boundingBox();
