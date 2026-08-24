@@ -80,10 +80,8 @@ test('desktop HUD keeps side rails below the top bar and expands the fixed victo
   expect(world!.width).toBeGreaterThan(0);
   expect(dock!.y).toBeGreaterThanOrEqual(layout!.y + layout!.height - 1);
 
-  const railOverflow = await page.locator('.hud-layout > .hud-slot-left, .hud-layout > .hud-slot-right').evaluateAll((elements) =>
-    elements.map((element) => getComputedStyle(element).overflowY),
-  );
-  expect(railOverflow).toEqual(['scroll', 'scroll']);
+  await expect(page.locator('.hud-layout > .hud-slot-left')).toHaveCSS('overflow-y', 'scroll');
+  await expect(page.locator('.hud-layout > .hud-slot-right.site-inspector .inspector-content')).toHaveCSS('overflow-y', 'auto');
 
   const goalButton = page.getByRole('button', { name: /^胜利条件/ });
   const goalButtonBox = await goalButton.boundingBox();

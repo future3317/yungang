@@ -7,7 +7,7 @@
 
 /* SiteInspector component styles. HUD geometry remains in hud-contract.css. */
 .root {
-position: relative;
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -21,8 +21,16 @@ position: relative;
   border-radius: 12px;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
 }
+.root:global(.inspector-rail) {
+  display: grid;
+  place-items: start center;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
 .root :global(.inspector-collapse ){
-position: absolute;
+  position: absolute;
   top: 8px;
   right: 8px;
   z-index: 3;
@@ -38,16 +46,11 @@ position: absolute;
 }
 .root :global(.inspector-collapse:hover),
 .root :global(.inspector-collapse:focus-visible ){
-background: rgba(20, 34, 25, 0.9);
+  background: rgba(20, 34, 25, 0.9);
   border-color: var(--line-subtle);
 }
-.root {
-display: grid;
-  place-items: start center;
-  min-height: 0;
-}
 .root :global(.inspector-expand ){
-display: inline-flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   padding: 8px 10px;
@@ -152,15 +155,22 @@ margin-left: 4px;
   content: '·';
 }
 .root :global(.inspector-tabs ){
-display: flex;
-  flex-wrap: nowrap;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
   flex: 0 0 auto;
   margin: 10px 0;
+  overflow: hidden;
 }
 .root :global(.inspector-tabs button ){
-flex: 1 1 25%;
-  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
   min-height: 44px;
   padding: 7px 4px;
   color: var(--ink-secondary);
@@ -168,6 +178,8 @@ flex: 1 1 25%;
   border: 1px solid var(--line-subtle);
   border-radius: 7px;
   font-size: var(--type-label);
+  line-height: 1.2;
+  white-space: nowrap;
 }
 .root :global(.inspector-tabs button[aria-selected='true'] ){
 color: #f8efd9;

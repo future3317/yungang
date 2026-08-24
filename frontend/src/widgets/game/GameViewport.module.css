@@ -81,8 +81,7 @@
   overflow: hidden;
 }
 
-.root :global(.hud-layout > .hud-slot-left),
-.root :global(.hud-layout > .hud-slot-right) {
+.root :global(.hud-layout > .hud-slot-left) {
   min-width: 0;
   min-height: 0;
   max-height: 100%;
@@ -92,6 +91,13 @@
   scrollbar-gutter: stable;
   scrollbar-color: rgba(213, 183, 105, 0.72) rgba(16, 27, 20, 0.46);
   scrollbar-width: thin;
+}
+
+.root :global(.hud-layout > .hud-slot-right) {
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .root :global(.hud-layout > .hud-slot-world) {
@@ -131,26 +137,29 @@
 
 /* The rail owns scrolling. The inspector fills the rail so long mission
    content remains reachable without moving the map or bottom dock. */
-.root :global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector) {
+.root :global(.game-shell > .hud-layout > .hud-slot-right.site-inspector) {
   height: 100%;
   min-height: 0;
   overflow: hidden;
   contain: layout;
 }
 
-.root :global(.game-shell > .hud-layout > .hud-slot-right > .site-inspector .inspector-content) {
+.root :global(.game-shell > .hud-layout > .hud-slot-right.site-inspector .inspector-content) {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(220, 190, 112, 0.62) rgba(16, 27, 20, 0.34);
+  scrollbar-width: thin;
 }
 
 .root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar),
-.root :global(.hud-layout > .hud-slot-right::-webkit-scrollbar) {
+.root :global(.hud-layout > .hud-slot-right.site-inspector .inspector-content::-webkit-scrollbar) {
   width: 10px;
 }
 
 .root :global(.hud-layout > .hud-slot-left::-webkit-scrollbar-thumb),
-.root :global(.hud-layout > .hud-slot-right::-webkit-scrollbar-thumb) {
+.root :global(.hud-layout > .hud-slot-right.site-inspector .inspector-content::-webkit-scrollbar-thumb) {
   background: rgba(220, 188, 105, 0.68);
   border: 2px solid rgba(7, 15, 10, 0.3);
   border-radius: 999px;
