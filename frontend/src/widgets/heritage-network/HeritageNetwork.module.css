@@ -39,6 +39,8 @@
 
 /* HeritageNetwork list styles. Map SVG visuals remain in map.css. */
 .root :global(.network-access-list) {
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
   width: 100%;
   height: 100%;
   min-width: 0;
@@ -59,6 +61,7 @@
   transition: none;
 }
 .root :global(.network-access-list:not([open])) {
+  display: block;
   overflow: visible;
 }
 .root :global(.network-access-list:not([open]) summary) {
@@ -101,10 +104,12 @@ min-height: 44px;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
   min-height: 0;
-  height: calc(100% - 45px);
-  max-height: calc(100% - 45px);
+  height: auto;
+  max-height: none;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
   padding: 5px;
 }
 

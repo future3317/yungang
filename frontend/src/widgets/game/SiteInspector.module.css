@@ -760,11 +760,9 @@ color: var(--ink-muted);
 }
 
 .root :global(.inspector-summary > p ){
-  display: -webkit-box;
   grid-column: 1 / -1;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  overflow: visible;
+  overflow-wrap: anywhere;
   line-height: 1.4;
 }
 
