@@ -3,6 +3,16 @@ name: quality
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      update_snapshots:
+        description: 'Regenerate Linux Playwright baselines and commit them'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
 
 jobs:
   backend:
@@ -51,7 +61,7 @@ jobs:
       - run: node ../scripts/check-asset-budgets.mjs
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:ui
+      - run: npm run test:ui ${{ github.event_name == 'workflow_dispatch' && inputs.update_snapshots == true && '--update-snapshots' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -60,3 +70,15 @@ jobs:
             frontend/playwright-report/
             frontend/test-results/
           if-no-files-found: warn
+      - if: github.event_name == 'workflow_dispatch' && inputs.update_snapshots == true
+        working-directory: .
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add frontend/e2e/visual.spec.ts-snapshots
+          if git diff --cached --quiet; then
+            echo 'No snapshot changes to commit.'
+          else
+            git commit -m 'chore: add Linux visual baselines'
+            git push
+          fi

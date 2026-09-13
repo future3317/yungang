@@ -19,10 +19,11 @@ export default defineConfig({
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     ['json', { outputFile: 'test-results/results.json' }],
   ],
-  // Stable cross-platform snapshots: omit the OS suffix from baseline names.
+  // Keep pixel baselines isolated by OS: browser font rasterization is not
+  // byte-identical between Windows and the Ubuntu CI runner.
   // For a fully reproducible environment, run inside the Playwright Docker image:
   //   docker run --rm -it -v "$(pwd):/work" -w /work/frontend mcr.microsoft.com/playwright:v1.50.1-jammy npx playwright test e2e/visual.spec.ts
-  snapshotPathTemplate: '{testDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
+  snapshotPathTemplate: '{testDir}/{testFileName}-snapshots/{arg}-{projectName}-{platform}{ext}',
   use: {
     baseURL: 'http://127.0.0.1:3000',
     trace: 'retain-on-failure',
