@@ -288,6 +288,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Cost */
             cost: number;
             /** Timing */
@@ -490,6 +492,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Domain */
             domain: string;
             /** Description */
@@ -523,8 +527,6 @@ export interface components {
             rarity?: string | null;
             /** Site Tags */
             site_tags?: string[];
-            /** Source Ids */
-            source_ids?: string[];
             /** Strategic Role */
             strategic_role?: string | null;
             /** Technique Tags */
@@ -747,6 +749,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Target Rule */
             target_rule: string;
             /**
@@ -1275,6 +1279,8 @@ export interface components {
              * @default gameplay
              */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Type */
             type: string;
             /** Target */
@@ -1385,6 +1391,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Site Id */
             site_id: string;
             /** Stages */
@@ -1640,6 +1648,21 @@ export interface components {
             round_summary?: components["schemas"]["RoundSummary"];
             /** Reserved Market Cards */
             reserved_market_cards?: string[];
+            /**
+             * Market Reserve
+             * @default 0
+             */
+            market_reserve: number;
+            /**
+             * Archive Retrieve
+             * @default 0
+             */
+            archive_retrieve: number;
+            /**
+             * Finale Unlock
+             * @default false
+             */
+            finale_unlock: boolean;
         };
         /** ReduceRouteRiskEffectContract */
         ReduceRouteRiskEffectContract: {
@@ -1765,6 +1788,8 @@ export interface components {
              * @default gameplay
              */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Start Site Id */
             start_site_id: string;
             /** Upgrade Ids */
@@ -2163,6 +2188,8 @@ export interface components {
              * @default gameplay
              */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Enabled Site Ids */
             enabled_site_ids: string[];
             /** Card Pool */
@@ -2289,6 +2316,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** X */
             x: number;
             /** Y */
@@ -2314,8 +2343,6 @@ export interface components {
             region_id?: string | null;
             /** Scene Asset */
             scene_asset?: string | null;
-            /** Source Ids */
-            source_ids?: string[];
             /** Start Damage */
             start_damage?: number | null;
             /** Strategic Role */
@@ -2457,6 +2484,11 @@ export interface components {
              */
             origin_diversity: number;
             /**
+             * Restore Actions
+             * @default 0
+             */
+            restore_actions: number;
+            /**
              * Restoration Resource
              * @default 0
              */
@@ -2554,6 +2586,8 @@ export interface components {
             name: string;
             /** Content Class */
             content_class: string;
+            /** Source Ids */
+            source_ids?: string[];
             /** Site Id */
             site_id: string;
             /** Required Domains */

@@ -493,8 +493,7 @@ export function HeritageNetwork({
                 <g
                   key={line.id}
                   className="route-hit-group"
-                  tabIndex={-1}
-                  focusable="false"
+              tabIndex={-1}
                   role="button"
                   aria-label={`${line.route.name || '路线'}，${line.route.cost} 行动点，风险 ${line.route.risk}`}
                   onPointerDown={(event) => event.preventDefault()}
@@ -564,7 +563,6 @@ export function HeritageNetwork({
                     transform={`translate(${position.x} ${position.y})`}
                     role="button"
                     tabIndex={-1}
-                    focusable="false"
                     aria-label={`${meta.name || '此处节点'}：${reason}`}
                     onPointerDown={(event) => {
                       event.preventDefault();

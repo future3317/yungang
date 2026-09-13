@@ -36,12 +36,12 @@ def list_archives(x_archive_capabilities: str | None = Header(default=None)) -> 
         journal = state.shared.journal or []
         timestamps = [entry.created_at for entry in journal if entry.created_at]
         updated_at = max(timestamps) if timestamps else None
-        status = str(room.get("status")) if room else ("completed" if state.shared.outcome else "in_progress")
+        status = str(room.get("status") or ("completed" if state.shared.outcome else "in_progress"))
         archives.append(ArchiveSummary(
             archive_id=str(room_id),
             room_id=str(room_id),
             mode=str(room.get("play_mode")),
-            status=str(room.get("status")),
+            status=status,
             scenario_id=state.scenario_id or state.shared.scenario_id,
             difficulty_id=state.difficulty_id,
             turn=state.shared.turn,

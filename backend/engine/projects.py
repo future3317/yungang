@@ -107,7 +107,6 @@ class ProjectsMixin:
         site = state.sites[site_id]
         if site.damage <= 0 or site.status == SiteStatus.CLOSED:
             raise ValueError("site_does_not_need_restoration")
-        discount = int(player.flags.get("restore_discount", 0))
         if self._has_upgrade_effect(player, "project_restore_discount") and player.flags.get("project_restore_discount_round") != state.shared.turn:
             player.flags["project_restore_discount_round"] = state.shared.turn
         if resource_cost and state.shared.restoration_resource < resource_cost and player.supplies < resource_cost:
