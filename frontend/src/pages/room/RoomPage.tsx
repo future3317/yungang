@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   Check,
@@ -138,6 +138,7 @@ export function RoomPage() {
       showError(error);
     },
   });
+  const seatUpdateQueue = useRef(Promise.resolve());
   const seat = useMutation({
     mutationFn: ({
       seatId,
@@ -145,7 +146,13 @@ export function RoomPage() {
     }: {
       seatId: string;
       update: { name?: string; role_id?: string; ready?: boolean };
-    }) => update(api.roomSeat(roomId, token, seatId, next)),
+    }) => {
+      const request = seatUpdateQueue.current
+        .catch(() => undefined)
+        .then(() => update(api.roomSeat(roomId, token, seatId, next)));
+      seatUpdateQueue.current = request.then(() => undefined, () => undefined);
+      return request;
+    },
     onSuccess: () => setPendingRoleSelection(null),
     onError: (error) => {
       setPendingRoleSelection(null);
