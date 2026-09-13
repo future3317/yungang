@@ -2,7 +2,7 @@
 
 ## 运行模式
 
-`solo` 是一位玩家控制两位角色；`local` 是同一设备轮流交接席位；`multi_device` 是每台设备持有自己的席位凭证。三种模式共享同一套 FastAPI 游戏规则和 SQLite 持久化，不依赖账号、WebSocket 或第三方服务。
+`solo` 是一位玩家控制两位角色；`local` 是同一设备轮流交接席位；`multi_device` 是每台设备持有自己的席位凭证。三种模式共享同一套 FastAPI 游戏规则和存储接口，不依赖账号或 WebSocket。生产使用 Neon PostgreSQL；本地开发和隔离测试使用 SQLite。
 
 ## 房间生命周期
 
@@ -29,3 +29,7 @@
 | POST | `/api/rooms/{room_id}/actions` | 使用席位凭证提交行动 |
 
 正式流程统一使用 `/api/rooms/*`；客户端行动请求不直接携带可伪造的房间席位身份，席位由 `X-Seat-Token` 认证。
+
+## 持久化边界
+
+`rooms` 保存房间与席位状态，`games` 保存旅程快照、回合摘要和事件历史，二者通过 `session_id` 关联。生产环境的唯一数据库来源是 `DATABASE_URL` 指向的 Neon PostgreSQL；Render 本地磁盘不参与存档。表初始化和索引迁移可以在每次部署执行，但必须幂等，不能删除或覆盖已有房间。

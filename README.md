@@ -6,6 +6,8 @@
 
 运行时规则以 FastAPI 服务端和 `data/` 内容为唯一来源。前端只渲染服务端返回的合法行动、目标和预览，不复制胜负计算。
 
+文档以本 README 和“文档入口”列出的当前维护文档为准；`docs/legacy/`、带日期的审计记录和历史计划不代表当前运行合同。
+
 项目采用“服务端规则引擎 + React 游戏界面”的分层：后端负责内容加载、回合状态、合法行动、权限、持久化和结果；前端负责地图、HUD、行动预览、反馈和无障碍交互。`generated.ts` 由后端 OpenAPI 契约生成，接口 DTO 不在前端重复维护。
 
 生产环境使用 Render Web Service 运行应用，Neon PostgreSQL 保存游戏、房间、玩家席位、回合摘要和事件历史。Render 重新部署、休眠或重启不会清空存档；本地开发和隔离测试才允许使用 SQLite fallback。
@@ -38,7 +40,7 @@
 | 角色升级 | 8 |
 | 策略牌 | 16 |
 | 多阶段项目 | 12 |
-| 任务 | 24 |
+| 任务 | 28 |
 
 以上数量以当前 `data/` 文件和服务端加载结果为准，已经达到本轮产品化目标数量。
 
@@ -91,7 +93,7 @@ Render Web Service 的环境变量必须设置：
 DATABASE_URL=<Neon PostgreSQL connection string>
 ```
 
-生产环境没有 `DATABASE_URL` 时应直接启动失败，不得回退到本地 SQLite。部署使用仓库中的生产依赖和启动配置；数据库表初始化与索引迁移必须保持幂等，不执行清空或全量覆盖。不要把连接字符串写入代码、README、日志或 Git 历史。
+Blueprint 还会设置 `YUNGANG_REQUIRE_EXTERNAL_DATABASE=true`。生产环境没有 `DATABASE_URL` 时应直接启动失败，不得回退到本地 SQLite。部署使用仓库中的生产依赖和启动配置；数据库表初始化与索引迁移必须保持幂等，不执行清空或全量覆盖。不要把连接字符串写入代码、README、日志或 Git 历史。
 
 ## 验证命令
 

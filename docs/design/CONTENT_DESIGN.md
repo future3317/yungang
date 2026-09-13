@@ -1,5 +1,35 @@
-# Content design
+# 内容设计与资料边界
 
-Server content supplies names, summaries, domains, effects and event data. The UI uses ids only for lookup and never exposes internal ids as player-facing labels. Empty and unavailable states explain the reason and next action, for example “探索市场后，文化证据会在这里等待组合” rather than “0 cards”.
+## 内容的唯一来源
 
-Cultural claims remain sourced in the content JSON and require human review before public release. No historical claim or user research result is invented in interface copy.
+运行时内容由 `data/game_data.json` 声明，并从 `data/` 下的 JSON 加载。名称、摘要、领域、脉络、效果、事件目标和任务条件由服务端提供；前端只用 ID 做查找，不把内部 ID 直接显示给玩家，也不在浏览器里复制合法性或胜负计算。
+
+当前内容分成三类：
+
+- `documented`：有明确资料依据的遗产地点、年代、建筑或考古信息；
+- `interpretive`：基于材料提出的研究性解释，必须保留不确定性；
+- `gameplay`：为练习观察、协作、修护和路线治理而设置的游戏节点，不得伪装成真实遗址。
+
+云冈主体为北魏 5—6 世纪遗产，华严寺、善化寺等内容主要对应辽金时期。本项目地图是**跨时代遗产研究网络，并非历史时期地图复原**；路线与区域表达服务于比较和协作，不表示同一历史时点的交通边界。
+
+## 证据与玩家语言
+
+文化证据卡是研究材料，不是唯一正确答案。每张卡应说明名称、领域、脉络、描述和游戏中的使用方式；“支持 / 冲突 / 待确认”表示玩家当前的研判状态，不等同于学术上的真伪裁决。页面用“线索脉络”解释材料关系，不能把游戏标签写成严格文献来源。
+
+任务内容应明确需要哪些证据、领域、脉络、组合标签和参与者，以及完成后会触发什么游戏效果。条件不足时说明“还缺什么”和“下一步能做什么”，不要只显示数字或内部字段。
+
+## 资料质量与来源
+
+`documented` 和 `interpretive` 内容必须有有效 `source_ids`，且引用的来源必须存在于 `data/sources.json`。来源应尽量指向具体出版物、馆院资料或具体页面，不以机构首页代替证据。史料事实、研究解释和游戏效果在字段与界面上分开表达。
+
+文化声明在公开发布前需要人工审校。游戏卡牌的“传播”“互鉴”“工艺”等词是比较材料的提示，不自动证明历史关系；保护文案使用“最小干预、完整记录，并在条件允许时保持可逆性”，不把保护原则绝对化。
+
+## 事件与机制内容
+
+事件内容必须通过结构化 `trigger`、`effect`、`target_rule` 和 `preview_delta` 描述影响。预告、行动预览和回合结算使用同一锁定目标，界面不写与实际 effect 无关的万能后果。新增机制效果必须注册到后端机制表、接入规则引擎，并增加真实状态变化测试。
+
+场景内容通过 `card_pool`、胜利条件、失败条件、特殊规则和推荐时长表达；不要在前端另写一套场景规则。角色能力、策略牌和多阶段项目同样以数据配置描述，但最终是否可用、花费多少和产生什么变化由服务端决定。
+
+## 空状态与可理解性
+
+空状态必须同时回答“现在是什么状态、为什么、下一步做什么”，例如“抵达节点后才能寻访证据”，而不是只写“0 cards”。玩家可见文案避免堆叠专业术语；首次试玩按照“移动 → 探索 → 研判 → 干预 → 结束回合”的完整小循环解释机制。
