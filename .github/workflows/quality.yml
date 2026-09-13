@@ -36,6 +36,11 @@ jobs:
 
   frontend:
     runs-on: ubuntu-latest
+    env:
+      # The browser suite intentionally exercises more than the production
+      # write-rate budget. Keep production rate limiting enabled; only this
+      # isolated CI service bypasses it.
+      YUNGANG_TEST_MODE: '1'
     defaults:
       run:
         working-directory: frontend
