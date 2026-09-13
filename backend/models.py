@@ -204,6 +204,7 @@ class PendingChoice(DictModel):
     next_card_id: Optional[str] = None
     next_action_card_id: Optional[str] = None
     resume_choice: Optional[JsonObject] = None
+    shared_unlock: bool = False
 
 
 class ComboRequirement(DictModel):

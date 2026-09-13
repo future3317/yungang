@@ -160,7 +160,7 @@ def test_western_dancer_upgrade_adds_origin_and_combo_tags():
     task = state.tasks[engine.content.sites[player.location]["active_task_id"]]
     card = next(card for card in engine.content.cards if engine._card_can_contribute(card, task))
     player.hand = [card]
-    player.flags["harmony_active"] = True
+    player.flags["harmony_next_contribution"] = True
     engine._upgrade_effect(state, player, {"type": "harmony_origin_bonus", "value": 1})
     engine._interpret_evidence(state, player, player.location, card, "support")
     record = state.sites[player.location].contributions[-1]

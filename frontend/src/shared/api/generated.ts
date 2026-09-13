@@ -1343,6 +1343,11 @@ export interface components {
             resume_choice?: {
                 [key: string]: components["schemas"]["JsonValue"];
             } | null;
+            /**
+             * Shared Unlock
+             * @default false
+             */
+            shared_unlock: boolean;
         };
         /** PendingChoiceOption */
         PendingChoiceOption: {

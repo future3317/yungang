@@ -252,7 +252,7 @@ export function HeritageNetwork({
   const [hoveredRouteId, setHoveredRouteId] = useState<string | null>(null);
   const [accessOpen, setAccessOpen] = useState(false);
   const [accessSize, setAccessSize] = useState({ width: 300, height: 360 });
-  const [accessPosition, setAccessPosition] = useState({ x: 0, y: 0 });
+  const [accessPosition, setAccessPosition] = useState({ x: 16, y: 72 });
   const [accessInteracting, setAccessInteracting] = useState(false);
   useEffect(() => {
     const saved = localStorage.getItem('yungang.access-panel');
@@ -286,7 +286,7 @@ export function HeritageNetwork({
     localStorage.setItem('yungang.access-panel', JSON.stringify({ position: nextPosition, size: nextSize }));
   };
   const resetAccessPanel = () => {
-    const nextPosition = { x: 16, y: 16 };
+    const nextPosition = { x: 16, y: 72 };
     const nextSize = { width: 300, height: 360 };
     setAccessPosition(nextPosition);
     setAccessSize(nextSize);

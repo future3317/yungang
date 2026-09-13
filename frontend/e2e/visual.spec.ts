@@ -248,15 +248,24 @@ test('market reopening route action selects a route target', async ({ page }) =>
   await expect(page.locator('.network-stage')).toBeVisible();
   await page.getByRole('button', { name: /^(跳过，自己寻访证据|知道了)$/ }).first().click();
   await clickActionButton(page, /^移动/);
-  const movementTutorial = page.getByRole('button', { name: /^(跳过，自己探索|知道了)$/ }).first();
-  if (await movementTutorial.isVisible()) await movementTutorial.click();
+  const movementTutorial = page.locator('.tutorial-backdrop:visible .tutorial-skip').first();
+  if (await movementTutorial.count()) {
+    await movementTutorial.evaluate((button) => (button as HTMLButtonElement).click());
+    await expect(page.locator('.tutorial-backdrop:visible')).toHaveCount(0);
+  }
   await expect(page.locator('.action-preview')).toBeVisible();
   await page.locator('.action-preview').getByRole('button', { name: /确认行动/ }).click();
   await expect(page.locator('.action-preview')).toBeHidden();
   await clickActionButton(page, /勘察路线/);
-  const targetRoute = page.locator('.route-hit-group:has(path.is-target) .route-hit-area').first();
+  const targetRoute = page.locator('.route-hit-group:has(path.is-target)').first();
   await expect(targetRoute).toBeVisible();
-  await targetRoute.press('Enter');
+  const routeLabel = await targetRoute.getAttribute('aria-label');
+  expect(routeLabel).toBeTruthy();
+  await page.locator('.network-access-list > summary').click();
+  const routeName = routeLabel!.split('，')[0];
+  const routeOption = page.locator('.network-access-content section').nth(1).getByRole('button').filter({ hasText: routeName });
+  await expect(routeOption).toBeVisible();
+  await routeOption.click();
   await expect(page.locator('.action-preview')).toBeVisible();
   await expect(page.locator('.action-preview')).toContainText(/路线/);
 });

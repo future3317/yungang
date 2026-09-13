@@ -23,7 +23,7 @@ class ActionCardsMixin:
             ActionCardTiming.EVENT_FORECAST.value: "事件预告阶段",
             ActionCardTiming.EVENT_RESPONSE.value: "事件响应阶段",
             ActionCardTiming.ANY_ACTION.value: "任意行动阶段",
-        }.get(self._action_card_timing(card), "当前行动阶段")
+        }.get(self._action_card_timing(card), self._action_card_timing(card))
 
     def _action_card_timing_allowed(self, state: GameState, card: dict[str, Any]) -> bool:
         timing = self._action_card_timing(card)
