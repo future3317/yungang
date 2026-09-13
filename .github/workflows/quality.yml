@@ -61,7 +61,7 @@ jobs:
       - run: node ../scripts/check-asset-budgets.mjs
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:ui ${{ github.event_name == 'workflow_dispatch' && inputs.update_snapshots == true && '--update-snapshots' || '' }}
+      - run: npm run test:ui -- ${{ github.event_name == 'workflow_dispatch' && inputs.update_snapshots == true && '--update-snapshots' || '' }}
       - if: always()
         uses: actions/upload-artifact@v4
         with:
